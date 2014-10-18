@@ -1,0 +1,111 @@
+<div data-ng-controller="DeviceDetailsDialogController">
+    <div class="modal-header">
+        <h3>{{deviceName}}</h3>
+    </div>
+    <div class="modal-body">
+        <div ng-if="device.type === 'LIGHTBULB'">
+            <div class="form-bulb">
+                <div style="margin-top: 20px;" ng-if="device.variables.on" class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-lg" ng-class="(device.variables.on.value === true) ? 'btn-success' : 'btn-danger'" ladda="status.pendingOnUpdate" data-style="zoom-in" ng-click="onOn(device)"><i class="fa fa-power-off"></i> {{(device.variables.on.value === true) ? 'On' : 'Off'}}</button>
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+                <div style="margin-top: 20px;" ng-if="device.variables.color">
+                    <spectrum-colorpicker ng-model="status.color" options="{showInput: false, preferredFormat: 'rgb'}"></spectrum-colorpicker>
+                </div>
+                <div style="margin-top: 20px;" ng-if="device.variables.level" class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        <div slider ng-model="status.level" start="0" end="100" step="1" callback="set" data-ng-disabled="status.pendingLevelUpdate"></div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+                <div class="row" style="margin-top: 5px;">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6 text-center">
+                        <span data-ng-hide="status.pendingLevelUpdate" class="label label-default">{{status.level}} %</span>
+                        <i data-ng-show="status.pendingLevelUpdate" class="fa fa-spinner fa-spin fa-lg"></i>
+                    </div>
+                    <div class="col-sm-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="device.type == 'THERMOSTAT'">
+            <div class="row">
+                <div class="col-sm-4 text-center">
+                    <h1><strong>{{device.variables.temp_f.value}}&deg; F</strong></h1>
+                </div>
+                <div ng-if="status.coolpoint" class="col-sm-4">
+                    <h4 class="text-primary">
+                        <i class="fa fa-empire text-primary"></i>
+                        <i data-ng-show="status.pendingTstatCoolPointUpdate" class="fa fa-spinner fa-spin text-primary"></i>
+                        <span data-ng-hide="status.pendingTstatCoolPointUpdate">{{status.coolpoint}}&deg; F</span>
+                    </h4>
+                    <div slider ng-model="status.coolpoint" start="60" end="100" step="1" data-ng-disabled="status.pendingTstatCoolPointUpdate"></div>
+                </div>
+                <div ng-if="status.heatpoint" class="col-sm-4">
+                    <h4 class="text-danger">
+                        <i class="fa fa-fire text-danger"></i>
+                        <i data-ng-show="status.pendingTstatHeatPointUpdate" class="fa fa-spinner fa-spin text-danger"></i>
+                        <span data-ng-hide="status.pendingTstatHeatPointUpdate">{{status.heatpoint}}&deg; F</span>
+                    </h4>
+                    <div slider ng-model="status.heatpoint" start="60" end="100" step="1" data-ng-disabled="status.pendingTstatHeatPointUpdate"></div>
+                </div>
+                <div ng-if="status.autopoint" class="col-sm-8">
+                    <h4 class="text-info">
+                        <i class="fa fa-crosshairs text-info"></i>
+                        <i data-ng-show="status.pendingTstatAutoPointUpdate" class="fa fa-spinner fa-spin text-info"></i>
+                        <span data-ng-hide="status.pendingTstatAutoPointUpdate">{{status.autopoint}}&deg; F</span>
+                    </h4>
+                    <div slider ng-model="status.autopoint" start="60" end="100" step="1" data-ng-disabled="status.pendingTstatAutoPointUpdate"></div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div ng-if="status.tstat_mode" class="col-sm-6 text-center">
+                    <h5>System Mode</h5>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" ladda="status.pendingTstatModeUpdate">
+                            {{status.tstat_mode}} <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li data-ng-show="status.tstat_mode != 'OFF'"><a class="clickable" data-ng-click="onTstatMode('OFF')">Off</a></li>
+                            <li data-ng-show="status.tstat_mode != 'AUTO'"><a class="clickable" data-ng-click="onTstatMode('AUTO')">Auto</a></li>
+                            <li data-ng-show="status.tstat_mode != 'COOL'"><a class="clickable" data-ng-click="onTstatMode('COOL')">Cool</a></li>
+                            <li data-ng-show="status.tstat_mode != 'HEAT'"><a class="clickable" data-ng-click="onTstatMode('HEAT')">Heat</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div ng-if="status.tstat_fan_mode" class="col-sm-6 text-center">
+                    <h5>Fan Mode</h5>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" ladda="status.pendingTstatFanModeUpdate">
+                            {{status.tstat_fan_mode}} <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li data-ng-show="status.tstat_fan_mode != 'ON'"><a class="clickable" data-ng-click="onTstatFanMode('ON')">On</a></li>
+                            <li data-ng-show="status.tstat_fan_mode != 'AUTO'"><a class="clickable" data-ng-click="onTstatFanMode('AUTO')">Auto</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="device.type == 'CAMERA'">
+            <div class="row">
+                <div ng-if="device.variables.image_status_url" class="col-sm-6 text-center">
+                    <h6>View Image</h6>
+                    <i class="fa fa-image fa-5x text-primary clickable" data-ng-click="showImage(device)"></i><br/>
+                </div>
+                <div ng-if="device.variables.video_status_url" class="col-sm-6 text-center">
+                    <h6>View Video</h6>
+                    <i class="fa fa-film fa-5x text-primary clickable" data-ng-click="showVideo(device)"></i><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="close()">Close</button>
+    </div>
+</div>

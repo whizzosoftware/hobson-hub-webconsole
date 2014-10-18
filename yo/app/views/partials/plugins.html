@@ -1,0 +1,62 @@
+<h1>Plugins</h1>
+<br/>
+<div class="tab-content" data-cg-busy="{promise:loadingPromise, message:'Loading...', delay: 200}">
+  <div class="tab-pane active" id="installed">
+
+    <tabset>
+      <tab heading="Installed">
+        <br/>
+        <div data-ng-repeat="plugin in notConfigured" class="alert alert-warning" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;&nbsp;The {{plugin.name}} needs to be configured. <a data-ng-click="showSettings(plugin)">Click here to configure it.</a></div>
+        <div class="alert alert-info" role="alert" data-ng-show="numUpdatesAvailable"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;{{availableMsg}}</div>
+        <div class="alert alert-info" role="alert" data-ng-show="installed.length == 0">There are currently no device plugins installed. Click the Available tab above to see what's available.</div>
+        <div data-ng-repeat="plugin in failed" class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;The {{plugin.name}} failed to start: {{plugin.status.message}}</a></div>
+        <table ng-show="installed.length > 0" class="table table-striped">
+          <tr>
+            <th>Name</th>
+            <th>Version</th>
+            <th>Status</th>
+            <th>
+            </th>
+          </tr>
+          <tr data-ng-repeat="plugin in installed"
+                  data-ng-class="{warning: plugin.status.status === 'FAILED'}">
+            <td><h5>{{plugin.name}}<br/><small>{{plugin.description}}</small></h5></td>
+            <td style="vertical-align: middle;">{{plugin.currentVersion}}</td>
+            <td style="vertical-align: middle;">
+              {{plugin.status.status | titleCase}}
+            </td>
+            <td style="vertical-align: middle;" align="right">
+              <button type="button" class="btn btn-sm btn-primary" ladda="plugin.pendingUpdate" data-style="zoom-in"
+                      data-ng-show="plugin.links.update" data-ng-click="update(plugin)">Update</button>
+              <button type="button" data-ng-click="showSettings(plugin)"
+                      ng-show="plugin.links.configuration" class="btn btn-sm btn-primary">
+                <span title="Settings" class="glyphicon glyphicon-cog"></span>
+              </button>
+              <button type="button" ladda="plugin.pendingReload" data-style="zoom-in" data-ng-click="reloadPlugin(plugin)"
+                      data-ng-disabled="!plugin.links.reload" class="btn btn-sm btn-primary">
+                <span title="Restart" class="glyphicon glyphicon-refresh"></span>
+              </button>
+            </td>
+          </tr>
+        </table>
+      </tab>
+      <tab heading="Available">
+        <br/>
+        <table class="table table-striped">
+            <tr><th>Name</th><th>Version</th><th></th></tr>
+            <tr data-ng-repeat="plugin in available">
+                <td><h5>{{plugin.name}}<br/><small>{{plugin.description}}</small></h5></td>
+                <td style="vertical-align: middle">{{plugin.latestVersion}}</td>
+                <td style="vertical-align: middle" align="right">
+                    <button class="btn btn-sm btn-primary" ladda="plugin.pendingUpdate" data-style="zoom-in" data-ng-click="installPlugin(plugin)">Install</button>
+                </td>
+            </tr>
+        </table>
+      </tab>
+      <span class="pull-right">
+        <input type="checkbox" data-ng-model="includeFrameworkPlugins" data-ng-change="loadPlugins(includeFrameworkPlugins)"/>
+        Show All Plugins
+      </span>
+    </tabset>
+  </div>
+</div>

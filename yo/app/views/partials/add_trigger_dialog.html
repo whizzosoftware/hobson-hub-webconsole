@@ -1,0 +1,235 @@
+<div ng-controller="AddTriggerController">
+    <div class="modal-header">
+        <h3>Add Trigger</h3>
+    </div>
+    <div class="modal-body">
+        <form name="triggerForm">
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <label>Trigger Name</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" ng-model="trigger.name" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <label>When?</label>
+                </div>
+                <div class="col-md-9">
+                    <input type="radio" ng-model="trigger.provider" value="com.whizzosoftware.hobson.hub.hobson-hub-scheduler" checked />&nbsp;&nbsp;On a schedule
+                </div>
+            </div>
+            <div ng-show="trigger.provider == 'com.whizzosoftware.hobson.hub.hobson-hub-scheduler'">
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label>Start</label>
+                    </div>
+                    <div class="col-md-9">
+                        <quick-datepicker ng-model="recurrence.startDate" disable-clear-button="true"></quick-datepicker>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label>Repeats</label>
+                    </div>
+                    <div class="col-md-9">
+                        <select ng-model="recurrence.repeat" class="form-control">
+                            <option value="-1">No (run once)</option>
+                            <option value="5">Minutely</option>
+                            <option value="4">Hourly</option>
+                            <option value="3">Daily</option>
+                            <option value="2">Weekly</option>
+                            <option value="1">Monthly</option>
+                            <option value="0">Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row" ng-show="recurrence.repeat != '-1'">
+                    <div class="col-sm-3">
+                        <label>Repeat every</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <div ng-show="recurrence.repeat == '0'">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                </div>
+                                <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">year(s)</div>
+                            </div>
+                        </div>
+                        <div ng-show="recurrence.repeat == '1'">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                </div>
+                                <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">month(s)</div>
+                            </div>
+                        </div>
+                        <div ng-show="recurrence.repeat == '2'">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                </div>
+                                <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">week(s)</div>
+                            </div>
+                        </div>
+                        <div ng-show="recurrence.repeat == '3'">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                </div>
+                                <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">day(s)</div>
+                            </div>
+                        </div>
+                        <div ng-show="recurrence.repeat == '4'">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                </div>
+                                <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">hour(s)</div>
+                            </div>
+                        </div>
+                        <div ng-show="recurrence.repeat == '5'">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                </div>
+                                <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">minute(s)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="recurrence.repeat == '0' || recurrence.repeat == '1' || recurrence.repeat == '2'" class="form-group row">
+                    <div class="col-md-3">
+                        <label>Repeat on</label>
+                    </div>
+                    <div class="col-md-9">
+                        <div ng-show="recurrence.repeat == '0'">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input class="form-control" type="radio" name="optionsRadio" value="option1" checked>
+                                </div>
+                                <div class="col-sm-1">
+                                    every
+                                </div>
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="recurrence.month" ng-options="month.name for month in monthsOfYear"></select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <select class="form-control" ng-model="recurrence.bymonthday" ng-options="day.name for day in daysOfMonth"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input type="radio" name="optionsRadio" value="option1">
+                                </div>
+                                <div class="col-sm-1">
+                                    the
+                                </div>
+                                <div class="col-sm-2">
+                                    <select class="form-control">
+                                        <option>first</option>
+                                        <option>second</option>
+                                        <option>third</option>
+                                        <option>fourth</option>
+                                        <option>last</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <select class="form-control" ng-model="recurrence.day" ng-options="day.name for day in daysOfWeek"></select>
+                                </div>
+                                <div class="col-sm-1">
+                                    of
+                                </div>
+                                <div class="col-sm-3">
+                                    <select class="form-control" ng-model="recurrence.month" ng-options="month.name for month in monthsOfYear"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="recurrence.repeat == '2'">
+                            <label class="checkbox-inline" ng-repeat="(day,enabled) in byWeekDay">
+                                <input type="checkbox" ng-model="byWeekDay[day]">{{day}}
+                            </label>
+                        </div>
+                        <div ng-show="recurrence.repeat == '1'">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <input class="form-control" type="radio" ng-model="recurrence.monthrepeat" value="bymonthday" checked>
+                                </div>
+                                <div class="col-xs-1">
+                                    day
+                                </div>
+                                <div class="col-xs-3">
+                                    <select class="form-control" ng-model="recurrence.bymonthday" ng-options="day.name for day in daysOfMonth"></select>
+                                </div>
+                                <div class="col-xs-6">
+                                    of the month
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input class="form-control" type="radio" ng-model="recurrence.monthrepeat" value="byweekday">
+                                </div>
+                                <div class="col-sm-1">
+                                    the
+                                </div>
+                                <div class="col-sm-3">
+                                    <select class="form-control" ng-model="recurrence.setpos">
+                                        <option value="1">first</option>
+                                        <option value="2">second</option>
+                                        <option value="3">third</option>
+                                        <option value="4">fourth</option>
+                                        <option value="-1">last</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <select class="form-control" ng-model="recurrence.month2" ng-options="day.name for day in daysOfWeek"></select>
+                                </div>
+                                <div class="col-sm-3">
+                                    of the month
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="recurrence.repeat != '-1'" class="form-group row">
+                    <div class="col-md-3">
+                        <label>End</label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <select class="form-control" ng-model="recurrence.end">
+                                    <option value="never">Never</option>
+                                    <option value="after">After</option>
+                                    <option value="ondate">On Date</option>
+                                </select>
+                            </div>
+                            <div ng-show="recurrence.end == 'after'" class="col-xs-3">
+                                <input ng-model="recurrence.count" type="text" class="form-control">
+                            </div>
+                            <div ng-show="recurrence.end == 'after'" class="col-xs-5" style="margin-top: 6px;">
+                                occurrence(s)
+                            </div>
+                            <div ng-show="recurrence.end == 'ondate'" class="col-xs-3">
+                                <quick-datepicker ng-model="recurrence.endDate" disable-clear-button="true" disable-timepicker="true"></quick-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading"><label>What to do?</label>&nbsp;&nbsp;&nbsp;<span ng-click="addAction()" class="glyphicon glyphicon-plus-sign text-primary"></span></div>
+                <div class="panel-body" ng-show="trigger.actions.length == 0"><i>There are no actions defined yet.</i></div>
+                <table class="table" ng-show="trigger.actions.length > 0">
+                    <tr ng-repeat="action in trigger.actions"><td>{{action.name}}</td><td width="1%"><span ng-click="removeAction($index)" class="glyphicon glyphicon-minus-sign text-danger"></span></td></tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-disabled="!triggerForm.$valid" ng-click="add()">Add</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

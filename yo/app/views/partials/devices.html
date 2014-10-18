@@ -1,0 +1,49 @@
+<div class="container">
+    <h1>Devices</h1>
+    <br/>
+    <div class="alert alert-info" role="alert" data-ng-show="devices.length == 0">There are currently no devices. You will need to install and configure plugins in order for devices to show up here.</div>
+    <table ng-if="devices.length > 0" class="table table-striped">
+        <tr><th width="5%"></th><th>Name</th><th></th><th width="10%"></th></tr>
+        <tr data-ng-repeat="device in devices" ng-class="(device.preferredVariable && device.preferredVariable.value == null) ? 'danger' : ''">
+            <td style="vertical-align: middle; text-align: center;" ng-switch="device.type">
+                <i ng-if="device.type == 'LIGHTBULB'" class="fa fa-lightbulb-o fa-2x text-primary"></i>
+                <i ng-if="device.type == 'CAMERA'" class="fa fa-video-camera fa-2x text-primary"></i>
+                <i ng-if="device.type == 'IRRIGATION_CONTROLLER'" class="fa fa-tint fa-2x text-primary"></i>
+                <i ng-if="device.type == 'SWITCH'" class="fa fa-power-off fa-2x text-primary"></i>
+                <i ng-if="device.type == 'THERMOSTAT'" class="fa fa-fire fa-2x text-primary"></i>
+            </td>
+            <td style="vertical-align: middle;">
+                <span class="clickable" ng-hide="editable == 'name'" ng-click="editable = 'name'">{{device.name}}</span>
+                <span ng-show="editable == 'name'">
+                    <form class="form-inline">
+                        <input type="text" size="30" name="name" ng-model="device.name">
+                        <button class="btn btn-success btn-xs" ng-click="setDeviceName(device.links['set-name'], device.name); editable = ''">Save</button>
+                        <button class="btn btn-warning btn-xs" ng-click="editable = ''">Cancel</button>
+                    </form>
+                </span>
+            </td>
+            <td style="vertical-align: middle; text-align: center;">
+                <span ng-switch on="device.preferredVariable.name">
+                    <button ng-switch-when="on" type="button" class="btn btn-sm" ng-class="(device.preferredVariable.value === true) ? 'btn-success' : 'btn-danger'" data-ng-disabled="device.preferredVariable.value == null" ladda="device.pendingUpdate" data-style="zoom-in" ng-click="toggleSwitch(device)"><i class="fa fa-power-off"></i> {{(device.preferredVariable.value === true) ? 'On' : 'Off'}}</button>
+                    <i class="fa fa-image fa-lg text-primary clickable" ng-switch-when="image_status_url" ng-click="viewImage(device.name,device.preferredVariable.value)"></i>
+                    <i class="fa fa-film fa-lg text-primary clickable" ng-switch-when="video_status_url" ng-click="viewVideo(device.name,device.preferredVariable.value)"></i>
+                    <span ng-switch-when="temp_f">{{device.preferredVariable.value}}&deg; F</span>
+                    <span ng-switch-when="temp_c">{{device.preferredVariable.value}}&deg; C</span>
+                </span>
+            </td>
+            <td style="vertical-align: middle;">
+                <button type="button" data-ng-click="showDeviceDetails(device.links.self, device.name)"
+                        class="btn btn-sm btn-primary">
+                    <span title="Details" class="glyphicon glyphicon-search"></span>
+                </button>
+                <button type="button" data-ng-click="showDeviceSettings(device.links.config, device.name)"
+                        data-ng-show="device.links.config" class="btn btn-sm btn-primary">
+                    <span title="Settings" class="glyphicon glyphicon-cog"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<span ng-if="" class="glyphicon glyphicon-warning-sign"></span>

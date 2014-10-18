@@ -1,0 +1,12 @@
+target
+node_modules
+dist
+.tmp
+.sass-cache
+yo/app/bower_components
+.classpath
+.idea
+.project
+.settings
+.iml
+
