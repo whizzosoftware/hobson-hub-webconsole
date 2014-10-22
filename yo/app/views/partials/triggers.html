@@ -26,7 +26,7 @@
             <td style="vertical-align: middle" width="50%">{{trigger.name}}</td>
             <td ng-switch on="trigger.type" style="vertical-align: middle">
                 <span ng-switch-when="SCHEDULE" ng-if="trigger.properties.nextRunTime" ng-class="(trigger.properties.scheduled) ? 'scheduled' : 'notscheduled'"><em>Next run:</em> {{trigger.properties.nextRunTime | date:'M-dd-yyyy \'at\' h:mm a'}}</span>
-                <span ng-switch-when="SCHEDULE" ng-if="!trigger.properties.nextRunTime"><em>Next run:</em> more than 1 year from today</span>
+                <span ng-switch-when="SCHEDULE" ng-if="!trigger.properties.nextRunTime" ng-class="(trigger.properties.scheduled) ? 'scheduled' : 'notscheduled'"><em>Next run:</em> more than 1 year from today</span>
             </td>
             <td style="vertical-align: middle" align="right">
                 <button type="button" class="btn btn-sm btn-danger"><span title="Delete" class="glyphicon glyphicon-remove" ng-click="deleteTrigger(trigger)"></span></button>
