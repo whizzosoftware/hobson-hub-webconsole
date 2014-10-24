@@ -14,6 +14,11 @@ angular.module('hobsonApp').
                 interval: 1,
                 count: 30,
                 startDate: new Date(),
+                startTime: new Date(),
+                timeType: 'time',
+                sunOffsetType: 'SR',
+                sunOffsetValue: 0,
+                sunOffsetMult: 1,
                 endDate: new Date()
             };
 
@@ -109,13 +114,21 @@ angular.module('hobsonApp').
                 updateRRULE();
 
                 // create the trigger conditions
-                var condition = {
-                    start: $filter('date')($scope.recurrence.startDate, 'yyyyMMddTHHmmssZ')
-                };
+                var condition = {};
 
                 // if a recurrence rule is defined, add it to the conditions
                 if ($scope.recurrence.rule) {
                     condition.recurrence = $scope.recurrence.rule.toString();
+                }
+
+                if ($scope.recurrence.timeType === 'sunOffset') {
+                    condition.sunOffset = $scope.recurrence.sunOffsetType;
+                    if ($scope.recurrence.sunOffsetValue > 0) {
+                        condition.sunOffset += ($scope.recurrence.sunOffsetValue * $scope.recurrence.sunOffsetMult);
+                    }
+                    condition.start = $filter('date')($scope.recurrence.startDate, 'yyyyMMddT000000');
+                } else {
+                    condition.start = $filter('date')($scope.recurrence.startDate, 'yyyyMMddTHHmmss');
                 }
 
                 $scope.trigger.conditions = new Array(condition);

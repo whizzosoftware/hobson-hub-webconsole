@@ -23,10 +23,54 @@
             <div ng-show="trigger.provider == 'com.whizzosoftware.hobson.hub.hobson-hub-scheduler'">
                 <div class="form-group row">
                     <div class="col-md-3">
-                        <label>Start</label>
+                        <label>Start Date</label>
                     </div>
                     <div class="col-md-9">
-                        <quick-datepicker ng-model="recurrence.startDate" disable-clear-button="true"></quick-datepicker>
+                        <quick-datepicker disable-timepicker="true" ng-model="recurrence.startDate" disable-clear-button="true"></quick-datepicker>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label>Start Time</label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="radio" ng-model="recurrence.timeType" value="time" />&nbsp;&nbsp;at exactly&nbsp;&nbsp;
+                            </div>
+                            <div class="col-md-8">
+                                <timepicker ng-model="recurrence.startTime" hour-step="1" minute-step="5"></timepicker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <input type="radio" ng-model="recurrence.timeType" value="sunOffset" />
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" ng-model="recurrence.sunOffsetValue" class="form-control" />
+                            </div>
+                            <div class="col-md-2">
+                                minutes
+                            </div>
+                            <div class="col-md-3">
+                                <select ng-model="recurrence.sunOffsetMult" class="form-control">
+                                    <option value="1" selected>after</option>
+                                    <option value="-1">before</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select ng-model="recurrence.sunOffsetType" class="form-control">
+                                    <option value="SR" selected>sunrise</option>
+                                    <option value="SS">sunset</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
