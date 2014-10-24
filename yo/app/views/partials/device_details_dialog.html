@@ -36,7 +36,7 @@
         <div ng-if="device.type == 'THERMOSTAT'">
             <div class="row">
                 <div class="col-sm-4 text-center">
-                    <h1><strong>{{device.variables.temp_f.value}}&deg; F</strong></h1>
+                    <h1><strong>{{device.variables.tempF.value}}&deg; F</strong></h1>
                 </div>
                 <div ng-if="status.coolpoint" class="col-sm-4">
                     <h4 class="text-primary">
@@ -64,29 +64,29 @@
                 </div>
             </div>
             <div class="row" style="margin-top: 10px;">
-                <div ng-if="status.tstat_mode" class="col-sm-6 text-center">
+                <div ng-if="status.tstatMode" class="col-sm-6 text-center">
                     <h5>System Mode</h5>
                     <div class="btn-group">
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" ladda="status.pendingTstatModeUpdate">
-                            {{status.tstat_mode}} <span class="caret"></span>
+                            {{status.tstatMode}} <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li data-ng-show="status.tstat_mode != 'OFF'"><a class="clickable" data-ng-click="onTstatMode('OFF')">Off</a></li>
-                            <li data-ng-show="status.tstat_mode != 'AUTO'"><a class="clickable" data-ng-click="onTstatMode('AUTO')">Auto</a></li>
-                            <li data-ng-show="status.tstat_mode != 'COOL'"><a class="clickable" data-ng-click="onTstatMode('COOL')">Cool</a></li>
-                            <li data-ng-show="status.tstat_mode != 'HEAT'"><a class="clickable" data-ng-click="onTstatMode('HEAT')">Heat</a></li>
+                            <li data-ng-show="status.tstatMode != 'OFF'"><a class="clickable" data-ng-click="onTstatMode('OFF')">Off</a></li>
+                            <li data-ng-show="status.tstatMode != 'AUTO'"><a class="clickable" data-ng-click="onTstatMode('AUTO')">Auto</a></li>
+                            <li data-ng-show="status.tstatMode != 'COOL'"><a class="clickable" data-ng-click="onTstatMode('COOL')">Cool</a></li>
+                            <li data-ng-show="status.tstatMode != 'HEAT'"><a class="clickable" data-ng-click="onTstatMode('HEAT')">Heat</a></li>
                         </ul>
                     </div>
                 </div>
-                <div ng-if="status.tstat_fan_mode" class="col-sm-6 text-center">
+                <div ng-if="status.tstatFanMode" class="col-sm-6 text-center">
                     <h5>Fan Mode</h5>
                     <div class="btn-group">
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" ladda="status.pendingTstatFanModeUpdate">
-                            {{status.tstat_fan_mode}} <span class="caret"></span>
+                            {{status.tstatFanMode}} <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li data-ng-show="status.tstat_fan_mode != 'ON'"><a class="clickable" data-ng-click="onTstatFanMode('ON')">On</a></li>
-                            <li data-ng-show="status.tstat_fan_mode != 'AUTO'"><a class="clickable" data-ng-click="onTstatFanMode('AUTO')">Auto</a></li>
+                            <li data-ng-show="status.tstatFanMode != 'ON'"><a class="clickable" data-ng-click="onTstatFanMode('ON')">On</a></li>
+                            <li data-ng-show="status.tstatFanMode != 'AUTO'"><a class="clickable" data-ng-click="onTstatFanMode('AUTO')">Auto</a></li>
                         </ul>
                     </div>
                 </div>
@@ -94,11 +94,11 @@
         </div>
         <div ng-if="device.type == 'CAMERA'">
             <div class="row">
-                <div ng-if="device.variables.image_status_url" class="col-sm-6 text-center">
+                <div ng-if="device.variables.imageStatusUrl" class="col-sm-6 text-center">
                     <h6>View Image</h6>
                     <i class="fa fa-image fa-5x text-primary clickable" data-ng-click="showImage(device)"></i><br/>
                 </div>
-                <div ng-if="device.variables.video_status_url" class="col-sm-6 text-center">
+                <div ng-if="device.variables.videoStatusUrl" class="col-sm-6 text-center">
                     <h6>View Video</h6>
                     <i class="fa fa-film fa-5x text-primary clickable" data-ng-click="showVideo(device)"></i><br/>
                 </div>

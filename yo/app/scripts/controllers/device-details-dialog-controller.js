@@ -55,71 +55,71 @@ angular.module('hobsonApp').
 
                 // Thermostat variables
 
-                if ($scope.device.variables['target_cool_temp_f']) {
-                    $scope.status.coolpoint = device.variables['target_cool_temp_f'].value;
+                if ($scope.device.variables['targetCoolTempF']) {
+                    $scope.status.coolpoint = device.variables['targetCoolTempF'].value;
                     $scope.$watch('status.coolpoint', function(val) {
                         $timeout.cancel(delays.coolpoint);
                         delays.coolpoint = $timeout(function() {
-                            if ($scope.device.variables['target_cool_temp_f'].value !== val) {
+                            if ($scope.device.variables['targetCoolTempF'].value !== val) {
                                 console.debug('Coolpoint: ' + val);
                                 $scope.status.pendingTstatCoolPointUpdate = true;
-                                DevicesService.setDeviceVariable($scope.device.variables['target_cool_temp_f'].links.self, val).then(function() {
+                                DevicesService.setDeviceVariable($scope.device.variables['targetCoolTempF'].links.self, val).then(function() {
                                     $scope.status.pendingTstatCoolPointUpdate = false;
-                                    $scope.device.variables['target_cool_temp_f'].value = val;
+                                    $scope.device.variables['targetCoolTempF'].value = val;
                                 }, function() {
                                     $scope.status.pendingTstatCoolPointUpdate = false;
-                                    $scope.status.coolpoint = $scope.device.variables['target_cool_temp_f'].value;
+                                    $scope.status.coolpoint = $scope.device.variables['targetCoolTempF'].value;
                                     toastr.error('Unable to update thermostat cool point');
                                 });
                             }
                         }, 500);
                     });
                 }
-                if ($scope.device.variables['target_heat_temp_f']) {
-                    $scope.status.heatpoint = device.variables['target_heat_temp_f'].value;
+                if ($scope.device.variables['targetHeatTempF']) {
+                    $scope.status.heatpoint = device.variables['targetHeatTempF'].value;
                     $scope.$watch('status.heatpoint', function(val) {
                         $timeout.cancel(delays.heatpoint);
                         delays.heatpoint = $timeout(function() {
-                            if ($scope.device.variables['target_heat_temp_f'].value !== val) {
+                            if ($scope.device.variables['targetHeatTempF'].value !== val) {
                                 console.debug('Heatpoint: ' + val);
                                 $scope.status.pendingTstatHeatPointUpdate = true;
-                                DevicesService.setDeviceVariable($scope.device.variables['target_heat_temp_f'].links.self, val).then(function() {
+                                DevicesService.setDeviceVariable($scope.device.variables['targetHeatTempF'].links.self, val).then(function() {
                                     $scope.status.pendingTstatHeatPointUpdate = false;
-                                    $scope.device.variables['target_heat_temp_f'].value = val;
+                                    $scope.device.variables['targetHeatTempF'].value = val;
                                 }, function() {
                                     $scope.status.pendingTstatHeatPointUpdate = false;
-                                    $scope.status.heatpoint = $scope.device.variables['target_heat_temp_f'].value;
+                                    $scope.status.heatpoint = $scope.device.variables['targetHeatTempF'].value;
                                     toastr.error('Unable to update thermostat heat point');
                                 });
                             }
                         }, 500);
                     });
                 }
-                if ($scope.device.variables['target_auto_temp_f']) {
-                    $scope.status.autopoint = device.variables['target_auto_temp_f'].value;
+                if ($scope.device.variables['targetAutoTempF']) {
+                    $scope.status.autopoint = device.variables['targetAutoTempF'].value;
                     $scope.$watch('status.autopoint', function(val) {
                         $timeout.cancel(delays.autopoint);
                         delays.autopoint = $timeout(function() {
-                            if ($scope.device.variables['target_auto_temp_f'].value !== val) {
+                            if ($scope.device.variables['targetAutoTempF'].value !== val) {
                                 console.debug('Auto: ' + val);
                                 $scope.status.pendingTstatAutoPointUpdate = true;
-                                DevicesService.setDeviceVariable($scope.device.variables['target_auto_temp_f'].links.self, val).then(function() {
+                                DevicesService.setDeviceVariable($scope.device.variables['targetAutoTempF'].links.self, val).then(function() {
                                     $scope.status.pendingTstatAutoPointUpdate = false;
-                                    $scope.device.variables['target_auto_temp_f'].value = val;
+                                    $scope.device.variables['targetAutoTempF'].value = val;
                                 }, function() {
                                     $scope.status.pendingTstatAutoPointUpdate = false;
-                                    $scope.status.autopoint = $scope.device.variables['target_auto_temp_f'].value;
+                                    $scope.status.autopoint = $scope.device.variables['targetAutoTempF'].value;
                                     toastr.error('Unable to update thermostat auto point');
                                 });
                             }
                         }, 500);
                     });
                 }
-                if ($scope.device.variables['tstat_mode']) {
-                    $scope.status['tstat_mode'] = device.variables['tstat_mode'].value;
+                if ($scope.device.variables['tstatMode']) {
+                    $scope.status['tstatMode'] = device.variables['tstatMode'].value;
                 }
-                if ($scope.device.variables['tstat_fan_mode']) {
-                    $scope.status['tstat_fan_mode'] = device.variables['tstat_fan_mode'].value;
+                if ($scope.device.variables['tstatFanMode']) {
+                    $scope.status['tstatFanMode'] = device.variables['tstatFanMode'].value;
                 }
             };
 
@@ -138,9 +138,9 @@ angular.module('hobsonApp').
 
             $scope.onTstatMode = function(mode) {
                 $scope.status.pendingTstatModeUpdate = true;
-                DevicesService.setDeviceVariable($scope.device.variables['tstat_mode'].links.self, mode.toUpperCase()).then(function() {
+                DevicesService.setDeviceVariable($scope.device.variables['tstatMode'].links.self, mode.toUpperCase()).then(function() {
                     $scope.status.pendingTstatModeUpdate = false;
-                    $scope.status['tstat_mode'] = mode;
+                    $scope.status['tstatMode'] = mode;
                 }, function() {
                     $scope.status.pendingTstatModeUpdate = false;
                     toastr.error('Unable to update thermostat mode');
@@ -149,9 +149,9 @@ angular.module('hobsonApp').
 
             $scope.onTstatFanMode = function(mode) {
                 $scope.status.pendingTstatFanModeUpdate = true;
-                DevicesService.setDeviceVariable($scope.device.variables['tstat_fan_mode'].links.self, mode.toUpperCase()).then(function() {
+                DevicesService.setDeviceVariable($scope.device.variables['tstatFanMode'].links.self, mode.toUpperCase()).then(function() {
                     $scope.status.pendingTstatFanModeUpdate = false;
-                    $scope.status['tstat_fan_mode'] = mode;
+                    $scope.status['tstatFanMode'] = mode;
                 }, function() {
                     $scope.status.pendingTstatFanModeUpdate = false;
                     toastr.error('Unable to update thermostat fan mode');
@@ -159,7 +159,7 @@ angular.module('hobsonApp').
             };
 
             $scope.showImage = function(device) {
-                DialogContextService.setParams({deviceName: device.name, imageUrl: device.variables['image_status_url'].value});
+                DialogContextService.setParams({deviceName: device.name, imageUrl: device.variables['imageStatusUrl'].value});
                 var mi = $modal.open({
                     templateUrl: 'views/partials/image_view_dialog.html',
                     size: 'lg',
@@ -169,7 +169,7 @@ angular.module('hobsonApp').
             };
 
             $scope.showVideo = function(device) {
-                DialogContextService.setParams({deviceName: device.name, videoUrl: device.variables['video_status_url'].value});
+                DialogContextService.setParams({deviceName: device.name, videoUrl: device.variables['videoStatusUrl'].value});
                 var mi = $modal.open({
                     templateUrl: 'views/partials/video_view_dialog.html',
                     size: 'lg',

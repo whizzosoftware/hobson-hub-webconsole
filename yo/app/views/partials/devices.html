@@ -25,10 +25,10 @@
             <td style="vertical-align: middle; text-align: center;">
                 <span ng-switch on="device.preferredVariable.name">
                     <button ng-switch-when="on" type="button" class="btn btn-sm" ng-class="(device.preferredVariable.value === true) ? 'btn-success' : 'btn-danger'" data-ng-disabled="device.preferredVariable.value == null" ladda="device.pendingUpdate" data-style="zoom-in" ng-click="toggleSwitch(device)"><i class="fa fa-power-off"></i> {{(device.preferredVariable.value === true) ? 'On' : 'Off'}}</button>
-                    <i class="fa fa-image fa-lg text-primary clickable" ng-switch-when="image_status_url" ng-click="viewImage(device.name,device.preferredVariable.value)"></i>
-                    <i class="fa fa-film fa-lg text-primary clickable" ng-switch-when="video_status_url" ng-click="viewVideo(device.name,device.preferredVariable.value)"></i>
-                    <span ng-switch-when="temp_f">{{device.preferredVariable.value}}&deg; F</span>
-                    <span ng-switch-when="temp_c">{{device.preferredVariable.value}}&deg; C</span>
+                    <i class="fa fa-image fa-lg text-primary clickable" ng-switch-when="imageStatusUrl" ng-click="viewImage(device.name,device.preferredVariable.value)"></i>
+                    <i class="fa fa-film fa-lg text-primary clickable" ng-switch-when="videoStatusUrl" ng-click="viewVideo(device.name,device.preferredVariable.value)"></i>
+                    <span ng-switch-when="tempF">{{device.preferredVariable.value}}&deg; F</span>
+                    <span ng-switch-when="tempC">{{device.preferredVariable.value}}&deg; C</span>
                 </span>
             </td>
             <td style="vertical-align: middle;">
