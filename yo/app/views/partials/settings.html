@@ -3,14 +3,22 @@
 <div class="container">
     <form class="form" role="form">
         <div class="form-group">
-            <label for="logLevel">Log Level</label>
-            <select class="form-control" id="logLevel" ng-model="logLevel" ng-change="onLogLevelChange(logLevel)">
-                <option value="INFO">INFO</option>
-                <option value="ERROR">ERROR</option>
-                <option value="WARN">WARN</option>
-                <option value="DEBUG">DEBUG</option>
-                <option value="TRACE">TRACE</option>
-            </select>
+            <div class="row">
+                <div class="col-sm-10">
+                    <label for="logLevel">Log Level</label>
+                    <select class="form-control" id="logLevel" ng-model="logLevel" ng-change="onLogLevelChange(logLevel)">
+                        <option value="INFO">INFO</option>
+                        <option value="ERROR">ERROR</option>
+                        <option value="WARN">WARN</option>
+                        <option value="DEBUG">DEBUG</option>
+                        <option value="TRACE">TRACE</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <label for="logView" style="color: white;">Log Viewer</label>
+                    <button id="logView" class="form-control btn btn-default btn-primary" data-ng-click="viewLog()">View Log</button>
+                </div>
+            </div>
         </div>
     </form>
     <div class="row">

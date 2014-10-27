@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('hobsonApp').
-    controller('SettingsController', ['$scope', 'AppData', 'SettingsService', 'toastr',
-        function($scope, AppData, SettingsService, toastr) {
+    controller('SettingsController', ['$scope', '$modal', 'AppData', 'SettingsService', 'DialogContextService', 'toastr',
+        function($scope, $modal, AppData, SettingsService, DialogContextService, toastr) {
             $scope.shuttingDown = false;
             $scope.isCollapsed = true;
 
@@ -35,6 +35,15 @@ angular.module('hobsonApp').
                 toastr.success('The log level has been changed.', null, {
                     closeButton: true
                 });
+            };
+
+            $scope.viewLog = function() {
+                var mi = $modal.open({
+                    templateUrl: 'views/partials/log_viewer_dialog.html',
+                    size: 'lg',
+                    backdrop: 'static'
+                });
+                DialogContextService.pushModalInstance(mi);
             };
 
             AppData.currentTab = 'settings';

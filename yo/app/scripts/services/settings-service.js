@@ -15,6 +15,12 @@ angular.module('hobsonApp').
                 });
             };
 
+            var getLog = function() {
+                return ApiService.topLevel().then(function(topLevel) {
+                    return $http.get(topLevel.links['log']);
+                });
+            };
+
             var shutdown = function() {
                 return ApiService.topLevel().then(function(topLevel) {
                     return $http.post(topLevel.links.shutdown).then(function(response) {
@@ -34,6 +40,7 @@ angular.module('hobsonApp').
             return {
                 getLogLevel: getLogLevel,
                 setLogLevel: setLogLevel,
+                getLog: getLog,
                 shutdown: shutdown
             };
         }]);
