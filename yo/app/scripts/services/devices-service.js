@@ -7,7 +7,7 @@ angular.module('hobsonApp').
             var getDevices = function() {
                 return ApiService.topLevel().then(function(topLevel) {
                     console.debug('DevicesService.getDevices(): topLevel = ', topLevel);
-                    return $http.get(topLevel.links.devices).then(function(response) {
+                    return $http.get(topLevel.links.devices + '?details=true').then(function(response) {
                         return response.data;
                     });
                 });
@@ -32,7 +32,9 @@ angular.module('hobsonApp').
                     // poll for status
                     return PollingService.poll(function() {
                         var config = {headers: {}};
-                        config.headers['If-None-Match'] = response.headers('ETag');
+                        if (response.headers('ETag')) {
+                          config.headers['If-None-Match'] = response.headers('ETag');
+                        }
                         // make the polling HTTP call
                         return $http.get(response.headers('Location'), config).then(function(data) {
                             console.debug('poll status: ', data);
