@@ -128,7 +128,15 @@ angular.module('hobsonApp').
                     }
                     condition.start = $filter('date')($scope.recurrence.startDate, 'yyyyMMddT000000');
                 } else {
-                    condition.start = $filter('date')($scope.recurrence.startDate, 'yyyyMMddTHHmmss');
+                    var d = new Date(
+                      $scope.recurrence.startDate.getFullYear(),
+                      $scope.recurrence.startDate.getMonth(),
+                      $scope.recurrence.startDate.getDate(),
+                      $scope.recurrence.startTime.getHours(),
+                      $scope.recurrence.startTime.getMinutes(),
+                      0
+                    );
+                    condition.start = $filter('date')(d, 'yyyyMMddTHHmmss');
                 }
 
                 $scope.trigger.conditions = new Array(condition);
