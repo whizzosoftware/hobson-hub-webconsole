@@ -9,17 +9,10 @@ package com.whizzosoftware.hobson.webconsole;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.service.http.HttpService;
-import org.osgi.util.tracker.ServiceTracker;
 import org.restlet.Application;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Map;
 
 /**
  * The OSGi Activator class.
