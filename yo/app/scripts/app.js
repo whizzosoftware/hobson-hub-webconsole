@@ -57,7 +57,7 @@ config(function ($routeProvider) {
 factory('ApiService', ['$http',
     function($http) {
         var topLevel = function() {
-            var promise = $http.get('/api/v1').then(function (response) {
+            var promise = $http.get('/api/v1/users/local/hubs/local').then(function (response) {
                 console.debug('AppService.topLevel(): response.data = ', response.data);
                 return response.data;
             });

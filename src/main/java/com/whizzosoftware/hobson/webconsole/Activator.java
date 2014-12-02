@@ -12,8 +12,14 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.http.HttpService;
 import org.osgi.util.tracker.ServiceTracker;
+import org.restlet.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * The OSGi Activator class.
@@ -21,47 +27,15 @@ import org.slf4j.LoggerFactory;
  * @author Dan Noguerol
  */
 public class Activator implements BundleActivator {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
-    private ServiceTracker tracker;
-    private HttpService httpService;
-
     @Override
     public synchronized void start(BundleContext context) throws Exception {
-        // add servlets for REST API
-        tracker = new ServiceTracker(context, HttpService.class.getName(), null) {
-            public static final String CONSOLE = "/console";
-            public static final String ROOT = "/";
-
-            @Override
-            public Object addingService(ServiceReference serviceRef) {
-                super.addingService(serviceRef);
-
-                ServiceReference ref = context.getServiceReference(HttpService.class.getName());
-                if (ref != null) {
-                    httpService = (HttpService)context.getService(ref);
-                    try {
-                        // register the static resource context
-                        httpService.registerResources(CONSOLE, ROOT, new StaticResourceContext());
-                    } catch (Exception e) {
-                        logger.error("Error registering servlets", e);
-                    }
-                    return httpService;
-                } else {
-                    return null;
-                }
-            }
-
-            @Override
-            public void removedService(ServiceReference ref, Object service) {
-                super.removedService(ref, service);
-            }
-        };
-        tracker.open();
+        // add Restlet application for web console
+        Dictionary props = new Hashtable();
+        props.put("path", "/console");
+        context.registerService(Application.class.getName(), new WebConsoleApplication(), props);
     }
 
     @Override
     public synchronized void stop(BundleContext context) {
-        tracker.close();
     }
 }

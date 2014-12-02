@@ -3,14 +3,14 @@
 angular.module('pluginsFeed', []).
     value('api', {
         'links':{
-            'serial-ports':'/api/v1/serialPorts',
-            'email':'/api/v1/configuration/email',
-            'plugins':'/api/v1/plugins',
-            'name':'/api/v1/configuration/name',
-            'admin-password':'/api/v1/configuration/adminPassword',
-            'triggers':'/api/v1/triggers',
-            'devices':'/api/v1/devices',
-            'global-variables':'/api/v1/globalVariables'
+            'serial-ports':'/api/v1/users/local/hubs/local/serialPorts',
+            'email':'/api/v1/users/local/hubs/local/configuration/email',
+            'plugins':'/api/v1/users/local/hubs/local/plugins',
+            'name':'/api/v1/users/local/hubs/local/configuration/name',
+            'admin-password':'/api/v1/users/local/hubs/local/configuration/adminPassword',
+            'triggers':'/api/v1/users/local/hubs/local/triggers',
+            'devices':'/api/v1/users/local/hubs/local/devices',
+            'global-variables':'/api/v1/users/local/hubs/local/globalVariables'
         },
         'version':'0.0.4-SNAPSHOT'
     }).
@@ -22,7 +22,7 @@ angular.module('pluginsFeed', []).
             'name':'Apache Felix Bundle Repository',
             'currentVersion':'1.6.6',
             'links':{
-                'reload':'/api/v1/plugins/org.apache.felix.bundlerepository/reload'
+                'reload':'/api/v1/users/local/hubs/local/plugins/org.apache.felix.bundlerepository/reload'
             },
             'type':'FRAMEWORK'
         },{
@@ -33,7 +33,7 @@ angular.module('pluginsFeed', []).
             'description':'Provides the ability to control DSC alarm systems.',
             'name':'DSC Alarm Plugin',
             'links':{
-                'install':'/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-dsc/0.0.1.SNAPSHOT/install'
+                'install':'/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-dsc/0.0.1.SNAPSHOT/install'
             },
             'type':'PLUGIN'
         },{
@@ -44,7 +44,7 @@ angular.module('pluginsFeed', []).
             'description':'Provides the ability to control Foscam web cameras.',
             'name':'Foscam Camera Plugin',
             'links':{
-                'install':'/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-foscamcamera/0.0.1.SNAPSHOT/install'
+                'install':'/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-foscamcamera/0.0.1.SNAPSHOT/install'
             },
             'type':'PLUGIN'
         },{
@@ -54,7 +54,7 @@ angular.module('pluginsFeed', []).
             'name':'Web Management Plugin',
             'currentVersion':'0.0.5.SNAPSHOT',
             'links':{
-                'reload':'/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-webconsole/reload'
+                'reload':'/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-webconsole/reload'
             },
             'type':'CORE'
         },{
@@ -65,8 +65,8 @@ angular.module('pluginsFeed', []).
             'name':'Z-Wave Plugin',
             'currentVersion':'0.0.1.SNAPSHOT',
             'links':{
-                'configuration':'/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/configuration',
-                'reload':'/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/reload'
+                'configuration':'/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/configuration',
+                'reload':'/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/reload'
             },
             'type':'PLUGIN'
         }
@@ -80,8 +80,8 @@ angular.module('pluginsFeed', []).
             'currentVersion':'0.0.1.SNAPSHOT',
             'latestVersion':'0.0.2.SNAPSHOT',
             'links':{
-                'reload':'/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/reload',
-                'update':'/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/update'
+                'reload':'/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/reload',
+                'update':'/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/update'
             },
             'type':'PLUGIN'
         }
@@ -102,8 +102,8 @@ angular.module('pluginsFeed', []).
             'name': 'Z-Wave Plugin',
             'currentVersion': '0.0.1.SNAPSHOT',
             'links': {
-                'reload': '/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/reload',
-                'update': '/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/update'
+                'reload': '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/reload',
+                'update': '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-zwave/update'
             },
             'type': 'PLUGIN'
         },{
@@ -113,8 +113,8 @@ angular.module('pluginsFeed', []).
             'name':'Web Management Plugin',
             'currentVersion':'0.0.5.SNAPSHOT',
             'links':{
-                'reload':'/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-webconsole/reload',
-                'update':'/api/v1/plugins/com.whizzosoftware.hobson.hub.hobson-hub-webconsole/update'
+                'reload':'/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-webconsole/reload',
+                'update':'/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-webconsole/update'
             },
             'type':'CORE'
         }

@@ -5,13 +5,13 @@ angular.module('hobsonApp').
         function($http, ApiService, PollingService) {
             var getLogLevel = function() {
                 return ApiService.topLevel().then(function(topLevel) {
-                    return $http.get(topLevel.links['log-level']);
+                    return $http.get(topLevel.links['configuration']);
                 });
             };
 
             var setLogLevel = function(logLevel) {
                 return ApiService.topLevel().then(function(topLevel) {
-                    return $http.put(topLevel.links['log-level'], angular.toJson({value: logLevel}));
+                    return $http.put(topLevel.links['configuration'], angular.toJson({logLevel: logLevel}));
                 });
             };
 

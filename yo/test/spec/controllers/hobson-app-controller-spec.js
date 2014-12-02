@@ -55,9 +55,9 @@ describe('Controller: HobsonController', function () {
         createHobsonController();
         createPluginsController();
 
-        httpBackend.expect('GET', '/api/v1').respond(apiJson);
-        httpBackend.expect('GET', '/api/v1').respond(apiJson);
-        httpBackend.expect('GET', '/api/v1/plugins?remote=true&details=true').respond(noUpdatesJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local').respond(apiJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local').respond(apiJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local/plugins?remote=true&details=true').respond(noUpdatesJson);
 
         // calling $apply triggers $digest, which makes the HTTP requests
         pluginsScope.$apply();
@@ -72,9 +72,9 @@ describe('Controller: HobsonController', function () {
         createHobsonController();
         createPluginsController();
 
-        httpBackend.expect('GET', '/api/v1').respond(apiJson);
-        httpBackend.expect('GET', '/api/v1').respond(apiJson);
-        httpBackend.expect('GET', '/api/v1/plugins?remote=true&details=true').respond(emptyJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local').respond(apiJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local').respond(apiJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local/plugins?remote=true&details=true').respond(emptyJson);
 
         // calling $apply triggers $digest, which makes the HTTP requests
         pluginsScope.$apply();
@@ -90,9 +90,9 @@ describe('Controller: HobsonController', function () {
         createHobsonController();
         createPluginsController();
 
-        httpBackend.expect('GET', '/api/v1').respond(apiJson);
-        httpBackend.expect('GET', '/api/v1').respond(apiJson);
-        httpBackend.expect('GET', '/api/v1/plugins?remote=true&details=true').respond(oneUpdateJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local').respond(apiJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local').respond(apiJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local/plugins?remote=true&details=true').respond(oneUpdateJson);
 
         // calling $apply triggers $digest, which makes the HTTP requests
         pluginsScope.$apply();
@@ -108,9 +108,9 @@ describe('Controller: HobsonController', function () {
         createHobsonController();
         createPluginsController();
 
-        httpBackend.expect('GET', '/api/v1').respond(apiJson);
-        httpBackend.expect('GET', '/api/v1').respond(apiJson);
-        httpBackend.expect('GET', '/api/v1/plugins?remote=true&details=true').respond(twoUpdatesJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local').respond(apiJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local').respond(apiJson);
+        httpBackend.expect('GET', '/api/v1/users/local/hubs/local/plugins?remote=true&details=true').respond(twoUpdatesJson);
 
         // calling $apply triggers $digest, which makes the HTTP requests
         pluginsScope.$apply();

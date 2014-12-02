@@ -8,7 +8,7 @@ angular.module('hobsonApp').
 
             var setLogLevel = function(result) {
                 console.debug('logLevel = ', result.data);
-                $scope.logLevel = result.data.value;
+                $scope.logLevel = result.data.logLevel;
             };
 
             $scope.shutdown = function() {

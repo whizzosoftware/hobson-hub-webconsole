@@ -95,20 +95,20 @@ angular.module('hobsonApp').
                         }, 500);
                     });
                 }
-                if ($scope.device.variables['targetAutoTempF']) {
-                    $scope.status.autopoint = device.variables['targetAutoTempF'].value;
+                if ($scope.device.variables['targetTempF']) {
+                    $scope.status.autopoint = device.variables['targetTempF'].value;
                     $scope.$watch('status.autopoint', function(val) {
                         $timeout.cancel(delays.autopoint);
                         delays.autopoint = $timeout(function() {
-                            if ($scope.device.variables['targetAutoTempF'].value !== val) {
+                            if ($scope.device.variables['targetTempF'].value !== val) {
                                 console.debug('Auto: ' + val);
                                 $scope.status.pendingTstatAutoPointUpdate = true;
-                                DevicesService.setDeviceVariable($scope.device.variables['targetAutoTempF'].links.self, val).then(function() {
+                                DevicesService.setDeviceVariable($scope.device.variables['targetTempF'].links.self, val).then(function() {
                                     $scope.status.pendingTstatAutoPointUpdate = false;
                                     $scope.device.variables['targetAutoTempF'].value = val;
                                 }, function() {
                                     $scope.status.pendingTstatAutoPointUpdate = false;
-                                    $scope.status.autopoint = $scope.device.variables['targetAutoTempF'].value;
+                                    $scope.status.autopoint = $scope.device.variables['targetTempF'].value;
                                     toastr.error('Unable to update thermostat auto point');
                                 });
                             }

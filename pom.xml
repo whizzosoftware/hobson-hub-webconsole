@@ -33,12 +33,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.webconsole</artifactId>
-            <version>4.2.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.6</version>
@@ -48,6 +42,12 @@
             <groupId>org.apache.servicemix.bundles</groupId>
             <artifactId>org.apache.servicemix.bundles.json</artifactId>
             <version>20140107_1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.restlet.osgi</groupId>
+            <artifactId>org.restlet</artifactId>
+            <version>2.2.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -74,7 +74,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>org.osgi.framework,org.osgi.service.event,org.osgi.service.cm,org.osgi.util.tracker,org.osgi.service.http,org.apache.felix.webconsole,org.apache.felix.bundlerepository,org.slf4j,javax.servlet.*,org.json.*,com.whizzosoftware.hobson.api.*</Import-Package>
+                        <Import-Package>org.osgi.framework,org.osgi.service.event,org.osgi.service.cm,org.osgi.util.tracker,org.apache.felix.bundlerepository,org.slf4j,org.restlet.*,org.json.*,com.whizzosoftware.hobson.api.*</Import-Package>
                         <Bundle-Activator>com.whizzosoftware.hobson.webconsole.Activator</Bundle-Activator>
                     </instructions>
                 </configuration>
