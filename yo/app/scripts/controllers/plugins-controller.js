@@ -16,7 +16,7 @@ angular.module('hobsonApp').
                 if (plugin.currentVersion && (plugin.type === 'PLUGIN' || $scope.includeFrameworkPlugins || plugin.links.update)) {
                     $scope.installed.push(plugin);
                 }
-                if (plugin.status.status === 'NOT_INSTALLED') {
+                if (plugin.status.status === 'NOT_INSTALLED' && plugin.type === 'PLUGIN') {
                     $scope.available.push(plugin);
                 }
             });
