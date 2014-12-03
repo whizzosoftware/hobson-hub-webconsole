@@ -76,11 +76,11 @@ module.exports = function (grunt) {
                 livereload: 35729
             },
 
-            // Proxy requests starting with /api to the server on port 8080
+            // Proxy requests starting with /api to the server on port 8182
             proxies: [{
                 context: '/api',
                 host: 'localhost',
-                port: 8080,
+                port: 8182,
                 https: false,
                 changeOrigin: false
             }],

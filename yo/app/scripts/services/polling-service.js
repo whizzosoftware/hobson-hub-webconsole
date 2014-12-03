@@ -29,7 +29,7 @@ angular.module('hobsonApp').
                             if (promises[g] && promises[g].promise) {
                                 $interval.cancel(promises[g].promise);
                             }
-                        } else if (result === false) {
+                        } else if (result === false && promises[g].count >= timeout) {
                             deferred.reject();
                             $interval.cancel(promises[g].promise);
                         }

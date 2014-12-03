@@ -5,7 +5,7 @@
     <artifactId>hobson-hub-webconsole</artifactId>
     <version>0.1.10-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>Web Management Plugin</name>
+    <name>Hobson Web Console Plugin</name>
     <description>Provides a web-based management interface for the Hobson Hub.</description>
     <dependencies>
         <dependency>
