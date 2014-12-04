@@ -56,8 +56,8 @@
             <li data-ng-class="{active: tab() === 'devices'}">
               <a data-ng-href="#/devices" data-ng-click="tab('devices')">Devices</a>
             </li>
-            <li data-ng-class="{active: tab() === 'triggers'}">
-              <a data-ng-href="#/triggers" data-ng-click="tab('triggers')">Triggers</a>
+            <li data-ng-class="{active: tab() === 'tasks'}">
+              <a data-ng-href="#/tasks" data-ng-click="tab('tasks')">Tasks</a>
             </li>
               <li data-ng-class="{active: tab() === 'settings'}">
                   <a data-ng-href="#/settings" data-ng-click="tab('settings')">Settings</a>
@@ -107,7 +107,6 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/json3/lib/json3.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -125,7 +124,7 @@
     <script src="scripts/third-party/rrule.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/add-action-dialog-controller.js"></script>
-    <script src="scripts/controllers/add-trigger-controller.js"></script>
+    <script src="scripts/controllers/add-task-controller.js"></script>
     <script src="scripts/controllers/device-details-dialog-controller.js"></script>
     <script src="scripts/controllers/device-settings-dialog-controller.js"></script>
     <script src="scripts/controllers/devices-controller.js"></script>
@@ -134,12 +133,12 @@
     <script src="scripts/controllers/plugin-settings-dialog-controller.js"></script>
     <script src="scripts/controllers/plugins-controller.js"></script>
     <script src="scripts/controllers/settings-controller.js"></script>
-    <script src="scripts/controllers/triggers-controller.js"></script>
+    <script src="scripts/controllers/tasks-controller.js"></script>
     <script src="scripts/controllers/video-view-dialog-controller.js"></script>
     <script src="scripts/services/actions-service.js"></script>
     <script src="scripts/services/plugins-service.js"></script>
     <script src="scripts/services/devices-service.js"></script>
-    <script src="scripts/services/triggers-service.js"></script>
+    <script src="scripts/services/tasks-service.js"></script>
     <script src="scripts/services/settings-service.js"></script>
     <script src="scripts/services/dialog-context-service.js"></script>
     <script src="scripts/services/polling-service.js"></script>

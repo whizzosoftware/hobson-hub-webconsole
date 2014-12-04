@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('hobsonApp').
-    factory('TriggersService', ['$http', 'ApiService',
+    factory('TasksService', ['$http', 'ApiService',
         function($http, ApiService) {
 
-            var getTriggers = function(properties) {
+            var getTasks = function(properties) {
                 return ApiService.topLevel().then(function(topLevel) {
-                    var url = topLevel.links.triggers;
+                    var url = topLevel.links.tasks;
                     if (properties) {
                         url += '?properties=true';
                     }
@@ -16,20 +16,20 @@ angular.module('hobsonApp').
                 });
             };
 
-            var addTrigger = function(trigger) {
+            var addTask = function(task) {
                 return ApiService.topLevel().then(function(topLevel) {
-                    var json = angular.toJson(trigger);
-                    return $http.post(topLevel.links.triggers, json);
+                    var json = angular.toJson(task);
+                    return $http.post(topLevel.links.tasks, json);
                 });
             };
 
-            var deleteTrigger = function(trigger) {
-                return $http.delete(trigger.links.self);
+            var deleteTask = function(task) {
+                return $http.delete(task.links.self);
             };
 
             return {
-                getTriggers: getTriggers,
-                addTrigger: addTrigger,
-                deleteTrigger: deleteTrigger
+                getTasks: getTasks,
+                addTask: addTask,
+                deleteTask: deleteTask
             };
         }]);

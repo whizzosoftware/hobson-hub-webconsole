@@ -7,8 +7,8 @@ angular.module('pluginsFeed', []).
             'email':'/api/v1/users/local/hubs/local/configuration/email',
             'plugins':'/api/v1/users/local/hubs/local/plugins',
             'name':'/api/v1/users/local/hubs/local/configuration/name',
-            'admin-password':'/api/v1/users/local/hubs/local/configuration/adminPassword',
-            'triggers':'/api/v1/users/local/hubs/local/triggers',
+            'password':'/api/v1/users/local/hubs/local/configuration/password',
+            'tasks':'/api/v1/users/local/hubs/local/tasks',
             'devices':'/api/v1/users/local/hubs/local/devices',
             'global-variables':'/api/v1/users/local/hubs/local/globalVariables'
         },

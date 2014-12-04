@@ -25,9 +25,9 @@ angular.module('hobsonApp', [
 ]).
 config(function ($routeProvider) {
     $routeProvider.
-        when('/triggers', {
-            templateUrl: 'views/partials/triggers.html',
-            controller: 'TriggersController'
+        when('/tasks', {
+            templateUrl: 'views/partials/tasks.html',
+            controller: 'TasksController'
         }).
         when('/plugins', {
             templateUrl: 'views/partials/plugins.html',

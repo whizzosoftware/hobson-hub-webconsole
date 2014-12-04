@@ -1,15 +1,15 @@
-<div ng-controller="AddTriggerController">
+<div ng-controller="AddTasksController">
     <div class="modal-header">
-        <h3>Add Trigger</h3>
+        <h3>Add Task</h3>
     </div>
     <div class="modal-body">
-        <form name="triggerForm">
+        <form name="taskForm">
             <div class="form-group row">
                 <div class="col-md-3">
-                    <label>Trigger Name</label>
+                    <label>Task Name</label>
                 </div>
                 <div class="col-md-8">
-                    <input type="text" ng-model="trigger.name" class="form-control" required />
+                    <input type="text" ng-model="task.name" class="form-control" required />
                 </div>
             </div>
             <div class="form-group row">
@@ -17,10 +17,12 @@
                     <label>When?</label>
                 </div>
                 <div class="col-md-9">
-                    <input type="radio" ng-model="trigger.provider" value="com.whizzosoftware.hobson.hub.hobson-hub-scheduler" checked />&nbsp;&nbsp;On a schedule
+                    <input type="radio" ng-model="task.provider" value="com.whizzosoftware.hobson.hub.hobson-hub-scheduler" checked />&nbsp;&nbsp;On a schedule
+                    &nbsp;&nbsp;
+                    <input type="radio" ng-model="task.provider" value="com.whizzosoftware.hobson.hub.hobson-hub-rules" checked />&nbsp;&nbsp;On an event
                 </div>
             </div>
-            <div ng-show="trigger.provider == 'com.whizzosoftware.hobson.hub.hobson-hub-scheduler'">
+            <div ng-show="task.provider == 'com.whizzosoftware.hobson.hub.hobson-hub-scheduler'">
                 <div class="form-group row">
                     <div class="col-md-3">
                         <label>Start Date</label>
@@ -263,17 +265,75 @@
                     </div>
                 </div>
             </div>
+
+            <div ng-show="task.provider == 'com.whizzosoftware.hobson.hub.hobson-hub-rules'">
+              <div class="form-group row">
+                <div class="col-md-3">
+                  <label>Event</label>
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control" ng-model="event.type" ng-change="onSelectEventType()">
+                    <option value="variableUpdate">When the device...</option>
+                  </select>
+                </div>
+              </div>
+              <div ng-show="event.type === 'variableUpdate'" class="form-group row">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control" ng-model="event.device" ng-options="id as device.name for (id,device) in devices" ng-disabled="event.device === 'none'" ng-change="onSelectEventDevice()">
+                  </select>
+                </div>
+              </div>
+              <div ng-show="event.type === 'variableUpdate'" class="form-group row">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control" ng-model="event.changeId" ng-options="id as name for (id,name) in deviceEvents" ng-disabled="event.changeId === 'none'" ng-change="onSelectEventDeviceEvent()">
+                  </select>
+                </div>
+              </div>
+              <div ng-show="event.type === 'presenceUpdate'" class="form-group row">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control" ng-model="task.eventPresenceEntity">
+                    <option>John</option>
+                  </select>
+                </div>
+              </div>
+              <div ng-show="event.type === 'presenceUpdate'" class="form-group row">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control" ng-model="task.eventPresenceCondition">
+                    <option>changes to...</option>
+                    <option>changes from...</option>
+                  </select>
+                </div>
+              </div>
+              <div ng-show="event.type === 'presenceUpdate'" class="form-group row">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control" ng-model="task.eventPresenceLocation">
+                    <option value="Home">Home</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             <div class="panel panel-default">
                 <div class="panel-heading"><label>What to do?</label>&nbsp;&nbsp;&nbsp;<span ng-click="addAction()" class="glyphicon glyphicon-plus-sign text-primary"></span></div>
-                <div class="panel-body" ng-show="trigger.actions.length == 0"><i>There are no actions defined yet.</i></div>
-                <table class="table" ng-show="trigger.actions.length > 0">
-                    <tr ng-repeat="action in trigger.actions"><td>{{action.name}}</td><td width="1%"><span ng-click="removeAction($index)" class="glyphicon glyphicon-minus-sign text-danger"></span></td></tr>
+                <div class="panel-body" ng-show="task.actions.length == 0"><i>There are no actions defined yet.</i></div>
+                <table class="table" ng-show="task.actions.length > 0">
+                    <tr ng-repeat="action in task.actions"><td>{{action.name}}</td><td width="1%"><span ng-click="removeAction($index)" class="glyphicon glyphicon-minus-sign text-danger"></span></td></tr>
                 </table>
             </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="!triggerForm.$valid" ng-click="add()">Add</button>
+        <button class="btn btn-primary" ng-disabled="!taskForm.$valid" ng-click="add()">Add</button>
         <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </div>
 </div>

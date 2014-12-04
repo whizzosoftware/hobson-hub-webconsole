@@ -65,6 +65,14 @@ angular.module('hobsonApp').
                 });
             };
 
+            var getDeviceVariableEvents = function(link) {
+                console.debug('getDeviceVariableEvents: ' + link);
+                return $http.get(link).then(function(response) {
+                    console.debug(response.data);
+                    return response.data;
+                });
+            };
+
             var setDeviceConfig = function(link, val) {
                 var json = JSON.stringify(val);
                 console.debug('PUT ' + link + ': ' + json);
@@ -75,6 +83,7 @@ angular.module('hobsonApp').
                 getDevice: getDevice,
                 getDevices: getDevices,
                 getDevicesForPlugin: getDevicesForPlugin,
+                getDeviceVariableEvents: getDeviceVariableEvents,
                 setDeviceVariable: setDeviceVariable,
                 setDeviceName: setDeviceName,
                 getDeviceConfig: getDeviceConfig,
