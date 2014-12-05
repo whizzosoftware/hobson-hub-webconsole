@@ -200,12 +200,12 @@ angular.module('hobsonApp').
       var createDescriptionForChangeId = function(changeId) {
         if (changeId === 'turnOn') {
           return 'turns on';
-        } else if (changeId == 'turnOff') {
+        } else if (changeId === 'turnOff') {
           return 'turns off';
         } else {
           return null;
         }
-      }
+      };
 
       $scope.onSelectEventDeviceEvent = function () {
       };
