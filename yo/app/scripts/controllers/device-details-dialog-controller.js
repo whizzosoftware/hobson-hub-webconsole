@@ -38,6 +38,14 @@ angular.module('hobsonApp').
                     $scope.status.color = device.variables.color.value;
                 }
 
+                if (device.links.enableTelemetry) {
+                    $scope.status.telemetryEnabled = device.telemetryEnabled;
+                    $scope.$watch('status.telemetryEnabled', function(val) {
+                       console.debug('change to telemetryEnabled: ', val);
+                       DevicesService.enableDeviceTelemetry($scope.device.links.enableTelemetry, val);
+                    });
+                }
+
                 if ($scope.device.variables.level) {
                     $scope.status.level = device.variables.level.value;
                     $scope.$watch('status.level', function(level) {
@@ -137,7 +145,7 @@ angular.module('hobsonApp').
                         series: [
                         ],
                         title: {
-                          text: 'Device Telemetry'
+                          text: 'Device History'
                         }
                       };
 

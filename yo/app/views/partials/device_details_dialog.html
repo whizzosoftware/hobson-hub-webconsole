@@ -3,6 +3,15 @@
         <h3>{{deviceName}}</h3>
     </div>
     <div class="modal-body">
+        <div ng-if="device.type === 'SWITCH'">
+          <div style="margin-top: 20px; text-align: center;" ng-if="device.variables.on" class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-lg" ng-class="(device.variables.on.value === true) ? 'btn-success' : 'btn-danger'" ladda="status.pendingOnUpdate" data-style="zoom-in" ng-click="onOn(device)"><i class="fa fa-power-off"></i> {{(device.variables.on.value === true) ? 'On' : 'Off'}}</button>
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+        </div>
         <div ng-if="device.type === 'LIGHTBULB'">
             <div class="form-bulb">
                 <div style="margin-top: 20px;" ng-if="device.variables.on" class="row">
@@ -104,9 +113,16 @@
                 </div>
             </div>
         </div>
-        <div ng-if="status.chartConfig">
+        <div ng-if="device.links.telemetry">
             <hr/>
-            <highchart id="chart1" config="status.chartConfig"></highchart>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" data-ng-show="device.links.enableTelemetry" data-ng-model="status.telemetryEnabled" /> Enable device history
+              </label>
+            </div>
+            <div ng-if="status.telemetryEnabled">
+              <highchart id="chart1" config="status.chartConfig"></highchart>
+            </div>
         </div>
     </div>
     <div class="modal-footer">

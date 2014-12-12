@@ -85,6 +85,12 @@ angular.module('hobsonApp').
                 return $http.put(link, json);
             };
 
+            var enableDeviceTelemetry = function(link, val) {
+                var json = JSON.stringify({value: val});
+                console.debug('PUT ' + link + ': ' + json);
+                return $http.put(link, json);
+            };
+
             return {
                 getDevice: getDevice,
                 getDevices: getDevices,
@@ -94,6 +100,7 @@ angular.module('hobsonApp').
                 setDeviceName: setDeviceName,
                 getDeviceConfig: getDeviceConfig,
                 setDeviceConfig: setDeviceConfig,
-                getDeviceTelemetry: getDeviceTelemetry
+                getDeviceTelemetry: getDeviceTelemetry,
+                enableDeviceTelemetry: enableDeviceTelemetry
             };
         }]);
