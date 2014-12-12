@@ -130,7 +130,7 @@ angular.module('hobsonApp').
                     $scope.status['tstatFanMode'] = device.variables['tstatFanMode'].value;
                 }
 
-                if ($scope.device.links.telemetry) {
+                if ($scope.device.telemetryEnabled) {
                   DevicesService.getDeviceTelemetry($scope.device.links.telemetry).then(function(results) {
                       $scope.status.chartConfig = {
                         options: {
