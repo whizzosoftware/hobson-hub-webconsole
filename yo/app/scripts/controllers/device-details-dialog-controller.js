@@ -141,14 +141,18 @@ angular.module('hobsonApp').
                         }
                       };
 
+                      // determine timezone offset
+                      var offset = new Date().getTimezoneOffset() * 60000;
+
                       for (var varName in results) {
                         var data = {
                           name: VariableDescriptionService.getDescription(varName),
                           data: []
                         };
-                        for (var point in results[varName]) {
-                          var o = results[varName][point];
-                          data.data.push([parseFloat(o.time), parseFloat(o.value)]);
+                        var varResults = results[varName];
+                        for (var t in varResults) {
+                          // apply timezone offset to the data
+                          data.data.push([parseFloat(t) * 1000 - offset, parseFloat(varResults[t])]);
                         }
                         $scope.status.chartConfig.series.push(data);
                       }
