@@ -21,7 +21,8 @@ angular.module('hobsonApp', [
     'nouislider',
     'toastr',
     'ngQuickDate',
-    'angular-ladda'
+    'angular-ladda',
+    'highcharts-ng'
 ]).
 config(function ($routeProvider) {
     $routeProvider.

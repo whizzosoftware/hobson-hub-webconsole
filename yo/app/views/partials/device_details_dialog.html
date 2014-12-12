@@ -104,6 +104,10 @@
                 </div>
             </div>
         </div>
+        <div ng-if="status.chartConfig">
+            <hr/>
+            <highchart id="chart1" config="status.chartConfig"></highchart>
+        </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-warning" ng-click="close()">Close</button>

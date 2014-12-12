@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('hobsonApp').
-    controller('DeviceDetailsDialogController', ['$scope', '$timeout', '$modal', 'AppData', 'DevicesService', 'DialogContextService', 'toastr',
-        function($scope, $timeout, $modal, AppData, DevicesService, DialogContextService, toastr) {
+    controller('DeviceDetailsDialogController', ['$scope', '$timeout', '$modal', 'AppData', 'DevicesService', 'DialogContextService', 'VariableDescriptionService', 'toastr',
+        function($scope, $timeout, $modal, AppData, DevicesService, DialogContextService, VariableDescriptionService, toastr) {
             var delays = {};
 
             $scope.deviceName = DialogContextService.getParams().deviceName;
@@ -120,6 +120,41 @@ angular.module('hobsonApp').
                 }
                 if ($scope.device.variables['tstatFanMode']) {
                     $scope.status['tstatFanMode'] = device.variables['tstatFanMode'].value;
+                }
+
+                if ($scope.device.links.telemetry) {
+                  DevicesService.getDeviceTelemetry($scope.device.links.telemetry).then(function(results) {
+                      $scope.status.chartConfig = {
+                        options: {
+                          chart: {
+                            type: 'line',
+                            height: 250
+                          }
+                        },
+                        xAxis: {
+                          type: 'datetime'
+                        },
+                        series: [
+                        ],
+                        title: {
+                          text: 'Device Telemetry'
+                        }
+                      };
+
+                      for (var varName in results) {
+                        var data = {
+                          name: VariableDescriptionService.getDescription(varName),
+                          data: []
+                        };
+                        for (var point in results[varName]) {
+                          var o = results[varName][point];
+                          data.data.push([parseFloat(o.time), parseFloat(o.value)]);
+                        }
+                        $scope.status.chartConfig.series.push(data);
+                      }
+                  }, function() {
+                      toastr.error('Error retriving device telemetry');
+                  });
                 }
             };
 
