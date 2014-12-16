@@ -30,6 +30,7 @@ module.exports = function(config) {
             'bower_components/angular-nouislider/src/nouislider.js',
             'bower_components/angular-toastr/dist/angular-toastr.js',
             'bower_components/ngQuickDate/dist/ng-quick-date.js',
+            'bower_components/highcharts-ng/dist/highcharts-ng.js',
             'app/scripts/**/*.js',
             'test/mock/**/*.js',
             'test/spec/**/*.js'

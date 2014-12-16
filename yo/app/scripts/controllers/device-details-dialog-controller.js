@@ -43,6 +43,7 @@ angular.module('hobsonApp').
                     $scope.$watch('status.telemetryEnabled', function(val) {
                        console.debug('change to telemetryEnabled: ', val);
                        DevicesService.enableDeviceTelemetry($scope.device.links.enableTelemetry, val);
+                       $scope.getTelemetry();
                     });
                 }
 
@@ -131,42 +132,7 @@ angular.module('hobsonApp').
                 }
 
                 if ($scope.device.telemetryEnabled) {
-                  DevicesService.getDeviceTelemetry($scope.device.links.telemetry).then(function(results) {
-                      $scope.status.chartConfig = {
-                        options: {
-                          chart: {
-                            type: 'line',
-                            height: 250
-                          }
-                        },
-                        xAxis: {
-                          type: 'datetime'
-                        },
-                        series: [
-                        ],
-                        title: {
-                          text: 'Device History'
-                        }
-                      };
-
-                      // determine timezone offset
-                      var offset = new Date().getTimezoneOffset() * 60000;
-
-                      for (var varName in results) {
-                        var data = {
-                          name: VariableDescriptionService.getDescription(varName),
-                          data: []
-                        };
-                        var varResults = results[varName];
-                        for (var t in varResults) {
-                          // apply timezone offset to the data
-                          data.data.push([parseFloat(t) * 1000 - offset, parseFloat(varResults[t])]);
-                        }
-                        $scope.status.chartConfig.series.push(data);
-                      }
-                  }, function() {
-                      toastr.error('Error retriving device telemetry');
-                  });
+                  $scope.getTelemetry();
                 }
             };
 
@@ -223,6 +189,51 @@ angular.module('hobsonApp').
                     backdrop: 'static'
                 });
                 DialogContextService.pushModalInstance(mi);
+            };
+
+            $scope.getTelemetry = function() {
+              DevicesService.getDeviceTelemetry($scope.device.links.telemetry).then(function(results) {
+                $scope.status.chartConfig = {
+                  options: {
+                    chart: {
+                      type: 'line',
+                      height: 250
+                    }
+                  },
+                  xAxis: {
+                    type: 'datetime'
+                  },
+                  series: [
+                  ],
+                  title: {
+                    text: null
+                  }
+                };
+
+                // determine timezone offset
+                var offset = new Date().getTimezoneOffset() * 60000;
+
+                console.debug(results);
+
+                for (var varName in results) {
+                  var data = {
+                    name: VariableDescriptionService.getDescription(varName),
+                    data: []
+                  };
+                  var varResults = results[varName];
+                  for (var t in varResults) {
+                    // apply timezone offset to the data
+                    data.data.push([parseFloat(t) * 1000 - offset, parseFloat(varResults[t])]);
+                  }
+                  if (data.data.length > 0) {
+                    $scope.status.chartConfig.series.push(data);
+                  }
+                }
+
+                console.debug($scope.status.chartConfig.series);
+              }, function() {
+                toastr.error('Error retrieving device telemetry');
+              });
             };
 
             $scope.close = function () {

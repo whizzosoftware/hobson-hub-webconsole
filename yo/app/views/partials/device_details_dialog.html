@@ -117,11 +117,16 @@
             <hr/>
             <div class="checkbox">
               <label>
-                <input type="checkbox" data-ng-show="device.links.enableTelemetry" data-ng-model="status.telemetryEnabled" /> Enable device history
+                <input type="checkbox" data-ng-show="device.links.enableTelemetry" data-ng-model="status.telemetryEnabled" /> Enable device statistics
               </label>
             </div>
             <div ng-if="status.telemetryEnabled">
-              <highchart id="chart1" config="status.chartConfig"></highchart>
+              <div ng-if="!status.chartConfig.series.length" class="alert alert-info">
+                No statistics have been collected yet. This area will fill in once there is data available.
+              </div>
+              <div ng-if="status.chartConfig.series.length > 0">
+                <highchart id="chart1" config="status.chartConfig"></highchart>
+              </div>
             </div>
         </div>
     </div>
