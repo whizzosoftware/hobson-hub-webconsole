@@ -35,7 +35,7 @@ angular.module('hobsonApp').
             $scope.save = function() {
                 var config = {
                   name: $scope.name,
-                  address: {
+                  location: {
                     text: ($scope.address === '') ? null : $scope.address,
                     latitude: ($scope.latitude === '') ? null : parseFloat($scope.latitude),
                     longitude: ($scope.longitude === '') ? null : parseFloat($scope.longitude)
