@@ -1,47 +1,88 @@
 <div class="container" data-cg-busy="{promise:loadingPromise, message:'Loading...', delay: 200}">
-  <h1>Settings</h1>
-  <br/>
-    <form class="form" role="form">
-        <div class="form-group">
-            <div class="row">
-                <div class="col-sm-10">
-                    <label for="logLevel">Log Level</label>
-                    <select class="form-control" id="logLevel" ng-model="logLevel" ng-change="onLogLevelChange(logLevel)">
-                        <option value="INFO">INFO</option>
-                        <option value="ERROR">ERROR</option>
-                        <option value="WARN">WARN</option>
-                        <option value="DEBUG">DEBUG</option>
-                        <option value="TRACE">TRACE</option>
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <label for="logView" style="color: white;">Log Viewer</label>
-                    <button id="logView" class="form-control btn btn-default btn-primary" data-ng-click="viewLog()">View Log</button>
-                </div>
-            </div>
-        </div>
-    </form>
-    <div class="row">
-        <div class="col-sm-12">
-            <br/>
-            <button class="btn btn-default btn-primary" data-ng-disabled="shuttingDown" data-ng-click="isCollapsed = !isCollapsed">
-                Shutdown
-            </button>
-            <div collapse="isCollapsed">
-                <div style="margin-top: 10px;" class="well well-lg">
-                    <p>
-                        Are you sure you want to shutdown the Hobson Hub?
-                    </p>
-                    <button class="btn btn-default btn-danger" ladda="shuttingDown" data-ng-click="shutdown()">
-                        Yes, shut it down!
-                    </button>
-                    &nbsp;&nbsp;
-                    <button class="btn btn-default btn-success" data-ng-disabled="shuttingDown" data-ng-click="isCollapsed = true">
-                        Oops, forget it
-                    </button>
-                </div>
-            </div>
-            <br/><br/>
-        </div>
+  <div class="row">
+    <div class="col-sm-11">
+      <h1>Hub Settings</h1>
     </div>
+    <div class="col-sm-1" style="margin-top: 20px;">
+      <button class="btn btn-default btn-danger" data-ng-disabled="shuttingDown" data-ng-click="isShutdownCollapsed = !isShutdownCollapsed">
+        <span class="glyphicon glyphicon-off"></span>
+      </button>
+    </div>
+  </div>
+  <br/>
+  <form class="form" role="form">
+    <div class="form-group">
+      <label for="name">Hub Name</label>
+      <input class="form-control" id="name" type="text" ng-model="name"/>
+    </div>
+    <div class="form-group">
+      <label for="address">Address</label>
+      <div class="row">
+        <div class="col-xs-11">
+          <input class="form-control" id="address" type="text" ng-model="address"/>
+        </div>
+        <div class="col-xs-1">
+          <button class="btn btn-default btn-warning" data-ng-click="showLocation()">
+            <span class="glyphicon glyphicon-record"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="latitude">Latitude/Longitude</label>
+      <div class="row">
+        <div class="col-xs-6">
+          <input id="latitude" type="text" placeholder="Latitude (e.g. 40.787446)" class="form-control" ng-model="latitude"/>
+        </div>
+        <div class="col-xs-6">
+          <input id="longitude" type="text" placeholder="Longitude (e.g. -73.953666)" class="form-control" ng-model="longitude"/>
+        </div>
+      </div>
+      <p class="help-block small">If you don't know your latitude/longitude, click the yellow button to bring up your address in Google Maps in another window. Right click on the red pin that appears then click "What's here?". Your latitude and longitude will be displayed in the upper-left corner under your address.</p>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-sm-10">
+          <label for="logLevel">Log Level</label>
+          <select class="form-control" id="logLevel" ng-model="logLevel">
+            <option value="INFO">INFO</option>
+            <option value="ERROR">ERROR</option>
+            <option value="WARN">WARN</option>
+            <option value="DEBUG">DEBUG</option>
+            <option value="TRACE">TRACE</option>
+          </select>
+        </div>
+        <div class="col-sm-2">
+          <label for="logView" style="color: white;">Log Viewer</label>
+          <button id="logView" class="form-control btn btn-default btn-info" data-ng-click="viewLog()">
+            View Log
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-sm-12 text-center" style="margin-top: 20px;">
+      <button class="btn btn-default btn-primary" data-ng-click="save()">
+        Save Settings
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12" collapse="isShutdownCollapsed">
+      <div style="margin-top: 10px;" class="well well-lg">
+        <p>
+          Are you sure you want to shutdown the Hobson Hub?
+        </p>
+        <button class="btn btn-default btn-danger" ladda="shuttingDown" data-ng-click="shutdown()">
+          Yes, shut it down!
+        </button>
+        &nbsp;&nbsp;
+        <button class="btn btn-default btn-success" data-ng-disabled="shuttingDown" data-ng-click="isShutdownCollapsed = true">
+          Oops, forget it
+        </button>
+      </div>
+    </div>
+    <br/>
+  </div>
 </div>

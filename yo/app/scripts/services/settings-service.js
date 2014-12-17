@@ -3,15 +3,16 @@
 angular.module('hobsonApp').
     factory('SettingsService', ['$http', 'ApiService', 'PollingService',
         function($http, ApiService, PollingService) {
-            var getLogLevel = function() {
+            var getConfiguration = function() {
                 return ApiService.topLevel().then(function(topLevel) {
                     return $http.get(topLevel.links['configuration']);
                 });
             };
 
-            var setLogLevel = function(logLevel) {
-                return ApiService.topLevel().then(function(topLevel) {
-                    return $http.put(topLevel.links['configuration'], angular.toJson({logLevel: logLevel}));
+            var setConfiguration = function(config) {
+              console.debug('setConfiguration: ', config);
+              return ApiService.topLevel().then(function(topLevel) {
+                    return $http.put(topLevel.links['configuration'], angular.toJson(config));
                 });
             };
 
@@ -38,8 +39,8 @@ angular.module('hobsonApp').
             };
 
             return {
-                getLogLevel: getLogLevel,
-                setLogLevel: setLogLevel,
+                getConfiguration: getConfiguration,
+                setConfiguration: setConfiguration,
                 getLog: getLog,
                 shutdown: shutdown
             };

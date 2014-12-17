@@ -4,10 +4,14 @@ angular.module('hobsonApp').
     controller('SettingsController', ['$scope', '$modal', 'AppData', 'SettingsService', 'DialogContextService', 'toastr',
         function($scope, $modal, AppData, SettingsService, DialogContextService, toastr) {
             $scope.shuttingDown = false;
-            $scope.isCollapsed = true;
+            $scope.isShutdownCollapsed = true;
 
-            var setLogLevel = function(result) {
-                console.debug('logLevel = ', result.data);
+            var setConfiguration = function(result) {
+                console.debug('configuration = ', result.data);
+                $scope.name = result.data.name;
+                $scope.address = result.data.location.text;
+                $scope.latitude = result.data.location.latitude;
+                $scope.longitude = result.data.location.longitude;
                 $scope.logLevel = result.data.logLevel;
             };
 
@@ -16,7 +20,7 @@ angular.module('hobsonApp').
                 SettingsService.shutdown().then(function() {
                     $scope.shuttingDown = false;
                     $scope.isCollapsed = true;
-                    toastr.success('The hub has successfully shut down.', null, {
+                    toastr.success('The hub has begun shutting down.', null, {
                         closeButton: true
                     });
                 }, function() {
@@ -26,6 +30,28 @@ angular.module('hobsonApp').
                         closeButton: true
                     });
                 });
+            };
+
+            $scope.save = function() {
+                var config = {
+                  name: $scope.name,
+                  address: {
+                    text: ($scope.address === '') ? null : $scope.address,
+                    latitude: ($scope.latitude === '') ? null : parseFloat($scope.latitude),
+                    longitude: ($scope.longitude === '') ? null : parseFloat($scope.longitude)
+                  },
+                  logLevel: $scope.logLevel
+                };
+
+                SettingsService.setConfiguration(config).then(function() {
+                  toastr.success('The settings have been saved.', null, {
+                    closeButton: true
+                  });
+                });
+            };
+
+            $scope.showLocation = function() {
+                window.open('https://www.google.com/maps/place/' + encodeURIComponent($scope.address));
             };
 
             $scope.onLogLevelChange = function(logLevel) {
@@ -48,6 +74,6 @@ angular.module('hobsonApp').
 
             AppData.currentTab = 'settings';
 
-            $scope.loadingPromise = SettingsService.getLogLevel();
-            $scope.loadingPromise.then(setLogLevel);
+            $scope.loadingPromise = SettingsService.getConfiguration();
+            $scope.loadingPromise.then(setConfiguration);
         }]);
