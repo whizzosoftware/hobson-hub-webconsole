@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('hobsonApp').
-    controller('PluginsController', ['$scope', '$q', '$interval', 'AppData', 'PluginsService', 'DialogContextService', '$modal', 'toastr',
-    function($scope, $q, $interval, AppData, PluginsService, DialogContextService, $modal, toastr) {
+    controller('PluginsController', ['$scope', '$q', '$interval', 'AppData', 'ApiService', 'PluginsService', 'DialogContextService', '$modal', 'toastr',
+    function($scope, $q, $interval, AppData, ApiService, PluginsService, DialogContextService, $modal, toastr) {
 
         var setPlugins = function(plugins) {
             console.debug('plugins = ', plugins);
@@ -12,6 +12,7 @@ angular.module('hobsonApp').
             $scope.failed = PluginsService.failed();
             $scope.installed = [];
             $scope.available = [];
+            $scope.setupComplete = false;
             plugins.forEach(function(plugin) {
                 if (plugin.currentVersion && (plugin.type === 'PLUGIN' || $scope.includeFrameworkPlugins || plugin.links.update)) {
                     $scope.installed.push(plugin);
@@ -121,14 +122,22 @@ angular.module('hobsonApp').
             }
         };
 
+        $scope.loadTopLevel = function() {
+           ApiService.topLevel().then(function(topLevel) {
+             $scope.topLevel = topLevel;
+             $scope.loadPlugins(topLevel.links.plugins, false);
+           });
+        };
+
         /**
          * Load the list of plugins from the server.
          *
+         * @param pluginsUri
          * @param includeFrameworkPlugins
          */
-        $scope.loadPlugins = function(includeFrameworkPlugins) {
+        $scope.loadPlugins = function(pluginsUri, includeFrameworkPlugins) {
             $scope.includeFrameworkPlugins = includeFrameworkPlugins;
-            $scope.loadingPromise = PluginsService.getPlugins(true, true);
+            $scope.loadingPromise = PluginsService.getPlugins(pluginsUri, true, true);
             $scope.loadingPromise.then(setPlugins);
         };
 
@@ -138,5 +147,5 @@ angular.module('hobsonApp').
         $scope.available = [];
         $scope.numUpdatesAvailable = 0;
 
-        $scope.loadPlugins(false);
+        $scope.loadTopLevel();
     }]);

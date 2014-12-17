@@ -11,33 +11,33 @@ angular.module('hobsonApp').
             /**
              * Get a list of plugins.
              *
+             * @param pluginsUri the URI to obtain the list of plugins
              * @param remote boolean indicating whether remote plugins should be included in addition to local ones
              * @param details boolean indicating whether plugin details should be returned
              */
-            var getPlugins = function(remote, details) {
+            var getPlugins = function(pluginsUri, remote, details) {
+                console.debug('getPlugins: ', pluginsUri);
+
                 remote = typeof remote !== 'undefined' ? remote : false;
                 details = typeof remote !== 'undefined' ? details : false;
 
-                return ApiService.topLevel().then(function(topLevel) {
-                    console.debug('PluginsService.getPlugins(): topLevel = ', topLevel);
-                    return $http.get(topLevel.links.plugins + '?remote=' + remote + '&details=' + details).then(function(response) {
-                        numUpdatesAvailable = 0;
-                        notConfiguredArray = [];
-                        failedArray = [];
-                        console.debug('PluginsService.getPlugins(): response.data = ', response.data);
-                        response.data.forEach(function(plugin) {
-                            if (plugin.links.update) {
-                                numUpdatesAvailable++;
-                            }
-                            if (plugin.status.status === 'FAILED') {
-                                failedArray.push(plugin);
-                            } else if (plugin.status.status === 'NOT_CONFIGURED') {
-                                notConfiguredArray.push(plugin);
-                            }
-                        });
-                        $rootScope.$broadcast('NUM_PLUGINS', numUpdatesAvailable);
-                        return response.data;
+                return $http.get(pluginsUri + '?remote=' + remote + '&details=' + details).then(function(response) {
+                    numUpdatesAvailable = 0;
+                    notConfiguredArray = [];
+                    failedArray = [];
+                    console.debug('PluginsService.getPlugins(): response.data = ', response.data);
+                    response.data.forEach(function(plugin) {
+                        if (plugin.links.update) {
+                            numUpdatesAvailable++;
+                        }
+                        if (plugin.status.status === 'FAILED') {
+                            failedArray.push(plugin);
+                        } else if (plugin.status.status === 'NOT_CONFIGURED') {
+                            notConfiguredArray.push(plugin);
+                        }
                     });
+                    $rootScope.$broadcast('NUM_PLUGINS', numUpdatesAvailable);
+                    return response.data;
                 });
             };
 

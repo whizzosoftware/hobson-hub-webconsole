@@ -1,4 +1,7 @@
 <div class="container" data-cg-busy="{promise:loadingPromise, message:'Loading...', delay: 200}">
+  <div data-ng-show="!topLevel.setupComplete" style="margin-top: 10px;">
+    <div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;&nbsp;The setup wizard has not been completed. <a href="/setup/index.html">Click here</a> to run it.</div>
+  </div>
   <h1>Plugins</h1>
 <br/>
 <div class="tab-content">
@@ -55,7 +58,7 @@
         </table>
       </tab>
       <span class="pull-right">
-        <input type="checkbox" data-ng-model="includeFrameworkPlugins" data-ng-change="loadPlugins(includeFrameworkPlugins)"/>
+        <input type="checkbox" data-ng-model="includeFrameworkPlugins" data-ng-change="loadPlugins(topLevel.links.plugins,includeFrameworkPlugins)"/>
         Show All Plugins
       </span>
     </tabset>
