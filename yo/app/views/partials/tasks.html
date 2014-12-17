@@ -34,4 +34,6 @@
             </td>
         </tr>
     </table>
+    <p class="small text-center" style="color: gray;" ng-if="sunrise"><span class="glyphicon glyphicon-certificate"></span>&nbsp;Today's sunrise is {{sunrise}} and sunset is {{sunset}}.</p>
+    <p class="small text-center" style="color: gray;" ng-if="!sunrise"><span class="glyphicon glyphicon-certificate"></span>&nbsp;Unable to determine today's sunrise and sunset. You can fix this by entering your latitude/longitude in Settings.</p>
 </div>
