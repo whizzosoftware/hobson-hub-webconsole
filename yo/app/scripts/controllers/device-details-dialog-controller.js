@@ -11,8 +11,6 @@ angular.module('hobsonApp').
                 pendingLevelUpdate: false,
                 pendingTstatModeUpdate: false,
                 pendingTstatFanModeUpdate: false,
-                pendingTstatCoolPointUpdate: false,
-                pendingTstatHeatPointUpdate: false,
                 pendingTstatAutoPointUpdate: false
             };
 
@@ -64,46 +62,6 @@ angular.module('hobsonApp').
 
                 // Thermostat variables
 
-                if ($scope.device.variables['targetCoolTempF']) {
-                    $scope.status.coolpoint = device.variables['targetCoolTempF'].value;
-                    $scope.$watch('status.coolpoint', function(val) {
-                        $timeout.cancel(delays.coolpoint);
-                        delays.coolpoint = $timeout(function() {
-                            if ($scope.device.variables['targetCoolTempF'].value !== val) {
-                                console.debug('Coolpoint: ' + val);
-                                $scope.status.pendingTstatCoolPointUpdate = true;
-                                DevicesService.setDeviceVariable($scope.device.variables['targetCoolTempF'].links.self, val).then(function() {
-                                    $scope.status.pendingTstatCoolPointUpdate = false;
-                                    $scope.device.variables['targetCoolTempF'].value = val;
-                                }, function() {
-                                    $scope.status.pendingTstatCoolPointUpdate = false;
-                                    $scope.status.coolpoint = $scope.device.variables['targetCoolTempF'].value;
-                                    toastr.error('Unable to update thermostat cool point');
-                                });
-                            }
-                        }, 500);
-                    });
-                }
-                if ($scope.device.variables['targetHeatTempF']) {
-                    $scope.status.heatpoint = device.variables['targetHeatTempF'].value;
-                    $scope.$watch('status.heatpoint', function(val) {
-                        $timeout.cancel(delays.heatpoint);
-                        delays.heatpoint = $timeout(function() {
-                            if ($scope.device.variables['targetHeatTempF'].value !== val) {
-                                console.debug('Heatpoint: ' + val);
-                                $scope.status.pendingTstatHeatPointUpdate = true;
-                                DevicesService.setDeviceVariable($scope.device.variables['targetHeatTempF'].links.self, val).then(function() {
-                                    $scope.status.pendingTstatHeatPointUpdate = false;
-                                    $scope.device.variables['targetHeatTempF'].value = val;
-                                }, function() {
-                                    $scope.status.pendingTstatHeatPointUpdate = false;
-                                    $scope.status.heatpoint = $scope.device.variables['targetHeatTempF'].value;
-                                    toastr.error('Unable to update thermostat heat point');
-                                });
-                            }
-                        }, 500);
-                    });
-                }
                 if ($scope.device.variables['targetTempF']) {
                     $scope.status.autopoint = device.variables['targetTempF'].value;
                     $scope.$watch('status.autopoint', function(val) {

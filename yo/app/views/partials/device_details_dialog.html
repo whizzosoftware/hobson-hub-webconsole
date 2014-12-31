@@ -47,22 +47,6 @@
                 <div class="col-sm-4 text-center">
                     <h1><strong>{{device.variables.tempF.value}}&deg; F</strong></h1>
                 </div>
-                <div ng-if="status.coolpoint" class="col-sm-4">
-                    <h4 class="text-primary">
-                        <i class="fa fa-empire text-primary"></i>
-                        <i data-ng-show="status.pendingTstatCoolPointUpdate" class="fa fa-spinner fa-spin text-primary"></i>
-                        <span data-ng-hide="status.pendingTstatCoolPointUpdate">{{status.coolpoint}}&deg; F</span>
-                    </h4>
-                    <div slider ng-model="status.coolpoint" start="60" end="100" step="1" data-ng-disabled="status.pendingTstatCoolPointUpdate"></div>
-                </div>
-                <div ng-if="status.heatpoint" class="col-sm-4">
-                    <h4 class="text-danger">
-                        <i class="fa fa-fire text-danger"></i>
-                        <i data-ng-show="status.pendingTstatHeatPointUpdate" class="fa fa-spinner fa-spin text-danger"></i>
-                        <span data-ng-hide="status.pendingTstatHeatPointUpdate">{{status.heatpoint}}&deg; F</span>
-                    </h4>
-                    <div slider ng-model="status.heatpoint" start="60" end="100" step="1" data-ng-disabled="status.pendingTstatHeatPointUpdate"></div>
-                </div>
                 <div ng-if="status.autopoint" class="col-sm-8">
                     <h4 class="text-info">
                         <i class="fa fa-crosshairs text-info"></i>
