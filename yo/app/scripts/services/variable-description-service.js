@@ -6,9 +6,8 @@ angular.module('hobsonApp').
     function() {
       var descriptions = {
         ecw: 'Energy Consumption (W)',
-        targetCoolTempF: 'Cool Setpoint (F)',
-        targetHeatTempF: 'Heat Setpoint (F)',
-        tempF: 'Temperature (F)'
+        tempF: 'Temperature (F)',
+        targetTempF: 'Target Temperature (F)'
       };
 
       var getDescription = function(varName) {
