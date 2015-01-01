@@ -27,12 +27,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.whizzosoftware.hobson.hub</groupId>
-            <artifactId>hobson-hub-api</artifactId>
-            <version>0.1.7</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
