@@ -60,7 +60,7 @@ angular.module('hobsonApp').
             };
 
             var setDeviceName = function(link, val) {
-                return $http.put(link, '{"name": "' + val + '"}');
+                return $http.put(link, '{"name":{"value":"' + val + '"}}');
             };
 
             var getDeviceConfig = function(link) {

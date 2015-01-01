@@ -17,7 +17,7 @@
                 <span ng-show="editable == 'name'">
                     <form class="form-inline">
                         <input type="text" size="30" name="name" ng-model="device.name">
-                        <button class="btn btn-success btn-xs" ng-click="setDeviceName(device.links['set-name'], device.name); editable = ''">Save</button>
+                        <button class="btn btn-success btn-xs" ng-click="setDeviceName(device.links['config'], device.name); editable = ''">Save</button>
                         <button class="btn btn-warning btn-xs" ng-click="editable = ''">Cancel</button>
                     </form>
                 </span>
