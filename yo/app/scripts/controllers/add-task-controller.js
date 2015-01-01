@@ -158,7 +158,7 @@ angular.module('hobsonApp').
         console.debug($scope.task);
 
         TasksService.addTask($scope.task).then(function() {
-            toastr.info('The task has been created.');
+            toastr.info('The task has been created. It may take a few seconds to show up in the list.');
             DialogContextService.popModalInstance().dismiss();
             // TODO: refresh UI
         });
