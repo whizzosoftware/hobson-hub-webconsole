@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 	<groupId>com.whizzosoftware.hobson.hub</groupId>
     <artifactId>hobson-hub-webconsole</artifactId>
-    <version>0.1.13-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Hobson Web Console Plugin</name>
     <description>Provides a web-based management interface for the Hobson Hub.</description>
