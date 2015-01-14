@@ -4,12 +4,10 @@ angular.module('hobsonApp').
     factory('DevicesService', ['$http', 'ApiService', 'PollingService',
         function($http, ApiService, PollingService) {
 
-            var getDevices = function() {
-                return ApiService.topLevel().then(function(topLevel) {
-                    console.debug('DevicesService.getDevices(): topLevel = ', topLevel);
-                    return $http.get(topLevel.links.devices + '?details=true').then(function(response) {
-                        return response.data;
-                    });
+            var getDevices = function(link) {
+                console.debug('DevicesService.getDevices(): link = ', link);
+                return $http.get(link + '?details=true').then(function(response) {
+                    return response.data;
                 });
             };
 

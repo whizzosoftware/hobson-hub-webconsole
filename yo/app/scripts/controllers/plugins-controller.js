@@ -3,6 +3,7 @@
 angular.module('hobsonApp').
     controller('PluginsController', ['$scope', '$q', '$interval', 'AppData', 'ApiService', 'PluginsService', 'DialogContextService', '$modal', 'toastr',
     function($scope, $q, $interval, AppData, ApiService, PluginsService, DialogContextService, $modal, toastr) {
+        var refreshInterval;
 
         var setPlugins = function(plugins) {
             console.debug('plugins = ', plugins);
@@ -122,12 +123,31 @@ angular.module('hobsonApp').
             }
         };
 
+        /**
+         * Load the top-level API resource.
+         */
         $scope.loadTopLevel = function() {
            ApiService.topLevel().then(function(topLevel) {
              $scope.topLevel = topLevel;
-             $scope.loadPlugins(topLevel.links.plugins, false);
+             // start a 10 second auto-refresh
+             refreshInterval = $interval(function() {
+               $scope.refresh(false);
+             }, 10000);
+             $scope.refresh(true);
            });
         };
+
+        /**
+         * Refreshes the list of plugins.
+         */
+        $scope.refresh = function(includeRemotePlugins) {
+            $scope.loadPlugins($scope.topLevel.links.plugins, includeRemotePlugins, false);
+        };
+
+        $scope.$on('$destroy', function() {
+          // stop the 10 second auto refresh
+          $interval.cancel(refreshInterval);
+        });
 
         /**
          * Load the list of plugins from the server.
@@ -135,9 +155,9 @@ angular.module('hobsonApp').
          * @param pluginsUri
          * @param includeFrameworkPlugins
          */
-        $scope.loadPlugins = function(pluginsUri, includeFrameworkPlugins) {
+        $scope.loadPlugins = function(pluginsUri, includeRemotePlugins, includeFrameworkPlugins) {
             $scope.includeFrameworkPlugins = includeFrameworkPlugins;
-            $scope.loadingPromise = PluginsService.getPlugins(pluginsUri, true, true);
+            $scope.loadingPromise = PluginsService.getPlugins(pluginsUri, includeRemotePlugins, true);
             $scope.loadingPromise.then(setPlugins);
         };
 
@@ -146,6 +166,7 @@ angular.module('hobsonApp').
         $scope.installed = [];
         $scope.available = [];
         $scope.numUpdatesAvailable = 0;
+        $scope.topLevel = null;
 
         $scope.loadTopLevel();
     }]);

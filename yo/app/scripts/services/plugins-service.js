@@ -16,12 +16,13 @@ angular.module('hobsonApp').
              * @param details boolean indicating whether plugin details should be returned
              */
             var getPlugins = function(pluginsUri, remote, details) {
-                console.debug('getPlugins: ', pluginsUri);
-
                 remote = typeof remote !== 'undefined' ? remote : false;
                 details = typeof remote !== 'undefined' ? details : false;
 
-                return $http.get(pluginsUri + '?remote=' + remote + '&details=' + details).then(function(response) {
+                var uri = pluginsUri + '?remote=' + remote + '&details=' + details;
+                console.debug('getPlugins: ', uri);
+
+                return $http.get(uri).then(function(response) {
                     numUpdatesAvailable = 0;
                     notConfiguredArray = [];
                     failedArray = [];

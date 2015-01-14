@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('hobsonApp').
-    controller('DevicesController', ['$scope', '$http', 'AppData', 'DevicesService', 'DialogContextService', 'PollingService', '$modal', 'toastr',
-        function($scope, $http, AppData, DevicesService, DialogContextService, PollingService, $modal, toastr) {
+    controller('DevicesController', ['$scope', '$http', '$interval', 'AppData', 'ApiService', 'DevicesService', 'DialogContextService', 'PollingService', '$modal', 'toastr',
+        function($scope, $http, $interval, AppData, ApiService, DevicesService, DialogContextService, PollingService, $modal, toastr) {
+            var refreshInterval;
 
             var setDevices = function(devices) {
                 console.debug('devices = ', devices);
@@ -67,10 +68,37 @@ angular.module('hobsonApp').
                 DialogContextService.pushModalInstance(mi);
             };
 
+            /**
+             * Load the top-level API resource.
+             */
+            $scope.loadTopLevel = function() {
+              ApiService.topLevel().then(function(topLevel) {
+                $scope.topLevel = topLevel;
+                $scope.refresh();
+                // start a 5 second auto-refresh
+                refreshInterval = $interval(function() {
+                  $scope.refresh();
+                }, 5000);
+              });
+            };
+
+            /**
+             * Refreshes the list of tasks.
+             */
+            $scope.refresh = function() {
+              $scope.loadingPromise = DevicesService.getDevices($scope.topLevel.links.devices);
+              $scope.loadingPromise.then(setDevices);
+            };
+
+            $scope.$on('$destroy', function() {
+              // stop the 5 second auto-refresh
+              $interval.cancel(refreshInterval);
+            });
+
             AppData.currentTab = 'devices';
             $scope.devices = [];
+            $scope.topLevel = null;
 
-            $scope.loadingPromise = DevicesService.getDevices();
-            $scope.loadingPromise.then(setDevices);
+            $scope.loadTopLevel();
         }
     ]);

@@ -1,18 +1,23 @@
 'use strict';
 
 angular.module('hobsonApp').
-    controller('TasksController', ['$scope', 'AppData', 'TasksService', 'VariablesService', 'DialogContextService', '$modal', 'toastr',
-        function($scope, AppData, TasksService, VariablesService, DialogContextService, $modal, toastr) {
+    controller('TasksController', ['$scope', '$interval', 'AppData', 'ApiService', 'TasksService', 'VariablesService', 'DialogContextService', '$modal', 'toastr',
+        function($scope, $interval, AppData, ApiService, TasksService, VariablesService, DialogContextService, $modal, toastr) {
+            var refreshInterval;
 
             var setTasks = function(tasks) {
                 console.debug('tasks = ', tasks);
                 $scope.tasks = tasks;
 
-                VariablesService.getGlobalVariables().then(function(results) {
+                VariablesService.getGlobalVariables($scope.topLevel.links.globalVariables).then(function(results) {
                     console.debug('global variables', results);
                     console.debug(createDate(results.sunrise.value));
-                    $scope.sunrise = createDate(results.sunrise.value).toLocaleTimeString();
-                    $scope.sunset = createDate(results.sunset.value).toLocaleTimeString();
+                    if (results.sunrise.value) {
+                      $scope.sunrise = createDate(results.sunrise.value).toLocaleTimeString();
+                    }
+                    if (results.sunset.value) {
+                      $scope.sunset = createDate(results.sunset.value).toLocaleTimeString();
+                    }
                 });
             };
 
@@ -28,6 +33,9 @@ angular.module('hobsonApp').
                 }
             };
 
+            /**
+             * Opens the add task dialog.
+             */
             $scope.addTask = function() {
                 var mi = $modal.open({
                     templateUrl: 'views/partials/add_task_dialog.html',
@@ -37,15 +45,48 @@ angular.module('hobsonApp').
                 DialogContextService.pushModalInstance(mi);
             };
 
+            /**
+             * Deletes a task from the list.
+             *
+             * @param task the task to remove
+             */
             $scope.deleteTask = function(task) {
                 TasksService.deleteTask(task).then(function() {
                     toastr.info('The task has been deleted.');
+                    $scope.refresh();
                 });
             };
 
+            /**
+             * Load the top-level API resource.
+             */
+            $scope.loadTopLevel = function() {
+              ApiService.topLevel().then(function(topLevel) {
+                $scope.topLevel = topLevel;
+                // start a 5 second auto-refresh
+                refreshInterval = $interval(function() {
+                  $scope.refresh();
+                }, 5000);
+                $scope.refresh();
+              });
+            };
+
+            /**
+             * Refreshes the list of tasks.
+             */
+            $scope.refresh = function() {
+              $scope.loadingPromise = TasksService.getTasks($scope.topLevel.links.tasks, true);
+              $scope.loadingPromise.then(setTasks);
+            };
+
+            $scope.$on('$destroy', function() {
+              // stop the 5 second auto refresh
+              $interval.cancel(refreshInterval);
+            });
+
             AppData.currentTab = 'tasks';
             $scope.tasks = [];
+            $scope.topLevel = null;
 
-            $scope.loadingPromise = TasksService.getTasks(true);
-            $scope.loadingPromise.then(setTasks);
+            $scope.loadTopLevel();
         }]);

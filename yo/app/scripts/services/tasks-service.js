@@ -4,16 +4,13 @@ angular.module('hobsonApp').
     factory('TasksService', ['$http', 'ApiService',
         function($http, ApiService) {
 
-            var getTasks = function(properties) {
-                return ApiService.topLevel().then(function(topLevel) {
-                    var url = topLevel.links.tasks;
-                    if (properties) {
-                        url += '?properties=true';
-                    }
-                    return $http.get(url).then(function(response) {
-                        return response.data;
-                    });
-                });
+            var getTasks = function(url, properties) {
+              if (properties) {
+                  url += '?properties=true';
+              }
+              return $http.get(url).then(function(response) {
+                  return response.data;
+              });
             };
 
             var addTask = function(task) {
