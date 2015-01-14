@@ -24,8 +24,17 @@ public class ClassLoaderOverrideDirectory extends Directory {
     }
 
     public Context getContext() {
+        // Get the context from the parent
         Context context = super.getContext();
-        context.setClientDispatcher(new CLAPCustomClassLoaderDispatcher(context.getClientDispatcher(), bundleClassloader));
+
+        // Wrapper the context's client dispatcher in an object that will force it to use the OSGi bundle classloader
+        // rather than the classloader that created the dispatcher. Also, the same Context object may run through
+        // this many times so we have to make sure we don't wrapper multiple times -- otherwise evil hilarity will ensue
+        // (i.e stack overflows)
+        if (!(context.getClientDispatcher() instanceof CLAPCustomClassLoaderDispatcher)) {
+            context.setClientDispatcher(new CLAPCustomClassLoaderDispatcher(context.getClientDispatcher(), bundleClassloader));
+        }
+
         return context;
     }
 }
