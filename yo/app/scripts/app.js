@@ -43,8 +43,8 @@ config(function ($routeProvider) {
             controller: 'SettingsController'
         }).
         when('/', {
-            templateUrl: 'views/partials/plugins.html',
-            controller: 'PluginsController'
+            templateUrl: 'views/partials/devices.html',
+            controller: 'DevicesController'
         }).
         otherwise({
             redirectTo: '/'

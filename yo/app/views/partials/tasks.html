@@ -1,4 +1,7 @@
 <div class="container" data-cg-busy="{promise:loadingPromise, message:'Loading...', delay: 200}">
+  <div data-ng-show="!topLevel.setupComplete" style="margin-top: 10px;">
+    <div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;&nbsp;The setup wizard has not been completed. <a href="/setup/index.html">Click here</a> to run it.</div>
+  </div>
     <div class="row">
         <div class="col-sm-10">
             <h1>Automated Tasks</h1>

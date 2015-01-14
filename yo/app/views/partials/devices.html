@@ -1,10 +1,13 @@
 <div class="container" data-cg-busy="{promise:loadingPromise, message:'Loading...', delay: 200}">
+  <div data-ng-show="!topLevel.setupComplete" style="margin-top: 10px;">
+    <div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;&nbsp;The setup wizard has not been completed. <a href="/setup/index.html">Click here</a> to run it.</div>
+  </div>
     <h1>Devices</h1>
     <br/>
-    <div class="alert alert-info" role="alert" data-ng-show="devices.length == 0">There are currently no devices. You will need to install and configure plugins in order for devices to show up here.</div>
+    <div class="alert alert-info" role="alert" data-ng-show="devices.length == 0">There are currently no devices. You will need to <a href="/#plugins">install and configure plugins</a> in order for devices to show up here.</div>
     <table ng-if="devices.length > 0" class="table table-striped">
         <tr><th width="5%"></th><th>Name</th><th></th><th width="10%"></th></tr>
-        <tr data-ng-repeat="device in devices" ng-class="(device.preferredVariable && device.preferredVariable.value == null) ? 'danger' : ''">
+        <tr data-ng-repeat="device in devices" ng-class="(device.preferredVariable && device.preferredVariable.value == null) ? 'warning' : ''">
             <td style="vertical-align: middle; text-align: center;" ng-switch="device.type">
                 <i ng-if="device.type == 'LIGHTBULB'" class="fa fa-lightbulb-o fa-2x text-primary"></i>
                 <i ng-if="device.type == 'CAMERA'" class="fa fa-video-camera fa-2x text-primary"></i>

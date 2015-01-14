@@ -49,19 +49,19 @@
         </div>
         <div class="collapse navbar-collapse" data-ng-controller="HobsonController">
           <ul class="nav navbar-nav">
-            <li data-ng-class="{active: tab() === 'plugins'}">
-              <a data-ng-href="#" data-ng-click="tab('plugins')">Plugins&nbsp;<span class="badge pull-right" data-ng-show="numPluginUpdates">{{numPluginUpdates}}</span>
-              </a>
-            </li>
             <li data-ng-class="{active: tab() === 'devices'}">
-              <a data-ng-href="#/devices" data-ng-click="tab('devices')">Devices</a>
+              <a data-ng-href="#" data-ng-click="tab('devices')">Devices</a>
             </li>
             <li data-ng-class="{active: tab() === 'tasks'}">
               <a data-ng-href="#/tasks" data-ng-click="tab('tasks')">Tasks</a>
             </li>
-              <li data-ng-class="{active: tab() === 'settings'}">
-                  <a data-ng-href="#/settings" data-ng-click="tab('settings')">Settings</a>
-              </li>
+            <li data-ng-class="{active: tab() === 'plugins'}">
+              <a data-ng-href="#/plugins" data-ng-click="tab('plugins')">Plugins&nbsp;<span class="badge pull-right" data-ng-show="numPluginUpdates">{{numPluginUpdates}}</span>
+              </a>
+            </li>
+            <li data-ng-class="{active: tab() === 'settings'}">
+                <a data-ng-href="#/settings" data-ng-click="tab('settings')">Settings</a>
+            </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
