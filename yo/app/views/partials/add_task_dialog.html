@@ -1,6 +1,6 @@
 <div ng-controller="AddTasksController">
     <div class="modal-header">
-        <h3>Add Task</h3>
+        <h3>{{mode}} Task</h3>
     </div>
     <div class="modal-body">
         <form name="taskForm">
@@ -9,7 +9,7 @@
                     <label>Task Name</label>
                 </div>
                 <div class="col-md-8">
-                    <input type="text" ng-model="task.name" class="form-control" required />
+                    <input type="text" ng-model="state.name" class="form-control" focus-on="true" required />
                 </div>
             </div>
             <div class="form-group row">
@@ -17,18 +17,18 @@
                     <label>When?</label>
                 </div>
                 <div class="col-md-9">
-                    <input type="radio" ng-model="task.provider" value="com.whizzosoftware.hobson.hub.hobson-hub-scheduler" checked />&nbsp;&nbsp;On a schedule
+                    <input type="radio" ng-model="state.provider" value="com.whizzosoftware.hobson.hub.hobson-hub-scheduler" checked />&nbsp;&nbsp;On a schedule
                     &nbsp;&nbsp;
-                    <input type="radio" ng-model="task.provider" value="com.whizzosoftware.hobson.hub.hobson-hub-rules" checked />&nbsp;&nbsp;On an event
+                    <input type="radio" ng-model="state.provider" value="com.whizzosoftware.hobson.hub.hobson-hub-rules" checked />&nbsp;&nbsp;On an event
                 </div>
             </div>
-            <div ng-show="task.provider == 'com.whizzosoftware.hobson.hub.hobson-hub-scheduler'">
+            <div ng-show="state.provider == 'com.whizzosoftware.hobson.hub.hobson-hub-scheduler'">
                 <div class="form-group row">
                     <div class="col-md-3">
                         <label>Start Date</label>
                     </div>
                     <div class="col-md-9">
-                        <quick-datepicker disable-timepicker="true" ng-model="recurrence.startDate" disable-clear-button="true"></quick-datepicker>
+                        <quick-datepicker disable-timepicker="true" ng-model="state.startDate" disable-clear-button="true"></quick-datepicker>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -38,10 +38,10 @@
                     <div class="col-md-9">
                         <div class="row">
                             <div class="col-md-4">
-                                <input type="radio" ng-model="recurrence.timeType" value="time" />&nbsp;&nbsp;at exactly&nbsp;&nbsp;
+                                <input type="radio" ng-model="state.startType" value="time" />&nbsp;&nbsp;at exactly&nbsp;&nbsp;
                             </div>
                             <div class="col-md-8">
-                                <timepicker ng-model="recurrence.startTime" hour-step="1" minute-step="5"></timepicker>
+                                <timepicker ng-model="state.startTime" hour-step="1" minute-step="5"></timepicker>
                             </div>
                         </div>
                     </div>
@@ -52,22 +52,22 @@
                     <div class="col-md-9">
                         <div class="row">
                             <div class="col-md-1">
-                                <input type="radio" ng-model="recurrence.timeType" value="sunOffset" />
+                                <input type="radio" ng-model="state.startType" value="sunOffset" />
                             </div>
                             <div class="col-md-2">
-                                <input type="text" ng-model="recurrence.sunOffsetValue" class="form-control" />
+                                <input type="text" ng-model="state.sunOffsetValue" class="form-control" />
                             </div>
                             <div class="col-md-2">
                                 minutes
                             </div>
                             <div class="col-md-3">
-                                <select ng-model="recurrence.sunOffsetMult" class="form-control">
+                                <select ng-model="state.sunOffsetMod" class="form-control">
                                     <option value="1" selected>after</option>
                                     <option value="-1">before</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <select ng-model="recurrence.sunOffsetType" class="form-control">
+                                <select ng-model="state.sunOffsetType" class="form-control">
                                     <option value="SR" selected>sunrise</option>
                                     <option value="SS">sunset</option>
                                 </select>
@@ -80,7 +80,7 @@
                         <label>Repeats</label>
                     </div>
                     <div class="col-md-9">
-                        <select ng-model="recurrence.repeat" class="form-control">
+                        <select ng-model="state.recurrence.type" class="form-control">
                             <option value="-1">No (run once)</option>
                             <option value="5">Minutely</option>
                             <option value="4">Hourly</option>
@@ -91,105 +91,79 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group row" ng-show="recurrence.repeat != '-1'">
+                <div class="form-group row" ng-show="state.recurrence.type != '-1'">
                     <div class="col-sm-3">
                         <label>Repeat every</label>
                     </div>
                     <div class="col-sm-9">
-                        <div ng-show="recurrence.repeat == '0'">
+                        <div ng-show="state.recurrence.type == '0'">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                    <input ng-model="state.recurrence.interval" type="text" class="form-control">
                                 </div>
                                 <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">year(s)</div>
                             </div>
                         </div>
-                        <div ng-show="recurrence.repeat == '1'">
+                        <div ng-show="state.recurrence.type == '1'">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                    <input ng-model="state.recurrence.interval" type="text" class="form-control">
                                 </div>
                                 <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">month(s)</div>
                             </div>
                         </div>
-                        <div ng-show="recurrence.repeat == '2'">
+                        <div ng-show="state.recurrence.type == '2'">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                    <input ng-model="state.recurrence.interval" type="text" class="form-control">
                                 </div>
                                 <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">week(s)</div>
                             </div>
                         </div>
-                        <div ng-show="recurrence.repeat == '3'">
+                        <div ng-show="state.recurrence.type == '3'">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                    <input ng-model="state.recurrence.interval" type="text" class="form-control">
                                 </div>
                                 <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">day(s)</div>
                             </div>
                         </div>
-                        <div ng-show="recurrence.repeat == '4'">
+                        <div ng-show="state.recurrence.type == '4'">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                    <input ng-model="state.recurrence.interval" type="text" class="form-control">
                                 </div>
                                 <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">hour(s)</div>
                             </div>
                         </div>
-                        <div ng-show="recurrence.repeat == '5'">
+                        <div ng-show="state.recurrence.type == '5'">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <input ng-model="recurrence.interval" type="text" class="form-control">
+                                    <input ng-model="state.recurrence.interval" type="text" class="form-control">
                                 </div>
                                 <div class="col-sm-10" style="margin-top: 6px; padding-left: 0px;">minute(s)</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div ng-show="recurrence.repeat == '0' || recurrence.repeat == '1' || recurrence.repeat == '2'" class="form-group row">
+                <div ng-show="state.recurrence.type == '0' || state.recurrence.type == '1' || state.recurrence.type == '2'" class="form-group row">
                     <div class="col-md-3">
                         <label>Repeat on</label>
                     </div>
                     <div class="col-md-9">
-                        <div ng-show="recurrence.repeat == '0'">
+                        <div ng-show="state.recurrence.type == '0'">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <input class="form-control" type="radio" name="optionsRadio" value="option1" checked>
+                                    <input class="form-control" type="radio" ng-model="recurrence.yearRepeatType" value="monthDay" checked>
                                 </div>
                                 <div class="col-sm-1">
                                     every
                                 </div>
                                 <div class="col-sm-4">
-                                    <select class="form-control" ng-model="recurrence.month" ng-options="month.name for month in monthsOfYear"></select>
+                                    <select class="form-control" ng-model="recurrence.monthOfYear" ng-options="month.name for month in monthsOfYear"></select>
                                 </div>
                                 <div class="col-sm-3">
-                                    <select class="form-control" ng-model="recurrence.bymonthday" ng-options="day.name for day in daysOfMonth"></select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <input type="radio" name="optionsRadio" value="option1">
-                                </div>
-                                <div class="col-sm-1">
-                                    the
-                                </div>
-                                <div class="col-sm-2">
-                                    <select class="form-control">
-                                        <option>first</option>
-                                        <option>second</option>
-                                        <option>third</option>
-                                        <option>fourth</option>
-                                        <option>last</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-3">
-                                    <select class="form-control" ng-model="recurrence.day" ng-options="day.name for day in daysOfWeek"></select>
-                                </div>
-                                <div class="col-sm-1">
-                                    of
-                                </div>
-                                <div class="col-sm-3">
-                                    <select class="form-control" ng-model="recurrence.month" ng-options="month.name for month in monthsOfYear"></select>
+                                    <select class="form-control" ng-model="recurrence.dayOfMonth" ng-options="day.name for day in daysOfMonth"></select>
                                 </div>
                             </div>
                         </div>
@@ -201,13 +175,13 @@
                         <div ng-show="recurrence.repeat == '1'">
                             <div class="row">
                                 <div class="col-xs-2">
-                                    <input class="form-control" type="radio" ng-model="recurrence.monthrepeat" value="bymonthday" checked>
+                                    <input class="form-control" type="radio" ng-model="state.recurrence.monthRepeatType" value="bymonthday" checked>
                                 </div>
                                 <div class="col-xs-1">
                                     day
                                 </div>
                                 <div class="col-xs-3">
-                                    <select class="form-control" ng-model="recurrence.bymonthday" ng-options="day.name for day in daysOfMonth"></select>
+                                    <select class="form-control" ng-model="state.recurrence.dayOfMonth" ng-options="day.name for day in daysOfMonth"></select>
                                 </div>
                                 <div class="col-xs-6">
                                     of the month
@@ -215,13 +189,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <input class="form-control" type="radio" ng-model="recurrence.monthrepeat" value="byweekday">
+                                    <input class="form-control" type="radio" ng-model="state.recurrence.monthRepeatType" value="byweekday">
                                 </div>
                                 <div class="col-sm-1">
                                     the
                                 </div>
                                 <div class="col-sm-3">
-                                    <select class="form-control" ng-model="recurrence.setpos">
+                                    <select class="form-control" ng-model="recurrence.weekdayOfMonthIndex">
                                         <option value="1">first</option>
                                         <option value="2">second</option>
                                         <option value="3">third</option>
@@ -230,7 +204,7 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
-                                    <select class="form-control" ng-model="recurrence.month2" ng-options="day.name for day in daysOfWeek"></select>
+                                    <select class="form-control" ng-model="recurrence.weekdayOfMonth" ng-options="day.name for day in daysOfWeek"></select>
                                 </div>
                                 <div class="col-sm-3">
                                     of the month
@@ -239,49 +213,49 @@
                         </div>
                     </div>
                 </div>
-                <div ng-show="recurrence.repeat != '-1'" class="form-group row">
+                <div ng-show="state.recurrence.type != '-1'" class="form-group row">
                     <div class="col-md-3">
                         <label>End</label>
                     </div>
                     <div class="col-md-9">
                         <div class="row">
                             <div class="col-xs-4">
-                                <select class="form-control" ng-model="recurrence.end">
+                                <select class="form-control" ng-model="state.recurrence.endType">
                                     <option value="never">Never</option>
                                     <option value="after">After</option>
                                     <option value="ondate">On Date</option>
                                 </select>
                             </div>
-                            <div ng-show="recurrence.end == 'after'" class="col-xs-3">
-                                <input ng-model="recurrence.count" type="text" class="form-control">
+                            <div ng-show="state.recurrence.endType == 'after'" class="col-xs-3">
+                                <input ng-model="state.recurrence.count" type="text" class="form-control">
                             </div>
-                            <div ng-show="recurrence.end == 'after'" class="col-xs-5" style="margin-top: 6px;">
+                            <div ng-show="state.recurrence.endType == 'after'" class="col-xs-5" style="margin-top: 6px;">
                                 occurrence(s)
                             </div>
-                            <div ng-show="recurrence.end == 'ondate'" class="col-xs-3">
-                                <quick-datepicker ng-model="recurrence.endDate" disable-clear-button="true" disable-timepicker="true"></quick-datepicker>
+                            <div ng-show="state.recurrence.endType == 'ondate'" class="col-xs-3">
+                                <quick-datepicker ng-model="state.recurrence.endDate" disable-clear-button="true" disable-timepicker="true"></quick-datepicker>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div ng-show="task.provider == 'com.whizzosoftware.hobson.hub.hobson-hub-rules'">
+            <div ng-show="state.provider == 'com.whizzosoftware.hobson.hub.hobson-hub-rules'">
               <div class="form-group row">
                 <div class="col-md-3">
                   <label>Event</label>
                 </div>
                 <div class="col-md-9">
-                  <select class="form-control" ng-model="event.type" ng-change="onSelectEventType()">
+                  <select class="form-control" ng-model="state.event.type" ng-change="onSelectEventType()">
                     <option value="variableUpdate">When the device...</option>
                   </select>
                 </div>
               </div>
-              <div ng-show="event.type === 'variableUpdate'" class="form-group row">
+              <div ng-show="state.event.type === 'variableUpdate'" class="form-group row">
                 <div class="col-md-3">
                 </div>
                 <div class="col-md-9">
-                  <select class="form-control" ng-model="event.device" ng-options="id as device.name for (id,device) in devices" ng-disabled="event.device === 'none'" ng-change="onSelectEventDevice()">
+                  <select class="form-control" ng-model="state.event.device" ng-options="id as device.name for (id,device) in devices" ng-disabled="event.device === 'none'" ng-change="onSelectEventDevice()">
                   </select>
                 </div>
               </div>
@@ -289,11 +263,11 @@
                 <div class="col-md-3">
                 </div>
                 <div class="col-md-9">
-                  <select class="form-control" ng-model="event.changeId" ng-options="id as name for (id,name) in deviceEvents" ng-disabled="event.changeId === 'none'" ng-change="onSelectEventDeviceEvent()">
+                  <select class="form-control" ng-model="state.event.changeId" ng-options="id as name for (id,name) in deviceEvents" ng-disabled="event.changeId === 'none'" ng-change="onSelectEventDeviceEvent()">
                   </select>
                 </div>
               </div>
-              <div ng-show="event.type === 'presenceUpdate'" class="form-group row">
+              <div ng-show="state.event.type === 'presenceUpdate'" class="form-group row">
                 <div class="col-md-3">
                 </div>
                 <div class="col-md-9">
@@ -324,16 +298,17 @@
             </div>
 
             <div class="panel panel-default">
-                <div class="panel-heading"><label>What to do?</label>&nbsp;&nbsp;&nbsp;<span ng-click="addAction()" class="glyphicon glyphicon-plus-sign text-primary"></span></div>
-                <div class="panel-body" ng-show="task.actions.length == 0"><i>There are no actions defined yet.</i></div>
-                <table class="table" ng-show="task.actions.length > 0">
-                    <tr ng-repeat="action in task.actions"><td>{{action.name}}</td><td width="1%"><span ng-click="removeAction($index)" class="glyphicon glyphicon-minus-sign text-danger"></span></td></tr>
+                <div class="panel-heading"><label>What to do?</label>&nbsp;&nbsp;&nbsp;<span ng-click="onAddAction()" class="glyphicon glyphicon-plus-sign text-primary"></span></div>
+                <div class="panel-body" ng-show="state.actions.length == 0"><i>There are no actions defined yet.</i></div>
+                <table class="table" ng-show="state.actions.length > 0">
+                    <tr ng-repeat="action in state.actions"><td>{{action.name}}</td><td width="10%"><span ng-click="onEditAction($index)" class="glyphicon glyphicon-pencil text-primary"></span>&nbsp;&nbsp;<span ng-click="onRemoveAction($index)" class="glyphicon glyphicon-minus-sign text-danger"></span></td></tr>
                 </table>
             </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="!taskForm.$valid" ng-click="add()">Add</button>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        <button ng-if="task" class="btn btn-primary" ng-disabled="!taskForm.$valid" ng-click="onUpdate()">Update</button>
+        <button ng-if="!task" class="btn btn-primary" ng-disabled="!taskForm.$valid" ng-click="onAdd()">Add</button>
+        <button class="btn btn-warning" ng-click="onCancel()">Cancel</button>
     </div>
 </div>

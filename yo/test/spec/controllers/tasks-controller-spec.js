@@ -11,10 +11,10 @@ describe('Controller: TasksController', function () {
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
-        console.debug('scope = ', scope);
         tasksController = $controller('TasksController', {
             $scope: scope
         });
+        console.debug('scope = ', scope);
     }));
 
     it('should attach an empty list of tasks to the scope', function () {

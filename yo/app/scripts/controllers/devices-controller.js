@@ -6,7 +6,6 @@ angular.module('hobsonApp').
             var refreshInterval;
 
             var setDevices = function(devices) {
-                console.debug('devices = ', devices);
                 $scope.devices = devices;
             };
 

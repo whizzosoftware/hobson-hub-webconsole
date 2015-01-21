@@ -6,7 +6,6 @@ angular.module('hobsonApp').
         var refreshInterval;
 
         var setPlugins = function(plugins) {
-            console.debug('plugins = ', plugins);
             $scope.numUpdatesAvailable = PluginsService.numUpdates();
             $scope.numDevicePlugins = 0;
             $scope.notConfigured = PluginsService.notConfigured();

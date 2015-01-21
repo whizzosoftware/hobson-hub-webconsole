@@ -40,11 +40,16 @@ angular.module('hobsonApp').
                 params = p;
             };
 
+            var clearParams = function() {
+                params = null;
+            };
+
             return {
                 popModalInstance: popModalInstance,
                 pushModalInstance: pushModalInstance,
                 currentModalInstance: currentModalInstance,
                 getParams: getParams,
-                setParams: setParams
+                setParams: setParams,
+                clearParams: clearParams
             };
         }]);

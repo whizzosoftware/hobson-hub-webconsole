@@ -4,12 +4,18 @@ angular.module('hobsonApp').
     factory('TasksService', ['$http', 'ApiService',
         function($http, ApiService) {
 
-            var getTasks = function(url, properties) {
+            var getTasks = function(uri, properties) {
               if (properties) {
-                  url += '?properties=true';
+                  uri += '?properties=true';
               }
-              return $http.get(url).then(function(response) {
+              return $http.get(uri).then(function(response) {
                   return response.data;
+              });
+            };
+
+            var getTask = function(uri) {
+              return $http.get(uri).then(function(response) {
+                return response.data;
               });
             };
 
@@ -20,13 +26,21 @@ angular.module('hobsonApp').
                 });
             };
 
+            var updateTask = function(uri, task) {
+                var json = angular.toJson(task);
+                console.debug(json);
+                return $http.put(uri, json);
+            };
+
             var deleteTask = function(task) {
                 return $http.delete(task.links.self);
             };
 
             return {
                 getTasks: getTasks,
+                getTask: getTask,
                 addTask: addTask,
+                updateTask: updateTask,
                 deleteTask: deleteTask
             };
         }]);

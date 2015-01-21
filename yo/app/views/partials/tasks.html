@@ -33,6 +33,7 @@
                 <span ng-switch-when="SCHEDULE" ng-if="!task.properties.nextRunTime && !task.properties.error" ng-class="(task.properties.scheduled) ? 'scheduled' : 'notscheduled'"><em>Not scheduled</span>
             </td>
             <td style="vertical-align: middle" align="right">
+                <button type="button" class="btn btn-sm btn-primary"><span title="Edit" class="glyphicon glyphicon-edit" ng-click="editTask(task)"></span></button>
                 <button type="button" class="btn btn-sm btn-danger"><span title="Delete" class="glyphicon glyphicon-remove" ng-click="deleteTask(task)"></span></button>
             </td>
         </tr>

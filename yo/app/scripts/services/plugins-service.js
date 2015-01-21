@@ -20,13 +20,11 @@ angular.module('hobsonApp').
                 details = typeof remote !== 'undefined' ? details : false;
 
                 var uri = pluginsUri + '?remote=' + remote + '&details=' + details;
-                console.debug('getPlugins: ', uri);
 
                 return $http.get(uri).then(function(response) {
                     numUpdatesAvailable = 0;
                     notConfiguredArray = [];
                     failedArray = [];
-                    console.debug('PluginsService.getPlugins(): response.data = ', response.data);
                     response.data.forEach(function(plugin) {
                         if (plugin.links.update) {
                             numUpdatesAvailable++;

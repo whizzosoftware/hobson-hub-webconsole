@@ -16,13 +16,14 @@
                 <label>Type</label>
             </div>
             <div class="col-md-9">
-                <select class="form-control" ng-model="actionId" ng-change="onSelectAction()" ng-options="id as name for (id,name) in actionTypes"></select>
+                <select class="form-control" ng-model="actionId" ng-options="id as name for (id,name) in actionTypes"></select>
             </div>
         </div>
         <formly-form name="actionForm" result="formData" fields="formFields" options="formOptions"></formly-form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="!actionId || actionForm.$invalid" ng-click="add(actionForm)">Add</button>
+        <button class="btn btn-primary" ng-if="!actionArg" ng-disabled="!actionId || actionForm.$invalid" ng-click="add(actionForm)">Add</button>
+      <button class="btn btn-primary" ng-if="actionArg" ng-disabled="!actionId || actionForm.$invalid" ng-click="add(actionForm)">Update</button>
         <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </div>
 </div>

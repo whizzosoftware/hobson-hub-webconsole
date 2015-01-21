@@ -6,12 +6,9 @@ angular.module('hobsonApp').
             var refreshInterval;
 
             var setTasks = function(tasks) {
-                console.debug('tasks = ', tasks);
                 $scope.tasks = tasks;
 
                 VariablesService.getGlobalVariables($scope.topLevel.links.globalVariables).then(function(results) {
-                    console.debug('global variables', results);
-                    console.debug(createDate(results.sunrise.value));
                     if (results.sunrise.value) {
                       $scope.sunrise = createDate(results.sunrise.value).toLocaleTimeString();
                     }
@@ -43,6 +40,18 @@ angular.module('hobsonApp').
                     backdrop: 'static'
                 });
                 DialogContextService.pushModalInstance(mi);
+            };
+
+            $scope.editTask = function(task) {
+              var mi = $modal.open({
+                templateUrl: 'views/partials/add_task_dialog.html',
+                size: 'lg',
+                backdrop: 'static'
+              });
+              DialogContextService.setParams({
+                task: task
+              });
+              DialogContextService.pushModalInstance(mi);
             };
 
             /**

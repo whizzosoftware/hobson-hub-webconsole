@@ -59,7 +59,6 @@ factory('ApiService', ['$http',
     function($http) {
         var topLevel = function() {
             var promise = $http.get('/api/v1/users/local/hubs/local').then(function (response) {
-                console.debug('AppService.topLevel(): response.data = ', response.data);
                 return response.data;
             });
             return promise;
@@ -96,10 +95,8 @@ controller('HobsonController', ['$scope', 'ApiService', 'AppData',
     function($scope, ApiService, AppData) {
         $scope.version = '';
         $scope.$on('NUM_PLUGINS', function(event, numUpdates) {
-            console.debug('$scope.$on(): numPluginUpdates = ', numUpdates);
             $scope.numPluginUpdates = numUpdates;
         });
-        console.debug('numPluginUpdates = ', $scope.numPluginUpdates);
         ApiService.topLevel().then(function(topLevel) {
             $scope.version = topLevel.version;
         });

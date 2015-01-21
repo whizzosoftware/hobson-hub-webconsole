@@ -38,7 +38,7 @@ module.exports = function(config) {
 
         // list of files / patterns to exclude
         exclude: [
-            'app/scripts/third-party/**/*.js'
+            'app/scripts/third-party/spectrum.js'
         ],
 
         // web server port

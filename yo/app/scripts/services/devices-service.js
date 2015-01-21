@@ -5,7 +5,6 @@ angular.module('hobsonApp').
         function($http, ApiService, PollingService) {
 
             var getDevices = function(link) {
-                console.debug('DevicesService.getDevices(): link = ', link);
                 return $http.get(link + '?details=true').then(function(response) {
                     return response.data;
                 });
