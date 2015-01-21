@@ -35,7 +35,7 @@ angular.module('hobsonApp').
       };
 
       $scope.onSelectEventType = function () {
-        DevicesService.getDevices().then(function (results) {
+        DevicesService.getDevices($scope.topLevel.links.devices).then(function (results) {
           if (results.length > 0) {
             $scope.devices = {};
             for (var ix in results) {
@@ -48,8 +48,7 @@ angular.module('hobsonApp').
       };
 
       $scope.onSelectEventDevice = function () {
-        var device = $scope.devices[$scope.event.device];
-        console.debug(device);
+        var device = $scope.devices[$scope.state.event.device];
         DevicesService.getDeviceVariableEvents(device.links.variableEvents).then(function (results) {
           if (results.length > 0) {
             $scope.deviceEvents = {};
@@ -344,13 +343,10 @@ angular.module('hobsonApp').
       if (DialogContextService.getParams() && DialogContextService.getParams().task) {
         var task = DialogContextService.getParams().task;
         DialogContextService.clearParams();
-        console.debug('Passed task: ', task);
         TasksService.getTask(task.links.self).then(function(fullTask) {
-          console.debug('Retrieved task: ', fullTask);
           $scope.mode = 'Edit';
           $scope.task = fullTask;
           $scope.state = $scope.createStateFromTask(fullTask);
-          console.debug('Generated state: ', $scope.state);
         });
       // otherwise, we are creating a new task and should start with the default state
       } else {
