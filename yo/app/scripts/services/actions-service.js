@@ -6,7 +6,7 @@ angular.module('hobsonApp').
 
             var getActions = function() {
                 return ApiService.topLevel().then(function(topLevel) {
-                    console.debug('DevicesService.getDevices(): topLevel = ', topLevel);
+                    console.debug('ActionsService.getActions(): topLevel = ', topLevel);
                     return $http.get(topLevel.links.actions).then(function(response) {
                         return response.data;
                     });
@@ -14,10 +14,12 @@ angular.module('hobsonApp').
             };
 
             var getAction = function(action) {
+              if (action) {
                 console.debug('getAction: ' + action.links.self);
                 return $http.get(action.links.self).then(function(response) {
-                    return response.data;
+                  return response.data;
                 });
+              }
             };
 
             return {

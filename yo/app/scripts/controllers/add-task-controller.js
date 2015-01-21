@@ -71,7 +71,7 @@ angular.module('hobsonApp').
       };
 
       $scope.onAddAction = function () {
-        DialogContextService.setParams({state: $scope.state, action: null});
+        DialogContextService.setParams({state: $scope.state, action: null, topLevel: $scope.topLevel});
         var mi = $modal.open({
           templateUrl: 'views/partials/add_action_dialog.html',
           size: 'lg',
@@ -81,7 +81,7 @@ angular.module('hobsonApp').
       };
 
       $scope.onEditAction = function(index) {
-        DialogContextService.setParams({state: $scope.state, action: $scope.state.actions[index]});
+        DialogContextService.setParams({state: $scope.state, action: $scope.state.actions[index], topLevel: $scope.topLevel});
         var mi = $modal.open({
           templateUrl: 'views/partials/add_action_dialog.html',
           size: 'lg',
@@ -335,6 +335,10 @@ angular.module('hobsonApp').
           return null;
         }
       };
+
+      if (DialogContextService.getParams()) {
+        $scope.topLevel = DialogContextService.getParams().topLevel;
+      }
 
       // if a task was passed to the dialog, then we are updating an existing task so use it to generate state
       if (DialogContextService.getParams() && DialogContextService.getParams().task) {

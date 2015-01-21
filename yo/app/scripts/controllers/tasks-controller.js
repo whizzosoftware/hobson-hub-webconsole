@@ -39,6 +39,9 @@ angular.module('hobsonApp').
                     size: 'lg',
                     backdrop: 'static'
                 });
+                DialogContextService.setParams({
+                  topLevel: $scope.topLevel
+                });
                 DialogContextService.pushModalInstance(mi);
             };
 
@@ -49,6 +52,7 @@ angular.module('hobsonApp').
                 backdrop: 'static'
               });
               DialogContextService.setParams({
+                topLevel: $scope.topLevel,
                 task: task
               });
               DialogContextService.pushModalInstance(mi);
