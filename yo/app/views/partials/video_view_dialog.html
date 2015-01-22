@@ -1,9 +1,15 @@
 <div data-ng-controller="VideoViewDialogController">
     <div class="modal-header">
-        <h3>{{deviceName}} Video</h3>
+        <h3>
+          {{deviceName}} Video&nbsp;&nbsp;
+          <i class="fa fa-spinner fa-spin" data-ng-show="!error"></i>
+        </h3>
     </div>
     <div class="modal-body">
         <mjpeg url="videoUrl"></mjpeg>
+        <div data-ng-show="error" style="margin-top: 10px;">
+          <div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;&nbsp;{{error}}</div>
+        </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-warning" ng-click="close()">Close</button>
