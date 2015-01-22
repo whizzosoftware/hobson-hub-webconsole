@@ -246,7 +246,7 @@
                   <label>Event</label>
                 </div>
                 <div class="col-md-9">
-                  <select class="form-control" ng-model="state.event.type" ng-change="onSelectEventType()">
+                  <select class="form-control" ng-model="state.event.type">
                     <option value="variableUpdate">When the device...</option>
                   </select>
                 </div>
@@ -255,7 +255,7 @@
                 <div class="col-md-3">
                 </div>
                 <div class="col-md-9">
-                  <select class="form-control" ng-model="state.event.device" ng-options="id as device.name for (id,device) in devices" ng-disabled="event.device === 'none'" ng-change="onSelectEventDevice()">
+                  <select class="form-control" ng-model="state.event.device" ng-options="id as device.name for (id,device) in devices">
                   </select>
                 </div>
               </div>
@@ -263,7 +263,7 @@
                 <div class="col-md-3">
                 </div>
                 <div class="col-md-9">
-                  <select class="form-control" ng-model="state.event.changeId" ng-options="id as name for (id,name) in deviceEvents" ng-disabled="event.changeId === 'none'" ng-change="onSelectEventDeviceEvent()">
+                  <select class="form-control" ng-model="state.event.changeId" ng-options="id as name for (id,name) in deviceEvents" ng-disabled="event.changeId === 'none'">
                   </select>
                 </div>
               </div>

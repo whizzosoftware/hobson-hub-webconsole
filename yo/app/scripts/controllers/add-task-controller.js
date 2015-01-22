@@ -34,39 +34,53 @@ angular.module('hobsonApp').
         DialogContextService.currentModalInstance().dismiss();
       };
 
-      $scope.onSelectEventType = function () {
-        DevicesService.getDevices($scope.topLevel.links.devices).then(function (results) {
-          if (results.length > 0) {
-            $scope.devices = {};
-            for (var ix in results) {
-              var device = results[ix];
-              $scope.devices[device.id] = device;
-            }
-            $scope.event.device = null;
-          }
-        });
-      };
-
-      $scope.onSelectEventDevice = function () {
-        var device = $scope.devices[$scope.state.event.device];
-        DevicesService.getDeviceVariableEvents(device.links.variableEvents).then(function (results) {
-          if (results.length > 0) {
-            $scope.deviceEvents = {};
-            for (var vid in results) {
-              var desc = createDescriptionForChangeId(results[vid]);
-              if (desc) {
-                $scope.deviceEvents[results[vid]] = desc;
+      $scope.$watch('state.event.type', function(value) {
+        if (value === 'variableUpdate') {
+          DevicesService.getDevices($scope.topLevel.links.devices).then(function(results) {
+            if (results.length > 0) {
+              $scope.devices = {};
+              for (var ix in results) {
+                var device = results[ix];
+                $scope.devices[device.id] = device;
               }
+              loadDeviceVariables($scope.state.event.device);
             }
-            $scope.event.changeId = null;
-          } else {
-            $scope.deviceEvents = {'none': 'No device events found'};
-            $scope.event.changeId = 'none';
-          }
-        });
-      };
+          });
+        }
+      });
 
-      $scope.onSelectEventDeviceEvent = function () {
+      $scope.$watch('state.event.device', function(deviceId) {
+        if (deviceId && deviceId !== 'none') {
+          var device = $scope.devices[deviceId];
+          if (device) {
+            loadDeviceVariables($scope.state.event.device);
+          }
+        }
+      });
+
+      var loadDeviceVariables = function(deviceId) {
+        if (deviceId) {
+          var device = $scope.devices[deviceId];
+          if (device) {
+            DevicesService.getDevice(device.links.self).then(function (deviceDetails) {
+              DevicesService.getDeviceVariableEvents(deviceDetails.links.variableEvents).then(function (results) {
+                if (results.length > 0) {
+                  $scope.deviceEvents = {};
+                  for (var vid in results) {
+                    var desc = createDescriptionForChangeId(results[vid]);
+                    if (desc) {
+                      $scope.deviceEvents[results[vid]] = desc;
+                    }
+                  }
+                  $scope.event.changeId = null;
+                } else {
+                  $scope.deviceEvents = {'none': 'No device events found'};
+                  $scope.event.changeId = 'none';
+                }
+              });
+            });
+          }
+        }
       };
 
       $scope.onAddAction = function () {
@@ -156,6 +170,14 @@ angular.module('hobsonApp').
           // parse the start date
           if (c.start) {
             state.startDate = moment(c.start, 'YYYYMMDDTHHmmss').toDate();
+          }
+
+          if (c.event) {
+            state.event = {
+              type: c.event,
+              device: c.deviceId,
+              changeId: c.changeId
+            };
           }
 
           // if there is a sunOffset key, populate the state with its information

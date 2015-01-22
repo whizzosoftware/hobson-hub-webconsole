@@ -3,6 +3,12 @@
 angular.module('hobsonApp').
   controller('AddActionController', ['$scope', 'PluginsService', 'DevicesService', 'ActionsService', 'DialogContextService',
     function ($scope, PluginsService, DevicesService, ActionsService, DialogContextService) {
+      var deviceFormOptions;
+      var commandFormOptions;
+      var commandEnumeration;
+      var commandParamField;
+      var lastLoadedDeviceId;
+      var devicesLoaded = false;
 
       $scope.actionArg = null;
       $scope.actionTypes = {};
@@ -54,13 +60,6 @@ angular.module('hobsonApp').
               // build a form from the action meta info
               $scope.formFields = [];
 
-              var hadDeviceKey = false;
-              var hadCommandKey = false;
-              var deviceFormOptions;
-              var commandFormOptions;
-              var commandEnumeration;
-              var commandParamField;
-
               for (var i=0; i < response.metaOrder.length; i++) {
                 var key = response.metaOrder[i];
                 var prop = response.meta[key];
@@ -81,13 +80,11 @@ angular.module('hobsonApp').
                   formOptions.label = 'Device'; // change Device ID -> Device since we're giving the user a dropdown
                   formOptions.options = [];
                   deviceFormOptions = formOptions.options;
-                  hadDeviceKey = true;
                 } else if (key === 'commandId' && prop.type === 'ENUMERATION') {
                   formOptions.type = 'select';
                   formOptions.options = [];
                   commandFormOptions = formOptions.options;
                   commandEnumeration = prop.enumValues;
-                  hadCommandKey = true;
 
                   // add the command parameter field (hidden by default)
                   commandParamField = {
@@ -107,37 +104,15 @@ angular.module('hobsonApp').
 
                 // add the form field
                 $scope.formFields.push(formOptions);
-              }
 
-              // if there was a deviceId key, load the device list
-              if (hadDeviceKey) {
-                DevicesService.getDevices($scope.topLevel.links.devices).then(function (results) {
-                  $scope.devices = {};
-                  for (var i in results) {
-                    var device = results[i];
-                    $scope.devices[device.id] = device;
-                    deviceFormOptions.push({name: device.name, value: device.id});
-                  }
+                // add a watch for deviceId changes
+                $scope.$watch('formData.deviceId', function(deviceId) {
+                  loadDevice(deviceId);
                 });
-              }
 
-              if (hadCommandKey) {
-                $scope.$watch('formData.deviceId', function (deviceId) {
-                  if (deviceId) {
-                    $scope.formData.pluginId = $scope.devices[$scope.formData.deviceId].pluginId;
-                    DevicesService.getDevice($scope.devices[deviceId].links.self).then(function (results) {
-                      commandFormOptions.length = 0;
-                      for (var commandId in commandEnumeration) {
-                        var ce = commandEnumeration[commandId];
-                        if (!ce.requiredDeviceVariable || results.variables[ce.requiredDeviceVariable]) {
-                          commandFormOptions.push({name: ce.name, value: commandId});
-                        }
-                      }
-                    });
-                  }
-                });
+                // add a watch for commandId changes
                 $scope.$watch('formData.commandId', function (commandId) {
-                  if (commandId) {
+                  if (commandId && commandEnumeration) {
                     if (commandEnumeration[commandId].param) {
                       var param = commandEnumeration[commandId].param;
                       commandParamField.label = param.name;
@@ -162,10 +137,48 @@ angular.module('hobsonApp').
                     }
                   }
                 });
+
+                if (newValue === 'sendDeviceCommand') {
+                  loadDevices();
+                }
               }
             });
           }
         });
+
+        var loadDevices = function() {
+          if (!devicesLoaded) {
+            devicesLoaded = true;
+            DevicesService.getDevices($scope.topLevel.links.devices).then(function (results) {
+              $scope.devices = {};
+              deviceFormOptions.length = 0;
+              for (var i in results) {
+                var device = results[i];
+                $scope.devices[device.id] = device;
+                deviceFormOptions.push({name: device.name, value: device.id});
+              }
+              if ($scope.formData.deviceId) {
+                loadDevice($scope.formData.deviceId);
+              }
+            });
+          }
+        };
+
+        var loadDevice = function(deviceId) {
+          if (deviceId && $scope.devices && lastLoadedDeviceId !== deviceId) {
+            lastLoadedDeviceId = deviceId;
+            $scope.formData.pluginId = $scope.devices[$scope.formData.deviceId].pluginId;
+            DevicesService.getDevice($scope.devices[deviceId].links.self).then(function (results) {
+              commandFormOptions.length = 0;
+              for (var commandId in commandEnumeration) {
+                var ce = commandEnumeration[commandId];
+                if (!ce.requiredDeviceVariable || results.variables[ce.requiredDeviceVariable]) {
+                  commandFormOptions.push({name: ce.name, value: commandId});
+                }
+              }
+            });
+          }
+        };
 
         $scope.$on('spectrum-hide', function(event) {
           $scope.formData.param = event.targetScope.color.replace(/ /g,'');
@@ -179,7 +192,11 @@ angular.module('hobsonApp').
           $scope.pluginId = $scope.actionArg.pluginId;
           $scope.actionId = $scope.actionArg.actionId;
           $scope.actionName = $scope.actionArg.name;
-          $scope.properties = $scope.actionArg.properties;
+          if ($scope.actionArg.properties) {
+            for (var key in $scope.actionArg.properties) {
+              $scope.formData[key] = $scope.actionArg.properties[key];
+            }
+          }
         }
         DialogContextService.clearParams();
       });

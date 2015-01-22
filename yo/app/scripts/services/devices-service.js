@@ -24,7 +24,6 @@ angular.module('hobsonApp').
 
             var setDeviceVariable = function(link, val) {
                 var entity = '{"value": ' + val + '}';
-                console.debug('PUT ' + link + ': ' + entity);
                 return $http.put(link, entity).then(function(response) {
                     // poll for status
                     return PollingService.poll(function() {
@@ -34,7 +33,6 @@ angular.module('hobsonApp').
                         }
                         // make the polling HTTP call
                         return $http.get(response.headers('Location'), config).then(function(data) {
-                            console.debug('poll status: ', data);
                             // if we get back a 200, then check the value
                             if (data.status === 200) {
                                 return (data.data.value === val);
@@ -61,7 +59,6 @@ angular.module('hobsonApp').
             };
 
             var getDeviceConfig = function(link) {
-                console.debug('getDeviceConfig: ' + link);
                 return $http.get(link).then(function(response) {
                     console.debug(response.data);
                     return response.data;
@@ -69,22 +66,18 @@ angular.module('hobsonApp').
             };
 
             var getDeviceVariableEvents = function(link) {
-                console.debug('getDeviceVariableEvents: ' + link);
                 return $http.get(link).then(function(response) {
-                    console.debug(response.data);
                     return response.data;
                 });
             };
 
             var setDeviceConfig = function(link, val) {
                 var json = JSON.stringify(val);
-                console.debug('PUT ' + link + ': ' + json);
                 return $http.put(link, json);
             };
 
             var enableDeviceTelemetry = function(link, val) {
                 var json = JSON.stringify({value: val});
-                console.debug('PUT ' + link + ': ' + json);
                 return $http.put(link, json);
             };
 
