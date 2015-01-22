@@ -5,19 +5,25 @@ angular.module('hobsonApp').
     function($scope, $q, $interval, AppData, ApiService, PluginsService, DialogContextService, $modal, toastr) {
         var refreshInterval;
 
-        var setPlugins = function(plugins) {
+        $scope.state = {
+          includeFrameworkPlugins: false
+        };
+
+        var setPlugins = function(plugins, includeRemote) {
             $scope.numUpdatesAvailable = PluginsService.numUpdates();
             $scope.numDevicePlugins = 0;
             $scope.notConfigured = PluginsService.notConfigured();
             $scope.failed = PluginsService.failed();
             $scope.installed = [];
-            $scope.available = [];
+            if (includeRemote) {
+              $scope.available = [];
+            }
             $scope.setupComplete = false;
             plugins.forEach(function(plugin) {
-                if (plugin.currentVersion && (plugin.type === 'PLUGIN' || $scope.includeFrameworkPlugins || plugin.links.update)) {
+                if (plugin.currentVersion && (plugin.type === 'PLUGIN' || $scope.state.includeFrameworkPlugins || plugin.links.update)) {
                     $scope.installed.push(plugin);
                 }
-                if (plugin.status.status === 'NOT_INSTALLED' && plugin.type === 'PLUGIN') {
+                if (includeRemote && plugin.status.status === 'NOT_INSTALLED' && plugin.type === 'PLUGIN') {
                     $scope.available.push(plugin);
                 }
             });
@@ -27,6 +33,10 @@ angular.module('hobsonApp').
                 $scope.availableMsg = 'There are ' + $scope.numUpdatesAvailable + ' plugin updates available.';
             }
         };
+
+        $scope.$watch('state.includeFrameworkPlugins', function() {
+          $scope.refresh(false);
+        });
 
         $scope.reloadPlugin = function(plugin) {
             plugin.pendingReload = true;
@@ -57,7 +67,7 @@ angular.module('hobsonApp').
             PluginsService.install(plugin).then(function() {
                 // the state of the plugins has changed, refresh
                 $scope.loadingPromise = PluginsService.getPlugins(true, true);
-                $scope.loadingPromise.then(setPlugins);
+                $scope.loadingPromise.then(setPlugins, true);
 
                 // show the user a non-modal notification
                 toastr.success(plugin.name + ' has been installed successfully.', null, {
@@ -85,7 +95,7 @@ angular.module('hobsonApp').
             PluginsService.update(plugin).then(function() {
                 // the state of the plugins has changed, refresh
                 $scope.loadingPromise = PluginsService.getPlugins(true, true);
-                $scope.loadingPromise.then(setPlugins);
+                $scope.loadingPromise.then(setPlugins, true);
 
                 // show the user a non-modal notification
                 toastr.success(plugin.name + ' has been updated successfully', null, {
@@ -140,7 +150,9 @@ angular.module('hobsonApp').
          * Refreshes the list of plugins.
          */
         $scope.refresh = function(includeRemotePlugins) {
-            $scope.loadPlugins($scope.topLevel.links.plugins, includeRemotePlugins, false);
+            if ($scope.topLevel) {
+              $scope.loadPlugins($scope.topLevel.links.plugins, includeRemotePlugins);
+            }
         };
 
         $scope.$on('$destroy', function() {
@@ -152,12 +164,12 @@ angular.module('hobsonApp').
          * Load the list of plugins from the server.
          *
          * @param pluginsUri
-         * @param includeFrameworkPlugins
+         * @param includeRemotePlugins
          */
-        $scope.loadPlugins = function(pluginsUri, includeRemotePlugins, includeFrameworkPlugins) {
-            $scope.includeFrameworkPlugins = includeFrameworkPlugins;
-            $scope.loadingPromise = PluginsService.getPlugins(pluginsUri, includeRemotePlugins, true);
-            $scope.loadingPromise.then(setPlugins);
+        $scope.loadPlugins = function(pluginsUri, includeRemotePlugins) {
+            PluginsService.getPlugins(pluginsUri, includeRemotePlugins, true).then(function(response) {
+              setPlugins(response, includeRemotePlugins);
+            });
         };
 
         AppData.currentTab = 'plugins';
@@ -165,7 +177,6 @@ angular.module('hobsonApp').
         $scope.installed = [];
         $scope.available = [];
         $scope.numUpdatesAvailable = 0;
-        $scope.topLevel = null;
 
         $scope.loadTopLevel();
     }]);

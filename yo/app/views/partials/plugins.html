@@ -22,8 +22,7 @@
             <th>
             </th>
           </tr>
-          <tr data-ng-repeat="plugin in installed"
-                  data-ng-class="{warning: plugin.status.status === 'FAILED'}">
+          <tr data-ng-repeat="plugin in installed" data-ng-class="{warning: plugin.status.status === 'FAILED'}">
             <td><h5>{{plugin.name}}<br/><small>{{plugin.description}}</small></h5></td>
             <td style="vertical-align: middle;">{{plugin.currentVersion}}</td>
             <td style="vertical-align: middle;">
@@ -46,7 +45,8 @@
       </tab>
       <tab heading="Available">
         <br/>
-        <table class="table table-striped">
+        <div class="alert alert-info" role="alert" data-ng-show="available.length == 0">There are currently no new device plugins available.</div>
+        <table ng-if="available.length > 0" class="table table-striped">
             <tr><th>Name</th><th>Version</th><th></th></tr>
             <tr data-ng-repeat="plugin in available">
                 <td><h5>{{plugin.name}}<br/><small>{{plugin.description}}</small></h5></td>
@@ -58,7 +58,7 @@
         </table>
       </tab>
       <span class="pull-right">
-        <input type="checkbox" data-ng-model="includeFrameworkPlugins" data-ng-change="loadPlugins(topLevel.links.plugins,includeFrameworkPlugins)"/>
+        <input type="checkbox" ng-model="state.includeFrameworkPlugins"/>
         Show All Plugins
       </span>
     </tabset>

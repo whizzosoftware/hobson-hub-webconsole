@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('hobsonApp').
-    controller('SettingsController', ['$scope', '$modal', 'AppData', 'SettingsService', 'DialogContextService', 'toastr',
-        function($scope, $modal, AppData, SettingsService, DialogContextService, toastr) {
+    controller('SettingsController', ['$scope', '$modal', 'AppData', 'ApiService', 'SettingsService', 'DialogContextService', 'toastr',
+        function($scope, $modal, AppData, ApiService, SettingsService, DialogContextService, toastr) {
             $scope.shuttingDown = false;
             $scope.isShutdownCollapsed = true;
 
@@ -19,7 +19,7 @@ angular.module('hobsonApp').
 
             $scope.shutdown = function() {
                 $scope.shuttingDown = true;
-                SettingsService.shutdown().then(function() {
+                SettingsService.shutdown($scope.topLevel.links.shutdown).then(function() {
                     $scope.shuttingDown = false;
                     $scope.isCollapsed = true;
                     toastr.success('The hub has begun shutting down.', null, {
@@ -61,7 +61,7 @@ angular.module('hobsonApp').
                   config.location.longitude = parseFloat($scope.longitude);
                 }
 
-                SettingsService.setConfiguration(config).then(function() {
+                SettingsService.setConfiguration($scope.topLevel.links.configuration, config).then(function() {
                   toastr.success('The settings have been saved.', null, {
                     closeButton: true
                   });
@@ -92,6 +92,10 @@ angular.module('hobsonApp').
 
             AppData.currentTab = 'settings';
 
-            $scope.loadingPromise = SettingsService.getConfiguration();
-            $scope.loadingPromise.then(setConfiguration);
+            ApiService.topLevel().then(function(topLevel) {
+              $scope.topLevel = topLevel;
+              SettingsService.getConfiguration(topLevel.links.configuration).then(function(result) {
+                setConfiguration(result);
+              });
+            });
         }]);
