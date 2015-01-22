@@ -104,43 +104,43 @@ angular.module('hobsonApp').
 
                 // add the form field
                 $scope.formFields.push(formOptions);
+              }
 
-                // add a watch for deviceId changes
-                $scope.$watch('formData.deviceId', function(deviceId) {
-                  loadDevice(deviceId);
-                });
+              // add a watch for deviceId changes
+              $scope.$watch('formData.deviceId', function(deviceId) {
+                loadDevice(deviceId);
+              });
 
-                // add a watch for commandId changes
-                $scope.$watch('formData.commandId', function (commandId) {
-                  if (commandId && commandEnumeration) {
-                    if (commandEnumeration[commandId].param) {
-                      var param = commandEnumeration[commandId].param;
-                      commandParamField.label = param.name;
-                      commandParamField.description = param.description;
-                      switch (param.type) {
-                        case 'BOOLEAN':
-                          commandParamField.type = 'checkbox';
-                          break;
-                        case 'NUMBER':
-                          commandParamField.type = 'number';
-                          break;
-                        case 'COLOR':
-                          commandParamField.template = '<div class="form-group"><label>Color</label><br/><spectrum-colorpicker ng-model="color" options="{showInput: false, preferredFormat: \'rgb\'}"></spectrum-colorpicker></div>';
-                          break;
-                        default:
-                          commandParamField.type = 'text';
-                          break;
-                      }
-                      commandParamField.hide = false;
-                    } else {
-                      commandParamField.hide = true;
+              // add a watch for commandId changes
+              $scope.$watch('formData.commandId', function (commandId) {
+                if (commandId && commandEnumeration) {
+                  if (commandEnumeration[commandId].param) {
+                    var param = commandEnumeration[commandId].param;
+                    commandParamField.label = param.name;
+                    commandParamField.description = param.description;
+                    switch (param.type) {
+                      case 'BOOLEAN':
+                        commandParamField.type = 'checkbox';
+                        break;
+                      case 'NUMBER':
+                        commandParamField.type = 'number';
+                        break;
+                      case 'COLOR':
+                        commandParamField.template = '<div class="form-group"><label>Color</label><br/><spectrum-colorpicker ng-model="color" options="{showInput: false, preferredFormat: \'rgb\'}"></spectrum-colorpicker></div>';
+                        break;
+                      default:
+                        commandParamField.type = 'text';
+                        break;
                     }
+                    commandParamField.hide = false;
+                  } else {
+                    commandParamField.hide = true;
                   }
-                });
-
-                if (newValue === 'sendDeviceCommand') {
-                  loadDevices();
                 }
+              });
+
+              if (newValue === 'sendDeviceCommand') {
+                loadDevices();
               }
             });
           }
@@ -193,8 +193,8 @@ angular.module('hobsonApp').
           $scope.actionId = $scope.actionArg.actionId;
           $scope.actionName = $scope.actionArg.name;
           if ($scope.actionArg.properties) {
-            for (var key in $scope.actionArg.properties) {
-              $scope.formData[key] = $scope.actionArg.properties[key];
+            for (var keyName in $scope.actionArg.properties) {
+              $scope.formData[keyName] = $scope.actionArg.properties[keyName];
             }
           }
         }
