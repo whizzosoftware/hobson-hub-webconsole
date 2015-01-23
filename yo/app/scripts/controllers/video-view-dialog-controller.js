@@ -7,7 +7,7 @@ angular.module('hobsonApp').
             var videoUrl = DialogContextService.getParams().videoUrl;
             $http.head(videoUrl).success(function() {
               $scope.videoUrl = videoUrl;
-            }).error(function(data, status, headers, config) {
+            }).error(function(data, status) {
               if (status === 401) {
                 $scope.error = 'Hobson is not authorized to access this device\'s stream. Please make sure you have entered the correct username and password in the device\'s settings.';
               } else {
