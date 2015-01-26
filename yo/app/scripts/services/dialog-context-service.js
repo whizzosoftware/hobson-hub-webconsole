@@ -28,7 +28,6 @@ angular.module('hobsonApp').
             };
 
             var currentModalInstance = function() {
-                console.debug(modalInstances);
                 return modalInstances[modalInstances.length - 1];
             };
 

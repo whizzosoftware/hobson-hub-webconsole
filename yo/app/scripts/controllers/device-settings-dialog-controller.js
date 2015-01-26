@@ -13,36 +13,44 @@ angular.module('hobsonApp').
             };
 
             var setDeviceConfig = function(config) {
-                console.debug('config = ', config);
-
                 for (var key in config) {
-                    var prop = config[key];
-                    var type;
+                  var prop = config[key];
+                  var data = {
+                      key: key,
+                      label: prop.name,
+                      description: prop.description,
+                      required: false,
+                      disabled: false
+                    };
 
-                    switch (prop.type) {
+                    if (prop.enumValues) {
+                      data.type = 'select';
+                      data.options = [];
+                      for (var enumKey in prop.enumValues) {
+                        var name = prop.enumValues[enumKey].name;
+                        data.options.push({
+                          name: name,
+                          value: enumKey
+                        });
+                      }
+                    } else {
+                      switch (prop.type) {
                         case 'BOOLEAN':
-                            type = 'checkbox';
-                            break;
+                          data.type = 'checkbox';
+                          break;
                         case 'NUMBER':
-                            type = 'number';
-                            break;
+                          data.type = 'number';
+                          break;
                         case 'PASSWORD':
-                            type = 'password';
-                            break;
+                          data.type = 'password';
+                          break;
                         default:
-                            type = 'text';
-                            break;
+                          data.type = 'text';
+                          break;
+                      }
                     }
 
-                    $scope.formFields.push({
-                        key: key,
-                        type: type,
-                        label: prop.name,
-                        description: prop.description,
-                        required: false,
-                        disabled: false
-                    });
-
+                    $scope.formFields.push(data);
                     $scope.formData[key] = prop.value;
                 }
             };

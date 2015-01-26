@@ -60,7 +60,6 @@ angular.module('hobsonApp').
 
             var getDeviceConfig = function(link) {
                 return $http.get(link).then(function(response) {
-                    console.debug(response.data);
                     return response.data;
                 });
             };
