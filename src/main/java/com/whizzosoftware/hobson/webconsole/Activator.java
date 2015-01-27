@@ -9,7 +9,10 @@ package com.whizzosoftware.hobson.webconsole;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.restlet.Application;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -20,15 +23,23 @@ import java.util.Hashtable;
  * @author Dan Noguerol
  */
 public class Activator implements BundleActivator {
+    private static final Logger logger = LoggerFactory.getLogger(Activator.class);
+
+    private ServiceRegistration webAppRegistration;
+
     @Override
     public synchronized void start(BundleContext context) throws Exception {
+        logger.debug("Starting webconsole bundle");
+
         // add Restlet application for web console
         Dictionary props = new Hashtable();
         props.put("path", "/console");
-        context.registerService(Application.class.getName(), new WebConsoleApplication(), props);
+        webAppRegistration = context.registerService(Application.class.getName(), new WebConsoleApplication(), props);
     }
 
     @Override
     public synchronized void stop(BundleContext context) {
+        logger.debug("Stopping webconsole bundle");
+        webAppRegistration.unregister();
     }
 }
