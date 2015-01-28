@@ -302,7 +302,7 @@ angular.module('hobsonApp').
           // set bymonthday
           if (freq === 1) {
             if (state.recurrence.monthRepeatType === 'bymonthday') {
-              options.bymonthday = parseInt(state.recurrence.dayOfMonth);
+              options.bymonthday = parseInt(state.recurrence.dayOfMonth.name);
             } else if (state.recurrence.monthRepeatType === 'byweekday') {
               options.bysetpos = parseInt(state.recurrence.weekdayOfMonthIndex);
               options.byweekday = [];
@@ -327,7 +327,7 @@ angular.module('hobsonApp').
           // set byyearday
           if (freq === 0) {
             if (state.recurrence.yearRepeatType === 'monthDay') {
-              options.bymonth = monthsOfYear.indexOf(state.recurrence.monthOfYear.name) + 1;
+              options.bymonth = getMonthIndexByName(state.recurrence.monthOfYear.name);
               options.bymonthday = parseInt(state.recurrence.dayOfMonth.name);
             } else if (state.recurrence.yearRepeatType === 'monthRelativeWeekday') {
               options.bymonth = monthsOfYear.indexOf(state.recurrence.monthOfYear.name) + 1;
@@ -355,6 +355,16 @@ angular.module('hobsonApp').
         } else {
           return null;
         }
+      };
+
+      var getMonthIndexByName = function(name) {
+        for (var i=0; i < $scope.monthsOfYear.length; i++) {
+          var o = $scope.monthsOfYear[i];
+          if (o.name === name) {
+            return i+1;
+          }
+        }
+        return 0;
       };
 
       if (DialogContextService.getParams()) {
@@ -388,6 +398,7 @@ angular.module('hobsonApp').
             endType: 'never',
             count: 30,
             endDate: new Date(),
+            weekDayOrder: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             weekDays: {
               'Mon': false,
               'Tue': false,

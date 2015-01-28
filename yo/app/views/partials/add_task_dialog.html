@@ -154,25 +154,25 @@
                         <div ng-show="state.recurrence.type == '0'">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <input class="form-control" type="radio" ng-model="recurrence.yearRepeatType" value="monthDay" checked>
+                                    <input class="form-control" type="radio" ng-model="state.recurrence.yearRepeatType" value="monthDay" checked>
                                 </div>
                                 <div class="col-sm-1">
                                     every
                                 </div>
                                 <div class="col-sm-4">
-                                    <select class="form-control" ng-model="recurrence.monthOfYear" ng-options="month.name for month in monthsOfYear"></select>
+                                    <select class="form-control" ng-model="state.recurrence.monthOfYear" ng-options="month.name for month in monthsOfYear"></select>
                                 </div>
                                 <div class="col-sm-3">
-                                    <select class="form-control" ng-model="recurrence.dayOfMonth" ng-options="day.name for day in daysOfMonth"></select>
+                                    <select class="form-control" ng-model="state.recurrence.dayOfMonth" ng-options="day.name for day in daysOfMonth"></select>
                                 </div>
                             </div>
                         </div>
-                        <div ng-show="recurrence.repeat == '2'">
-                            <label class="checkbox-inline" ng-repeat="(day,enabled) in byWeekDay">
-                                <input type="checkbox" ng-model="byWeekDay[day]">{{day}}
+                        <div ng-show="state.recurrence.type == '2'">
+                            <label class="checkbox-inline" ng-repeat="day in state.recurrence.weekDayOrder">
+                                <input type="checkbox" ng-model="state.recurrence.weekDays[day]">{{day}}
                             </label>
                         </div>
-                        <div ng-show="recurrence.repeat == '1'">
+                        <div ng-show="state.recurrence.type == '1'">
                             <div class="row">
                                 <div class="col-xs-2">
                                     <input class="form-control" type="radio" ng-model="state.recurrence.monthRepeatType" value="bymonthday" checked>
@@ -195,7 +195,7 @@
                                     the
                                 </div>
                                 <div class="col-sm-3">
-                                    <select class="form-control" ng-model="recurrence.weekdayOfMonthIndex">
+                                    <select class="form-control" ng-model="state.recurrence.weekdayOfMonthIndex">
                                         <option value="1">first</option>
                                         <option value="2">second</option>
                                         <option value="3">third</option>
@@ -204,7 +204,7 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
-                                    <select class="form-control" ng-model="recurrence.weekdayOfMonth" ng-options="day.name for day in daysOfWeek"></select>
+                                    <select class="form-control" ng-model="state.recurrence.weekdayOfMonth" ng-options="day.name for day in daysOfWeek"></select>
                                 </div>
                                 <div class="col-sm-3">
                                     of the month
