@@ -9,12 +9,13 @@ angular.module('hobsonApp').
                 $scope.tasks = tasks;
 
                 VariablesService.getGlobalVariables($scope.topLevel.links.globalVariables).then(function(results) {
+                    var date;
                     if (results.sunrise.value) {
-                      var date = createDate(results.sunrise.value);
+                      date = createDate(results.sunrise.value);
                       $scope.sunrise = date.toLocaleTimeString().replace(/:\d{2}\s/,' ');
                     }
                     if (results.sunset.value) {
-                      var date = createDate(results.sunset.value);
+                      date = createDate(results.sunset.value);
                       $scope.sunset = date.toLocaleTimeString().replace(/:\d{2}\s/,' ');
                     }
                 });

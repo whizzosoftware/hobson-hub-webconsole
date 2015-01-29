@@ -14,27 +14,27 @@ describe('Controller: AddTasksController', function () {
       return $controller('AddTasksController', {
         '$scope': scope,
         'daysOfWeek': [
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday',
-          'Sunday'
+          {name: 'Monday'},
+          {name: 'Tuesday'},
+          {name: 'Wednesday'},
+          {name: 'Thursday'},
+          {name: 'Friday'},
+          {name: 'Saturday'},
+          {name: 'Sunday'}
         ],
         'monthsOfYear': [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December'
+          {name: 'January'},
+          {name: 'February'},
+          {name: 'March'},
+          {name: 'April'},
+          {name: 'May'},
+          {name: 'June'},
+          {name: 'July'},
+          {name: 'August'},
+          {name: 'September'},
+          {name: 'October'},
+          {name: 'November'},
+          {name: 'December'}
         ]
       });
     };
@@ -219,7 +219,9 @@ describe('Controller: AddTasksController', function () {
         interval: 1,
         endType: 'never',
         monthRepeatType: 'bymonthday',
-        dayOfMonth: 15
+        dayOfMonth: {
+          name: '15'
+        }
       }
     });
     expect(task.conditions[0].recurrence).toBe('FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=15');

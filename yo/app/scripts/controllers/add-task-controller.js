@@ -21,13 +21,6 @@ angular.module('hobsonApp').
         count: 30,
         endDate: new Date(),
         weekDays: {
-          'Mon': false,
-          'Tue': false,
-          'Wed': false,
-          'Thu': false,
-          'Fri': false,
-          'Sat': false,
-          'Sun': false
         }
       };
 
@@ -252,27 +245,27 @@ angular.module('hobsonApp').
             'Sat': rrule.byweekday.indexOf(RRule.SA) > -1,
             'Sun': rrule.byweekday.indexOf(RRule.SU) > -1
           };
+        } else {
+          recurrence.weekDays = {};
         }
 
         if (rrule.freq === RRule.MONTHLY) {
           if (rrule.bymonthday) {
             recurrence.monthRepeatType = 'bymonthday';
-            recurrence.dayOfMonth = rrule.bymonthday;
+            recurrence.dayOfMonth = {
+              name: rrule.bymonthday.toString()
+            };
           } else if (rrule.bysetpos) {
             recurrence.monthRepeatType = 'byweekday';
             recurrence.weekdayOfMonthIndex = rrule.bysetpos;
-            recurrence.weekdayOfMonth = {
-              name: $scope.daysOfWeek[rrule.byweekday[0].weekday]
-            };
+            recurrence.weekdayOfMonth = $scope.daysOfWeek[rrule.byweekday[0].weekday];
           }
         }
 
         if (rrule.freq === RRule.YEARLY) {
           if (rrule.bymonth && rrule.bymonthday) {
             recurrence.yearRepeatType = 'monthDay';
-            recurrence.monthOfYear = {
-              name: monthsOfYear[rrule.bymonth - 1]
-            };
+            recurrence.monthOfYear = monthsOfYear[rrule.bymonth - 1];
             recurrence.dayOfMonth = {
               name: rrule.bymonthday.toString()
             };
@@ -349,7 +342,7 @@ angular.module('hobsonApp').
               options.bymonth = getMonthIndexByName(state.recurrence.monthOfYear.name);
               options.bymonthday = parseInt(state.recurrence.dayOfMonth.name);
             } else if (state.recurrence.yearRepeatType === 'monthRelativeWeekday') {
-              options.bymonth = monthsOfYear.indexOf(state.recurrence.monthOfYear.name) + 1;
+              options.bymonth = getMonthIndexByName(state.recurrence.monthOfYear.name);
               options.byday = '2TU';
             }
           }
