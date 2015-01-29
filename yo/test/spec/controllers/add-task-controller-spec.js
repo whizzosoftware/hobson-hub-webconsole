@@ -369,7 +369,7 @@ describe('Controller: AddTasksController', function () {
     expect(state.recurrence.interval).toBe(3);
     expect(state.recurrence.endType).toBe('never');
     expect(state.recurrence.monthRepeatType).toBe('bymonthday');
-    expect(state.recurrence.dayOfMonth).toBe(15);
+    expect(state.recurrence.dayOfMonth.name).toBe('15');
     expect(state.startDate.getFullYear()).toBe(2014);
     expect(state.startDate.getMonth()).toBe(11);
     expect(state.startDate.getDate()).toBe(10);
