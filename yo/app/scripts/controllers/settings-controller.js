@@ -61,24 +61,17 @@ angular.module('hobsonApp').
                   config.location.longitude = parseFloat($scope.longitude);
                 }
 
-                SettingsService.setConfiguration($scope.topLevel.links.configuration, config).then(function() {
+                SettingsService.setConfiguration($scope.topLevel.links.configuration, config).success(function() {
                   toastr.success('The settings have been saved.', null, {
                     closeButton: true
                   });
+                }).error(function(data) {
+                  toastr.error('An error occurred saving settings: ' + data.message);
                 });
             };
 
             $scope.showLocation = function() {
                 window.open('https://www.google.com/maps/place/' + encodeURIComponent($scope.address));
-            };
-
-            $scope.onLogLevelChange = function(logLevel) {
-                console.debug('onLogLevelChange: ', logLevel);
-                SettingsService.setLogLevel(logLevel);
-                // show the user a non-modal notification
-                toastr.success('The log level has been changed.', null, {
-                    closeButton: true
-                });
             };
 
             $scope.viewLog = function() {
