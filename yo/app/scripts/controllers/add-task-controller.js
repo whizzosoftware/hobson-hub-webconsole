@@ -7,11 +7,28 @@ angular.module('hobsonApp').
       $scope.monthsOfYear = monthsOfYear;
       $scope.daysOfWeek = daysOfWeek;
       $scope.daysOfMonth = daysOfMonth;
+      $scope.weekDayOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
       $scope.devices = {'none': 'No devices found'};
       $scope.deviceEvents = {'none': 'No device events found'};
       $scope.event = {
         device: 'none',
         changeId: 'none'
+      };
+      var defaultRecurrence = {
+        type: -1,
+        interval: 1,
+        endType: 'never',
+        count: 30,
+        endDate: new Date(),
+        weekDays: {
+          'Mon': false,
+          'Tue': false,
+          'Wed': false,
+          'Thu': false,
+          'Fri': false,
+          'Sat': false,
+          'Sun': false
+        }
       };
 
       $scope.onAdd = function () {
@@ -198,6 +215,8 @@ angular.module('hobsonApp').
           // if there is a recurrence key, create the RRULE string
           if (c.recurrence) {
             state.recurrence = createRecurrenceStateFromRRULE(c.recurrence);
+          } else {
+            state.recurrence = defaultRecurrence;
           }
         }
 
@@ -392,23 +411,7 @@ angular.module('hobsonApp').
           sunOffsetType: 'SR',
           sunOffsetMod: 1,
           sunOffsetValue: 0,
-          recurrence: {
-            type: -1,
-            interval: 1,
-            endType: 'never',
-            count: 30,
-            endDate: new Date(),
-            weekDayOrder: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            weekDays: {
-              'Mon': false,
-              'Tue': false,
-              'Wed': false,
-              'Thu': false,
-              'Fri': false,
-              'Sat': false,
-              'Sun': false
-            }
-          },
+          recurrence: defaultRecurrence,
           event: {
             device: 'none',
             changeId: 'none'

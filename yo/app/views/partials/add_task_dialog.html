@@ -168,7 +168,7 @@
                             </div>
                         </div>
                         <div ng-show="state.recurrence.type == '2'">
-                            <label class="checkbox-inline" ng-repeat="day in state.recurrence.weekDayOrder">
+                            <label class="checkbox-inline" ng-repeat="day in weekDayOrder">
                                 <input type="checkbox" ng-model="state.recurrence.weekDays[day]">{{day}}
                             </label>
                         </div>
