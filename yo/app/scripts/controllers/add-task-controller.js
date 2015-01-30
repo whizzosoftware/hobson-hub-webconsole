@@ -139,7 +139,7 @@ angular.module('hobsonApp').
             if (state.sunOffsetValue > 0) {
               condition.sunOffset += (state.sunOffsetValue * state.sunOffsetMod);
             }
-            condition.start = $filter('date')(state.startDate, 'yyyyMMddT000000');
+            condition.start = moment(state.startDate).utc().format('YYYYMMDDTHHmmSS') + 'Z';
           } else {
             if (state.startDate && state.startTime) {
               var d = new Date(
@@ -150,7 +150,7 @@ angular.module('hobsonApp').
                 state.startTime.getMinutes(),
                 0
               );
-              condition.start = $filter('date')(d, 'yyyyMMddTHHmmss');
+              condition.start = moment(d).utc().format('YYYYMMDDTHHmmSS') + 'Z';
             }
           }
         // otherwise assume it's an event-based task
