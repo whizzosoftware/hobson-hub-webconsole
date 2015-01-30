@@ -11,23 +11,23 @@ angular.module('hobsonApp').
                 VariablesService.getGlobalVariables($scope.topLevel.links.globalVariables).then(function(results) {
                     var date;
                     if (results.sunrise.value) {
-                      date = createDate(results.sunrise.value);
+                      date = createDateFromTimeString(results.sunrise.value);
                       $scope.sunrise = date.toLocaleTimeString().replace(/:\d{2}\s/,' ');
                     }
                     if (results.sunset.value) {
-                      date = createDate(results.sunset.value);
+                      date = createDateFromTimeString(results.sunset.value);
                       $scope.sunset = date.toLocaleTimeString().replace(/:\d{2}\s/,' ');
                     }
                 });
             };
 
-            var createDate = function(s) {
+            var createDateFromTimeString = function(s) {
                 if (s) {
-                  // this is naively assuming that the date comes back in ISO8601 format for the local time zone
-                  var d = new Date();
-                  d.setHours(parseInt(s.substring(0, 2)));
-                  d.setMinutes(parseInt(s.substring(3, 5)));
-                  return d;
+                  var now = new Date();
+                  var month = now.getMonth() + 1;
+                  var date = now.getDate();
+                  var str = now.getFullYear() + '-' + (month < 10 ? '0' + month : month) + '-' + (date < 10 ? '0' + date : date) + ' ' + s;
+                  return moment(str).toDate();
                 } else {
                   return null;
                 }
