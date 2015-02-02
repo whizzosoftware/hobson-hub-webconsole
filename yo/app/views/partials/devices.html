@@ -4,7 +4,7 @@
   </div>
     <h1>Devices</h1>
     <br/>
-    <div class="alert alert-info" role="alert" data-ng-show="devices.length == 0">There are currently no devices. You will need to <a href="/index.html#plugins">install and configure plugins</a> in order for devices to show up here.</div>
+    <div class="alert alert-info" role="alert" data-ng-show="devices.length == 0">There are currently no devices. You will need to <a href="#/plugins">install and configure plugins</a> in order for devices to show up here.</div>
     <table ng-if="devices.length > 0" class="table table-striped">
         <tr><th width="5%"></th><th>Name</th><th></th><th width="10%"></th></tr>
         <tr data-ng-repeat="device in devices" ng-class="(device.preferredVariable && device.preferredVariable.value == null) ? 'warning' : ''">
