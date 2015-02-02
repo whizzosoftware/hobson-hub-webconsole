@@ -52,7 +52,7 @@ describe('Controller: AddTasksController', function () {
     expect(task.name).toBe('Foo');
     expect(task.provider).toBe('com.whizzosoftware.hobson.hub.hobson-hub-scheduler');
     expect(task.conditions.length).toBe(1);
-    expect(task.conditions[0].start).toBe('19700101T170000');
+    expect(task.conditions[0].start).toBe('19700102T000000Z');
   });
 
   it('test scheduled state with positive sunrise offset to task', function() {
@@ -70,7 +70,7 @@ describe('Controller: AddTasksController', function () {
     expect(task.name).toBe('Foo2');
     expect(task.provider).toBe('com.whizzosoftware.hobson.hub.hobson-hub-scheduler');
     expect(task.conditions.length).toBe(1);
-    expect(task.conditions[0].start).toBe('19700101T000000');
+    expect(task.conditions[0].start).toBe('19700102T000000Z');
     expect(task.conditions[0].sunOffset).toBe('SR30');
   });
 
@@ -89,7 +89,7 @@ describe('Controller: AddTasksController', function () {
     expect(task.name).toBe('Foo2');
     expect(task.provider).toBe('com.whizzosoftware.hobson.hub.hobson-hub-scheduler');
     expect(task.conditions.length).toBe(1);
-    expect(task.conditions[0].start).toBe('19700101T000000');
+    expect(task.conditions[0].start).toBe('19700102T000000Z');
     expect(task.conditions[0].sunOffset).toBe('SR-20');
   });
 
@@ -108,7 +108,7 @@ describe('Controller: AddTasksController', function () {
     expect(task.name).toBe('Foo2');
     expect(task.provider).toBe('com.whizzosoftware.hobson.hub.hobson-hub-scheduler');
     expect(task.conditions.length).toBe(1);
-    expect(task.conditions[0].start).toBe('19700101T000000');
+    expect(task.conditions[0].start).toBe('19700102T000000Z');
     expect(task.conditions[0].sunOffset).toBe('SS120');
   });
 
@@ -127,7 +127,7 @@ describe('Controller: AddTasksController', function () {
     expect(task.name).toBe('Foo2');
     expect(task.provider).toBe('com.whizzosoftware.hobson.hub.hobson-hub-scheduler');
     expect(task.conditions.length).toBe(1);
-    expect(task.conditions[0].start).toBe('19700101T000000');
+    expect(task.conditions[0].start).toBe('19700102T000000Z');
     expect(task.conditions[0].sunOffset).toBe('SS-10');
   });
 
