@@ -70,7 +70,7 @@ angular.module('hobsonApp').
                                 $scope.status.pendingTstatAutoPointUpdate = true;
                                 DevicesService.setDeviceVariable($scope.device.variables['targetTempF'].links.self, val).then(function() {
                                     $scope.status.pendingTstatAutoPointUpdate = false;
-                                    $scope.device.variables['targetAutoTempF'].value = val;
+                                    $scope.device.variables['targetTempF'].value = val;
                                 }, function() {
                                     $scope.status.pendingTstatAutoPointUpdate = false;
                                     $scope.status.autopoint = $scope.device.variables['targetTempF'].value;
