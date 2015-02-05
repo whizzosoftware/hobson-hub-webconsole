@@ -30,7 +30,7 @@
             </td>
             <td style="vertical-align: middle;" align="right">
               <button type="button" class="btn btn-sm btn-primary" ladda="plugin.pendingUpdate" data-style="zoom-in"
-                      data-ng-show="plugin.links.update" data-ng-click="update(plugin)">Update</button>
+                      data-ng-show="updates[plugin.id] != null" data-ng-click="update(plugin)">Update</button>
               <button type="button" data-ng-click="showSettings(plugin)"
                       ng-show="plugin.links.configuration" class="btn btn-sm btn-primary">
                 <span title="Settings" class="glyphicon glyphicon-cog"></span>

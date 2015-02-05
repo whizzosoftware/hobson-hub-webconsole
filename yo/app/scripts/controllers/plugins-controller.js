@@ -8,9 +8,10 @@ angular.module('hobsonApp').
         $scope.state = {
           includeFrameworkPlugins: false
         };
+        $scope.updates = {};
 
         var setPlugins = function(plugins, includeRemote) {
-            $scope.numUpdatesAvailable = PluginsService.numUpdates();
+            $scope.numUpdatesAvailable = 0;
             $scope.numDevicePlugins = 0;
             $scope.notConfigured = PluginsService.notConfigured();
             $scope.failed = PluginsService.failed();
@@ -20,14 +21,20 @@ angular.module('hobsonApp').
             }
             $scope.setupComplete = false;
             plugins.forEach(function(plugin) {
-                if (plugin.currentVersion && (plugin.type === 'PLUGIN' || $scope.state.includeFrameworkPlugins || plugin.links.update)) {
+                if (plugin.currentVersion && (plugin.type === 'PLUGIN' || $scope.state.includeFrameworkPlugins || plugin.links.update || $scope.updates[plugin.id])) {
                     $scope.installed.push(plugin);
+                    if (plugin.links && plugin.links.update) {
+                      $scope.updates[plugin.id] = plugin.links.update;
+                    }
+                    if ($scope.updates[plugin.id]) {
+                      $scope.numUpdatesAvailable++;
+                    }
                 }
                 if (includeRemote && plugin.status.status === 'NOT_INSTALLED' && plugin.type === 'PLUGIN') {
                     $scope.available.push(plugin);
                 }
             });
-            if (PluginsService.numUpdates() === 1) {
+            if ($scope.numUpdatesAvailable === 1) {
                 $scope.availableMsg = 'There is 1 plugin update available.';
             } else {
                 $scope.availableMsg = 'There are ' + $scope.numUpdatesAvailable + ' plugin updates available.';
@@ -93,6 +100,8 @@ angular.module('hobsonApp').
             plugin.pendingUpdate = true;
 
             PluginsService.update(plugin).then(function() {
+                $scope.updates[plugin.id] = null;
+
                 // the state of the plugins has changed, refresh
                 $scope.loadingPromise = PluginsService.getPlugins(true, true);
                 $scope.loadingPromise.then(setPlugins, true);
