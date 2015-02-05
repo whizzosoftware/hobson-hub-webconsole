@@ -17,7 +17,6 @@ angular.module('hobsonApp').
             $scope.$on('spectrum-hide', function() {
                 var newValue = $scope.status.color.replace(/ /g,'');
                 var oldValue = $scope.device.variables.color.value.replace(/ /g,'');
-                console.debug('Finished with color: ' + newValue + ', old value is ' + oldValue);
                 if (newValue !== oldValue) {
                     DevicesService.setDeviceVariable($scope.device.variables.color.links.self, '"' + newValue + '"');
                     $scope.device.variables.color.value = newValue;
@@ -25,7 +24,6 @@ angular.module('hobsonApp').
             });
 
             var setDevice = function(device) {
-                console.debug('device = ', device);
                 $scope.device = device;
 
                 if (device.variables.on) {
@@ -105,6 +103,14 @@ angular.module('hobsonApp').
                     $scope.status.pendingOnUpdate = false;
                     toastr.error('Unable to turn device on/off');
                 });
+            };
+
+            $scope.onTstatCooler = function() {
+              $scope.status.autopoint = Math.max(45, $scope.status.autopoint-1);
+            };
+
+            $scope.onTstatWarmer = function() {
+              $scope.status.autopoint = Math.min(90, $scope.status.autopoint+1);
             };
 
             $scope.onTstatMode = function(mode) {
