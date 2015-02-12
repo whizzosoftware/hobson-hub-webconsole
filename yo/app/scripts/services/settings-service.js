@@ -14,7 +14,14 @@ angular.module('hobsonApp').
 
             var getLog = function() {
                 return ApiService.topLevel().then(function(topLevel) {
-                    return $http.get(topLevel.links['log']);
+                    return $http.get(
+                      topLevel.links['log'],
+                      {
+                        headers: {
+                          'Range': 'bytes=-40000'
+                        }
+                      }
+                    );
                 });
             };
 
