@@ -7,14 +7,14 @@ angular.module('hobsonApp').
             $scope.isShutdownCollapsed = true;
 
             var setConfiguration = function(result) {
-                console.debug('configuration = ', result.data);
-                $scope.name = result.data.name;
-                if (result.data.location) {
-                  $scope.address = result.data.location.text;
-                  $scope.latitude = result.data.location.latitude;
-                  $scope.longitude = result.data.location.longitude;
+                console.debug('configuration = ', result);
+                $scope.name = result.name;
+                if (result.location) {
+                  $scope.address = result.location.text;
+                  $scope.latitude = result.location.latitude;
+                  $scope.longitude = result.location.longitude;
                 }
-                $scope.logLevel = result.data.logLevel;
+                $scope.logLevel = result.logLevel;
             };
 
             $scope.shutdown = function() {
@@ -61,7 +61,7 @@ angular.module('hobsonApp').
                   config.location.longitude = parseFloat($scope.longitude);
                 }
 
-                SettingsService.setConfiguration($scope.topLevel.links.configuration, config).success(function() {
+                SettingsService.setConfiguration($scope.topLevel.links.self, config).success(function() {
                   toastr.success('The settings have been saved.', null, {
                     closeButton: true
                   });
@@ -87,8 +87,6 @@ angular.module('hobsonApp').
 
             ApiService.topLevel().then(function(topLevel) {
               $scope.topLevel = topLevel;
-              SettingsService.getConfiguration(topLevel.links.configuration).then(function(result) {
-                setConfiguration(result);
-              });
+              setConfiguration($scope.topLevel);
             });
         }]);
