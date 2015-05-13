@@ -1,4 +1,4 @@
-// Filename: views/widget/recurrencePicker.js
+// Filename: views/widgets/recurrencePicker.js
 define([
 	'jquery',
 	'underscore',
@@ -6,7 +6,7 @@ define([
 	'moment',
 	'models/recurrenceDefaults',
 	'i18n!nls/strings',
-	'text!templates/recurrencePicker.html'
+	'text!templates/widgets/recurrencePicker.html'
 ], function($, _, Backbone, moment, RecurrenceDefaults, strings, template) {
 
 	var RecurrencePickerView = Backbone.View.extend({

@@ -4,13 +4,14 @@ define([
 	'underscore',
 	'backbone',
 	'datetimepicker',
-	'views/widget/datePicker',
-	'views/widget/timePicker',
-	'views/widget/recurrencePicker',
+	'views/widgets/datePicker',
+	'views/widgets/timePicker',
+	'views/widgets/recurrencePicker',
+	'views/widgets/devicesPicker',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskControlEditPanel.html',
 	'text!templates/tasks/taskControlPropertyField.html'
-], function($, _, Backbone, DateTimePicker, DatePickerView, TimePickerView, RecurrencePickerView, strings, template, fieldTemplate) {
+], function($, _, Backbone, DateTimePicker, DatePickerView, TimePickerView, RecurrencePickerView, DevicesPickerView, strings, template, fieldTemplate) {
 
 	var TaskControlEditPanelView = Backbone.View.extend({
 
@@ -29,7 +30,7 @@ define([
 		},
 
 		remove: function() {
-			for (var i=0; i < this.subviews.length; i++) {
+			for (var i = 0; i < this.subviews.length; i++) {
 				this.subviews[i].remove();
 			}
 			Backbone.View.prototype.remove.call(this);
@@ -61,6 +62,10 @@ define([
 						var v = new RecurrencePickerView(prop);
 						el.append(v.render().el);
 						this.subviews.push(v);
+					} else if (prop.type === 'DEVICES') {
+						var v = new DevicesPickerView(prop);
+						el.append(v.render().el);
+						this.subviews.push(v);
 					} else {
 						el.append(this.fieldTemplate({
 							strings: strings,
@@ -81,8 +86,11 @@ define([
 			var properties = this.control.get('properties');
 			for (var i=0; i < properties.length; i++) {
 				var prop = properties[i];
-				console.debug(prop.id);
-				values[prop.id] = {value: this.$el.find('input#' + prop.id).val()};
+				if (prop.type === 'DEVICES') {
+					values[prop.id] = {value: prop.value};
+				} else {
+					values[prop.id] = {value: this.$el.find('input#' + prop.id).val()};
+				}
 			}
 
 			// fire an "add clicked" event containing the control id and form values

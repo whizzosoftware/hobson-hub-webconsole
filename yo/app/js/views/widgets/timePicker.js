@@ -1,4 +1,4 @@
-// Filename: views/widget/timepicker.js
+// Filename: views/widgets/timepicker.js
 define([
 	'jquery',
 	'underscore',
@@ -6,7 +6,7 @@ define([
 	'datetimepicker',
 	'moment',
 	'i18n!nls/strings',
-	'text!templates/timePicker.html'
+	'text!templates/widgets/timePicker.html'
 ], function($, _, Backbone, DateTimePicker, moment, strings, template) {
 
 	var TimePickerView = Backbone.View.extend({

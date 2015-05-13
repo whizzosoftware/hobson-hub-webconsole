@@ -66,9 +66,6 @@ define([
 				// clear any prior address lookup failure
 				this.showLookupFailure(false);
 
-				// inform the user we're looking up their address
-				toastr.info(strings.AddressLookup);
-
 				// show the map loading indicator and disable the address fields so the user can't change them
 				this.showMapLoader(true);
 				this.disableAddressFields(true);
@@ -81,8 +78,6 @@ define([
 						this.lookupPending = false;
 						if (data.length == 1 && data[0].lat && data[0].lon) {
 							var addrData = data[0];
-							toastr.clear();
-							toastr.success(strings.AddressLookupSuccess);
 							this.$el.find('#hubLatitude').val(addrData.lat);
 							this.$el.find('#hubLongitude').val(addrData.lon);
 							this.showMap(addrData.lat + ',' + addrData.lon, 17, true);
@@ -90,14 +85,12 @@ define([
 								this.onClickSave();
 							}
 						} else {
-							toastr.clear();
 							this.showLookupFailure(true);
 						}
 					},
 					fail: function(jqXHR, status, error) {
 						this.lookupPending = false;
 						this.showLookupFailure(true);
-						toastr.clear();
 					}
 				}).always(function() {
 					this.disableAddressFields(false);
@@ -165,7 +158,7 @@ define([
 		},
 
 		showMapLoader: function() {
-			this.$el.find('#map-container').html('<i class="fa fa-spinner fa-2x fa-spin"></i>');
+			this.$el.find('#map-container').html('<p><i class="fa fa-spinner fa-2x fa-spin"></i>&nbsp;&nbsp;Looking up address...</p>');
 		},
 
 		showDefaultMap: function() {

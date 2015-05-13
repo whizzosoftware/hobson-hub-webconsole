@@ -14,6 +14,16 @@
 	background-color: $color-btn-primary-hover;
 }
 
+.button.secondary {
+	background-color: $color-btn-secondary;
+	color: white;
+}
+
+.button.secondary:hover {
+	background-color: $color-btn-secondary-hover;
+	color: white;
+}
+
 .button-panel {
 	text-align: center;
 	margin: 25px 0;

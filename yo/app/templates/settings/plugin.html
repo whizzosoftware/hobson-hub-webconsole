@@ -8,15 +8,31 @@
  		</div>
 	 	<a class="tiny radius button">Settings</a>
  	</div>
+	<% if (plugin.status.status === 'NOT_CONFIGURED') { %>
+	 	<div class="plugin-overlay">
+	 		<p>
+	 			<i class="fa fa-warning fa-4x"></i>
+	 			<br/>
+	 			<%= plugin.name %> <%= strings.RequiresConfiguration %>
+	 			<p>
+	 				<a class="tiny radius button"><%= strings.Settings %></a>
+	 			</p>
+	 		</p>
+	 	</div>
+	<% } else if (plugin.status.status === 'ERROR') { %>
+	 	<div class="plugin-overlay">
+	 		<p>
+	 			<i class="fa fa-exclamation-circle fa-4x"></i>
+	 			<br/>
+		 		<p><%= strings.PluginError %></p>
+	 			<p>
+	 				<a class="tiny radius button"><%= strings.Settings %></a>
+	 			</p>
+	 		</p>
+	 	</div>
+	<% } %>
  	<!--
 	<div class="plugin-footer <%= plugin.status.status %>">
-		<% if (plugin.status.status === 'NOT_CONFIGURED') { %>
-			<i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
-			<%= strings.PluginNotConfigured %>
-		<% } else if (plugin.status.status === 'ERROR') { %>
-			<i class="fa fa-exclamation-circle fa-lg"></i>&nbsp;&nbsp;
-			<%= strings.PluginError %>
-		<% } %>
 		<% if (plugin.links.configuration) { %>
 			<i id="button-settings" class="fa fa-cog"></i>
 		<% } %>

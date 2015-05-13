@@ -117,7 +117,10 @@ module.exports = function (grunt) {
             dist: {
                 options: {
                     style: 'expanded',
-                    loadPath: ['app/bower_components/foundation/scss', 'app/bower_components/foundation/scss/normalize.scss']
+                    loadPath: [
+                        'app/bower_components/foundation/scss', 
+                        'app/bower_components/toastr'
+                    ]
                 },
                 files: {
                     'app/css/main.css': 'app/scss/style.scss'

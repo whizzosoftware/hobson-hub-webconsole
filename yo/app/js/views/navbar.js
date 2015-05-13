@@ -3,17 +3,20 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'foundation.core',
 	'models/session',
 	'i18n!nls/strings',
 	'text!templates/navbar.html'
-], function($, _, Backbone, Foundation, session, strings, navbarTemplate) {
+], function($, _, Backbone, session, strings, navbarTemplate) {
 	var DashboardView = Backbone.View.extend({
 
 		template: _.template(navbarTemplate),
 
 		events: {
 			'click #sidebar-button': 'onClickSidebar'
+		},
+
+		initialize: function() {
+			console.debug('Creating sidebar');
 		},
 
 		render: function() {
@@ -27,11 +30,22 @@ define([
 				})
 			);
 
-			this.$el.foundation();
-
 			return this;
 		},
 		
+		updateTabs: function() {
+			var fragment = Backbone.history.getFragment();
+			this.$el.find('.subnav-item a').each(function(index, e) {
+				var el = $(e);
+				console.debug(el.attr('id'));
+				if (fragment.indexOf(el.attr('id')) > -1) {
+					el.addClass('active');
+				} else {
+					el.removeClass('active');
+				}
+			});
+		},
+
 		onClickSidebar: function() {
 			$.sidr('toggle', 'sidr');
 		}

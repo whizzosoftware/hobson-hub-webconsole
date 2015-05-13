@@ -252,8 +252,10 @@ define([
 					user: this.user, 
 					hub: this.hub
 				});
+				this.$el.find('#navbar-container').html(this.navbarView.render().el);
+			} else {
+				this.navbarView.updateTabs();
 			}
-			this.$el.find('#navbar-container').html(this.navbarView.render().el);
 
 			if (this.contentView) {
 				this.contentView.remove();

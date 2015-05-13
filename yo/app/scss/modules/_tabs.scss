@@ -23,15 +23,19 @@
 			vertical-align: middle;
 			padding: 0 $tab-panel-margin-side;
 			margin: 0;
+			a {
+				color: $color-btn-primary;
+			}
 		}
 		dd.active {
-			background-color: $color-btn-primary;
-		}
-		dd.active a {
-			margin: 0;
-			padding: 0;
-			background-color: $color-btn-primary;
-			border-radius: none;
+			background-color: $color-btn-secondary;
+			a {
+				margin: 0;
+				padding: 0;
+				color: white;
+				background-color: $color-btn-secondary;
+				border-radius: none;
+			}
 		}
 	}
 	.inset {
