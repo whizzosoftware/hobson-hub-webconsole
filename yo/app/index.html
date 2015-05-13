@@ -1,158 +1,17 @@
 <!doctype html>
-<html class="no-js">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="bower_components/angular-busy/dist/angular-busy.css" />
-    <link rel="stylesheet" href="bower_components/nouislider/jquery.nouislider.css" />
-    <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css" />
-    <link rel="stylesheet" href="bower_components/ngQuickDate/dist/ng-quick-date.css" />
-    <link rel="stylesheet" href="bower_components/ngQuickDate/dist/ng-quick-date-default-theme.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css" />
-    <link rel="stylesheet" href="styles/starter-template.css" />
-    <link rel="stylesheet" href="styles/font-awesome.css" />
-    <link rel="stylesheet" href="styles/spectrum.css" />
-    <link rel="stylesheet" href="styles/ladda-themeless.min.css" />
-    <!-- endbuild -->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body data-ng-app="hobsonApp">
-    <!--[if lt IE 7]>
-    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
-    <!-- Add your site or application content here -->
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#"><img src="images/logo.png" /></a>
-        </div>
-        <div class="collapse navbar-collapse" data-ng-controller="HobsonController">
-          <ul class="nav navbar-nav">
-            <li data-ng-class="{active: tab() === 'devices'}">
-              <a data-ng-href="#" data-ng-click="tab('devices')">Devices</a>
-            </li>
-            <li data-ng-class="{active: tab() === 'tasks'}">
-              <a data-ng-href="#/tasks" data-ng-click="tab('tasks')">Tasks</a>
-            </li>
-            <li data-ng-class="{active: tab() === 'plugins'}">
-              <a data-ng-href="#/plugins" data-ng-click="tab('plugins')">Plugins&nbsp;<span class="badge pull-right" data-ng-show="numPluginUpdates">{{numPluginUpdates}}</span>
-              </a>
-            </li>
-            <li data-ng-class="{active: tab() === 'settings'}">
-                <a data-ng-href="#/settings" data-ng-click="tab('settings')">Settings</a>
-            </li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-        <!--<a class="navbar-brand" href="#">Hobson</a>-->
-          <!--<ul class="nav nav-pills">-->
-            <!--<li class="active"><a ng-href="#">Plugins</a></li>-->
-            <!--<li><a ng-href="#/rules">Rules</a></li>-->
-            <!--<li><a ng-href="#">Contact</a></li>-->
-          <!--</ul>-->
-          <!--<h3 class="text-muted">Hobson</h3>-->
-        <!--</div>-->
-    </div>
-
-    <div class="container">
-      <div ng-view=""></div>
-
-      <div class="footer" data-ng-controller="HobsonController">
-        <small>Powered by Hobson {{version}}</small>
-      </div>
-    </div>
-
-
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <script>
-       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-       ga('create', 'UA-XXXXX-X');
-       ga('send', 'pageview');
-    </script>
-
-    <!-- build:js(.) scripts/oldieshim.js -->
-    <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
-    <![endif]-->
-    <!-- endbuild -->
-
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-busy/dist/angular-busy.js"></script>
-    <script src="bower_components/nouislider/jquery.nouislider.min.js"></script>
-    <script src="bower_components/angular-nouislider/src/nouislider.js"></script>
-    <script src="bower_components/angular-toastr/dist/angular-toastr.js"></script>
-    <script src="bower_components/ngQuickDate/dist/ng-quick-date.js"></script>
-    <script src="bower_components/highcharts-ng/dist/highcharts-ng.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/third-party/rrule.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/add-action-dialog-controller.js"></script>
-    <script src="scripts/controllers/add-task-controller.js"></script>
-    <script src="scripts/controllers/device-details-dialog-controller.js"></script>
-    <script src="scripts/controllers/device-settings-dialog-controller.js"></script>
-    <script src="scripts/controllers/devices-controller.js"></script>
-    <script src="scripts/controllers/image-view-dialog-controller.js"></script>
-    <script src="scripts/controllers/log-viewer-dialog-controller.js"></script>
-    <script src="scripts/controllers/plugin-settings-dialog-controller.js"></script>
-    <script src="scripts/controllers/plugins-controller.js"></script>
-    <script src="scripts/controllers/settings-controller.js"></script>
-    <script src="scripts/controllers/tasks-controller.js"></script>
-    <script src="scripts/controllers/video-view-dialog-controller.js"></script>
-    <script src="scripts/services/actions-service.js"></script>
-    <script src="scripts/services/plugins-service.js"></script>
-    <script src="scripts/services/devices-service.js"></script>
-    <script src="scripts/services/tasks-service.js"></script>
-    <script src="scripts/services/settings-service.js"></script>
-    <script src="scripts/services/dialog-context-service.js"></script>
-    <script src="scripts/services/polling-service.js"></script>
-    <script src="scripts/services/variable-description-service.js"></script>
-    <script src="scripts/services/variables-service.js"></script>
-    <script src="scripts/directives/formly.bootstrap.js"></script>
-    <script src="scripts/third-party/spectrum.js"></script>
-    <script src="scripts/third-party/spin.js"></script>
-    <script src="scripts/third-party/ladda.js"></script>
-    <script src="scripts/directives/angular-spectrum-colorpicker.js"></script>
-    <script src="scripts/directives/angular-ladda.js"></script>
-    <script src="scripts/third-party/highcharts.src.js"></script>
-    <script src="scripts/third-party/moment-with-locales.js"></script>
-    <!-- endbuild -->
-</body>
+<html lang="en">
+	<head>
+		<title>Hobson</title>
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+  		<link rel="stylesheet" href="css/normalize.css">
+  		<link rel="stylesheet" href="css/foundation.css">
+  		<link rel="stylesheet" href="css/toastr.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  		<link rel="stylesheet" href="css/main.css">
+  		<link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css">
+  		<link rel="stylesheet" href="bower_components/datetimepicker/jquery.datetimepicker.css">
+		<script data-main="js/config" src="bower_components/requirejs/require.js"></script>
+	</head>
+	<body>
+	</body>
 </html>

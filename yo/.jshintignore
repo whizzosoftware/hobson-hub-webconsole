@@ -1,3 +1,0 @@
-app/scripts/third-party/**/*.js
-app/scripts/directives/formly.bootstrap.js
-app/scripts/directives/angular-spectrum-colorpicker.js
