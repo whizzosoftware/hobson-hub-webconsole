@@ -1,0 +1,10 @@
+<dl class="sub-nav">
+	<dd class="<%= !query || query === 'filter=installed' ? 'active' : '' %>"><a href="#settings/plugins?filter=installed">Installed</a></dd>
+	<dd class="<%= query === 'filter=available' ? 'active' : '' %>"><a href="#settings/plugins?filter=available">Available</a></dd>
+</dl>
+<div class="inset">
+	<div id="pluginsContainer">
+	</div>
+</div>
+<div id="plugin-config-modal" class="reveal-modal" data-reveal>
+</div>

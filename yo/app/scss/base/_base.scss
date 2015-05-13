@@ -1,0 +1,59 @@
+body {
+	font-family: $font-1;
+	font-weight: $base-font-weight;
+	background-color: $color-bg-page;
+	color: $color-text;
+}
+
+h1 {
+	font-size: 2.2em;
+	font-weight: 100;
+	margin-bottom: 35px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid $color-panel-border;
+}
+
+h2 {
+	font-family: $font-1;
+	font-size: 1.5em;
+	margin-bottom: 25px;
+}
+
+.panel {
+	background-color: $color-panel-bg;
+	border: 1px solid $color-panel-border;
+}
+
+.icon-button {
+	cursor: pointer;
+	color: $color-btn-primary;
+}
+
+.icon-button:hover {
+	color: $color-btn-primary-hover;
+}
+
+fieldset {
+	margin: 0;
+	padding: 10px;
+}
+
+label {
+	p {
+		color: $color-form-help-text;
+		font-size: .9em;
+		line-height: 1.1em;
+		margin-top: -.9em;
+	}
+}
+
+#content {
+	margin: 0 $margin-side;
+}
+
+.empty-notification {
+	text-align: center;
+	font-weight: 100;
+	font-size: 1.2em;
+	margin-bottom: 35px;
+}

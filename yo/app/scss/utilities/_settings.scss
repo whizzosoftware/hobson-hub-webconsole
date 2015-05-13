@@ -1,0 +1,55 @@
+/**
+ * Site settings
+ */
+
+/* Typography */
+$base-font-size: 16px;
+$base-font-weight: 300;
+$font-1: "Open Sans", Helvetica, sans-serif;
+
+/* Colors */
+$color-background-dark: #2D2D2D;
+$color-bg-page: #FFFFFF;
+$color-btn-primary: #3cb8d1;
+$color-btn-primary-hover: #10649e;
+$color-dash-tile-bg: #353535;
+$color-dash-tile-border: #E3E3E3;
+$color-dash-tile-on: #FFBA00;
+$color-dash-tile-text: #FFFFFF;
+$color-form-help-text: #939191;
+$color-highlight-dark: #424242;
+$color-highlight-light: #BFBFBF;
+$color-panel-bg: #F1F1F1;
+$color-panel-border: #E6E6E6;
+$color-plugin-tile-bg: #FFFFFF;
+$color-plugin-tile-border: #aeadae;
+$color-sidebar-bg: #333333;
+$color-sidebar-header-bg: #424242;
+$color-subnav-bg: #33414e;
+$color-subnav-text: #FFFFFF;
+$color-subnav-active: #44c5da;
+$color-text: #26313d;
+$color-text-dark: #062031;
+$color-text-light: #747474;
+$color-success: green;
+$color-warn: #FCCE00;
+$color-error: red;
+
+/* Positioning */
+$margin-side: 40px;
+$nav-height: 80px;
+$subnav-height: 45px;
+$tab-spacing: 5px;
+$tab-panel-margin-side: 30px;
+
+/* Tabs */
+$tab-radius: 5px;
+
+/* Tiles */
+$tile-width: 175px;
+$tile-radius: 15px;
+
+/* Foundation overrides */
+$row-width: 90%;
+$legend-bg: none;
+$legend-font-weight: 100;

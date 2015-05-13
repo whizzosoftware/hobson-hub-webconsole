@@ -1,0 +1,37 @@
+<% if (!serverFail) { %>
+	<div class="large-12 columns">
+		<form>
+			<% if (notice) { %>
+				<div class="row">
+					<div class="large-6 medium-8 small-12 large-centered small-centered columns">
+						<div data-alert class="alert-box info radius"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<%= notice %></div>
+					</div>
+				</div>
+			<% } %>
+			<div class="row" style="display: <%= defaultUser ? 'none' : 'block' %>">
+				<div class="large-6 medium-8 small-12 large-centered small-centered columns">
+					<label id="userLabel"><%= strings.Username %>
+						<input id="user" class="postfix radius" type="text" value="<%= defaultUser %>" />
+					</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-6 medium-8 small-12 large-centered small-centered columns">
+					<label id="passwordLabel"><%= strings.Password %>
+						<input id="password" class="postfix radius" value="local" type="password" />
+					</label>
+					<small id="passwordError" class="error" style="display: none;"><%= strings.UserNameOrPasswordErrorMsg %></small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-6 medium-6 small-12 large-centered small-centered columns" style="text-align: center;">
+					<a id="login-button" href="#" class="button small radius"><%= strings.Login %></a>
+				</div>
+			</div>
+		</form>
+	</div>
+<% } else { %>
+	<div class="large-12 small-centered columns">
+		<div data-alert class="alert-box alert radius"><%= strings.ServerCommError %></div>
+	</div>
+<% } %>

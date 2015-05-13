@@ -1,0 +1,46 @@
+<div class="inset">
+	<div class="row">
+		<div class="large-6 medium-6 columns">
+			<div id="map-container"></div>
+		</div>
+		<div class="large-6 medium-6 columns">
+			<div class="row">
+				<div class="large-12 small-12 columns">
+					<label><%= strings.HubName %>
+						<input id="hubName" class="radius" type="text" value="<%= hub.name %>" />
+					</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-12 small-12 columns">
+					<label id="addressLabel" ><%= strings.Address %>
+						<input id="hubAddress" class="radius" type="text" value="<%= (hub.location && hub.location.text) ? hub.location.text : '' %>" placeholder="Street, City, State Zip" />
+					</label>
+					<small id="addressError" class="error" style="display: none;"><%= strings.AddressLookupFail %></small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-12 small-12 columns">
+					<input id="showLatLong" type="checkbox"><label for="showLatLong"><%= strings.ShowLatLong %></label>
+				</div>
+			</div>
+			<div id="latLong" class="row" style="display: none;">
+				<div class="large-6 small-6 columns">
+					<label><%= strings.Latitude %>
+						<input id="hubLatitude" class="radius" type="text" value="<%= (hub.location && hub.location.latitude) ? hub.location.latitude : '' %>" />
+					</label>
+				</div>
+				<div class="large-6 small-6 columns">
+					<label><%= strings.Longitude %>
+						<input id="hubLongitude" class="radius" type="text" value="<%= (hub.location && hub.location.longitude) ? hub.location.longitude : '' %>" />
+					</label>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 15px;">
+				<div class="large-12 columns" style="text-align: center;">
+					<a id="button-save" class="small radius button" href><%= strings.Save %></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

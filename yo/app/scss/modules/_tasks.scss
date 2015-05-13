@@ -1,0 +1,96 @@
+.task-panel {
+	h2 {
+		text-align: center;
+		font-weight: 300;
+		margin-bottom: 20px;
+		label {
+			font-weight: 100;
+			color: $color-text;
+		}
+	}
+	.accordion-navigation a.accordion-item {
+		font-family: $font-1;
+		background: $color-panel-border;
+	}
+	.accordion-navigation a.accordion-item:hover {
+		color: $color-btn-primary-hover;
+	}
+}
+
+p.notice {
+	font-weight: 100;
+	margin: 30px;
+	text-align: center;
+	color: $color-text-light;
+}
+
+.task-inner-panel {
+	background-color: $color-panel-border;
+	padding-right: 20px;
+	padding-bottom: 20px;
+	border-radius: 5px;
+}
+
+#taskConditions, #taskActions {
+	ul {
+		list-style-type: none;
+		margin: 0;
+	}
+	.condition, .action {
+		width: 100%;
+		min-height: 50px;
+		display: inline-block;
+		background-color: $color-text;
+		color: white;
+		border: 1px solid $color-text;
+		border-radius: 5px;
+		padding: 10px;
+		margin-bottom: 10px;
+		img {
+			border-radius: 5px;
+			background-color: $color-dash-tile-bg;
+			height: 30px;
+			margin-right: 10px;
+		}
+	}
+}
+
+.add-selectors-panel {
+	text-align: center;
+	#buttonPlus {
+		padding: 10px;
+		border-top-left-radius: 15px;
+		border-top-right-radius: 15px;
+	}
+	#buttonPlus.active {
+		background-color: $color-panel-border;
+	}
+	li {
+		text-align: left;
+	}
+	label {
+		text-align: left;
+	}
+}
+
+.control-edit-panel {
+	background-color: white;
+	border-radius: 5px;
+	text-align: center;
+	p {
+		color: $color-text-light;
+	}
+	form {
+		label: {
+			text-align: left;
+		}
+	}
+}
+
+#daySelector {
+	text-align: left;
+	margin-bottom: 15px;
+	input {
+		margin-bottom: 10px;
+	}
+}

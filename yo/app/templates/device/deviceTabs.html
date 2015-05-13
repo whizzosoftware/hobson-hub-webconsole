@@ -1,0 +1,20 @@
+<div class="row">
+	<div class="large-12 columns">
+		<h1><%= device.name %></h1>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="tabs" data-tab>
+			<li class="tab-title <%= tabName === 'state' ? 'active' : '' %>"><a href="#device/<%= deviceUri %>/state"><%= strings.State %></a></li>
+			<li class="tab-title <%= tabName === 'settings' ? 'active' : '' %>"><a href="#device/<%= deviceUri %>/settings"><%= strings.Settings %></a></li>
+			<% if (device.telemetry && device.telemetry.capable) { %>
+				<li class="tab-title <%= tabName === 'statistics' ? 'active' : '' %>"><a href="#device/<%= deviceUri %>/statistics"><%= strings.Statistics %></a></li>
+			<% } %>
+		</ul>
+		<div class="tabs-content radius">
+			<div class="content active" id="content-panel">
+			</div>
+		</div>
+	</div>
+</div>

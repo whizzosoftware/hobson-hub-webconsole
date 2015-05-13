@@ -1,0 +1,20 @@
+.button {
+	margin: 0;
+	padding: 1em 3em;
+	font-size: 1.3em;
+	font-weight: 200;
+	border: none;
+	background-color: $color-btn-primary;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	outline: none;
+}
+
+.button:hover {
+	background-color: $color-btn-primary-hover;
+}
+
+.button-panel {
+	text-align: center;
+	margin: 25px 0;
+}

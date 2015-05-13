@@ -1,0 +1,47 @@
+<div class="inset">
+	<div class="row">
+		<div class="large-12 columns">
+			<label><%= strings.ServerType %></label>
+			<input type="radio" name="serverType" id="serverNone" value="Unnamed" <%= !hasServer ? 'checked' : '' %>><label for="serverNone"><%= strings.None %></label>
+			<input type="radio" name="serverType" id="serverGmail" value="Unnamed" <%= hasGmailServer ? 'checked' : '' %>><label for="serverGmail"><%= strings.Gmail %></label>
+			<input type="radio" name="serverType" id="serverOther" value="Unnamed" <%= hasOtherServer ? 'checked' : '' %>><label for="serverOther"><%= strings.Other %></label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="large-12 columns">
+			<label><%= strings.ServerHostname %>
+				<input id="server" class="radius" type="text" value="<%= hasServer ? hub.email.server : '' %>" placeholder="<%= strings.EnterMailHost %>" disabled="<%= hasServer %>">
+			</label>
+			<input id="secure" type="checkbox" disabled="<%= hasServer %>" <%= (hub.email && hub.email.secure) ? "checked" : "" %>><label for="serverSSL"><%= strings.UseSecureConnection %></label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="large-12 columns">
+			<label><%= strings.Username %>
+				<input id="username" class="radius" type="text" disabled="<%= hasServer %>" value="<%= (hub.email && hub.email.username) ? hub.email.username : '' %>" placeholder="<%= strings.EnterMailUser %>">
+			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="large-12 columns">
+			<label><%= strings.Password %>
+				<input id="password" class="radius" type="password" placeholder="<%= strings.EnterMailPassword %>" disabled="<%= hasServer %>">
+			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="large-12 columns">
+			<label><%= strings.SenderAddress %>
+				<input id="senderAddress" class="radius" type="text" value="<%= (hub.email && hub.email.senderAddress) ? hub.email.senderAddress : '' %>" disabled="<%= hasServer %>" placeholder="<%= strings.EnterMailReply %>">
+			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="large-12 columns">
+			<div class="form-control-bar">
+				<a id="testButton" class="small radius secondary button left" href="#"><%= strings.SendTestMessage %></a>
+				<a id="saveButton" class="small radius button right" href="#">Save</a>
+			</div>
+		</div>
+	</div>
+</div>
