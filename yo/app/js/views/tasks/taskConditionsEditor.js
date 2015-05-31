@@ -100,11 +100,17 @@ define([
 		},
 
 		onClickAdd: function(e, a) {
-			this.task.addCondition({
+			console.debug('condition add: ', e, a);
+			var c = {
 				pluginId: a.pluginId,
 				conditionClassId: a.id,
 				properties: a.properties
-			});
+			}
+			if (!this.task.hasTriggerCondition()) {
+				this.task.setTriggerCondition(c);
+			} else {
+				this.task.addCondition(c);
+			}
 			this.renderConditions();
 			this.closePlusPanel();
 		}

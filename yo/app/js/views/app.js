@@ -12,6 +12,7 @@ define([
 	'models/devices',
 	'models/device',
 	'models/deviceConfig',
+	'models/tasks',
 	'models/telemetry',
 	'services/hub',
 	'views/navbar',
@@ -32,7 +33,7 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, bridget, Masonry, Sidr, session, Hub, Plugins, Devices, Device, DeviceConfig, Telemetry, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, bridget, Masonry, Sidr, session, Hub, Plugins, Devices, Device, DeviceConfig, Tasks, Telemetry, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	var AppView = Backbone.View.extend({
 
@@ -82,10 +83,20 @@ define([
 		},
 
 		showTasks: function(userId, hubId) {
-			this.renderContentView(new TasksTabView({
-				userId: userId,
-				hubId: hubId
-			}), true);
+			var tasks = new Tasks('/api/v1/users/local/hubs/local/tasks');
+			tasks.fetch({
+				context: this,
+				success: function(model, response, options) {
+					options.context.renderContentView(new TasksTabView({
+						userId: userId,
+						hubId: hubId,
+						tasks: model
+					}));
+				},
+				error: function(model, response, options) {
+					console.debug('nope!');
+				}
+			});
 		},
 
 		showTaskAdd: function(userId, hubId) {
@@ -141,7 +152,7 @@ define([
 			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
 				context: this,
 				success: function(model, response, options) {
-					var plugins = new Plugins(model.get('links').plugins);
+					var plugins = new Plugins(model.get('plugins')["@id"]);
 					plugins.fetch({
 						context: options.context,
 						success: function(model, response, options) {

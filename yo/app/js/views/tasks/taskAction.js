@@ -29,17 +29,17 @@ define([
 
 		createDescription: function(action) {
 			switch (action.actionClassId) {
-				case 'log':
+				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/log':
 					return 'Log "' + action.properties.message.value + '"';
-				case 'email':
+				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/email':
 					return 'Send e-mail to ' + action.properties.recipientAddress.value + ' with subject "' + action.properties.subject.value + '"';
-				case 'turnOff':
+				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/turnOff':
 					return 'Turn off ' + this.createDeviceListDescription(action.properties.devices.value);
-				case 'turnOn':
+				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/turnOn':
 					return 'Turn on ' + this.createDeviceListDescription(action.properties.devices.value);
-				case 'setLevel':
+				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/setLevel':
 					return 'Set level of ' + this.createDeviceListDescription(action.properties.devices.value) + ' to ' + action.properties.level.value + '%';
-				case 'setColor':
+				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/setColor':
 					return 'Set color of ' + this.createDeviceListDescription(action.properties.devices.value);
 				default:
 					return action.name;

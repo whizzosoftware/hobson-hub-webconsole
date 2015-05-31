@@ -33,8 +33,9 @@ define([
 
 		createDescription: function(cond) {
 			var props = cond.properties;
+			console.debug('condition: ', cond.conditionClassId);
 			switch (cond.conditionClassId) {
-				case 'schedule':
+				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-scheduler/conditionClasses/schedule':
 					var time;
 					if (props.time.value.charAt(0) === 'S') {
 						time = props.time.value.substring(0,2) === 'SR' ? 'sunrise' : 'sunset';
@@ -49,6 +50,12 @@ define([
 						s += 'on ' + date.format('L');
 					}
 					return s;
+				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-rules/conditionClasses/turnOff':
+					console.debug(this.devices, props);
+					return this.devices.getDevice(props.device.value.pluginId, props.device.value.deviceId).get('name') + ' turns off';
+				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-rules/conditionClasses/turnOn':
+					console.debug(this.devices, props);
+					return this.devices.getDevice(props.device.value.pluginId, props.device.value.deviceId).get('name') + ' turns on';
 				default:
 					return 'Something else happens';
 			}

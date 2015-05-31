@@ -3,13 +3,14 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'toastr',
 	'models/task',
 	'models/devices',
 	'views/tasks/taskConditionsEditor',
 	'views/tasks/taskActionsEditor',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskCreate.html'
-], function($, _, Backbone, Task, Devices, TaskConditionsEditorView, TaskActionsEditorView, strings, taskAddTemplate) {
+], function($, _, Backbone, toastr, Task, Devices, TaskConditionsEditorView, TaskActionsEditorView, strings, taskAddTemplate) {
 
 	var deviceListViews = {};
 
@@ -35,7 +36,10 @@ define([
 		},
 
 		render: function() {
-			this.$el.append(this.template({strings: strings}));
+			this.$el.append(this.template({
+				strings: strings,
+				task: this.task.toJSON()
+			}));
 
 			var devices = new Devices({
 				url: '/api/v1/users/local/hubs/local/devices'
@@ -69,16 +73,43 @@ define([
 		},
 
 		onClickCreate: function(e, model) {
+			this.hideErrors();
+
+			// set the task name
+			var name = this.$el.find('#taskName').val();
+			if (name && name.length > 0) {
+				this.task.set('name', name);
+			}
+
+			// send the create task request
 			console.debug('create', this.task.toJSON());
 			this.task.save(null, {
+				context: this,
 				error: function(model, response, options) {
+					console.debug(model, response, options);
 					if (response.status === 202) {
-						console.debug('woot!');
+						toastr.success('Task was successfully created. It may take a few seconds to show up in the list.');
+						Backbone.history.navigate('tasks', {trigger: true});
 					} else {
-						console.debug('nope!')
+						options.context.showErrors(options.context, response.responseJSON.errors);
 					}
 				}
 			});
+		},
+
+		hideErrors: function() {
+			this.$el.find('#error').css('display', 'none');
+			this.$el.find('#errorMsg').html('');
+		},
+
+		showErrors: function(ctx, errors) {
+			var msg = '<ul>';
+			for (var i=0; i < errors.length; i++) {
+				msg += '<li>' + errors[i].message + '</li>';
+			}
+			msg += '</ul>';
+			ctx.$el.find('#error').css('display', 'block');
+			ctx.$el.find('#errorMsg').html(msg);
 		}
 
 	});

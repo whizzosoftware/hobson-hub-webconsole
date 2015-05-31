@@ -6,9 +6,16 @@ define([
 
 		initialize: function(options) {
 			this.url = options.url;
-			this.set('name', 'New Task');
 			this.set('actions', []);
 			this.set('conditions', []);
+		},
+
+		hasTriggerCondition: function() {
+			return (this.get('triggerCondition'));
+		},
+
+		setTriggerCondition: function(c) {
+			this.set('triggerCondition', c);
 		},
 
 		hasConditions: function() {

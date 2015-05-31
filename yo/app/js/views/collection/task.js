@@ -1,42 +1,31 @@
-// Filename: views/collection/devices.js
+// Filename: views/collection/task.js
 define([
 	'jquery',
 	'underscore',
 	'backbone',
 	'i18n!nls/strings',
-	'text!templates/collection/device.html'
+	'text!templates/collection/task.html'
 ], function($, _, Backbone, strings, template) {
 
 	return Backbone.View.extend({
 
 		tagName: 'li',
 
-		className: 'device',
-
 		template: _.template(template),
 
-		events: {
-			'click': 'onClick'
-		},
-
 		initialize: function(options) {
-			this.device = options.device;
+			this.task = options.task;
 		},
 
 		render: function() {
 			this.$el.append(
 				this.template({
 					strings: strings,
-					device: this.device.toJSON()
+					task: this.task.toJSON()
 				})
 			);
 
 			return this;
-		},
-
-		onClick: function(e) {
-			e.preventDefault();
-			this.$el.trigger('deviceClicked', {device: this.device, el: this.$el});
 		}
 
 	});

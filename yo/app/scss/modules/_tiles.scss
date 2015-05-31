@@ -146,7 +146,7 @@
 				padding: 0 20px;
 				top: 0;
 				left: 0;
-				background: $color-btn-primary;
+				background: $color-warn;
 				opacity: 0.95;
 				text-align: center;
 				color: white;
@@ -156,7 +156,7 @@
 				}
 				a.button {
 					background: white;
-					color: $color-btn-primary;
+					color: $color-warn;
 				}
 			}
 			.ERROR {
@@ -166,6 +166,39 @@
 			.NOT_CONFIGURED {
 				background: $color-warn;
 				color: white;
+			}
+		}
+	}
+}
+
+.tasks {
+	margin-bottom: 25px;
+	li {
+		.task-tile {
+			background-color: #f9f9f9;
+			font-family: $font-1;
+			position: relative;
+			min-height: 225px;
+			max-height: 225px;
+			overflow: hidden;
+			border: 7px solid $color-panel-border;
+			border-radius: 5px;
+			vertical-align: middle;
+			padding: 0;
+			cursor: pointer;
+			.title {
+				background: #ffffff;
+				text-align: center;
+				border-bottom: 2px solid $color-panel-border;
+				padding: 15px;
+				font-size: 1.2em;
+				font-weight: 300;
+				line-height: 1.1em;
+			}
+			.description {
+				font-size: 0.9em;
+				line-height: 1.2em;
+				padding: 15px;
 			}
 		}
 	}

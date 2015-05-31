@@ -199,11 +199,22 @@ define([
 			var hubs = new Hubs(session.getHubsUrl() + '?expand=links');
 			console.debug('fetching hubs collection');
 			hubs.fetch().then(function() {
-				console.debug('hubs collection fetched');
+				console.debug('hubs collection fetched, ', hubs);
 				if (hubs.length > 0) {
-					var hub = hubs.at(0);
-					session.setSelectedHub(hub);
-					Backbone.history.navigate('#dashboard', {trigger: true});
+					console.debug(hubs.at(0));
+					console.debug(hubs.at(0).get('itemListElement'));
+					console.debug(hubs.at(0).get('itemListElement')[0]);
+					var h = hubs.at(0).get('itemListElement')[0].item;
+					var hub = new Hub({url: h["@id"]});
+					hub.fetch({
+						success: function() {
+							session.setSelectedHub(hub);
+							Backbone.history.navigate('#dashboard', {trigger: true});
+						},
+						error: function() {
+
+						}
+					});
 				} else {
 					console.debug('no hubs found; redirecting to account app');
 					Backbone.history.navigate('#account/hubs', {trigger: true});

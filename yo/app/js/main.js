@@ -14,7 +14,7 @@ require([
 		}
 	});
 
-	$(document).foundation();
+	// $(document).foundation();
 
 	// initialize the router
 	new Router();

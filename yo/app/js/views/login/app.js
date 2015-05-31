@@ -29,7 +29,7 @@ define([
 			this.$el.html(this.template());
 
 			// request options from login resource to determine if there is a default user
-			$.ajax('/api/v1/login', {
+			$.ajax('/api/v1/login?expand=user', {
 				context: this,
 				type: 'OPTIONS',
 				dataType: 'json',
@@ -81,7 +81,7 @@ define([
 			});
 
 			// fetch the user's information
-			$.ajax('/api/v1/login', {
+			$.ajax('/api/v1/login?expand=user', {
 				type: 'POST',
 				contentType: 'application/json',
 				data: JSON.stringify({username: username, password: password}),

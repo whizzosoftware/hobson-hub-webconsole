@@ -27,17 +27,14 @@ define([
 		},
 
 		render: function() {
-			if (this.task.hasConditions()) {
-				var conditions = this.task.get('conditions');
-				for (var i = 0; i < conditions.length; i++) {
-					var conditionView = new TaskConditionView({
-						devices: this.devices,
-						condition: conditions[i]
-					});
-					var rv = conditionView.render().el;
-					this.$el.append(rv);
-					this.subviews.push(conditionView);
-				}
+			if (this.task.hasTriggerCondition()) {
+				var conditionView = new TaskConditionView({
+					devices: this.devices,
+					condition: this.task.get('triggerCondition')
+				});
+				var rv = conditionView.render().el;
+				this.$el.append(rv);
+				this.subviews.push(conditionView);
 			} else {
 				this.$el.html('<p class="notice">' + strings.TaskIfHelpText + '<br/>' + strings.NoConditionsNotice + '</p>');
 			}

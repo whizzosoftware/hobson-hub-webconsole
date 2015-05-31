@@ -95,6 +95,7 @@ define([
 
 		onClickAdd: function(e, a) {
 			this.task.addAction({
+				pluginId: a.pluginId,
 				actionClassId: a.id,
 				properties: a.properties
 			});

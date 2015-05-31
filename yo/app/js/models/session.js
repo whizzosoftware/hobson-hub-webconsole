@@ -23,7 +23,7 @@ define([
 		},
 
 		hasUser: function() {
-			return (this.get('user') !== null);
+			return this.get('user');
 		},
 
 		setUser: function(user) {
@@ -36,7 +36,8 @@ define([
 		},
 
 		getHubsUrl: function() {
-			return this.getUser().get('links').hubs;
+			console.debug(this.getUser());
+			return (this.hasUser()) ? this.getUser().get('hubs')['@id'] : null;
 		},
 
 		hasSelectedHub: function() {
@@ -58,7 +59,8 @@ define([
 		},
 
 		getSelectedHubDevicesUrl: function() {
-			return this.getSelectedHub().get('links').devices;
+			console.debug(this.getSelectedHub());
+			return this.getSelectedHub().get('devices')["@id"];
 		}
 
 	});

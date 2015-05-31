@@ -45,7 +45,7 @@ define([
 
 			// render form
 			var el = this.$el.find('form');
-			var properties = this.control.get('properties');
+			var properties = this.control.get('supportedProperty');
 			if (properties) {
 				for (var i=0; i < properties.length; i++) {
 					var prop = properties[i];
@@ -66,6 +66,10 @@ define([
 						var v = new DevicesPickerView(prop);
 						el.append(v.render().el);
 						this.subviews.push(v);
+					} else if (prop.type === 'DEVICE') {
+						var v = new DevicesPickerView(prop, true);
+						el.append(v.render().el);
+						this.subviews.push(v);
 					} else {
 						el.append(this.fieldTemplate({
 							strings: strings,
@@ -83,10 +87,10 @@ define([
 			
 			// build a list of form values
 			var values = {};
-			var properties = this.control.get('properties');
+			var properties = this.control.get('supportedProperty');
 			for (var i=0; i < properties.length; i++) {
 				var prop = properties[i];
-				if (prop.type === 'DEVICES') {
+				if (prop.type === 'DEVICES' || prop.type === 'DEVICE') {
 					values[prop.id] = {value: prop.value};
 				} else {
 					values[prop.id] = {value: this.$el.find('input#' + prop.id).val()};
@@ -95,7 +99,7 @@ define([
 
 			// fire an "add clicked" event containing the control id and form values
 			var val = {
-				id: this.control.get('id'),
+				id: this.control.get('@id'),
 				properties: values
 			};
 

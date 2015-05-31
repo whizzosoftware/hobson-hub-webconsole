@@ -3,10 +3,16 @@
 		<h1><%= strings.AddTask %></h1>
 	</div>
 </div>
+<div id="error" class="row" style="display: none;">
+	<div class="large-12 columns">
+		<div id="errorMsg" data-alert class="alert-box alert radius">
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="large-12 columns">
 		<label>Task Name
-		<input class="radius" type="text" />
+		<input id="taskName" class="radius" type="text" value="<%= task.name %>" />
 		</label>
 		<div id="taskConditionsEditor" class="task-panel">
 		</div>
