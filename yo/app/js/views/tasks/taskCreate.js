@@ -83,6 +83,12 @@ define([
 				this.task.set('name', name);
 			}
 
+			// set the task description
+			var desc = this.$el.find('#taskDescription').val();
+			if (desc && desc.length > 0) {
+				this.task.set('description', desc);
+			}
+
 			// send the create task request
 			console.debug('create', this.task.toJSON());
 			this.task.save(null, {
