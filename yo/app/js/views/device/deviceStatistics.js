@@ -20,17 +20,10 @@ define([
 			'click #telemetry': 'onClickTelemetry'
 		},
 
-		initialize: function(options) {
-			this.device = options.device;
-			this.telemetry = options.telemetry;
-		},
-
 		renderTabContent: function(el) {
-			console.debug('stats rendering tab content');
-
 			el.html(this.template({
 				strings: strings,
-				device: this.device.toJSON(),
+				device: this.model.toJSON(),
 				telemetry: this.telemetry.toJSON()
 			}));
 

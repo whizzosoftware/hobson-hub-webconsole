@@ -6,7 +6,9 @@
 		 	<h1><%= plugin.name %></h1>
 		 	<p><%= plugin.description %></p>
  		</div>
-	 	<a class="tiny radius button">Settings</a>
+ 		<% if (plugin.configurable) { %>
+	 		<a id="buttonSettings" class="tiny radius button">Settings</a>
+	 	<% } %>
  	</div>
 	<% if (plugin.status.status === 'NOT_CONFIGURED') { %>
 	 	<div class="plugin-overlay">
@@ -15,7 +17,7 @@
 	 			<br/>
 	 			<%= plugin.name %> <%= strings.RequiresConfiguration %>
 	 			<p>
-	 				<a class="tiny radius button"><%= strings.Settings %></a>
+	 				<a id="buttonSettings" class="tiny radius button"><%= strings.Settings %></a>
 	 			</p>
 	 		</p>
 	 	</div>
@@ -26,7 +28,7 @@
 	 			<br/>
 		 		<p><%= strings.PluginError %></p>
 	 			<p>
-	 				<a class="tiny radius button"><%= strings.Settings %></a>
+	 				<a id="buttonSettings" class="tiny radius button"><%= strings.Settings %></a>
 	 			</p>
 	 		</p>
 	 	</div>

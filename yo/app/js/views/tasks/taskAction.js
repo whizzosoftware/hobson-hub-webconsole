@@ -28,19 +28,19 @@ define([
 		},
 
 		createDescription: function(action) {
-			switch (action.actionClassId) {
+			switch (action.cclass['@id']) {
 				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/log':
-					return 'Log "' + action.properties.message.value + '"';
+					return 'Log "' + action.values.message + '"';
 				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/email':
-					return 'Send e-mail to ' + action.properties.recipientAddress.value + ' with subject "' + action.properties.subject.value + '"';
+					return 'Send e-mail to ' + action.values.recipientAddress + ' with subject "' + action.values.subject + '"';
 				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/turnOff':
-					return 'Turn off ' + this.createDeviceListDescription(action.properties.devices.value);
+					return 'Turn off ' + this.createDeviceListDescription(action.values.devices);
 				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/turnOn':
-					return 'Turn on ' + this.createDeviceListDescription(action.properties.devices.value);
+					return 'Turn on ' + this.createDeviceListDescription(action.values.devices);
 				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/setLevel':
-					return 'Set level of ' + this.createDeviceListDescription(action.properties.devices.value) + ' to ' + action.properties.level.value + '%';
+					return 'Set level of ' + this.createDeviceListDescription(action.values.devices) + ' to ' + action.values.level + '%';
 				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/setColor':
-					return 'Set color of ' + this.createDeviceListDescription(action.properties.devices.value);
+					return 'Set color of ' + this.createDeviceListDescription(action.values.devices);
 				default:
 					return action.name;
 			}

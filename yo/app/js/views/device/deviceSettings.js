@@ -4,7 +4,7 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
-	'models/config',
+	'models/propertyContainer',
 	'views/device/deviceTab',
 	'views/configProperty',
 	'i18n!nls/strings',
@@ -23,29 +23,22 @@ define([
 			'click #saveButton': 'onClickSave'
 		},
 
-		initialize: function(options) {
-			this.device = options.device;
-			this.deviceConfig = options.deviceConfig;
-		},
-
-		remove: function() {
-			for (var i = 0; i < this.subviews.length; i++) {
-				this.subviews[i].remove();
-			}
-			Backbone.View.prototype.remove.call(this);
-		},
-
 		renderTabContent: function(el) {
 			el.html(this.template({
 				strings: strings,
-				device: this.device.toJSON()
+				device: this.model.toJSON()
 			}));
 
 			var formEl = this.$el.find('form');
 
-			var properties = this.deviceConfig.get('properties');
-			for (var property in properties) {
-				var v = new ConfigPropertyView({id: property, property: properties[property]});
+			var properties = this.model.get('configurationClass').supportedProperties;
+			for (var ix in properties) {
+				var property = properties[ix];
+				var v = new ConfigPropertyView({
+					id: property.id, 
+					property: property, 
+					value: this.model.get('configuration').values[property.id]
+				});
 				formEl.append(v.render().el);
 				this.subviews.push(v);
 			}
@@ -57,7 +50,10 @@ define([
 			event.preventDefault();
 			var config = new Config({
 				id: 'id',
-				url: this.deviceConfig.get('links').self
+				cclass: {
+					"@id": this.model.get('configurationClass')["@id"]
+				},
+				url: this.model.get('configuration')['@id']
 			});
 			for (var i=0; i < this.subviews.length; i++) {
 				var v = this.subviews[i];

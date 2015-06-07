@@ -29,7 +29,7 @@ define([
 
 		render: function() {
 			if (this.task.hasActions()) {
-				var actions = this.task.get('actions');
+				var actions = this.task.get('actionSet').actions;
 				for (var i = 0; i < actions.length; i++) {
 					var actionView = new TaskActionView({
 						action: actions[i]

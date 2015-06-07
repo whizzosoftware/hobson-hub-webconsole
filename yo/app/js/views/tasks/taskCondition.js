@@ -9,7 +9,7 @@ define([
 	'text!templates/tasks/taskCondition.html'
 ], function($, _, Backbone, moment, RecurrenceDefaults, strings, taskConditionTemplate) {
 
-	var TaskConditionView = Backbone.View.extend({
+	return Backbone.View.extend({
 		template: _.template(taskConditionTemplate),
 
 		tagName: 'li',
@@ -32,36 +32,42 @@ define([
 		},
 
 		createDescription: function(cond) {
-			var props = cond.properties;
-			console.debug('condition: ', cond.conditionClassId);
-			switch (cond.conditionClassId) {
+			var props = cond.values;
+			switch (cond.cclass['@id']) {
 				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-scheduler/conditionClasses/schedule':
 					var time;
-					if (props.time.value.charAt(0) === 'S') {
-						time = props.time.value.substring(0,2) === 'SR' ? 'sunrise' : 'sunset';
+					if (props.time.charAt(0) === 'S') {
+						time = props.time.substring(0,2) === 'SR' ? 'sunrise' : 'sunset';
 					} else {
-						time = moment(props.time.value, 'HH:mm:ssZ').format('LT');
+						time = moment(props.time, 'HH:mm:ssZ').format('LT');
 					}
-					var date = moment(props.date.value);
+					var date = moment(props.date);
 					var s = 'The time is ' + time + ' ';
-					if (props.recurrence && props.recurrence.value !== '') {
-						s += this.recurrenceDefaults.getNameForValue(props.recurrence.value) + ' starting on ' + date.format('L');
+					if (props.recurrence && props.recurrence !== '') {
+						s += this.recurrenceDefaults.getNameForValue(props.recurrence) + ' starting on ' + date.format('L');
 					} else {
 						s += 'on ' + date.format('L');
 					}
 					return s;
 				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-rules/conditionClasses/turnOff':
-					console.debug(this.devices, props);
-					return this.devices.getDevice(props.device.value.pluginId, props.device.value.deviceId).get('name') + ' turns off';
+					return props.device.name + ' turns off';
 				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-rules/conditionClasses/turnOn':
-					console.debug(this.devices, props);
-					return this.devices.getDevice(props.device.value.pluginId, props.device.value.deviceId).get('name') + ' turns on';
+					return props.device.name + ' turns on';
 				default:
 					return 'Something else happens';
 			}
+		},
+
+		getDevice: function(deviceId) {
+			for (var i=0; i < this.devices.length; i++) {
+				var device = this.devices.at(i);
+				if (deviceId === device.get('@id')) {
+					return device;
+				}
+			}
+			return null;
 		}
 
 	});
 
-	return TaskConditionView;
 });

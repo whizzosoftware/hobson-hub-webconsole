@@ -27,8 +27,8 @@ define([
 			this.$el.html(
 				this.tabsTemplate({
 					strings: strings,
-					device: this.device.toJSON(),
-					deviceUri: encodeURIComponent(this.device.get('links').self),
+					device: this.model.toJSON(),
+					deviceUri: encodeURIComponent(this.model.get('@id')),
 					tabName: this.tabName
 				})
 			);

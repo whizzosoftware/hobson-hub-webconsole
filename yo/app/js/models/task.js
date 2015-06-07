@@ -2,7 +2,16 @@
 define([
 	'backbone'
 ], function(Backbone) {
-	var TaskModel = Backbone.Model.extend({
+
+	return Backbone.Model.extend({
+		defaults: {
+			actionSet: {
+				actions: []
+			},
+			conditionSet: {
+				conditions: []
+			}
+		},
 
 		initialize: function(options) {
 			this.url = options.url;
@@ -11,30 +20,29 @@ define([
 		},
 
 		hasTriggerCondition: function() {
-			return (this.get('triggerCondition'));
+			return this.get('conditionSet').trigger;
 		},
 
 		setTriggerCondition: function(c) {
-			this.set('triggerCondition', c);
+			this.get('conditionSet').trigger = c;
 		},
 
 		hasConditions: function() {
-			return (this.get('conditions').length > 0);
+			return (this.get('conditionSet').conditions > 0);
 		},
 
 		addCondition: function(c) {
-			this.get('conditions').push(c);
+			this.get('conditionSet').conditions.push(c);
 		},
 
 		hasActions: function() {
-			return (this.get('actions').length > 0);
+			return (this.get('actionSet').actions.length > 0);
 		},
 
 		addAction: function(a) {
-			this.get('actions').push(a)
+			this.get('actionSet').actions.push(a)
 		}
 
 	});
 
-	return TaskModel;
 });

@@ -7,7 +7,7 @@ define([
 	'i18n!nls/strings'
 ], function($, _, Backbone, TaskControlSelectorView, strings) {
 
-	var TaskControlSelectorsView = Backbone.View.extend({
+	return Backbone.View.extend({
 
 		tagName: 'ul',
 
@@ -19,10 +19,6 @@ define([
 
 		subviews: [],
 
-		initialize: function(options) {
-			this.classes = options.classes;
-		},
-
 		remove: function() {
 			for (var i = 0; i < this.subviews.length; i++) {
 				this.subviews[i].remove();
@@ -33,8 +29,8 @@ define([
 		render: function() {
 			this.$el.empty();
 
-			for (var i=0; i < this.classes.length; i++) {
-				var v = new TaskControlSelectorView({control: this.classes.at(i)});
+			for (var i=0; i < this.model.length; i++) {
+				var v = new TaskControlSelectorView({model: this.model.at(i)});
 				this.$el.append(v.render().el);
 				this.subviews.push(v);
 			}
@@ -44,5 +40,4 @@ define([
 
 	});
 
-	return TaskControlSelectorsView;
 });

@@ -3,15 +3,15 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'models/taskConditionClasses',
+	'models/itemList',
 	'models/taskConditionClass',
 	'views/tasks/taskConditions',
 	'views/tasks/taskControlSelectors',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskConditionsEditor.html'
-], function($, _, Backbone, TaskConditionClasses, TaskConditionClass, TaskConditionsView, TaskControlSelectorsView, strings, taskIfTemplate) {
+], function($, _, Backbone, ItemList, TaskConditionClass, TaskConditionsView, TaskControlSelectorsView, strings, taskIfTemplate) {
 
-	var TaskConditionsEditorView = Backbone.View.extend({
+	return Backbone.View.extend({
 
 		template: _.template(taskIfTemplate),
 
@@ -78,14 +78,12 @@ define([
 				$(e.target).addClass('active');
 				el.css('display', 'block');
 
-				var classes = new TaskConditionClasses('/api/v1/users/local/hubs/local/tasks/conditionClasses');
-				classes.fetch({
+				new ItemList({model: TaskConditionClass, url: '/api/v1/users/local/hubs/local/tasks/conditionClasses'}).fetch({
 					context: this,
 					success: function(model, response, options) {
-						console.debug('got condition list: ', model);
 						// render task condition class selectors
 						var v = new TaskControlSelectorsView({
-							classes: model
+							model: model
 						});
 						options.context.$el.find('#taskConditionSelectors').html(v.render().el);
 						options.context.subviews.push(v);
@@ -102,9 +100,8 @@ define([
 		onClickAdd: function(e, a) {
 			console.debug('condition add: ', e, a);
 			var c = {
-				pluginId: a.pluginId,
-				conditionClassId: a.id,
-				properties: a.properties
+				cclass: {"@id": a.id},
+				values: a.properties
 			}
 			if (!this.task.hasTriggerCondition()) {
 				this.task.setTriggerCondition(c);
@@ -117,5 +114,4 @@ define([
 
 	});
 
-	return TaskConditionsEditorView;
 });

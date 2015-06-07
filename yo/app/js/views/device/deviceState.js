@@ -14,14 +14,10 @@ define([
 
 		template: _.template(template),
 
-		initialize: function(options) {
-			this.device = options.device;
-		},
-
 		renderTabContent: function(el) {
 			el.html(this.template({
 				strings: strings,
-				device: this.device.toJSON()
+				device: this.model.toJSON()
 			}));
 
 			return this;

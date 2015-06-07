@@ -28,7 +28,7 @@ define([
 			for (var i = 0; i < this.devices.length; i++) {
 				var device = this.devices.at(i);
 				if (device) {
-					var tileView = new DeviceTileView(device);
+					var tileView = new DeviceTileView({model: device});
 					this.$el.append(tileView.render().el);
 					this.subviews.push(tileView);
 				}

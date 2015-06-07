@@ -7,18 +7,14 @@ define([
 	var Session = Backbone.Model.extend({
 
 		initialize: function() {
-			console.debug('Created user session');
-
 			var userJson = window.sessionStorage.getItem('user');
 			if (userJson) {
-				console.debug('Read user from session storage', userJson);
 				this.set('user', new User(JSON.parse(userJson)));
 			}
 
 			var hubJson = window.sessionStorage.getItem('hub');
 			if (hubJson) {
 				this.set('hub', new Hub(JSON.parse(hubJson)));
-				console.debug('Read hub from session storage', this.get('hub'));
 			}
 		},
 
@@ -36,7 +32,6 @@ define([
 		},
 
 		getHubsUrl: function() {
-			console.debug(this.getUser());
 			return (this.hasUser()) ? this.getUser().get('hubs')['@id'] : null;
 		},
 
@@ -59,8 +54,7 @@ define([
 		},
 
 		getSelectedHubDevicesUrl: function() {
-			console.debug(this.getSelectedHub());
-			return this.getSelectedHub().get('devices')["@id"];
+			return this.getSelectedHub().get('devices')['@id'];
 		}
 
 	});

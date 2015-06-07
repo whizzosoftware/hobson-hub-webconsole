@@ -15,13 +15,16 @@ define([
 		initialize: function(options) {
 			this.id = options.id;
 			this.property = options.property;
+			console.debug(options.value);
+			this.value = options.value;
 		},
 
 		render: function() {
 			this.$el.html(this.template({
 				strings: strings,
 				id: this.id,
-				property: this.property
+				property: this.property,
+				value: this.value
 			}));
 			return this;
 		},

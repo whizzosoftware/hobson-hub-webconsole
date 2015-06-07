@@ -8,7 +8,7 @@ public class WebConsoleApplication extends Application {
     @Override
     public Restlet createInboundRoot() {
         Router router = new Router();
-        router.attach("/", new ClassLoaderOverrideDirectory(getContext(), "clap://class/", getClass().getClassLoader()));
+        router.attach("/", new ClassLoaderOverrideDirectory(getContext(), "clap://class/www/", getClass().getClassLoader()));
         return router;
     }
 }

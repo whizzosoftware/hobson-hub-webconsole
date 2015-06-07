@@ -3,11 +3,13 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'models/propertyContainer',
 	'views/settings/settingsTab',
 	'views/settings/plugins',
+	'views/settings/pluginSettings',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsPlugins.html'
-], function($, _, Backbone, SettingsTab, PluginsView, strings, template) {
+], function($, _, Backbone, Config, SettingsTab, PluginsView, PluginSettingsView, strings, template) {
 
 	var ProfileView = SettingsTab.extend({
 
@@ -20,9 +22,7 @@ define([
 		},
 
 		initialize: function(options) {
-			console.debug('settingsPlugins init');
 			this.hub = options.hub;
-			this.plugins = options.plugins;
 			this.query = options.query;
 		},
 
@@ -35,22 +35,19 @@ define([
 
 			var type = (this.query === 'filter=available') ? 'AVAILABLE' : 'PLUGIN';
 
-			this.pluginsView = new PluginsView(this.plugins.where({type: type}));
+			this.pluginsView = new PluginsView({model: this.model.where({type: type})});
 			this.$el.find('#pluginsContainer').html(this.pluginsView.render().el);
 		},
 
 		onClickSettings: function(event, plugin) {
 			console.debug('plugin click: ', plugin);
-			var model = new Config({url: plugin.get('links').configuration});
-			model.fetch({
+			var config = new Config({url: plugin.get('@id') + '?expand=configurationClass,configuration'});
+			config.fetch({
 				context: this,
 				success: function (model, response, options) {
 					console.debug('got plugin configuration: ', model);
 					var el = options.context.$el.find('#plugin-config-modal');
-					el.html(new PluginSettingsView({
-						plugin: plugin, 
-						pluginConfig: model
-					}).render().el);
+					el.html(new PluginSettingsView({model: plugin}).render().el);
 					el.foundation('reveal', 'open');
 				},
 				error: function() {

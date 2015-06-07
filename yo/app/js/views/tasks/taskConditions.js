@@ -30,7 +30,7 @@ define([
 			if (this.task.hasTriggerCondition()) {
 				var conditionView = new TaskConditionView({
 					devices: this.devices,
-					condition: this.task.get('triggerCondition')
+					condition: this.task.get('conditionSet').trigger
 				});
 				var rv = conditionView.render().el;
 				this.$el.append(rv);

@@ -8,11 +8,13 @@ define([
 	'sidr',
 	'models/session',
 	'models/hub',
-	'models/plugins',
+	'models/itemList',
+	'models/propertyContainer',
+	'models/plugin',
 	'models/devices',
 	'models/device',
 	'models/deviceConfig',
-	'models/tasks',
+	'models/task',
 	'models/telemetry',
 	'services/hub',
 	'views/navbar',
@@ -33,7 +35,7 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, bridget, Masonry, Sidr, session, Hub, Plugins, Devices, Device, DeviceConfig, Tasks, Telemetry, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, bridget, Masonry, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, Telemetry, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	var AppView = Backbone.View.extend({
 
@@ -56,10 +58,8 @@ define([
 		},
 
 		showDashboard: function() {
-			console.debug('app.showDashboard');
-
 			if (session.hasSelectedHub() && session.getSelectedHubDevicesUrl()) {
-				var devices = new Devices({url: session.getSelectedHubDevicesUrl()});
+				var devices = new ItemList({url: session.getSelectedHubDevicesUrl() + '?expand=item,preferredVariable', model: Device, sort: 'name'});
 				devices.fetch({
 					context: this,
 					success: function(model, response, options) {
@@ -83,7 +83,7 @@ define([
 		},
 
 		showTasks: function(userId, hubId) {
-			var tasks = new Tasks('/api/v1/users/local/hubs/local/tasks');
+			var tasks = new ItemList({model: Task, url: '/api/v1/users/local/hubs/local/tasks?expand=item'});
 			tasks.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -119,9 +119,18 @@ define([
 			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
 				context: this,
 				success: function(model, response, options) {
-					options.context.renderContentView(new HubSettingsGeneralView({
-						hub: model
-					}));
+					var config = new Config({url: model.get('configuration')['@id']});
+					config.fetch({
+						context: options.context,
+						success: function(model, response, options) {
+							options.context.renderContentView(new HubSettingsGeneralView({
+								model: model
+							}));
+						},
+						error: function(model, response, options) {
+							console.debug('nope');
+						}
+					});
 				}
 			});
 		},
@@ -130,9 +139,18 @@ define([
 			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
 				context: this,
 				success: function(model, response, options) {
-					options.context.renderContentView(new HubSettingsEmailView({
-						hub: model
-					}));
+					var config = new Config({url: model.get('configuration')['@id']});
+					config.fetch({
+						context: options.context,
+						success: function(model, response, options) {
+							options.context.renderContentView(new HubSettingsEmailView({
+								model: model
+							}));
+						},
+						error: function(model, response, options) {
+							console.debug('nope');
+						}
+					});
 				}
 			});
 		},
@@ -141,9 +159,20 @@ define([
 			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
 				context: this,
 				success: function(model, response, options) {
-					options.context.renderContentView(new HubSettingsLogView({
-						hub: model
-					}));
+					var hub = model;
+					var config = new Config({url: hub.get('configuration')['@id']});
+					config.fetch({
+						context: options.context,
+						success: function(model, response, options) {
+							options.context.renderContentView(new HubSettingsLogView({
+								model: model,
+								hub: hub
+							}));
+						},
+						error: function(model, response, options) {
+							console.debug('nope');
+						}
+					});
 				}
 			});
 		},
@@ -152,14 +181,16 @@ define([
 			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
 				context: this,
 				success: function(model, response, options) {
-					var plugins = new Plugins(model.get('plugins')["@id"]);
+					var hub = model;
+					var url = query === 'filter=available' ? hub.get('remotePlugins')['@id'] : hub.get('localPlugins')['@id'];
+					var plugins = new ItemList({model: Plugin, url: url + '?expand=item'});
 					plugins.fetch({
 						context: options.context,
 						success: function(model, response, options) {
 							options.context.renderContentView(new HubSettingsPluginsView({
-								hub: model,
-								query: query,
-								plugins: model
+								hub: hub,
+								model: model,
+								query: query
 							}));
 						},
 						error: function(model, response, options) {
@@ -183,8 +214,7 @@ define([
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {
-					console.debug('got device: ', device, options);
-					options.context.renderContentView(new DeviceDetailsView({device: device}));
+					options.context.renderContentView(new DeviceDetailsView({model: model}));
 				},
 				error: function(model, response, options) {
 					console.debug('nope!');
@@ -197,8 +227,7 @@ define([
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {
-					console.debug('got device: ', device, options);
-					options.context.renderContentView(new DeviceStateView({device: device}));
+					options.context.renderContentView(new DeviceStateView({model: model}));
 				},
 				error: function(model, response, options) {
 					console.debug('nope!');
@@ -207,22 +236,12 @@ define([
 		},
 
 		showDeviceSettings: function(deviceUrl) {
-			var device = new Device({url: deviceUrl});
+			// retrieve the device info with full configuration information
+			var device = new Device({url: deviceUrl + '?expand=configurationClass,configuration'});
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {
-					console.debug('got device: ', model, options);
-					var deviceConfig = new DeviceConfig({}, model.get('links').config);
-					deviceConfig.fetch({
-						context: options.context,
-						success: function(model, response, options) {
-							console.debug('got device config: ', model);
-							options.context.renderContentView(new DeviceSettingsView({device: device, deviceConfig: model}));
-						},
-						error: function(model, response, options) {
-							console.debug('nope!');
-						}
-					});
+					options.context.renderContentView(new DeviceSettingsView({model: model}));
 				},
 				error: function(model, response, options) {
 					console.debug('nope!');

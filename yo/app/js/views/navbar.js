@@ -15,12 +15,7 @@ define([
 			'click #sidebar-button': 'onClickSidebar'
 		},
 
-		initialize: function() {
-			console.debug('Creating sidebar');
-		},
-
 		render: function() {
-			console.debug('rendering navbar');
 			this.$el.html(
 				this.template({
 					strings: strings,
@@ -37,7 +32,6 @@ define([
 			var fragment = Backbone.history.getFragment();
 			this.$el.find('.subnav-item a').each(function(index, e) {
 				var el = $(e);
-				console.debug(el.attr('id'));
 				if (fragment.indexOf(el.attr('id')) > -1) {
 					el.addClass('active');
 				} else {

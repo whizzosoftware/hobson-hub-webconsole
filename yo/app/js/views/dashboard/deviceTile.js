@@ -10,7 +10,7 @@ define([
 	'text!templates/dashboard/deviceTile.html'
 ], function($, _, Backbone, toastr, DeviceService, PollingService, strings, deviceTileTemplate) {
 
-	var DeviceTileView = Backbone.View.extend({
+	return Backbone.View.extend({
 		tagName: 'div',
 
 		template: _.template(deviceTileTemplate),
@@ -22,24 +22,20 @@ define([
 			'click #tileButton': 'onButtonClick'
 		},
 
-		initialize: function(device) {
-			this.device = device;
-		},
-
 		close: function() {
 			clearInterval(this.time);
 		},
 
 		render: function() {
-			this.$el.html(this.template({ device: this.device.toJSON(), on: this.device.isOn(), strings: strings }));
+			this.$el.html(this.template({ device: this.model.toJSON(), on: this.model.isOn(), strings: strings }));
 			this.updateImage();
 			return this;
 		},
 
 		updateImage: function() {
 			// start image loading if there's a preferred image URL
-			var preferredVariable = this.device.get('preferredVariable');
-			if (preferredVariable.name == 'imageStatusUrl') {
+			var preferredVariable = this.model.get('preferredVariable');
+			if (preferredVariable && preferredVariable.name == 'imageStatusUrl') {
 				// show the user a wait spinner
 				this.showSpinner(true);
 
@@ -67,13 +63,13 @@ define([
 		},
 
 		onIconClick: function() {
-			var prefVar = this.device.get('preferredVariable');
+			var prefVar = this.model.get('preferredVariable');
 			var newValue = null;
 			if (prefVar) {
 				switch (prefVar.name) {
 					case 'on':
 						newValue = !prefVar.value;
-						DeviceService.setDeviceVariable(prefVar.links.self, newValue);
+						DeviceService.setDeviceVariable(prefVar["@id"], newValue);
 						break;
 					case 'imageStatusUrl':
 						this.updateImage();
@@ -89,7 +85,7 @@ define([
 				// kick off the variable URL polling
 				PollingService.poll({
 					context: this,
-					url: prefVar.links.self,
+					url: prefVar["@id"],
 					interval: 1000,
 					check: function(ctx, json) {
 						return (json.value === newValue);
@@ -97,7 +93,7 @@ define([
 					success: function(ctx) {
 						ctx.showSpinner(false);
 						ctx.$el.find('#work-icon').css('display', 'none');
-						ctx.device.setPreferredVariableValue(newValue);
+						ctx.model.setPreferredVariableValue(newValue);
 						ctx.render();
 					},
 					failure: function(ctx) {
@@ -110,7 +106,7 @@ define([
 
 		onButtonClick: function() {
 			console.debug('tile.onButtonClick');
-			this.$el.trigger('deviceButtonClick', this.device);
+			this.$el.trigger('deviceButtonClick', this.model);
 		},
 
 		showSpinner: function(enabled) {
@@ -118,5 +114,4 @@ define([
 		}
 	});
 
-	return DeviceTileView;
 });

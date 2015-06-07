@@ -6,12 +6,12 @@ define([
 	'toastr',
 	'services/hub',
 	'models/session',
-	'models/hub',
+	'models/propertyContainer',
 	'models/emailConfig',
 	'views/settings/settingsTab',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsEmail.html'
-], function($, _, Backbone, toastr, HubService, session, Hub, EmailConfiguration, SettingsTab, strings, template) {
+], function($, _, Backbone, toastr, HubService, session, Config, EmailConfiguration, SettingsTab, strings, template) {
 
 	var ProfileView = SettingsTab.extend({
 
@@ -27,23 +27,19 @@ define([
 			'click #saveButton': 'onClickSave'
 		},
 
-		initialize: function(options) {
-			console.debug(options.hub);
-			this.hub = options.hub;
-		},
-
 		renderTabContent: function(el) {
+			var config = this.model.get('values');
+
 			el.html(this.template({
 				strings: strings,
-				hub: this.hub.toJSON(),
-				hasServer: this.hub.hasServer(),
-				hasGmailServer: this.hub.hasGmailServer(),
-				hasOtherServer: this.hub.hasOtherServer()
+				config: config,
+				hasServer: config.emailServer,
+				hasGmailServer: config.emailServer === 'smtp.gmail.com',
+				hasOtherServer: config.emailServer && config.emailServer !== 'smtp.gmail.com' && config.emailServer !== ''
 			}));
 
-			var email = this.hub.get('email');
-			if (email && email.server) {
-				switch (email.server) {
+			if (config.emailServer) {
+				switch (config.emailServer) {
 					case 'smtp.gmail.com':
 						this.setServerType('serverGmail');
 						break;
@@ -62,22 +58,28 @@ define([
 			this.$el.find('#senderAddress').prop('disabled', !enabled);
 		},
 
-		createEmailConfiguration: function() {
-            return new EmailConfiguration({
-                server: this.$el.find('#server').val(),
-                secure: this.$el.find('#secure').prop('checked'),
-                username: this.$el.find('#username').val(),
-                password: this.$el.find('#password').val(),
-                senderAddress: this.$el.find('#senderAddress').val()
-            });
+		createEmailConfiguration: function(url) {
+            var c = new Config({id: 'id', url: url, cclass: this.model.get('cclass')});
+            var e = this.serverType !== 'serverNone';
+
+            c.setProperty('emailServer', e ? this.$el.find('#server').val() : '');
+            c.setProperty('emailSecure', e ? this.$el.find('#secure').prop('checked'): false);
+            c.setProperty('emailUsername', e ? this.$el.find('#username').val() : '');
+            c.setProperty('emailSender', e ? this.$el.find('#senderAddress').val() : '');
+            var pwd = this.$el.find('#password').val();
+            if (pwd && pwd !== '' && e) {
+	            c.setProperty('emailPassword', pwd);
+	        }
+            return c;
 		},
 
 		setServerType: function(type) {
 			this.serverType = type;
 			this.enableForm(type !== 'serverNone');
-			var isGmail = (type === 'serverGmail');
-			this.$el.find('#server').val(isGmail ? 'smtp.gmail.com' : '');
-			this.$el.find('#secure').prop('checked', isGmail);
+			if (type === 'serverGmail') {
+				this.$el.find('#server').val('smtp.gmail.com');
+				this.$el.find('#secure').prop('checked', true);
+			}
 		},
 
 		onClickServerType: function(e) {
@@ -107,39 +109,17 @@ define([
 		onClickSave: function(e) {
 			e.preventDefault();
 
-            var config = this.createEmailConfiguration();
-
-            console.debug(this.serverType);
-
-            if (this.serverType && this.serverType !== 'serverNone') {
-                var error = config.validate();
-
-                if (!error) {
-                    var hub = new Hub({ 
-                		id: this.hub.id, 
-            			email: config.toJSON(),
-            			url: session.getSelectedHubUrl()
-            		});
-
-                    console.debug('saving model: ', hub.toJSON());
-
-                    hub.save(null, {
-                        context: this,
-                        error: function(model, response, options) {
-                            if (response.status == 202) {
-                            	toastr.success('E-mail configuration saved.');
-                            } else {
-                                toastr.error('E-mail configuration was not saved. See the log file for details.');
-                            }
-                        }
-                    });
-                } else {
-                    toastr.error(error);
-                    this.footerView.showLoading(false);
+            var config = this.createEmailConfiguration(this.model.get('@id'));
+            config.save(null, {
+                context: this,
+                error: function(model, response, options) {
+                    if (response.status == 202) {
+                    	toastr.success('E-mail configuration saved.');
+                    } else {
+                        toastr.error('E-mail configuration was not saved. See the log file for details.');
+                    }
                 }
-            } else {
-            	console.debug('nothing to save');
-            }
+            });
 		}		
 
 	});

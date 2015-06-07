@@ -3,14 +3,15 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'models/taskActionClasses',
+	'models/itemList',
+	'models/taskActionClass',
 	'views/tasks/taskActions',
 	'views/tasks/taskControlSelectors',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskActionsEditor.html'
-], function($, _, Backbone, TaskActionClasses, TaskActionsView, TaskControlSelectorsView, strings, template) {
+], function($, _, Backbone, ItemList, TaskActionClass, TaskActionsView, TaskControlSelectorsView, strings, template) {
 
-	var TaskActionEditorView = Backbone.View.extend({
+	return Backbone.View.extend({
 
 		template: _.template(template),
 
@@ -73,13 +74,13 @@ define([
 
 			if (el.css('display') === 'none') {
 				el.css('display', 'block');
-				new TaskActionClasses({url: '/api/v1/users/local/hubs/local/tasks/actionClasses'}).fetch({
+				new ItemList({model: TaskActionClass, url: '/api/v1/users/local/hubs/local/tasks/actionClasses'}).fetch({
 					context: this,
 					success: function(model, response, options) {
 						console.log('got action list: ', model);
 						$(e.target).addClass('active');
 						var v = new TaskControlSelectorsView({
-							classes: model
+							model: model
 						});
 						el.html(v.render().el);
 						options.context.subviews.push(v);
@@ -95,9 +96,8 @@ define([
 
 		onClickAdd: function(e, a) {
 			this.task.addAction({
-				pluginId: a.pluginId,
-				actionClassId: a.id,
-				properties: a.properties
+				cclass: {'@id': a.id},
+				values: a.properties
 			});
 			this.renderActions();
 			this.closePlusPanel();
@@ -105,5 +105,4 @@ define([
 
 	});
 
-	return TaskActionEditorView;
 });

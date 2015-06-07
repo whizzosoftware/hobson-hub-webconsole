@@ -4,13 +4,14 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
+	'models/itemList',
 	'models/task',
-	'models/devices',
+	'models/device',
 	'views/tasks/taskConditionsEditor',
 	'views/tasks/taskActionsEditor',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskCreate.html'
-], function($, _, Backbone, toastr, Task, Devices, TaskConditionsEditorView, TaskActionsEditorView, strings, taskAddTemplate) {
+], function($, _, Backbone, toastr, ItemList, Task, Device, TaskConditionsEditorView, TaskActionsEditorView, strings, taskAddTemplate) {
 
 	var deviceListViews = {};
 
@@ -41,8 +42,9 @@ define([
 				task: this.task.toJSON()
 			}));
 
-			var devices = new Devices({
-				url: '/api/v1/users/local/hubs/local/devices'
+			var devices = new ItemList({
+				model: Device,
+				url: '/api/v1/users/local/hubs/local/devices?expand=item'
 			});
 
 			devices.fetch({

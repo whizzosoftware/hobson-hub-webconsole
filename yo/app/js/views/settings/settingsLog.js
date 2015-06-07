@@ -5,13 +5,13 @@ define([
 	'backbone',
 	'toastr',
 	'models/session',
-	'models/hub',
+	'models/propertyContainer',
 	'models/logEntries',
 	'views/settings/settingsTab',
 	'views/settings/logTable',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsLog.html'
-], function($, _, Backbone, toastr, session, Hub, LogEntries, SettingsTab, LogTableView, strings, template) {
+], function($, _, Backbone, toastr, session, Config, LogEntries, SettingsTab, LogTableView, strings, template) {
 
 	var ProfileView = SettingsTab.extend({
 
@@ -26,8 +26,10 @@ define([
 
 		initialize: function(options) {
 			this.hub = options.hub;
+			this.logLevel = this.model.get('values').logLevel;
 
-			var logEntries = new LogEntries('/api/v1/users/local/hubs/local/log');
+			var logEntries = new LogEntries(this.hub.get('log')['@id']);
+
 			logEntries.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -37,9 +39,9 @@ define([
 				error: function(model, response, options) {
 					if (response.status === 206) {
 						options.context.logTableView = new LogTableView(logEntries);
-						$('#log-table-container').append(logTableView.render().el);
+						$('#log-table-container').append(options.context.logTableView.render().el);
 					} else {
-						console.debug('nope!');
+						toastr.error(strings.LogRetrievalError);
 					}
 				}
 			});
@@ -54,33 +56,27 @@ define([
 			el.html(this.template({
 				strings: strings,
 				hub: this.hub,
-				logLevel: this.hub.get('logLevel')
+				logLevel: this.logLevel
 			}));
 		},
 
 		onClickLogLevel: function(e) {
-			console.debug('log level: ', e.target.id);
 			this.logLevel = e.target.id;
 		},
 
 		onClickSave: function(e) {
 			e.preventDefault();
 
-            var hub = new Hub({ 
-        		id: this.hub.id, 
-        		logLevel: this.logLevel,
-        		url: session.getSelectedHubUrl()
-        	});
+            var config = new Config({id: 'id', url: this.model.get('@id'), cclass: this.model.get('cclass')});
+            config.setProperty('logLevel', this.logLevel);
 
-            console.debug('saving model: ', hub.toJSON());
-
-            hub.save(null, {
+            config.save(null, {
                 context: this,
                 error: function(model, response, options) {
                     if (response.status == 202) {
-                    	toastr.success('Log configuration saved.');
+                    	toastr.success(strings.LogConfigurationSaved);
                     } else {
-                        toastr.error('Log configuration was not saved. See the log file for details.');
+                        toastr.error(strings.LogConfigurationSaveError);
                     }
                 }
             });

@@ -3,10 +3,10 @@ require([
 	'jquery',
 	'underscore',
 	'backbone',
-	'marionette',
+	'foundation.core',
 	'router',
 	'authFailHandler'
-], function($, _, Backbone, Marionette, Router, authFailHandler) {
+], function($, _, Backbone, Foundation, Router, authFailHandler) {
 	// make sure all 401 responses route to the login page
 	$.ajaxSetup({
 		statusCode: {
@@ -14,7 +14,7 @@ require([
 		}
 	});
 
-	// $(document).foundation();
+	$(document).foundation();
 
 	// initialize the router
 	new Router();

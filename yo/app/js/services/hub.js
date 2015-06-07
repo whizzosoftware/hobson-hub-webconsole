@@ -9,9 +9,7 @@ define([
 
 		retrieveHubWithId: function(hubId, hubsUrl, callback) {
 			var hub = session.getSelectedHub();
-			console.debug('selected hub: ', hub);
 			if (hub.get('id') !== hubId) {
-				console.debug('hub is different');
 				var hubs = new Hubs(hubsUrl);
 				hubs.fetch({
 					context: this,
@@ -27,7 +25,6 @@ define([
 
 						// if it is, fetch its details
 						if (h != null) {
-							console.debug('retrieving hub: ', h, callback);
 							h.fetch(callback);
 						} else {
 							console.debug('no hub found with id: ', hubId);
@@ -38,7 +35,6 @@ define([
 					}
 				});
 			} else {
-				console.debug('hub is the same', hub);
 				hub.fetch(callback);
 			}
 		},

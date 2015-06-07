@@ -8,7 +8,7 @@ define([
 	'text!templates/settings/plugin.html'
 ], function($, _, Backbone, PluginService, strings, pluginTemplate) {
 
-	var PluginView = Backbone.View.extend({
+	return Backbone.View.extend({
 		template: _.template(pluginTemplate),
 
 		tagName: 'li',
@@ -16,22 +16,17 @@ define([
 		className: 'plugin',
 
 		events: {
-			'click #button-settings': 'onClickSettings'
-		},
-
-		initialize: function(plugin) {
-			this.plugin = plugin;
+			'click #buttonSettings': 'onClickSettings'
 		},
 
 		render: function() {
 			this.$el.html(this.template({
 				strings: strings,
-				plugin: this.plugin.toJSON()
+				plugin: this.model.toJSON()
 			}));
 
-			var links = this.plugin.get('links');
-			if (links) {
-				PluginService.getPluginIcon(this, links.icon).success(function(response, b, c) {
+			if (this.model.get('image')) {
+				PluginService.getPluginIcon(this, this.model.get('image')['@id']).success(function(response, b, c) {
 	                this.$el.find('.plugin-icon').html($('<img src="data:' + c.getResponseHeader('content-type') + ';base64,' + response + '" />'));
 				});
 			}
@@ -41,9 +36,8 @@ define([
 
 		onClickSettings: function(event) {
 			event.preventDefault();
-			this.$el.trigger('pluginSettingsClick', this.plugin);
+			this.$el.trigger('pluginSettingsClick', this.model);
 		}
 	});
 
-	return PluginView;
 });

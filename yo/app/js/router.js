@@ -47,7 +47,6 @@ define([
 		},
 
 		initialize: function() {
-			console.debug('router init');
 			Backbone.history.start();
 		},
 
@@ -60,7 +59,6 @@ define([
 		},
 
 		showCloudlinkHubs: function() {
-			console.debug('router.showCloudlinkHubs');
 			if (this.verifyValidUser()) {
 				this.renderAppRoot('hub', {
 					user: session.getUser()
@@ -108,7 +106,6 @@ define([
 		},
 
 		showDeviceDetails: function(deviceUrl) {
-			console.debug('showDeviceDetails: ', deviceUrl);
 			this.renderAppRoot('hub');
 			this.appView.showDeviceDetails(deviceUrl);
 		},
@@ -162,7 +159,6 @@ define([
 			if (!this.appView || this.appView.name !== name) {
 				// remove the old app root view if present
 				if (this.appView) {
-					console.debug('removing old app view: ', this.appView.name);
 					this.appView.remove();
 					this.appView = null;
 				}
@@ -179,7 +175,6 @@ define([
 
 				// render the new app root view
 				if (this.appView) {
-					console.debug('new app view created: ', this.appView.name);
 					$('body').append(this.appView.render().el);
 				}
 			}

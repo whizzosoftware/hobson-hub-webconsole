@@ -25,10 +25,6 @@ define([
 
 		subviews: [],
 
-		initialize: function(options) {
-			this.control = options.control;
-		},
-
 		remove: function() {
 			for (var i = 0; i < this.subviews.length; i++) {
 				this.subviews[i].remove();
@@ -40,12 +36,12 @@ define([
 			// render panel
 			this.$el.html(this.template({
 				strings: strings,
-				control: this.control.toJSON()
+				control: this.model.toJSON()
 			}));
 
 			// render form
 			var el = this.$el.find('form');
-			var properties = this.control.get('supportedProperty');
+			var properties = this.model.get('supportedProperties');
 			if (properties) {
 				for (var i=0; i < properties.length; i++) {
 					var prop = properties[i];
@@ -87,25 +83,21 @@ define([
 			
 			// build a list of form values
 			var values = {};
-			var properties = this.control.get('supportedProperty');
+			var properties = this.model.get('supportedProperties');
 			for (var i=0; i < properties.length; i++) {
 				var prop = properties[i];
 				if (prop.type === 'DEVICES' || prop.type === 'DEVICE') {
-					values[prop.id] = {value: prop.value};
+					values[prop.id] = prop.value;
 				} else {
-					values[prop.id] = {value: this.$el.find('input#' + prop.id).val()};
+					values[prop.id] = this.$el.find('input#' + prop.id).val();
 				}
 			}
 
 			// fire an "add clicked" event containing the control id and form values
 			var val = {
-				id: this.control.get('@id'),
+				id: this.model.get('@id'),
 				properties: values
 			};
-
-			if (this.control.get('pluginId')) {
-				val.pluginId = this.control.get('pluginId');
-			}
 
 			this.$el.trigger('onClickAdd', val);
 		}

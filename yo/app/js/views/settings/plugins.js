@@ -7,17 +7,12 @@ define([
 	'i18n!nls/strings'
 ], function($, _, Backbone, PluginView, strings) {
 
-	var PluginsView = Backbone.View.extend({
+	return Backbone.View.extend({
 		subviews: [],
 
 		tagName: 'ul',
 
 		className: 'plugins small-block-grid-1 medium-block-grid-2 large-block-grid-3',
-
-		initialize: function(plugins) {
-			console.debug(plugins);
-			this.plugins = plugins;
-		},
 
 		remove: function() {
 			for (var i = 0; i < this.subviews.length; i++) {
@@ -28,11 +23,15 @@ define([
 
 		render: function() {
 			var p;
-			for (var i = 0; i < this.plugins.length; i++) {
-				var pluginView = new PluginView(this.plugins[i]);
-				var rv = pluginView.render().el;
-				this.$el.append(rv);
-				this.subviews.push(pluginView);
+			if (this.model.length > 0) {
+				for (var i = 0; i < this.model.length; i++) {
+					var pluginView = new PluginView({model: this.model[i]});
+					var rv = pluginView.render().el;
+					this.$el.append(rv);
+					this.subviews.push(pluginView);
+				}
+			} else {
+				this.$el.html('<p class="notice">There are no new plugins currently available.</p>');
 			}
 
 			return this;
@@ -40,5 +39,4 @@ define([
 
 	});
 
-	return PluginsView;
 });

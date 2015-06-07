@@ -21,26 +21,31 @@ define([
 		},
 
 		initialize: function(options) {
-			console.debug('DashboardView.initialize');
 			this.devices = options.devices;
 		},
 
 		remove: function() {
-			this.tilesView.remove();
+			if (this.tilesView) {
+				this.tilesView.remove();
+			}
 			Backbone.View.prototype.remove.call(this);
 		},
 
 		render: function() {
-			console.debug('render dashboard');
-
 			$('#toolbar').css('display', 'block');
 
 			// create dashboard shell
 			this.$el.append(this.template({strings: strings}));
 
 			// render the collection into the tile row
-			this.tilesView = new DeviceTilesView(this.devices);
-			this.$el.find('#tile-row').append(this.tilesView.render().el);
+			if (this.devices.length > 0) {
+				this.tilesView = new DeviceTilesView(this.devices);
+				this.$el.find('#tile-row').html(this.tilesView.render().el);
+			} else {
+				this.$el.find('#tile-row').html(
+					'<p class="notice">There are no devices to show. You should <a href="#settings/plugins?filter=available">install plugins</a> to create some.</p>'
+				);
+			}
 
 			return this;
 		},
@@ -60,7 +65,7 @@ define([
 			var pluginId = device.get('pluginId');
 			var deviceId = device.get('id');
 			console.debug('device button clicked: ', pluginId, deviceId);
-			var deviceUrl = device.get('links').self;
+			var deviceUrl = device.get('@id');
 			console.debug('Device clicked: ', encodeURIComponent(deviceUrl));
 			Backbone.history.navigate('#device/' + encodeURIComponent(deviceUrl) + '/state', {trigger: true});
 		}

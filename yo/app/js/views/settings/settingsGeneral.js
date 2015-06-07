@@ -4,11 +4,11 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
-	'models/hub',
+	'models/propertyContainer',
 	'views/settings/settingsTab',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsGeneral.html'
-], function($, _, Backbone, toastr, Hub, SettingsTab, strings, template) {
+], function($, _, Backbone, toastr, Config, SettingsTab, strings, template) {
 
 	var ProfileView = SettingsTab.extend({
 
@@ -30,19 +30,19 @@ define([
 		},
 
 		initialize: function(options) {
-			this.hub = options.hub;
 			this.addressChange = false;
 		},
 
 		renderTabContent: function(el) {
+			var values = this.model.get('values');
+
 			el.html(this.template({
 				strings: strings,
-				hub: this.hub.toJSON()
+				config: values
 			}));
 
-			var location = this.hub.get('location');
-			if (location && location.text) {
-				this.showMap(encodeURIComponent(location.text), 17, true);
+			if (values && values.address) {
+				this.showMap(encodeURIComponent(values.address), 17, true);
 			} else {
 				this.showDefaultMap();
 			}
@@ -57,8 +57,6 @@ define([
 		},
 
 		onBlurAddress: function() {
-			console.debug('onblur');
-
 			// if the user has changed the address field...
 			if (this.addressChange) {
 				this.addressChange = false;
@@ -108,30 +106,22 @@ define([
 				this.savePending = false;
 
 				// create a new hub model object
-				var hub = new Hub({
-					userId: 'local',
-					id: 'local',
-					name: this.$el.find('#hubName').val(),
-					location: {
-						text: this.$el.find('#hubAddress').val()	
-					},
-					url: this.hub.get('links').self
-				});
+				var config = new Config({id: 'id', url: this.model.get('@id'), cclass: this.model.get('cclass')});
+				config.setProperty('name', this.$el.find('#hubName').val());
+				config.setProperty('address', this.$el.find('#hubAddress').val());
 
 				// set the latitude/longitude if they've been entered
 				var l = this.$el.find('#hubLatitude').val();
 				if (l) {
-					hub.get('location').latitude = l;
+					config.setProperty('latitude', l);
 				}
 				l = this.$el.find('#hubLongitude').val();
 				if (l) {
-					hub.get('location').longitude = l;
+					config.setProperty('longitude', l);
 				}
 
-				console.debug('saving hub: ', hub);
-
 				// save to server
-				hub.save(null, {
+				config.save(null, {
 					error: function(model, response) {
 						if (response.status === 202) {
 							toastr.success('The hub configuration has been saved.')

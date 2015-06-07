@@ -1,11 +1,11 @@
-// Filename: models/config.js
+// Filename: models/propertyContainer.js
 define([
 	'backbone'
 ], function(Backbone) {
-	var ConfigModel = Backbone.Model.extend({
+	return Backbone.Model.extend({
 
 		defaults: {
-			properties: {}
+			values: {}
 		},
 
 		initialize: function(options) {
@@ -13,12 +13,8 @@ define([
 		},
 
 		setProperty: function(key, value) {
-			this.get('properties')[key] = {
-				value: value
-			}
+			this.get('values')[key] = value;
 		}
 
 	});
-
-	return ConfigModel;
 });
