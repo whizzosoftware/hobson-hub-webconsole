@@ -28,21 +28,24 @@ define([
 		},
 
 		createDescription: function(action) {
-			switch (action.cclass['@id']) {
-				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/log':
-					return 'Log "' + action.values.message + '"';
-				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/email':
-					return 'Send e-mail to ' + action.values.recipientAddress + ' with subject "' + action.values.subject + '"';
-				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/turnOff':
-					return 'Turn off ' + this.createDeviceListDescription(action.values.devices);
-				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/turnOn':
-					return 'Turn on ' + this.createDeviceListDescription(action.values.devices);
-				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/setLevel':
-					return 'Set level of ' + this.createDeviceListDescription(action.values.devices) + ' to ' + action.values.level + '%';
-				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-core/actionClasses/setColor':
-					return 'Set color of ' + this.createDeviceListDescription(action.values.devices);
-				default:
-					return action.name;
+			console.debug('action:', action);
+
+			var cclass = action.cclass['@id'];
+
+			if (cclass.endsWith('log')) {
+				return 'Log "' + action.values.message + '"';
+			} else if (cclass.endsWith('email')) {
+				return 'Send e-mail to ' + action.values.recipientAddress + ' with subject "' + action.values.subject + '"';
+			} else if (cclass.endsWith('turnOff')) {
+				return 'Turn off ' + this.createDeviceListDescription(action.values.devices);
+			} else if (cclass.endsWith('turnOn')) {
+				return 'Turn on ' + this.createDeviceListDescription(action.values.devices);
+			} else if (cclass.endsWith('setLevel')) {
+				return 'Set level of ' + this.createDeviceListDescription(action.values.devices) + ' to ' + action.values.level + '%';
+			} else if (cclass.endsWith('setColor')) {
+				return 'Set color of ' + this.createDeviceListDescription(action.values.devices);
+			} else {
+				return action.name;
 			}
 		},
 

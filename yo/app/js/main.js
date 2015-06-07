@@ -14,6 +14,14 @@ require([
 		}
 	});
 
+	// add a convenient "endsWith" function to String
+	if (typeof String.prototype.endsWith !== 'function') {
+    	String.prototype.endsWith = function(suffix) {
+        	return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    	};
+	}
+
+	// initialize Foundation Javascript
 	$(document).foundation();
 
 	// initialize the router

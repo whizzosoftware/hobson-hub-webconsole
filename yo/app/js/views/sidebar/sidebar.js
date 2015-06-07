@@ -30,11 +30,12 @@ define([
 				context: this,
 				success: function(model, response, options) {
 					var s = model.findWhere({name: 'sunrise'});
-					if (s) {
+					if (s && s.get('value')) {
+						console.debug(s);
 						options.context.$el.find('#sunrise').html(options.context.convertTimeString(s.get('value')));
 					}
 					s = model.findWhere({name: 'sunset'});
-					if (s) {
+					if (s && s.get('value')) {
 						options.context.$el.find('#sunset').html(options.context.convertTimeString(s.get('value')));
 					}
 				}

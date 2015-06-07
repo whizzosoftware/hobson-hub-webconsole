@@ -32,29 +32,30 @@ define([
 		},
 
 		createDescription: function(cond) {
+			var cclass = cond.cclass['@id'];
 			var props = cond.values;
-			switch (cond.cclass['@id']) {
-				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-scheduler/conditionClasses/schedule':
-					var time;
-					if (props.time.charAt(0) === 'S') {
-						time = props.time.substring(0,2) === 'SR' ? 'sunrise' : 'sunset';
-					} else {
-						time = moment(props.time, 'HH:mm:ssZ').format('LT');
-					}
-					var date = moment(props.date);
-					var s = 'The time is ' + time + ' ';
-					if (props.recurrence && props.recurrence !== '') {
-						s += this.recurrenceDefaults.getNameForValue(props.recurrence) + ' starting on ' + date.format('L');
-					} else {
-						s += 'on ' + date.format('L');
-					}
-					return s;
-				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-rules/conditionClasses/turnOff':
-					return props.device.name + ' turns off';
-				case '/api/v1/users/local/hubs/local/plugins/com.whizzosoftware.hobson.hub.hobson-hub-rules/conditionClasses/turnOn':
-					return props.device.name + ' turns on';
-				default:
-					return 'Something else happens';
+
+			if (cclass.endsWith('schedule')) {
+				var time;
+				if (props.time.charAt(0) === 'S') {
+					time = props.time.substring(0,2) === 'SR' ? 'sunrise' : 'sunset';
+				} else {
+					time = moment(props.time, 'HH:mm:ssZ').format('LT');
+				}
+				var date = moment(props.date);
+				var s = 'The time is ' + time + ' ';
+				if (props.recurrence && props.recurrence !== '') {
+					s += this.recurrenceDefaults.getNameForValue(props.recurrence) + ' starting on ' + date.format('L');
+				} else {
+					s += 'on ' + date.format('L');
+				}
+				return s;
+			} else if (cclass.endsWith('turnOff')) {
+				return props.device.name + ' turns off';
+			} else if (cclass.endsWith('turnOn')) {
+				return props.device.name + ' turns on';
+			} else {
+				return 'Something else happens';
 			}
 		},
 
