@@ -113,11 +113,11 @@ define([
 				// set the latitude/longitude if they've been entered
 				var l = this.$el.find('#hubLatitude').val();
 				if (l) {
-					config.setProperty('latitude', l);
+					config.setProperty('latitude', parseFloat(l));
 				}
 				l = this.$el.find('#hubLongitude').val();
 				if (l) {
-					config.setProperty('longitude', l);
+					config.setProperty('longitude', parseFloat(l));
 				}
 
 				// save to server

@@ -20,7 +20,6 @@ define([
 		subviews: [],
 
 		initialize: function(activities) {
-			console.debug('initializing activity view with: ', activities);
 			this.activities = activities;
 		},
 
@@ -45,7 +44,6 @@ define([
 					this.$el.append('<tr><td></td><td class="header"><h2>' + newHeader + '</h2></td></tr>');
 					lastHeaderString = newHeader;
 				}
-				console.debug('considering: ', activity);
 				if (activity) {
 					var timeString = activityTime.format('h:mm A');
 					var activityView = new ActivityLogEntryView(activity, (timeString !== lastTimeString) ? timeString : '');
