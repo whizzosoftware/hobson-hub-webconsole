@@ -4,11 +4,12 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
-	'models/deviceConfig',
+	'highcharts',
+	'models/deviceTelemetry',
 	'views/device/deviceTab',
 	'i18n!nls/strings',
 	'text!templates/device/deviceStatistics.html'
-], function($, _, Backbone, toastr, DeviceConfig, DeviceTab, strings, template) {
+], function($, _, Backbone, toastr, HighCharts, DeviceTelemetry, DeviceTab, strings, template) {
 
 	return DeviceTab.extend({
 
@@ -20,46 +21,40 @@ define([
 			'click #telemetry': 'onClickTelemetry'
 		},
 
+		initialize: function(options) {
+			this.datasets = options.datasets;
+		},
+
 		renderTabContent: function(el) {
+			var hasData = this.hasValidDataset();
+
 			el.html(this.template({
 				strings: strings,
 				device: this.model.toJSON(),
-				telemetry: this.telemetry.toJSON()
+				hasData: hasData
 			}));
 
-			if (this.telemetry.hasData()) {
+			if (this.hasValidDataset()) {
+				var offset = new Date().getTimezoneOffset() * 60000;
 
-				var data = this.telemetry.get('data');
-
-				var chartData = {
-				  // A labels array that can contain any sort of values
-				  labels: [],
-				  series: []
-				};
-
-				var keys = Object.keys(data);
-
-				// build a list of labels
-				var firstName = keys[0];
-				for (var t in data[firstName]) {
-					chartData.labels.push(parseFloat(t));
-				}
-
-				// add empty arrays to the series key
-				for (var i=0; i < keys.length; i++) {
-					chartData.series.push([]);
-				}
-
-				// build a list of series
-				for (var i=0; i < chartData.labels.length; i++) {
-					var t = chartData.labels[i];
-					for (var x=0; x < keys.length; x++) {
-						var k = keys[x];
-						var v = data[k][t];
-						chartData.series[x][i] = parseFloat(v);
+				// create timeseries chart data
+				var series = [];
+				for (var ix=0; ix < this.datasets.length; ix++) {
+					var dataset = this.datasets.at(ix);
+					var datasetItems = dataset.get('data').itemListElement;
+					// create a new series for this dataset -- a series has a name and an array of data
+					// since this is a time series, each data element is itself an array of length 2 -- time and value
+					var s = {
+						name: strings[dataset.get('name')],
+						data: []
+					};
+					for (var ix2=0; ix2 < datasetItems.length; ix2++) {
+						s.data.push([parseFloat(datasetItems[ix2].item.time) * 1000 - offset, parseFloat(datasetItems[ix2].item.value)]);
 					}
+					series.push(s);
 				}
 
+				// create chart config
 	            var chartConfig = {
 		            chart: {
 		              type: 'spline',
@@ -86,61 +81,53 @@ define([
 							}
 						}
 					},
-					series: [
-					],
-					title: {
+					series: series,
+		        	title: {
 						text: null
 					}
 	            };
 
-				var offset = new Date().getTimezoneOffset() * 60000;
-
-	            for (var varName in data) {
-	              var d = {
-	                name: strings[varName],
-	                data: []
-	              };
-	              var varResults = data[varName];
-	              for (var t in varResults) {
-	                // apply timezone offset to the data
-	                d.data.push([parseFloat(t) * 1000 - offset, parseFloat(varResults[t])]);
-	              }
-	              if (d.data.length > 0) {
-	                chartConfig.series.push(d);
-	              }
-	            }
-
 				this.$el.find('#chart').highcharts(chartConfig);
 			}
 
-			this.setChartNotice();
+			this.setChartNotice(this);
 
 			return this;
 		},
 
-		setChartNotice: function() {
-			if (this.telemetry.hasData()) {
-				this.$el.find('#chartNotice').html('');
+		setChartNotice: function(context) {
+			if (context.hasValidDataset()) {
+				context.$el.find('#chartNotice').html('');
 			} else {
-				this.$el.find('#chartNotice').html(this.telemetry.get('enabled') ? strings.NoStatisticsCollected : strings.NoStatisticsEnabled);
+				context.$el.find('#chartNotice').html(context.model.get('telemetry').enabled ? strings.NoStatisticsCollected : strings.NoStatisticsEnabled);
 			}
+		},
+
+		hasValidDataset: function() {
+			for (var ix=0; ix < this.datasets.length; ix++) {
+				if (this.datasets.at(ix).hasData()) {
+					return true;
+				}
+			}
+			return false;
 		},
 
 		onClickTelemetry: function(e) {
 			var el = $(e.target);
 			var newValue = el.prop('checked');
-			var config = new DeviceConfig({
-				id: 'id',
-				enabled: newValue
-			}, this.telemetry.get('links').self);
 			el.prop('disabled', true);
-			config.save(null, {
+			var telem = new DeviceTelemetry({
+				id: 'id',
+				url: this.model.get('telemetry')['@id'],
+				enabled: newValue
+			});
+			telem.save(null, {
 				context: this,
 				error: function(model, response, options) {
 					el.prop('disabled', false);
 					if (response.status === 202) {
-						options.context.telemetry.set('enabled', newValue);
-						options.context.setChartNotice();
+						options.context.model.get('telemetry').enabled = newValue;
+						options.context.setChartNotice(options.context);
 					} else {
 						toastr.error(strings.DeviceConfigUpdateFailure);
 						el.prop('checked', !newValue);

@@ -13,7 +13,8 @@ define([
 	'models/device',
 	'models/deviceConfig',
 	'models/task',
-	'models/telemetry',
+	'models/deviceTelemetry',
+	'models/telemetryDataset',
 	'services/hub',
 	'views/navbar',
 	'views/sidebar/sidebar',
@@ -33,7 +34,7 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, Telemetry, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, DeviceTelemetry, TelemetryDataset, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	var AppView = Backbone.View.extend({
 
@@ -189,7 +190,7 @@ define([
 		},
 
 		showDeviceDetails: function(deviceUrl) {
-			var device = new Device({url: deviceUrl});
+			var device = new Device({url: deviceUrl + '?expand=telemetry'});
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -202,7 +203,7 @@ define([
 		},
 
 		showDeviceState: function(deviceUrl) {
-			var device = new Device({url: deviceUrl + '?expand=variables'});
+			var device = new Device({url: deviceUrl + '?expand=variables,telemetry'});
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -216,7 +217,7 @@ define([
 
 		showDeviceSettings: function(deviceUrl) {
 			// retrieve the device info with full configuration information
-			var device = new Device({url: deviceUrl + '?expand=configurationClass,configuration'});
+			var device = new Device({url: deviceUrl + '?expand=configurationClass,configuration,telemetry'});
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -229,28 +230,26 @@ define([
 		},
 
 		showDeviceStatistics: function(deviceUrl) {
-			var device = new Device({url: deviceUrl});
+			var device = new Device({url: deviceUrl + '?expand=telemetry'});
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {
-					var telemetry = new Telemetry({
-						url: model.get('telemetry').links.self
-					});
-					telemetry.fetch({
+					var device = model;
+					var datasets = new ItemList({model: TelemetryDataset, url: model.get('telemetry').datasets['@id'] + '?expand=item'});
+					datasets.fetch({
 						context: options.context,
-						success: function(model, result, options) {
+						success: function(model, response, options) {
 							options.context.renderContentView(new DeviceStatisticsView({
-								device: device,
-								telemetry: model
+								model: device,
+								datasets: model,
 							}));
 						},
-						fail: function(model, result, options) {
-							console.debug('Nope!');
+						error: function(model, response, options) {
 						}
-					});
+					})
 				},
-				error: function(model, response, options) {
-					console.debug('nope!');
+				fail: function(model, result, options) {
+					console.debug('Nope!');
 				}
 			});
 		},

@@ -1,7 +1,7 @@
 <div class="inset">
-	<input id="telemetry" type="checkbox" <%= telemetry.enabled ? 'checked' : '' %>><label for="telemetry"><%= strings.EnableDeviceStatistics %></label>
+	<input id="telemetry" type="checkbox" <%= device.telemetry.enabled ? 'checked' : '' %>><label for="telemetry"><%= strings.EnableDeviceStatistics %></label>
 	<div id="chartContainer">
-		<% if (!telemetry.data) { %>
+		<% if (!hasData) { %>
 			<p id="chartNotice" class="notice"></p>
 		<% } else { %>
 			<center>
