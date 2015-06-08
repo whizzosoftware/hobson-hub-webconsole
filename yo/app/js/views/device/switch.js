@@ -28,7 +28,7 @@ define([
 					pending: this.showPending
 				}));
 			} else {
-				this.$el.html('No "on" variable');
+				this.$el.html('<p class="notice">' + this.strings.DeviceMissingVariable + '</p>');
 			}
 
 			return this;

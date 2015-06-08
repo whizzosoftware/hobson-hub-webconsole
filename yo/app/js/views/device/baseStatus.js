@@ -17,6 +17,8 @@ define([
 
 		showPending: false,
 
+		alwaysRefresh: false,
+
 		initialize: function() {
 			// save initial variable values
 			var variables = this.model.get('variables').itemListElement;
@@ -121,7 +123,7 @@ define([
 					}
 
 					// if any have changed, re-render
-					if (change) {
+					if (change || options.context.alwaysRefresh) {
 						options.context.render();
 					}
 				},

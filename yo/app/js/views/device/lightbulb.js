@@ -3,13 +3,12 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'foundation.core',
 	'jquery-colpick',
 	'models/variable',
 	'views/device/baseStatus',
 	'i18n!nls/strings',
 	'text!templates/device/lightbulb.html'
-], function($, _, Backbone, foundation, colpick, Variable, BaseStatus, strings, template) {
+], function($, _, Backbone, colpick, Variable, BaseStatus, strings, template) {
 
 	return BaseStatus.extend({
 
@@ -41,9 +40,9 @@ define([
 						this.onColorChange(hsb,hex,rgb,el,bySetColor);
 					}.bind(this)
 				});
+			} else {
+				this.$el.html('<p class="notice">' + this.strings.DeviceMissingVariable + '</p>');
 			}
-
-			$(document).foundation('slider', 'reflow');
 
 			return this;
 		},

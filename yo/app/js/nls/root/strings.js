@@ -15,6 +15,7 @@ define({
 	"DevicesSelected": "devices selected.",
 	"DeviceConfigUpdateFailure": "Failed to update device configuration. See the log for details.",
 	"DeviceConfigUpdateSuccess": "Successfully updated device configuration.",
+	"DeviceMissingVariable": "This device does not have the expected information.",
 	"Email": "E-mail",
 	"EnableDeviceStatistics": "Collect statistics for this device?",
 	"Energy": "Energy",
