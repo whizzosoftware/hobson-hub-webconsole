@@ -3,8 +3,6 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'bridget',
-	'masonry',
 	'sidr',
 	'models/session',
 	'models/hub',
@@ -35,17 +33,13 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, bridget, Masonry, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, Telemetry, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, Telemetry, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	var AppView = Backbone.View.extend({
 
 		name: 'hub',
 
 		template: _.template(appTemplate),
-
-		initialize: function() {
-			bridget('masonry', Masonry);
-		},
 
 		render: function() {
 			this.$el.append(this.template());
@@ -59,27 +53,12 @@ define([
 
 		showDashboard: function() {
 			if (session.hasSelectedHub() && session.getSelectedHubDevicesUrl()) {
-				var devices = new ItemList({url: session.getSelectedHubDevicesUrl() + '?expand=item,preferredVariable', model: Device, sort: 'name'});
-				devices.fetch({
-					context: this,
-					success: function(model, response, options) {
-						options.context.renderDashboard(options.context, model);
-					}
-				});
+				this.renderContentView(new DashboardView({
+					url: session.getSelectedHubDevicesUrl() + '?expand=item,preferredVariable'
+				}), true);
 			} else {
 				this.renderDashboard(this, null);
 			}
-		},
-
-		renderDashboard: function(ctx, devices) {
-			var dv = new DashboardView({
-				devices: devices
-			});
-			ctx.renderContentView(dv, true);
-			$('.dash-tiles').masonry({
-				itemSelector: '.tile',
-				gutter: 10
-			});
 		},
 
 		showTasks: function(userId, hubId) {

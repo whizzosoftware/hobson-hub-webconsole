@@ -22,6 +22,10 @@ define([
 			'click #tileButton': 'onButtonClick'
 		},
 
+		remove: function() {
+			Backbone.View.prototype.remove.call(this);
+		},
+
 		close: function() {
 			clearInterval(this.time);
 		},
@@ -30,6 +34,11 @@ define([
 			this.$el.html(this.template({ device: this.model.toJSON(), on: this.model.isOn(), strings: strings }));
 			this.updateImage();
 			return this;
+		},
+
+		reRender: function(device) {
+			this.model = device;
+			this.render();
 		},
 
 		updateImage: function() {

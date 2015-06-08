@@ -3,31 +3,35 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'bridget',
-	'masonry',
+	'models/itemList',
+	'models/device',
 	'views/dashboard/deviceTiles',
 	'i18n!nls/strings',
 	'text!templates/dashboard/dashboard.html'
-], function($, _, Backbone, bridget, Masonry, DeviceTilesView, strings, dashboardTemplate) {
+], function($, _, Backbone, ItemList, Device, DeviceTilesView, strings, template) {
 
-	var DashboardView = Backbone.View.extend({
+	return Backbone.View.extend({
 		tagName: 'div',
 
-		template: _.template(dashboardTemplate),
+		template: _.template(template),
+
+		refreshInterval: null,
 
 		events: {
-			'deviceIconClick': 'onDeviceIconClick',
 			'deviceButtonClick': 'onDeviceButtonClick'
 		},
 
 		initialize: function(options) {
-			this.devices = options.devices;
+			this.url = options.url;
 		},
 
 		remove: function() {
 			if (this.tilesView) {
 				this.tilesView.remove();
 			}
+
+			this.clearRefreshInterval();
+
 			Backbone.View.prototype.remove.call(this);
 		},
 
@@ -37,39 +41,55 @@ define([
 			// create dashboard shell
 			this.$el.append(this.template({strings: strings}));
 
-			// render the collection into the tile row
-			if (this.devices.length > 0) {
-				this.tilesView = new DeviceTilesView(this.devices);
-				this.$el.find('#tile-row').html(this.tilesView.render().el);
-			} else {
-				this.$el.find('#tile-row').html(
-					'<p class="notice">There are no devices to show. You should <a href="#settings/plugins?filter=available">install plugins</a> to create some.</p>'
-				);
-			}
+			// render the device tile container
+			this.tilesView = new DeviceTilesView();
+			this.$el.find('#tile-row').html(this.tilesView.render().el);
+
+			// render initial device tiles
+			this.refresh();
+
+			// start the refresh interval
+			this.clearRefreshInterval();
+			this.refreshInterval = setInterval(function() {
+				this.refresh();
+			}.bind(this), 5000);
 
 			return this;
 		},
 
-		hubSettingsClick: function() {
-			console.debug('Hub settings!');
+		refresh: function() {
+			if (this.url) {
+				var devices = new ItemList({model: Device, url: this.url});
+				devices.fetch({
+					context: this,
+					success: function(model, response, options) {
+						options.context.model = model;
+						options.context.renderTiles(options.context);
+					},
+					error: function(model, response, options) {
+						console.error('Error retrieving devices');
+					}
+				});
+			}
 		},
 
-		onDeviceIconClick: function(event, device) {
-			console.debug(device);
-			var pluginId = device.get('pluginId');
-			var deviceId = device.get('id');
-			console.debug('device icon clicked: ', pluginId, deviceId);
+		renderTiles: function(self) {
+			self.tilesView.reRender(self.model);
+		},
+
+		clearRefreshInterval: function() {
+			if (this.refreshInterval) {
+				clearInterval(this.refreshInterval);
+				this.refreshInterval = null;
+			}
 		},
 
 		onDeviceButtonClick: function(event, device) {
 			var pluginId = device.get('pluginId');
 			var deviceId = device.get('id');
-			console.debug('device button clicked: ', pluginId, deviceId);
 			var deviceUrl = device.get('@id');
-			console.debug('Device clicked: ', encodeURIComponent(deviceUrl));
 			Backbone.history.navigate('#device/' + encodeURIComponent(deviceUrl) + '/state', {trigger: true});
 		}
 	});
 
-	return DashboardView;
 });
