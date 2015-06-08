@@ -19,6 +19,7 @@ require.config({
                 'highcharts': '../bower_components/highcharts-release/highcharts',
                 'i18n': '../bower_components/requirejs-i18n/i18n',
                 'jquery': '../bower_components/jquery/dist/jquery',
+                'jquery-colpick': '../bower_components/jquery-colpick/js/colpick',
                 'ladda': '../bower_components/ladda/dist/ladda.min',
                 'marionette': '../bower_components/marionette/lib/backbone.marionette',
                 'masonry': '../bower_components/masonry/dist/masonry.pkgd.min',

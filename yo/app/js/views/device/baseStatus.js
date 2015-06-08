@@ -23,6 +23,7 @@ define([
 			for (var ix = 0; ix < variables.length; ix++) {
 				var variable = variables[ix].item;
 				this.variables[variable.name] = variable;
+				this.pendingUpdates[variable.name] = null;
 			}
 
 			// start the refresh timer
@@ -71,6 +72,34 @@ define([
 				this.showPending = false;
 				this.setRefreshInterval(5000);
 				this.refresh();
+			}
+		},
+
+		setVariableValue: function(name, value) {
+			if (!this.showPending) {
+				var v = this.getVariable(name);
+				if (v) {
+					var newVal = !v.value;
+					var v = new Variable({
+						id: 'id', 
+						url: v['@id'],
+						value: value
+					});
+					v.save(null, {
+						context: this,
+						error: function(model, response, options) {
+							if (response.status === 202) {
+								if (options.context.variables[name].mask !== 'WRITE_ONLY') {
+									options.context.setPendingUpdates({
+										on: value
+									});
+								}
+							} else {
+								toastr.error('Failed to update device variable');
+							}
+						}
+					});
+				}
 			}
 		},
 

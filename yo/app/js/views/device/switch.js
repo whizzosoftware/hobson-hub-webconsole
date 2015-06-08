@@ -37,26 +37,7 @@ define([
 		onClick: function() {
 			if (!this.showPending) {
 				var onVar = this.getVariable('on');
-				if (onVar) {
-					var newVal = !onVar.value;
-					var v = new Variable({
-						id: 'id', 
-						url: onVar['@id'],
-						value: newVal
-					});
-					v.save(null, {
-						context: this,
-						error: function(model, response, options) {
-							if (response.status === 202) {
-								options.context.setPendingUpdates({
-									on: newVal
-								});
-							} else {
-								toastr.error('Failed to update device variable');
-							}
-						}
-					});
-				}
+				this.setVariableValue('on', !onVar.value);
 			}
 		}
 

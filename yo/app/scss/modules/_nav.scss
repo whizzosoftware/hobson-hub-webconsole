@@ -72,6 +72,7 @@
 			text-transform: uppercase;
 			padding-right: 20px;
 			a {
+				outline: 0;
 				line-height: $subnav-height;
 				letter-spacing: 1px;
 			}

@@ -20,7 +20,9 @@ define([
 		contentView: null,
 
 		remove: function() {
-			this.contentView.remove();
+			if (this.contentView) {
+				this.contentView.remove();
+			}
 			Backbone.View.prototype.remove.call(this);
 		},
 
@@ -44,7 +46,9 @@ define([
 					break;
 			}
 
-			this.$el.find('#controlContainer').html(this.contentView.render().el);
+			if (this.contentView) {
+				this.$el.find('#controlContainer').html(this.contentView.render().el);
+			}
 
 			return this;
 		}

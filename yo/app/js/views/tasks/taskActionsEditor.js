@@ -74,7 +74,7 @@ define([
 
 			if (el.css('display') === 'none') {
 				el.css('display', 'block');
-				new ItemList({model: TaskActionClass, url: '/api/v1/users/local/hubs/local/tasks/actionClasses'}).fetch({
+				new ItemList({model: TaskActionClass, url: '/api/v1/users/local/hubs/local/tasks/actionClasses', sort: 'name'}).fetch({
 					context: this,
 					success: function(model, response, options) {
 						console.log('got action list: ', model);
