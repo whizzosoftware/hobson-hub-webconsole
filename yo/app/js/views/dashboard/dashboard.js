@@ -59,7 +59,7 @@ define([
 
 		refresh: function() {
 			if (this.url) {
-				var devices = new ItemList({model: Device, url: this.url});
+				var devices = new ItemList({model: Device, url: this.url, sort: 'name'});
 				devices.fetch({
 					context: this,
 					success: function(model, response, options) {
