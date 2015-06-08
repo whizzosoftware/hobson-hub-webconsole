@@ -3,18 +3,20 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'views/device/baseStatus',
 	'i18n!nls/strings',
 	'text!templates/device/thermostat.html'
-], function($, _, Backbone, strings, template) {
+], function($, _, Backbone, BaseStatus, strings, template) {
 
-	return Backbone.View.extend({
+	return BaseStatus.extend({
 
 		template: _.template(template),
 
 		render: function(el) {
 			this.$el.html(this.template({
 				strings: strings,
-				device: this.model.toJSON()
+				device: this.model.toJSON(),
+				variables: this.variables
 			}));
 
 			return this;
