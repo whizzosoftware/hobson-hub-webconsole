@@ -114,7 +114,6 @@ define([
 		},
 
 		onButtonClick: function() {
-			console.debug('tile.onButtonClick');
 			this.$el.trigger('deviceButtonClick', this.model);
 		},
 
