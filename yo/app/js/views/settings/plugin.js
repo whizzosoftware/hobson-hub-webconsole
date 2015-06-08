@@ -25,13 +25,14 @@ define([
 				plugin: this.model.toJSON()
 			}));
 
-			if (this.model.get('image')) {
-				PluginService.getPluginIcon(this, this.model.get('image')['@id']).success(function(response, b, c) {
-	                this.$el.find('.plugin-icon').html($('<img src="data:' + c.getResponseHeader('content-type') + ';base64,' + response + '" />'));
-				});
-			}
-
 			return this;
+		},
+
+		reRender: function(plugin) {
+			if (this.model.get('status').status !== plugin.get('status').status) {
+				this.model = plugin;
+				this.render();
+			}
 		},
 
 		onClickSettings: function(event) {

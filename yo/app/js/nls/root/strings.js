@@ -57,6 +57,7 @@ define({
 	"Plugins": "Plugins",
 	"PluginConfigurationSaved": "The plugin configuration has been saved.",
 	"PluginConfigurationNotSaved": "The plugin configuration could not be saved. Check the log for details.",
+	"PluginConfigurationError": "Error retrieving plugin configuration",
 	"PluginError": "Plugin startup error",
 	"Profile": "Profile",
 	"RequiresConfiguration": "requires configuration.",
