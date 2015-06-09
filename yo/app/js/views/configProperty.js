@@ -15,7 +15,6 @@ define([
 		initialize: function(options) {
 			this.id = options.id;
 			this.property = options.property;
-			console.debug(options.value);
 			this.value = options.value;
 		},
 
@@ -30,7 +29,6 @@ define([
 		},
 
 		getId: function() {
-			console.debug(this.property);
 			return this.id;
 		},
 

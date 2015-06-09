@@ -90,7 +90,6 @@ define([
 			e.preventDefault();
 
             var config = this.createEmailConfiguration();
-            var error = config.validate();
             if (error) {
             	toastr.error(error);
             } else {

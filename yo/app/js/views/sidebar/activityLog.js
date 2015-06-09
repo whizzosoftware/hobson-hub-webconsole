@@ -31,7 +31,6 @@ define([
 		},
 
 		render: function() {
-			console.debug('activities render');
 			var lastHeaderString = null;
 			var lastTimeString = null;
 			var now = moment();

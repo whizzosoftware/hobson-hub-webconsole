@@ -1,4 +1,4 @@
-// Filename: views/dashboardTiles
+// Filename: views/deviceTiles
 define([
 	'jquery',
 	'underscore',
@@ -15,6 +15,8 @@ define([
 
 		subviews: {},
 
+		noDevicesPrompt: false,
+
 		initialize: function() {
 			bridget('masonry', Masonry);
 		},
@@ -28,10 +30,13 @@ define([
 		},
 
 		render: function() {
-			if (this.model) {
+			if (this.model && this.model.length > 0) {
 				for (var i = 0; i < this.model.length; i++) {
 					this.addDeviceView(this.model.at(i));
 				}
+			} else {
+				this.$el.html('<p class="notice">' + strings.NoDevicesPublished + '</p>');
+				this.noDevicesPrompt = true;
 			}
 
 			return this;
@@ -40,20 +45,30 @@ define([
 		reRender: function(model) {
 			this.model = model;
 
-			for (var ix=0; ix < model.length; ix++) {
-				var device = this.model.at(ix);
-				var dview = this.subviews[device.get('@id')];
-				if (dview) {
-					dview.reRender(device);
-				} else {
-					this.addDeviceView(device);
+			if (model.length > 0) {
+				// remove the no device prompt
+				if (this.noDevicesPrompt) {
+					this.$el.html('');
+					this.noDevicesPrompt = false;
 				}
-			}
 
-			$('.dash-tiles').masonry({
-				itemSelector: '.tile',
-				gutter: 10
-			});
+				// re-render existing device tiles and/or add new ones
+				for (var ix=0; ix < model.length; ix++) {
+					var device = this.model.at(ix);
+					var dview = this.subviews[device.get('@id')];
+					if (dview) {
+						dview.reRender(device);
+					} else {
+						this.addDeviceView(device);
+					}
+				}
+
+				// force masonry to re-layout the tile grid
+				$('.dash-tiles').masonry({
+					itemSelector: '.tile',
+					gutter: 10
+				});
+			}
 		},
 
 		addDeviceView: function(device) {

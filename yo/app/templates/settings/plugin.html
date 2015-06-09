@@ -1,7 +1,9 @@
 <div class="plugin-tile">
 	<div class="plugin-content">
 		<div class="plugin-icon">
+			<% if (plugin.image) { %>
 			<img src="<%= plugin.image['@id'] %>" />
+			<% } %>
 		</div>
  		<div class="plugin-text">
 		 	<h1><%= plugin.name %></h1>
@@ -9,6 +11,9 @@
  		</div>
  		<% if (plugin.configurable) { %>
 	 		<a id="buttonSettings" class="tiny radius button">Settings</a>
+	 	<% } %>
+	 	<% if (plugin.links && plugin.links.install) { %>
+	 		<a id="buttonInstall" class="tiny radius button">Install</a>
 	 	<% } %>
  	</div>
 	<% if (plugin.status.status === 'NOT_CONFIGURED') { %>

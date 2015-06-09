@@ -2,7 +2,7 @@
 define([
 	'backbone'
 ], function(Backbone) {
-	var EmailConfigurationModel = Backbone.Model.extend({
+	return Backbone.Model.extend({
 
 		validate: function(attrs, options) {
 			if (!this.get('server')) {
@@ -32,5 +32,4 @@ define([
 
 	});
 
-	return EmailConfigurationModel;
 });

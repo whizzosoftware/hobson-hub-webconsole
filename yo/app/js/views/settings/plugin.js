@@ -16,7 +16,8 @@ define([
 		className: 'plugin',
 
 		events: {
-			'click #buttonSettings': 'onClickSettings'
+			'click #buttonSettings': 'onClickSettings',
+			'click #buttonInstall': 'onClickInstall'
 		},
 
 		render: function() {
@@ -38,6 +39,11 @@ define([
 		onClickSettings: function(event) {
 			event.preventDefault();
 			this.$el.trigger('pluginSettingsClick', this.model);
+		},
+
+		onClickInstall: function(event) {
+			event.preventDefault();
+			this.$el.trigger('pluginInstallClick', this.model);
 		}
 	});
 

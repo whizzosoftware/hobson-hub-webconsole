@@ -26,8 +26,6 @@ define([
 		},
 
 		render: function() {
-			console.debug('tasks tab render', this.tasks);
-
 			this.$el.append(this.template({
 				strings: strings,
 				tasks: this.tasks

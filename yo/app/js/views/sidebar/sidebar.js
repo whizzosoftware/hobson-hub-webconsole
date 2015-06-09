@@ -45,9 +45,7 @@ define([
 			this.activities.fetch({
 				context: this,
 				success: function(model, response, options) {
-					console.debug('got activities: ', model);
 					var el = new ActivitiesView(model).render().el;
-					console.debug('final activity render: ', el);
 					options.context.$el.find('.activity-container').html(el);
 				},
 				error: function() {

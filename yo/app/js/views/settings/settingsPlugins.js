@@ -21,7 +21,8 @@ define([
 		template: _.template(template),
 
 		events: {
-			'pluginSettingsClick': 'onClickSettings'
+			'pluginSettingsClick': 'onClickSettings',
+			'pluginInstallClick': 'onClickInstall'
 		},
 
 		refreshInterval: null,
@@ -47,12 +48,12 @@ define([
 				query: this.query
 			}));
 
-			var type = (this.query === 'filter=available') ? 'AVAILABLE' : 'PLUGIN';
+			var showLocal = (this.query !== 'filter=available');
 
-			this.pluginsView = new PluginsView({model: this.model.where({type: type})});
+			this.pluginsView = new PluginsView({model: this.model.where({type: 'PLUGIN'})});
 			this.$el.find('#pluginsContainer').html(this.pluginsView.render().el);
 
-			if (!this.refreshInterval && type === 'PLUGIN') {
+			if (!this.refreshInterval && showLocal) {
 				this.refreshInterval = setInterval(function() {
 					this.refresh();
 				}.bind(this), 5000);
@@ -64,7 +65,7 @@ define([
 			plugins.fetch({
 				context: this,
 				success: function(model, response, options) {
-					options.context.pluginsView.reRender(model);
+					options.context.pluginsView.reRender(model.where({type: 'PLUGIN'}));
 				}
 			});
 		},
@@ -80,6 +81,20 @@ define([
 				},
 				error: function() {
 					toastr.error(strings.PluginConfigurationError);
+				}
+			});
+		},
+
+		onClickInstall: function(event, plugin) {
+			$.ajax(plugin.get('links').install, {
+				context: this,
+				type: 'POST',
+				timeout: 5000,
+				success: function(data, status, response) {
+					toastr.info(strings.PluginInstallStarted);
+				},
+				error: function(response, status, error) {
+					toastr.error(strings.PluginInstallFailed);
 				}
 			});
 		}

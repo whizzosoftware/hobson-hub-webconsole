@@ -80,7 +80,6 @@ define([
 		},
 
 		showTaskAdd: function(userId, hubId) {
-			console.debug('showTaskAdd', userId, hubId);
 			this.renderContentView(new TaskAddView({
 				userId: userId, 
 				hubId: hubId
@@ -162,7 +161,7 @@ define([
 				context: this,
 				success: function(model, response, options) {
 					var hub = model;
-					var url = query === 'filter=available' ? hub.get('remotePlugins')['@id'] : hub.get('localPlugins')['@id'];
+					var url = (query === 'filter=available') ? hub.get('remotePlugins')['@id'] : hub.get('localPlugins')['@id'];
 					var plugins = new ItemList({model: Plugin, url: url + '?expand=item'});
 					plugins.fetch({
 						context: options.context,

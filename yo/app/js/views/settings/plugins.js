@@ -15,6 +15,8 @@ define([
 
 		subviews: {},
 
+		noPluginsPrompt: false,
+
 		remove: function() {
 			for (var ix in this.subviews) {
 				this.subviews[ix].remove();
@@ -26,27 +28,38 @@ define([
 			var p;
 			if (this.model.length > 0) {
 				for (var i = 0; i < this.model.length; i++) {
-					var plugin = this.model[i];
-					var pluginView = new PluginView({model: plugin});
-					var rv = pluginView.render().el;
-					this.$el.append(rv);
-					this.subviews[plugin.get('@id')] = pluginView;
+					this.addPluginView(this.model[i]);
 				}
 			} else {
-				this.$el.html('<p class="notice">There are no new plugins currently available.</p>');
+				this.$el.html('<p class="notice">' + strings.NoPluginsInstalled + '</p>');
+				noPluginsPrompt = true;
 			}
 
 			return this;
 		},
 
 		reRender: function(plugins) {
-			for (var ix=0; ix < plugins.length; ix++) {
-				var plugin = plugins.at(ix);
-				var view = this.subviews[plugin.get('@id')];
-				if (view) {
-					view.reRender(plugin);
+			if (plugins.length > 0) {
+				if (this.noPluginsPrompt) {
+					this.$el.html('');
+					this.noPluginsPrompt = false;
+				}
+				for (var ix=0; ix < plugins.length; ix++) {
+					var plugin = plugins[ix];
+					var view = this.subviews[plugin.get('@id')];
+					if (view) {
+						view.reRender(plugin);
+					} else {
+						this.addPluginView(plugin);
+					}
 				}
 			}
+		},
+
+		addPluginView: function(plugin) {
+			var pluginView = new PluginView({model: plugin});
+			this.subviews[plugin.get('@id')] = pluginView;
+			this.$el.append(pluginView.render().el);
 		}
 
 	});
