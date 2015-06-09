@@ -83,6 +83,7 @@ define({
 	"targetTempF": "Target Temperature (F)",
 	"Tasks": "Tasks",
 	"TaskAdd": "Add Task",
+	"TaskCreated": "The task was successfully created.",
 	"TaskIfHelpText": "This is the condition that will trigger the task.",
 	"TaskThenHelpText": "These are the actions that will occur when the task is triggered.",
 	"tempF": "Temperature (F)",

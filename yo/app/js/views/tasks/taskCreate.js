@@ -90,13 +90,12 @@ define([
 			}
 
 			// send the create task request
-			console.debug('create', this.task.toJSON());
 			this.task.save(null, {
 				context: this,
 				error: function(model, response, options) {
 					console.debug(model, response, options);
 					if (response.status === 202) {
-						toastr.success('Task was successfully created. It may take a few seconds to show up in the list.');
+						toastr.success(strings.TaskCreated);
 						Backbone.history.navigate('tasks', {trigger: true});
 					} else {
 						options.context.showErrors(options.context, response.responseJSON.errors);
