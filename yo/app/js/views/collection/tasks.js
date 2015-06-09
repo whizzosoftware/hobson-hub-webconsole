@@ -17,8 +17,12 @@ define([
 			this.subviews = [];
 		},
 
-		initialize: function(options) {
-			this.tasks = options.tasks;
+		remove: function() {
+			for (var ix in this.subviews) {
+				this.subviews[ix].remove();
+				this.subviews[ix] = null;
+			}
+			Backbone.View.prototype.remove.call(this);
 		},
 
 		render: function() {

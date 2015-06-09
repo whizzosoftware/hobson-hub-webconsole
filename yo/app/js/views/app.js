@@ -63,7 +63,7 @@ define([
 		},
 
 		showTasks: function(userId, hubId) {
-			var tasks = new ItemList({model: Task, url: '/api/v1/users/local/hubs/local/tasks?expand=item'});
+			var tasks = new ItemList({model: Task, url: '/api/v1/users/local/hubs/local/tasks?expand=item', sort: 'name'});
 			tasks.fetch({
 				context: this,
 				success: function(model, response, options) {

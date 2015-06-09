@@ -24,10 +24,8 @@ define([
 		},
 
 		render: function() {
-			console.debug('rendering devices: ', this.devices);
 			for (var i=0; i < this.devices.length; i++) {
 				var device = this.devices.at(i);
-				console.debug('device: ', device);
 				var v = new DeviceView({device: device});
 				this.$el.append(v.render().el);
 				this.subviews.push(v);
