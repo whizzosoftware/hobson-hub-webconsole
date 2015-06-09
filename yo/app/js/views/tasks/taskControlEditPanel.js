@@ -31,6 +31,7 @@ define([
 			for (var i = 0; i < this.subviews.length; i++) {
 				this.subviews[i].remove();
 			}
+			this.subviews.length = 0;
 			Backbone.View.prototype.remove.call(this);
 		},
 
