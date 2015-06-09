@@ -16,8 +16,6 @@ define([
 
 		className: 'device-picker',
 
-		elMap: {},
-
 		events: {
 			'deviceClicked': 'onClickDevice'
 		},
@@ -25,11 +23,21 @@ define([
 		initialize: function(property, single) {
 			this.property = property;
 			this.single = single;
+			this.subviews = [];
+			this.elMap = {};
 
 			// if single is true, treat as a single device object; if false, treat as an array of devices
 			if (!this.single) {
 				this.property.value = [];
 			}
+		},
+
+		remove: function() {
+			for (var ix in this.subviews) {
+				this.subviews[ix].remove();
+			}
+			this.subviews.length = 0;
+			Backbone.View.prototype.remove.call(this);
 		},
 
 		render: function() {
@@ -46,6 +54,7 @@ define([
 				success: function(model, response, options) {
 					options.context.devicesView = new DevicesView({devices: model});
 					options.context.$el.find('#deviceList').html(options.context.devicesView.render().el);
+					options.context.subviews.push(options.context.devicesView);
 				},
 				error: function(model, response, options) {
 					console.debug('nope!');
@@ -68,7 +77,6 @@ define([
 		},
 
 		onClickDevice: function(event, options) {
-			console.debug('Device selected: ', options.device.get('name'));
 			var deviceId = options.device.get('@id');
 
 			// update selected device or list of selected devices
