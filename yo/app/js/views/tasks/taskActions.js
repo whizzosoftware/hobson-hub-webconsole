@@ -39,7 +39,7 @@ define([
 					this.subviews.push(actionView);
 				}
 			} else {
- 				this.$el.html('<p class="notice">' + strings.TaskThenHelpText + '<br/>' + strings.NoActionsNotice + '</p>');
+ 				this.$el.html('<p class="notice">' + strings.TaskThenHelpText + '</p>');
 			}
 
 			return this;

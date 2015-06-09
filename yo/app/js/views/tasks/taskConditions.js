@@ -35,7 +35,7 @@ define([
 				this.$el.append(conditionView.render().el);
 				this.subviews.push(conditionView);
 			} else {
-				this.$el.html('<p class="notice">' + strings.TaskIfHelpText + '<br/>' + strings.NoConditionsNotice + '</p>');
+				this.$el.html('<p class="notice">' + strings.TaskIfHelpText + '</p>');
 			}
 
 			return this;
