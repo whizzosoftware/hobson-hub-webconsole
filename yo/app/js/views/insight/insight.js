@@ -54,6 +54,15 @@ define([
 				title: {
 					text: '2014 Avg. Monthly Usage (regional)'
 				},
+				plotOptions: {
+					pie: {
+						events: {
+							click: function(e) {
+								Backbone.history.navigate('#insight/electric', {trigger: true});
+							}
+						}
+					}
+				},
 				series: [{
 					type: 'pie',
 					name: 'Percentage',
@@ -65,7 +74,7 @@ define([
 			});
 
 			return this;
-		},
+		}
 
 	});
 
