@@ -3,20 +3,12 @@ define([
 	'backbone'
 ], function(Backbone) {
 
-	return Backbone.Model.extend({
-		defaults: {
-			actionSet: {
-				actions: []
-			},
-			conditionSet: {
-				conditions: []
-			}
-		},
+	var TaskModel = Backbone.Model.extend({
 
 		initialize: function(options) {
 			this.url = options.url;
-			this.set('actions', []);
-			this.set('conditions', []);
+			this.set('actionSet', {actions: []});
+			this.set('conditionSet', {conditions: []});
 		},
 
 		hasTriggerCondition: function() {
@@ -44,5 +36,7 @@ define([
 		}
 
 	});
+
+	return TaskModel;
 
 });

@@ -21,6 +21,15 @@ require([
     	};
 	}
 
+	// add a close method to all Backbone views
+	Backbone.View.prototype.close = function() {
+		this.remove();
+		this.unbind();
+		if (this.onClose) {
+			this.onClose();
+		}
+	}
+
 	// initialize Foundation Javascript
 	$(document).foundation();
 

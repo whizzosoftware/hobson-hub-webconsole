@@ -13,13 +13,9 @@ define([
 	'text!templates/tasks/taskCreate.html'
 ], function($, _, Backbone, toastr, ItemList, Task, Device, TaskConditionsEditorView, TaskActionsEditorView, strings, taskAddTemplate) {
 
-	var deviceListViews = {};
-
-	var TaskAddView = Backbone.View.extend({
+	var TaskCreateView = Backbone.View.extend({
 
 		template: _.template(taskAddTemplate),
-
-		subviews: [],
 
 		events: {
 			'click #buttonCreate': 'onClickCreate'
@@ -27,6 +23,7 @@ define([
 
 		initialize: function() {
 			this.task = new Task({url: '/api/v1/users/local/hubs/local/tasks'});
+			this.subviews = [];
 		},
 
 		remove: function() {
@@ -121,5 +118,5 @@ define([
 
 	});
 
-	return TaskAddView;
+	return TaskCreateView;
 });

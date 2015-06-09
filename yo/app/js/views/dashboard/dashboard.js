@@ -15,8 +15,6 @@ define([
 
 		template: _.template(template),
 
-		refreshInterval: null,
-
 		events: {
 			'deviceButtonClick': 'onDeviceButtonClick'
 		},

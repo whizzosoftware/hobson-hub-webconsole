@@ -17,7 +17,9 @@ define([
 			'data-accordion': ''
 		},
 
-		subviews: [],
+		initialize: function() {
+			this.subviews = [];
+		},
 
 		remove: function() {
 			for (var i = 0; i < this.subviews.length; i++) {

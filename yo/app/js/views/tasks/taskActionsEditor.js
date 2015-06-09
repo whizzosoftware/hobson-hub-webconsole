@@ -20,11 +20,10 @@ define([
 			'onClickAdd': 'onClickAdd'
 		},
 
-		subviews: [],
-
 		initialize: function(options) {
 			this.devices = options.devices;
 			this.task = options.task;
+			this.subviews = [];
 		},
 
 		remove: function() {

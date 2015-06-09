@@ -12,11 +12,10 @@ define([
 
 		className: 'conditions',
 
-		subviews: [],
-
 		initialize: function(options) {
 			this.devices = options.devices;
 			this.task = options.task;
+			this.subviews = [];
 		},
 
 		remove: function() {
@@ -32,8 +31,7 @@ define([
 					devices: this.devices,
 					condition: this.task.get('conditionSet').trigger
 				});
-				var rv = conditionView.render().el;
-				this.$el.append(rv);
+				this.$el.append(conditionView.render().el);
 				this.subviews.push(conditionView);
 			} else {
 				this.$el.html('<p class="notice">' + strings.TaskIfHelpText + '<br/>' + strings.NoConditionsNotice + '</p>');

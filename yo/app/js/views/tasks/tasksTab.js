@@ -35,7 +35,7 @@ define([
 				if (this.tasksView) {
 					this.tasksView.remove();
 				}
-				this.tasksView = new TasksView({tasks: this.tasks});
+				this.tasksView = new TasksView({model: this.tasks});
 				this.$el.find('.tasks').html(
 					this.tasksView.render().el
 				);

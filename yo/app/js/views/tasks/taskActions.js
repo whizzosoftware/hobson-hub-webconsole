@@ -13,9 +13,8 @@ define([
 
 		className: 'actions',
 
-		subviews: [],
-
 		initialize: function(options) {
+			this.subviews = [];
 			this.devices = options.devices;
 			this.task = options.task;
 		},

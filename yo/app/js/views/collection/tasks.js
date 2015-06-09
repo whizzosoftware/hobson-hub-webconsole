@@ -13,18 +13,18 @@ define([
 
 		className: 'small-block-grid-1 medium-block-grid-2 large-block-grid-3',
 
-		subviews: [],
+		initialize: function() {
+			this.subviews = [];
+		},
 
 		initialize: function(options) {
 			this.tasks = options.tasks;
 		},
 
 		render: function() {
-			console.debug('rendering tasks: ', this.tasks);
-			for (var i=0; i < this.tasks.length; i++) {
-				var task = this.tasks.at(i);
-				console.debug('task: ', task);
-				var v = new TaskView({task: task});
+			for (var i=0; i < this.model.length; i++) {
+				var task = this.model.at(i);
+				var v = new TaskView({model: task});
 				this.$el.append(v.render().el);
 				this.subviews.push(v);
 			}

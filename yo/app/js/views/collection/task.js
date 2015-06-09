@@ -13,15 +13,11 @@ define([
 
 		template: _.template(template),
 
-		initialize: function(options) {
-			this.task = options.task;
-		},
-
 		render: function() {
 			this.$el.append(
 				this.template({
 					strings: strings,
-					task: this.task.toJSON()
+					task: this.model.toJSON()
 				})
 			);
 

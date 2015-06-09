@@ -13,12 +13,11 @@ define([
 	return Backbone.View.extend({
 		className: 'dash-tiles',
 
-		subviews: {},
-
-		noDevicesPrompt: false,
-
 		initialize: function() {
 			bridget('masonry', Masonry);
+			this.subviews = [];
+			this.noDevicesPrompt = false;
+			console.debug('deviceTiles.initialize()', this.subviewMap);
 		},
 
 		remove: function() {

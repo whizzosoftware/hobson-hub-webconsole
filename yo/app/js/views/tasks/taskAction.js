@@ -7,7 +7,7 @@ define([
 	'text!templates/tasks/taskAction.html'
 ], function($, _, Backbone, strings, template) {
 
-	var TaskConditionView = Backbone.View.extend({
+	var TaskActionView = Backbone.View.extend({
 		template: _.template(template),
 
 		tagName: 'li',
@@ -61,5 +61,5 @@ define([
 
 	});
 
-	return TaskConditionView;
+	return TaskActionView;
 });
