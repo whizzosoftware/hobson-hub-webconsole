@@ -106,10 +106,10 @@ define([
 
 		isDeviceSelected: function(deviceId) {
 			if (this.single) {
-				return (this.property.value && this.property.value.deviceId === deviceId);
+				return (this.property.value && this.property.value['@id'] === deviceId);
 			} else {
 				for (var i=0; i < this.property.value.length; i++) {
-					if (this.property.value[i].deviceId === deviceId) {
+					if (this.property.value[i]['@id'] === deviceId) {
 						return true;
 					}
 				}
