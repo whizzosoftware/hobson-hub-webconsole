@@ -42,11 +42,12 @@ define([
 		},
 
 		updateImage: function() {
-			// start image loading if there's a preferred image URL
+			// start image loading if there's a preferred image URL and we're not waiting on a previous image load
 			var preferredVariable = this.model.get('preferredVariable');
-			if (preferredVariable && preferredVariable.name == 'imageStatusUrl') {
+			if (preferredVariable && preferredVariable.name == 'imageStatusUrl' && !this.imageLoading) {
 				// show the user a wait spinner
 				this.showSpinner(true);
+				this.imageLoading = true;
 
 				var imageEl = this.$el.find('#image-container');
 				$.ajax({
@@ -55,10 +56,12 @@ define([
 					type: 'GET',
 					success: function(data) {
 						this.showSpinner(false);
+						this.imageLoading = false;
 						imageEl.html($('<img src="data:image/jpg;base64,' + data + '" />'));
 					},
 					error: function(response) {
 						this.showSpinner(false);
+						this.imageLoading = false;
 						var msg;
 						if (response.status === 403) {
 							msg = strings.AccessDenied;

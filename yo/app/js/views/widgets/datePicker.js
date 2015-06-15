@@ -33,7 +33,7 @@ define([
 				closeOnDateSelect: true,
 				onChangeDateTime: function(dp, $input) {
 					var time = moment($input.val(), 'MM/DD/YYYY');
-					el.val(time.utc().format('YYYY-MM-DD'));
+					el.val(time.format('YYYY-MM-DD'));
 				}
 			});
 

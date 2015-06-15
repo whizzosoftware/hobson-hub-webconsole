@@ -6,11 +6,11 @@ define([
 	'moment',
 	'models/itemList',
 	'models/variable',
-	'models/activityLog',
+	'models/activityLogEntry',
 	'views/sidebar/activityLog',
 	'i18n!nls/strings',
 	'text!templates/sidebar/sidebar.html'
-], function($, _, Backbone, moment, ItemList, Variable, ActivityCollection, ActivitiesView, strings, sidebarTemplate) {
+], function($, _, Backbone, moment, ItemList, ActivityLogEntry, Variable, ActivitiesView, strings, sidebarTemplate) {
 	var SidebarView = Backbone.View.extend({
 		template: _.template(sidebarTemplate),
 
@@ -25,7 +25,7 @@ define([
 				this.activities.remove();
 			}
 
-			var itemList = new ItemList({url: '/api/v1/users/local/hubs/local/globalVariables', model: Variable});
+			var itemList = new ItemList({model: Variable, url: '/api/v1/users/local/hubs/local/globalVariables'});
 			itemList.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -41,11 +41,11 @@ define([
 				}
 			});
 
-			this.activities = new ActivityCollection('/api/v1/users/local/hubs/local/activityLog');
+			this.activities = new ItemList({model: ActivityLogEntry, url: '/api/v1/users/local/hubs/local/activityLog'});
 			this.activities.fetch({
 				context: this,
 				success: function(model, response, options) {
-					var el = new ActivitiesView(model).render().el;
+					var el = new ActivitiesView({model: model}).render().el;
 					options.context.$el.find('.activity-container').html(el);
 				},
 				error: function() {

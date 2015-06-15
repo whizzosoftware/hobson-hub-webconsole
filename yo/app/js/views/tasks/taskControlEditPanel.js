@@ -90,9 +90,9 @@ define([
 			for (var i=0; i < properties.length; i++) {
 				var prop = properties[i];
 				if (prop.type === 'DEVICES' || prop.type === 'DEVICE') {
-					values[prop.id] = prop.value;
+					values[prop['@id']] = prop.value;
 				} else {
-					values[prop.id] = this.$el.find('input#' + prop.id).val();
+					values[prop['@id']] = this.$el.find('input#' + prop['@id']).val();
 				}
 			}
 

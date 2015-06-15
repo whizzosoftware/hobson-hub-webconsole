@@ -15,15 +15,14 @@ define([
 
 		template: _.template(activityLogEntryTemplate),
 
-		initialize: function(activity, timeString) {
-			this.activity = activity;
-			this.timeString = timeString;
+		initialize: function(options) {
+			this.timeString = options.timeString;
 		},
 
 		render: function() {
 			this.$el.html(this.template({
 				timeString: this.timeString,
-				activity: this.activity.toJSON()
+				activity: this.model.toJSON()
 			}));
 			return this;
 		}

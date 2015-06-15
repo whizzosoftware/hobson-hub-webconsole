@@ -19,10 +19,6 @@ define([
 
 		subviews: [],
 
-		initialize: function(activities) {
-			this.activities = activities;
-		},
-
 		remove: function() {
 			for (var i = 0; i < this.subviews.length; i++) {
 				this.subviews[i].remove();
@@ -31,12 +27,13 @@ define([
 		},
 
 		render: function() {
+			console.debug(this.model);
 			var lastHeaderString = null;
 			var lastTimeString = null;
 			var now = moment();
 			var yesterday = moment().subtract(1, 'day');
-			for (var i = 0; i < this.activities.length; i++) {
-				var activity = this.activities.at(i);
+			for (var i = 0; i < this.model.length; i++) {
+				var activity = this.model.at(i);
 				var activityTime = moment(activity.get('timestamp'));
 				var newHeader = this.formatDate2(activityTime, now, yesterday);
 				if (!lastHeaderString || lastHeaderString !== newHeader) {
@@ -45,7 +42,7 @@ define([
 				}
 				if (activity) {
 					var timeString = activityTime.format('h:mm A');
-					var activityView = new ActivityLogEntryView(activity, (timeString !== lastTimeString) ? timeString : '');
+					var activityView = new ActivityLogEntryView({model: activity, timeString: (timeString !== lastTimeString) ? timeString : ''});
 					if (lastTimeString !== timeString) {
 						lastTimeString = timeString;
 					}
