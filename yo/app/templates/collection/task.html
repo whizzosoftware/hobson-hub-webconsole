@@ -11,7 +11,7 @@
 		<%= task.description %>
 	</div>
 	<div class="footer">
-		<% if (task.properties.hasOwnProperty('scheduled')) { %>
+		<% if (task.properties && task.properties.hasOwnProperty('scheduled')) { %>
 			<i class="fa fa-clock-o"></i>
 			<% if (task.properties.scheduled) { %>
 				<%= strings.NextRun + ' ' + new moment(task.properties.nextRunTime).fromNow() %>
