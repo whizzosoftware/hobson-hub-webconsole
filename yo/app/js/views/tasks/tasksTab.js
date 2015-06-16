@@ -31,19 +31,13 @@ define([
 				tasks: this.tasks
 			}));
 
-			if (this.tasks.length > 0) {
-				if (this.tasksView) {
-					this.tasksView.remove();
-				}
-				this.tasksView = new TasksView({model: this.tasks});
-				this.$el.find('.tasks').html(
-					this.tasksView.render().el
-				);
-			} else {
-				this.$el.find('.tasks').html(
-					'<p class="notice">No tasks have been created.</p>'
-				);
+			if (this.tasksView) {
+				this.tasksView.remove();
 			}
+			this.tasksView = new TasksView({model: this.tasks});
+			this.$el.find('.tasks').html(
+				this.tasksView.render().el
+			);
 
 			return this;
 		}

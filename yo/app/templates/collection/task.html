@@ -1,4 +1,23 @@
 <div class="task-tile">
-	<div class="title"><%= task.name %></div>
-	<div class="description"><%= task.description %></div>
+	<div class="title">
+		<span class="left">
+			<%= task.name %>
+		</span>
+		<span class="right">
+			<i id="deleteButton" class="fa fa-trash-o icon-button"></i>
+		</span>
+	</div>
+	<div class="description">
+		<%= task.description %>
+	</div>
+	<div class="footer">
+		<% if (task.properties.hasOwnProperty('scheduled')) { %>
+			<i class="fa fa-clock-o"></i>
+			<% if (task.properties.scheduled) { %>
+				<%= strings.NextRun + ' ' + new moment(task.properties.nextRunTime).fromNow() %>
+			<% } else { %>
+				<%= strings.NotScheduled %>
+			<% } %>
+		<% } %>
+	</div>
 </div>

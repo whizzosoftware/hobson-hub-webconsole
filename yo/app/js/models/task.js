@@ -6,9 +6,19 @@ define([
 	var TaskModel = Backbone.Model.extend({
 
 		initialize: function(options) {
-			this.url = options.url;
+			if (options.url) {
+				this.url = options.url;
+			} else if (options['@id']) {
+				this.url = options['@id'];
+			}
 			this.set('actionSet', {actions: []});
 			this.set('conditionSet', {conditions: []});
+		},
+
+		idAttribute : '@id',
+
+		url: function() {
+			return this.url;
 		},
 
 		hasTriggerCondition: function() {
