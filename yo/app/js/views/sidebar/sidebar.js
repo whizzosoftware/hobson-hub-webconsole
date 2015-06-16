@@ -25,7 +25,7 @@ define([
 				this.activities.remove();
 			}
 
-			var itemList = new ItemList({model: Variable, url: '/api/v1/users/local/hubs/local/globalVariables'});
+			var itemList = new ItemList({model: Variable, url: '/api/v1/users/local/hubs/local/globalVariables?expand=item'});
 			itemList.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -38,6 +38,8 @@ define([
 					if (s && s.get('value')) {
 						options.context.$el.find('#sunset').html(options.context.convertTimeString(s.get('value')));
 					}
+				}, error: function(model, response, options) {
+					console.debug("error getting global variables", response);
 				}
 			});
 

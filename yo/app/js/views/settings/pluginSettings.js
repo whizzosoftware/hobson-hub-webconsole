@@ -40,9 +40,9 @@ define([
 			for (var ix in properties) {
 				var property = properties[ix];
 				var v = new ConfigPropertyView({
-					id: property.id,
+					id: property['@id'],
 					property: property, 
-					value: this.model.get('configuration').values[property.id]
+					value: this.model.get('configuration').values[property['@id']]
 				});
 				formEl.append(v.render().el);
 				this.subviews.push(v);
