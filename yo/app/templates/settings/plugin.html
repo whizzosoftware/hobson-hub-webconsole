@@ -16,7 +16,7 @@
 	 		<a id="buttonInstall" class="tiny radius button">Install</a>
 	 	<% } %>
  	</div>
-	<% if (plugin.status.status === 'NOT_CONFIGURED') { %>
+	<% if (plugin.status && plugin.status.code === 'NOT_CONFIGURED') { %>
 	 	<div class="plugin-overlay">
 	 		<p>
 	 			<i class="fa fa-warning fa-4x"></i>
@@ -27,7 +27,7 @@
 	 			</p>
 	 		</p>
 	 	</div>
-	<% } else if (plugin.status.status === 'ERROR') { %>
+	<% } else if (plugin.status && plugin.status.code === 'ERROR') { %>
 	 	<div class="plugin-overlay">
 	 		<p>
 	 			<i class="fa fa-exclamation-circle fa-4x"></i>

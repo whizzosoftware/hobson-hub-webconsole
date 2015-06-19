@@ -2,7 +2,7 @@
 define([
 	'backbone'
 ], function(Backbone) {
-	return Backbone.Collection.extend({
+	var ItemList = Backbone.Collection.extend({
 
 		initialize: function(options) {
 			this.url = options.url;
@@ -23,8 +23,17 @@ define([
 				}
 			}
 			return results;
-		}
+		},
+
+		filteredList: function(propName, propValue) {
+	        filtered = this.filter(function (item) {
+	            return item.get(propName) === propValue;
+	        });
+	        return new ItemList(filtered);
+	    }
 
 	});
+
+	return ItemList;
 
 });

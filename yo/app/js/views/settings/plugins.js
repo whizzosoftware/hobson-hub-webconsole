@@ -28,7 +28,7 @@ define([
 			var p;
 			if (this.model.length > 0) {
 				for (var i = 0; i < this.model.length; i++) {
-					this.addPluginView(this.model[i]);
+					this.addPluginView(this.model.at(i));
 				}
 			} else {
 				this.$el.html('<p class="notice">' + strings.NoPluginsInstalled + '</p>');

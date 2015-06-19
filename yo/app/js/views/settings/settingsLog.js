@@ -6,12 +6,13 @@ define([
 	'toastr',
 	'models/session',
 	'models/propertyContainer',
-	'models/logEntries',
+	'models/itemList',
+	'models/logEntry',
 	'views/settings/settingsTab',
 	'views/settings/logTable',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsLog.html'
-], function($, _, Backbone, toastr, session, Config, LogEntries, SettingsTab, LogTableView, strings, template) {
+], function($, _, Backbone, toastr, session, Config, ItemList, LogEntry, SettingsTab, LogTableView, strings, template) {
 
 	var ProfileView = SettingsTab.extend({
 
@@ -28,7 +29,7 @@ define([
 			this.hub = options.hub;
 			this.logLevel = this.model.get('values').logLevel;
 
-			var logEntries = new LogEntries(this.hub.get('log')['@id']);
+			var logEntries = new ItemList({model: LogEntry, url: this.hub.get('log')['@id']});
 
 			logEntries.fetch({
 				context: this,

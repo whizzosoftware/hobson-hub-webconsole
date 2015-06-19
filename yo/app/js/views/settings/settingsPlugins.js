@@ -49,8 +49,17 @@ define([
 			}));
 
 			var showLocal = (this.query !== 'filter=available');
+			var filteredModel;
 
-			this.pluginsView = new PluginsView({model: this.model.where({type: 'PLUGIN'})});
+			// if we're showing local plugins, filter the model based on the 'PLUGIN' type
+			if (showLocal) {
+				filteredModel = this.model.filteredList('type', 'PLUGIN');
+			// otherwise, just display all plugins
+			} else {
+				filteredModel = this.model;
+			}
+
+			this.pluginsView = new PluginsView({model: filteredModel});
 			this.$el.find('#pluginsContainer').html(this.pluginsView.render().el);
 
 			if (!this.refreshInterval && showLocal) {

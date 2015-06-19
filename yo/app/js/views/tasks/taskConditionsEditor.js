@@ -78,7 +78,7 @@ define([
 				$(e.target).addClass('active');
 				el.css('display', 'block');
 
-				new ItemList({model: TaskConditionClass, url: '/api/v1/users/local/hubs/local/tasks/conditionClasses', sort: 'name'}).fetch({
+				new ItemList({model: TaskConditionClass, url: '/api/v1/users/local/hubs/local/tasks/conditionClasses?expand=item', sort: 'name'}).fetch({
 					context: this,
 					success: function(model, response, options) {
 						// render task condition class selectors
