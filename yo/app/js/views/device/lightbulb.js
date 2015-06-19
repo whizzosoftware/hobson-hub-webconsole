@@ -40,8 +40,6 @@ define([
 						this.onColorChange(hsb,hex,rgb,el,bySetColor);
 					}.bind(this)
 				});
-			} else {
-				this.$el.html('<p class="notice">' + this.strings.DeviceMissingVariable + '</p>');
 			}
 
 			return this;
