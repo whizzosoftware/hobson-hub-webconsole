@@ -1,4 +1,4 @@
-// Filename: views/activities
+// Filename: views/activityLog.js
 define([
 	'jquery',
 	'underscore',
@@ -27,7 +27,6 @@ define([
 		},
 
 		render: function() {
-			console.debug(this.model);
 			var lastHeaderString = null;
 			var lastTimeString = null;
 			var now = moment();

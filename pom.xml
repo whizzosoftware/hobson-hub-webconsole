@@ -50,7 +50,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>org.osgi.framework,org.osgi.service.event,org.osgi.service.cm,org.osgi.util.tracker,org.apache.felix.bundlerepository,org.slf4j,org.restlet.*,org.json.*,com.whizzosoftware.hobson.api.*;version="[0.5.0,0.6)</Import-Package>
+                        <Import-Package>org.osgi.framework,org.osgi.service.event,org.osgi.service.cm,org.osgi.util.tracker,org.apache.felix.bundlerepository,org.slf4j,org.restlet.*,com.whizzosoftware.hobson.api.*;version="[0.5.0,0.6)</Import-Package>
                         <Bundle-Activator>com.whizzosoftware.hobson.webconsole.Activator</Bundle-Activator>
                         <Bundle-Category>hobson-core-plugin</Bundle-Category>
                     </instructions>
