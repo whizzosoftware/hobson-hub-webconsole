@@ -13,7 +13,6 @@ define([
 		template: _.template(pluginConfigTemplate),
 
 		initialize: function(options) {
-			this.id = options.id;
 			this.property = options.property;
 			this.value = options.value;
 		},
@@ -29,7 +28,7 @@ define([
 		},
 
 		getId: function() {
-			return this.id;
+			return this.property['@id'];
 		},
 
 		getValue: function() {
