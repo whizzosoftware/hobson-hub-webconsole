@@ -35,6 +35,7 @@ define({
 	"HubSettings": "Hub Settings",
 	"Info": "Info",
 	"Insight": "Insight",
+	"Install": "Install",
 	"Latitude": "Latitude",
 	"Log": "Log",
 	"LogLevel": "Log level",

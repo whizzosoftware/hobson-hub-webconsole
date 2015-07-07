@@ -10,10 +10,10 @@
 		 	<p><%= plugin.description %></p>
  		</div>
  		<% if (plugin.configurable) { %>
-	 		<a id="buttonSettings" class="tiny radius button">Settings</a>
+	 		<a id="buttonSettings" class="icon-button" title="<%= strings.Settings %>"><i class="fa fa-cog fa-lg icon-button"></i></a>
 	 	<% } %>
 	 	<% if (plugin.links && plugin.links.install) { %>
-	 		<a id="buttonInstall" class="tiny radius button">Install</a>
+	 		<a id="buttonInstall" class="icon-button" title="<%= strings.Install %>"><i class="fa fa-download fa-lg icon-button"></i></a>
 	 	<% } %>
  	</div>
 	<% if (plugin.status && plugin.status.code === 'NOT_CONFIGURED') { %>
