@@ -9,10 +9,14 @@ define([
 	'models/activityLogEntry',
 	'views/sidebar/activityLog',
 	'i18n!nls/strings',
-	'text!templates/sidebar/sidebar.html'
-], function($, _, Backbone, moment, ItemList, ActivityLogEntry, Variable, ActivitiesView, strings, sidebarTemplate) {
+	'text!templates/sidebar/sidebar.html',
+	'text!templates/sidebar/sunriseSunset.html'
+], function($, _, Backbone, moment, ItemList, ActivityLogEntry, Variable, ActivitiesView, strings, template, sunriseTemplate) {
 	var SidebarView = Backbone.View.extend({
-		template: _.template(sidebarTemplate),
+
+		template: _.template(template),
+
+		sunriseTemplate: _.template(sunriseTemplate),
 
 		render: function() {
 			this.$el.html(
@@ -29,14 +33,17 @@ define([
 			itemList.fetch({
 				context: this,
 				success: function(model, response, options) {
-					var s = model.findWhere({name: 'sunrise'});
-					if (s && s.get('value')) {
-						console.debug(s);
-						options.context.$el.find('#sunrise').html(options.context.convertTimeString(s.get('value')));
-					}
-					s = model.findWhere({name: 'sunset'});
-					if (s && s.get('value')) {
-						options.context.$el.find('#sunset').html(options.context.convertTimeString(s.get('value')));
+					var sunrise = model.findWhere({name: 'sunrise'});
+					var sunset = model.findWhere({name: 'sunset'});
+					if (sunrise && sunrise.get('value') && sunset && sunset.get('value')) {
+						options.context.$el.find('.sidebar-subheader').html(
+							options.context.sunriseTemplate({
+								sunrise: options.context.convertTimeString(sunrise.get('value')),
+								sunset: options.context.convertTimeString(sunset.get('value'))
+							})
+						);
+					} else {
+						options.context.$el.find('.sidebar-subheader').html(strings.NoLatLong);
 					}
 				}, error: function(model, response, options) {
 					console.debug("error getting global variables", response);

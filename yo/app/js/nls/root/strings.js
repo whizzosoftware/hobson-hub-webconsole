@@ -50,6 +50,7 @@ define({
 	"NoDevicesSelectedSingle": "No device is selected. Choose one from the list below.",
 	"NoDevicesSelectedMultiple": "No devices are selected. Choose some from the list below.",
 	"NoHubs": "No Hubs have been added.",
+	"NoLatLong": "<a href=\"#settings/general\">Click here</a> to set latitude/longitude.",
 	"None": "None",
 	"NoPluginsInstalled": "There are no plugins installed. Click the 'Available' link above to browse and install some.",
 	"NoStatisticsEnabled": "Statistics are not enabled for this device.",
