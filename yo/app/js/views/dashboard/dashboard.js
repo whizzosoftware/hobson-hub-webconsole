@@ -58,9 +58,19 @@ define([
 		refresh: function() {
 			if (this.url) {
 				var devices = new ItemList({model: Device, url: this.url, sort: 'name'});
+				var headers = {};
+
+				// set the If-None-Modified header if an ETag was received from a prior response
+				if (this.etag) {
+					headers['If-None-Match'] = this.etag;
+				}
+
+				// fetch the device list
 				devices.fetch({
 					context: this,
+					headers: headers,
 					success: function(model, response, options) {
+						options.context.etag = options.xhr.getResponseHeader('ETag');
 						options.context.model = model;
 						options.context.renderTiles(options.context);
 					},

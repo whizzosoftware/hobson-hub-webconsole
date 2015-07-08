@@ -16,7 +16,7 @@ define([
 
 		parse: function(response) {
 			var results = [];
-			if (response.itemListElement) {
+			if (response && response.itemListElement) {
 				for (var i=0; i < response.itemListElement.length; i++) {
 					var item = response.itemListElement[i].item;
 					results.push(new this.model(item));
