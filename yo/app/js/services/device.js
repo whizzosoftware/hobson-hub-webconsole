@@ -11,6 +11,16 @@ define([
 				data: JSON.stringify({value: value}),
 				dataType: 'json'
 			});
+		},
+
+		setDeviceVariables: function(context, url, values) {
+			return $.ajax(url, {
+				context: context,
+				type: 'PUT',
+				contentType: 'application/json',
+				data: JSON.stringify({values: values}),
+				dataType: 'json'
+			});
 		}
 
 	};

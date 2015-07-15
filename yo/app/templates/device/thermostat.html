@@ -1,3 +1,44 @@
-<div style="text-align: center; font-size: 8em; font-weight: bold;">
-	<%= variables.tempF.value %>&deg;
+<div class="row">
+	<div class="medium-6 columns">
+		<% if (variables.on) { %>
+			<div style="text-align: center; font-size: .8em;">
+				SYSTEM <%= variables.on.value ? 'RUNNING' : 'IDLE' %>
+			</div>
+		<% } %>
+		<div style="text-align: center; font-size: 8em; font-weight: bold;">
+			<%= variables.tempF.value %>&deg;
+		</div>
+	</div>
+	<div class="medium-6 columns">
+		<center>
+		<ul class="small-block-grid-2">
+			<li style="font-size: 1.2em;">Heat to: <b><%= variables.targetHeatTempF.value %>&deg;</b></li>
+			<li><a href="#" id="up" class="radius button"><i class="fa fa-chevron-up"></i></a></li>
+			<li style="font-size: 1.2em;">Cool to: <b><%= variables.targetCoolTempF.value %>&deg;</b></li>
+			<li><a href="#" id="down" class="radius button"><i class="fa fa-chevron-down"></i></a></li>
+		</ul>
+		</center>
+	</div>
+</div>
+<div class="row">
+	<div class="small-6 columns" style="text-align: center;">
+		<% if (variables.tstatMode) { %>
+			<div style="margin-bottom: 10px;">Mode</div>
+			<ul class="stack-for-small button-group round">
+				<li><a href="#" id="mode-off" class="small button <%= variables.tstatMode.value === 'OFF' ? 'disabled' : '' %>">Off</a></li>
+				<li><a href="#" id="mode-cool" class="small button <%= variables.tstatMode.value === 'COOL' ? 'disabled' : '' %>">Cool</a></li>
+				<li><a href="#" id="mode-heat" class="small button <%= variables.tstatMode.value === 'HEAT' ? 'disabled' : '' %>">Heat</a></li>
+				<li><a href="#" id="mode-auto" class="small button <%= variables.tstatMode.value === 'AUTO' ? 'disabled' : '' %>">Auto</a></li>
+			</ul>
+		<% } %>
+	</div>
+	<div class="small-6 columns" style="text-align: center;">
+		<% if (variables.tstatFanMode) { %>
+			<div style="margin-bottom: 10px;">Fan</div>
+			<ul class="stack-for-small button-group round">
+				<li><a href="#" id="fan-auto" class="small button <%= variables.tstatFanMode.value === 'AUTO' ? 'disabled' : '' %>">Auto</a></li>
+				<li><a href="#" id="fan-on" class="small button <%= variables.tstatFanMode.value === 'ON' ? 'disabled' : '' %>">On</a></li>
+			</ul>
+		<% } %>
+	</div>
 </div>

@@ -9,8 +9,9 @@
 <% if (variables.on) { %>
 <div class="row" style="margin-bottom: 30px;">
 	<div class="large-12 columns">
-		<i id="switchButton" style="font-size: 10em; cursor: <%= pending ? 'none' : 'pointer' %>; color: <%= pending ? 'grey' : variables.on.value ? 'green' : 'red' %>; display: <%= pending ? 'none' : 'block' %>;" class="fa fa-power-off fa-4x"></i>
-		<i class="fa fa-spinner fa-spin fa-4x" style="font-size: 10em; display: <%= pending ? 'block' : 'none' %>;"></i>
+		<a id="switchButton" class="radius button" style="font-size: 1em;">
+			<i style="color: <%= variables.on.value ? 'white' : 'gray' %>;" class="fa fa-power-off fa-4x"></i>
+		</a>
 	</div>
 </div>
 <% } %>

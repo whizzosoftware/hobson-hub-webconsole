@@ -4,8 +4,9 @@ define([
 	'underscore',
 	'backbone',
 	'models/itemList',
-	'models/variable'
-], function($, _, Backbone, ItemList, Variable) {
+	'models/variable',
+	'services/device'
+], function($, _, Backbone, ItemList, Variable, DeviceService) {
 
 	return Backbone.View.extend({
 
@@ -15,7 +16,11 @@ define([
 
 		variables: {},
 
-		showPending: false,
+		defaultRefreshInterval: 5000,
+
+		fastRefreshInterval: 1000,
+
+		timeoutInterval: 6000,
 
 		alwaysRefresh: false,
 
@@ -29,7 +34,7 @@ define([
 			}
 
 			// start the refresh timer
-			this.setRefreshInterval(5000);
+			this.setRefreshInterval(this.defaultRefreshInterval);
 		},
 
 		remove: function() {
@@ -52,56 +57,83 @@ define([
 			}
 		},
 
-		setPendingUpdates: function(updates) {
-			this.pendingUpdates = updates;
-			this.showPending = true;
-			this.setRefreshInterval(1000);
-			this.render();
+		addPendingUpdate: function(name, value) {
+			console.debug('addPendingUpdate', name, value);
+			this.pendingUpdates[name] = {
+				value: value,
+				time: new Date().getTime()
+			};
+			this.setRefreshInterval(this.fastRefreshInterval);
+		},
+
+		hasPendingUpdates: function() {
+			for (var name in this.pendingUpdates) {
+				if (this.pendingUpdates[name]) {
+					return true;
+				}
+			}
+			return false;
 		},
 
 		processUpdate: function(name, value) {
-			if (this.pendingUpdates[name] === value) {
+			// clear pending update if the value is what's expected
+			if (this.pendingUpdates[name] && this.pendingUpdates[name].value === value) {
 				this.pendingUpdates[name] = null;
 			}
-			var more = false;
-			for (var ix = 0; ix < this.pendingUpdates.length; ix++) {
-				if (this.pendingUpdates[ix] !== null) {
-					more = true;
-					break;
-				}
+
+			// notify subclass
+			if (this.onVariableUpdate) {
+				this.onVariableUpdate(name, value);
 			}
-			if (!more) {
-				this.showPending = false;
+
+			// set refresh interval appropriately
+			if (!this.hasPendingUpdates()) {
+				this.setRefreshInterval(this.defaultRefreshInterval);
+				this.refresh();
+			}
+		},
+
+		processTimeout: function(name) {
+			// clear pending update
+			this.pendingUpdates[name] = null;
+
+			// notify subclass
+			if (this.onVariableUpdateTimeout) {
+				this.onVariableUpdateTimeout(name);
+			}
+
+			// set refresh interval appropriately
+			if (!this.hasPendingUpdates()) {
 				this.setRefreshInterval(5000);
 				this.refresh();
 			}
 		},
 
-		setVariableValue: function(name, value) {
-			if (!this.showPending) {
+		setVariableValues: function(values) {
+			// check if any of the values are different from the current
+			var change = false;
+			for (var name in values) {
 				var v = this.getVariable(name);
-				if (v) {
-					var newVal = !v.value;
-					var v = new Variable({
-						id: 'id', 
-						url: v['@id'],
-						value: value
-					});
-					v.save(null, {
-						context: this,
-						error: function(model, response, options) {
-							if (response.status === 202) {
-								if (options.context.variables[name].mask !== 'WRITE_ONLY') {
-									options.context.setPendingUpdates({
-										on: value
-									});
+				if (!v || values[name] !== v.value) {
+					change = true;
+				}
+			}
+			if (change) {
+				DeviceService.setDeviceVariables(this, this.model.get('variables')['@id'], values)
+					.error(function(response) {
+						if (response.status >= 200 && response.status <= 299) {
+							for (var name in values) {
+								console.debug(name, this.variables[name]);
+								if (this.variables[name].mask !== 'WRITE_ONLY') {
+									this.addPendingUpdate(name, values[name]);
+								} else {
+									this.onVariableUpdate(name);
 								}
-							} else {
-								toastr.error('Failed to update device variable');
 							}
+						} else {
+							this.onVariableUpdateFailure();
 						}
 					});
-				}
 			}
 		},
 
@@ -110,21 +142,25 @@ define([
 			variables.fetch({
 				context: this,
 				success: function(model, response, options) {
-					// check if any variable values have changed
-					var change = false;
+					// process any changed variable values
 					for (var ix = 0; ix < model.length; ix++) {
 						var v1 = model.at(ix);
 						var v2 = options.context.variables[v1.get('name')];
 						if (v1 && v2 && v1.get('value') !== v2.value) {
 							options.context.variables[v1.get('name')] = v1.toJSON();
 							options.context.processUpdate(v1.get('name'), v1.get('value'));
-							change = true;
 						}
 					}
 
-					// if any have changed, re-render
-					if (change || options.context.alwaysRefresh) {
-						options.context.render();
+					// process any update timeouts
+					var now = new Date().getTime();
+					for (var name in options.context.pendingUpdates) {
+						var pu = options.context.pendingUpdates[name];
+						if (pu) {
+							if (now - pu.time >= options.context.timeoutInterval) {
+								options.context.processTimeout(name);
+							}
+						}
 					}
 				},
 				error: function(model, response, options) {

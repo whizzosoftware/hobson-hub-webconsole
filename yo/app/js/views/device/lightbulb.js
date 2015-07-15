@@ -3,12 +3,13 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'toastr',
 	'jquery-colpick',
 	'models/variable',
 	'views/device/baseStatus',
 	'i18n!nls/strings',
 	'text!templates/device/lightbulb.html'
-], function($, _, Backbone, colpick, Variable, BaseStatus, strings, template) {
+], function($, _, Backbone, toastr, colpick, Variable, BaseStatus, strings, template) {
 
 	return BaseStatus.extend({
 
@@ -45,26 +46,60 @@ define([
 			return this;
 		},
 
+		onVariableUpdate: function(name, value) {
+			toastr.success('Command sent to device.');
+			this.render();
+		},
+
+		onVariableUpdateTimeout: function(name) {
+			toastr.error('Unable to confirm change with device.');
+			this.render();
+		},
+
+		onVariableUpdateFailure: function() {
+			toastr.error('An error occurred updating the device.');
+			this.render();
+		},
+
 		onClickOn: function() {
-			if (!this.showPending) {
+			var el = this.$el.find('#switchButton');
+			if (el && !el.hasClass('disabled')) {
 				var onVar = this.getVariable('on');
-				this.setVariableValue('on', !onVar.value);
+				el.html('<i style="font-size: 4em;" class="fa fa-spinner fa-spin"></i>');
+				this.setVariableValues({on: !onVar.value});
+				this.disableAllControls();
 			}
 		},
 
 		onColorChange: function(hsb,hex,rgb,el,bySetColor) {
-			if (!this.showPending) {
-				var color = '#' + hex;
-				$(el).val(color);
-				$(el).css('background-color', color);
-				$(el).colpickHide();
-				this.setVariableValue('color', color);
+			var el = this.$el.find('#colorPicker');
+			if (el && !el.hasClass('disabled')) {
+				var color = 'rgb(' + rgb.r + "," + rgb.g + "," + rgb.b + ")";
+				el.val(color);
+				el.css('background-color', color);
+				el.colpickHide();
+				this.setVariableValues({color: color});
 			}
 		},
 
 		onLevelChange: function(event) {
-			if (!this.showPending) {
-				this.setVariableValue('level', $(event.target).val());
+			this.setVariableValues({level: $(event.target).val()});
+			this.disableAllControls();
+		},
+
+		disableAllControls: function() {
+			var el = this.$el.find('#switchButton');
+			if (el) {
+				el.addClass('disabled');
+			}
+			el = this.$el.find('#levelSlider');
+			if (el) {
+				console.debug(el);
+				$(el).prop('disabled', true);
+			}
+			el = this.$el.find('#colorPicker');
+			if (el) {
+				$(el).prop('disabled', true);
 			}
 		}
 
