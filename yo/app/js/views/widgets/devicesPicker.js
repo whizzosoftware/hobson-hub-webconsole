@@ -48,7 +48,14 @@ define([
 				})
 			);
 
-			var devices = new ItemList({model: Device, url: session.getSelectedHubDevicesUrl() + '?expand=item', sort: 'name'});
+			console.debug(this.property);
+
+			var url = session.getSelectedHubDevicesUrl() + '?expand=item';
+			if (this.property.constraints && this.property.constraints.deviceVariable) {
+				url += '&var=' + this.property.constraints.deviceVariable;
+			}
+
+			var devices = new ItemList({model: Device, url: url, sort: 'name'});
 			devices.fetch({
 				context: this,
 				success: function(model, response, options) {
