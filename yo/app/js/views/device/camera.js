@@ -21,18 +21,30 @@ define([
 		render: function(el) {
 			var v = this.getVariable('imageStatusUrl');
 			if (v) {
-				// we only want to render the HTML image tag once
-				if (!this.initialRender) {
-					this.$el.html(this.template({
-						strings: strings,
-						device: this.model.toJSON(),
-						variable: v
-					}));
-					this.initialRender = true;
-				// any subsequent renders should update the image via JQuery -- this prevents flicker
-				} else {
-					this.$el.find('#image').attr('src', v.value + '?' + new Date().getTime());
-				}
+				this.$el.html(this.template({
+					strings: strings,
+					device: this.model.toJSON(),
+					variable: v
+				}));
+
+				var imageEl = this.$el.find('#image-container');
+				$.ajax({
+					context: this,
+					url: v.value + '?base64=true',
+					type: 'GET',
+					success: function(data) {
+						imageEl.html($('<img src="data:image/jpg;base64,' + data + '" />'));
+					},
+					error: function(response) {
+						var msg;
+						if (response.status === 403) {
+							msg = strings.AccessDenied;
+						} else {
+							msg = strings.ErrorOccurred;
+						}
+						this.$el.find('#image-container').html('<p class="error">' + msg + '</p>');
+					}
+				});				
 			} else {
 				this.$el.html('<p class="notice">' + this.strings.DeviceMissingVariable + '</p>');
 			}
