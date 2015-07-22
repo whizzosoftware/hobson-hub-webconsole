@@ -23,10 +23,14 @@ define([
 
 			this.$el.html(this.template({
 				strings: strings,
-				device: this.model.toJSON()
+				variables: this.variables
 			}));
 
 			return this;
+		},
+
+		onVariableUpdate: function(name, value) {
+			this.render();
 		}
 
 	});

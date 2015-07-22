@@ -1,8 +1,8 @@
 <% 
-	for (var ix = 0; ix < device.variables.itemListElement.length; ix++) {
-		var v = device.variables.itemListElement[ix].item;
+	for (var v in variables) {
+		console.debug(v);
 %>
-	<%= v.name %> = <%= v.value %><br/>
+	<%= v %> = <%= variables[v].value %><br/>
 <% 
 	} 
 %>
