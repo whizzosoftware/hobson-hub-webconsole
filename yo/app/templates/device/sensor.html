@@ -1,0 +1,8 @@
+<% 
+	for (var ix = 0; ix < device.variables.itemListElement.length; ix++) {
+		var v = device.variables.itemListElement[ix].item;
+%>
+	<%= v.name %> = <%= v.value %><br/>
+<% 
+	} 
+%>
