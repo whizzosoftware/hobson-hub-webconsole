@@ -1,7 +1,7 @@
-<% 
+<%
 	for (var v in variables) {
 %>
-	<%= strings[v] %> = <%= variables[v].value %><br/>
-<% 
-	} 
+	<%= strings[v] ? strings[v] : v %> = <%= variables[v].value %><br/>
+<%
+	}
 %>

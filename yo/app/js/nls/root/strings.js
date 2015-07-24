@@ -95,6 +95,7 @@ define({
 	"TaskIfHelpText": "This is the condition that will trigger the task. Click the <i class=\"fa fa-plus\"></i> below to set one.",
 	"TaskThenHelpText": "These are the actions that will occur when the task is triggered. Click the <i class=\"fa fa-plus\"></i> below to add one.",
 	"tempF": "Temperature (F)",
+  "tempC": "Temperature (C)",
 	"TestMessageSuccessful": "Test message was sent successfully.",
 	"TestMessageFailure": "An error occurred sending the test message.",
 	"Thursday": "Thursday",
