@@ -5,10 +5,14 @@ define([
 	'backbone',
 	'bridget',
 	'masonry',
-	'views/dashboard/deviceTile',
-	'i18n!nls/strings',
-	'text!templates/dashboard/deviceTile.html'
-], function($, _, Backbone, bridget, Masonry, DeviceTileView, strings, deviceTileTemplate) {
+	'views/dashboard/tiles/camera',
+	'views/dashboard/tiles/lightbulb',
+	'views/dashboard/tiles/sensor',
+	'views/dashboard/tiles/switch',
+	'views/dashboard/tiles/thermostat',
+	'views/dashboard/tiles/unknown',
+	'i18n!nls/strings'
+], function($, _, Backbone, bridget, Masonry, CameraTileView, LightbulbTileView, SensorTileView, SwitchTileView, ThermostatTileView, UnknownTileView, strings) {
 
 	return Backbone.View.extend({
 		className: 'dash-tiles',
@@ -71,7 +75,21 @@ define([
 
 		addDeviceView: function(device) {
 			if (device) {
-				var tileView = new DeviceTileView({model: device});
+				console.debug(device);
+				var tileView;
+				if (device.get("type") === 'SENSOR') {
+					tileView = new SensorTileView({model: device});
+				} else if (device.get("type") === 'LIGHTBULB') {
+					tileView = new LightbulbTileView({model: device});
+				} else if (device.get("type") === 'CAMERA') {
+					tileView = new CameraTileView({model: device});
+				} else if (device.get("type") === 'THERMOSTAT') {
+					tileView = new ThermostatTileView({model: device});
+				} else if (device.get("type") === 'SWITCH') {
+					tileView = new SwitchTileView({model: device});
+				} else {
+					tileView = new UnknownTileView({model: device});
+				}
 				this.$el.append(tileView.render().el);
 				this.subviews[device.get('@id')] = tileView;
 			}
