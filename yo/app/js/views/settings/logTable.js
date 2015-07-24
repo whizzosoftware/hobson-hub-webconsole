@@ -23,8 +23,8 @@ define([
 
 		render: function() {
 			this.$el.append('<thead><td>Level</td><td>Time</td><td>Thread</td><td>Message</td></thead>');
-			for (var i = 0; i < this.logEntries.length; i++) {
-				var logEntry = this.logEntries.at(i);
+			for (var i = 0; i < this.model.length; i++) {
+				var logEntry = this.model.at(i);
 				this.$el.append(this.template({entry: logEntry}));
 			}
 			return this;

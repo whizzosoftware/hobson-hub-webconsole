@@ -20,7 +20,9 @@ define([
 		loginTemplate: _.template(loginTemplate),
 
 		events: {
-			"click #login-button": "onClickLogin"
+			"click #login-button": "onClickLogin",
+			"keyup #password": "onKeyup",
+			"keyup #user": "onKeyup"
 		},
 
 		render: function() {
@@ -57,8 +59,19 @@ define([
 			return this;
 		},
 
-		onClickLogin: function(event) {
+		onKeyup: function(event) {
 			event.preventDefault();
+
+			// if Return key is hit, execute login
+			if (event.keyCode == 13) {
+				this.onClickLogin();
+			}
+		},
+
+		onClickLogin: function(event) {
+			if (event != null) {
+				event.preventDefault();
+			}
 
 			// clear visual errors
 			$('#userLabel').removeClass('error');

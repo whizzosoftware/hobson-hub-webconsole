@@ -34,12 +34,12 @@ define([
 			logEntries.fetch({
 				context: this,
 				success: function(model, response, options) {
-					options.context.logTableView = new LogTableView(logEntries);
+					options.context.logTableView = new LogTableView({model: model});
 					$('#log-table-container').append(options.context.logTableView.render().el);
 				},
 				error: function(model, response, options) {
-					if (response.status === 206) {
-						options.context.logTableView = new LogTableView(logEntries);
+					if (response.status === 200 || response.status === 206) {
+						options.context.logTableView = new LogTableView({model: model});
 						$('#log-table-container').append(options.context.logTableView.render().el);
 					} else {
 						toastr.error(strings.LogRetrievalError);
