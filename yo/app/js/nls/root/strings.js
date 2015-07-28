@@ -50,6 +50,7 @@ define({
 	"Monday": "Monday",
 	"Name": "Name",
 	"NextRun": "Next run",
+	"NoDevicesAvailable": "There are no devices available that support this function.",
 	"NoDevicesPublished": "There are no devices to display. You should <a href=\"#settings/plugins?filter=available\">install plugins</a> to create some.",
 	"NoDevicesSelectedSingle": "No device is selected. Choose one from the list below.",
 	"NoDevicesSelectedMultiple": "No devices are selected. Choose some from the list below.",

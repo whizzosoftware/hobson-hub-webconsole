@@ -48,8 +48,6 @@ define([
 				})
 			);
 
-			console.debug(this.property);
-
 			var url = session.getSelectedHubDevicesUrl() + '?expand=item';
 			if (this.property.constraints && this.property.constraints.deviceVariable) {
 				url += '&var=' + this.property.constraints.deviceVariable;
@@ -59,16 +57,19 @@ define([
 			devices.fetch({
 				context: this,
 				success: function(model, response, options) {
-					options.context.devicesView = new DevicesView({devices: model});
-					options.context.$el.find('#deviceList').html(options.context.devicesView.render().el);
-					options.context.subviews.push(options.context.devicesView);
+					if (model.length > 0) {
+						options.context.devicesView = new DevicesView({devices: model});
+						options.context.$el.find('#deviceList').html(options.context.devicesView.render().el);
+						options.context.subviews.push(options.context.devicesView);
+						this.setDeviceCount(0);
+					} else {
+						options.context.$el.find('#deviceList').html(strings.NoDevicesAvailable);
+					}
 				},
 				error: function(model, response, options) {
 					console.debug('nope!');
 				}
 			})
-
-			this.setDeviceCount(0);
 
 			return this;
 		},

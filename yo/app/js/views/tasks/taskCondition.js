@@ -54,6 +54,10 @@ define([
 				return props.device.name + ' turns off';
 			} else if (cclass.endsWith('turnOn')) {
 				return props.device.name + ' turns on';
+			} else if (cclass.endsWith('tempAbove')) {
+				return props.device.name + ' rises above ' + props.tempF + "&deg;";
+			} else if (cclass.endsWith('tempBelow')) {
+				return props.device.name + ' drops below ' + props.tempF + "&deg;";
 			} else {
 				return 'Something else happens';
 			}

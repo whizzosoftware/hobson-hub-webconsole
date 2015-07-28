@@ -3,13 +3,14 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'toastr',
 	'models/itemList',
 	'models/taskConditionClass',
 	'views/tasks/taskConditions',
 	'views/tasks/taskControlSelectors',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskConditionsEditor.html'
-], function($, _, Backbone, ItemList, TaskConditionClass, TaskConditionsView, TaskControlSelectorsView, strings, taskIfTemplate) {
+], function($, _, Backbone, toastr, ItemList, TaskConditionClass, TaskConditionsView, TaskControlSelectorsView, strings, taskIfTemplate) {
 
 	return Backbone.View.extend({
 
@@ -98,18 +99,21 @@ define([
 		},
 
 		onClickAdd: function(e, a) {
-			console.debug('condition add: ', e, a);
-			var c = {
-				cclass: {"@id": a.id},
-				values: a.properties
-			}
-			if (!this.task.hasTriggerCondition()) {
-				this.task.setTriggerCondition(c);
+			if (a.properties.device) {
+				var c = {
+					cclass: {"@id": a.id},
+					values: a.properties
+				}
+				if (!this.task.hasTriggerCondition()) {
+					this.task.setTriggerCondition(c);
+				} else {
+					this.task.addCondition(c);
+				}
+				this.renderConditions();
+				this.closePlusPanel();
 			} else {
-				this.task.addCondition(c);
+				toastr.error('No device(s) were selected.');
 			}
-			this.renderConditions();
-			this.closePlusPanel();
 		}
 
 	});
