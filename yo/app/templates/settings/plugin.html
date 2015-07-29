@@ -8,6 +8,9 @@
  		<div class="plugin-text">
 		 	<h1><%= plugin.name %></h1>
 		 	<p><%= plugin.description %></p>
+		 	<% if (plugin.version) { %>
+			 	<small>Version <%= plugin.version %></small>
+			<% } %>
  		</div>
  		<% if (plugin.configurable) { %>
 	 		<a id="buttonSettings" class="icon-button" title="<%= strings.Settings %>"><i class="fa fa-cog fa-lg icon-button"></i></a>
