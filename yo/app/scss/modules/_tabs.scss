@@ -57,8 +57,7 @@
 	}
 	.tab-title.active a {
 		font-family: $font-1;
-		font-weight: bold;
-		color: $color-text;
+		color: $color-subnav-active;
 		background-color: $color-panel-bg;
 	}
 	.tab-title:first-child a {
