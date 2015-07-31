@@ -10,12 +10,6 @@ define([
 
 	return Backbone.View.extend({
 
-		pendingUpdates: {},
-
-		intervalRef: null,
-
-		variables: {},
-
 		defaultRefreshInterval: 5000,
 
 		fastRefreshInterval: 1000,
@@ -25,6 +19,10 @@ define([
 		alwaysRefresh: false,
 
 		initialize: function() {
+			this.intervalRef = null;
+			this.pendingUpdates = {};
+			this.variables = {};
+
 			// save initial variable values
 			var variables = this.model.get('variables').itemListElement;
 			for (var ix = 0; ix < variables.length; ix++) {
@@ -123,8 +121,7 @@ define([
 					.error(function(response) {
 						if (response.status >= 200 && response.status <= 299) {
 							for (var name in values) {
-								console.debug(name, this.variables[name]);
-								if (this.variables[name].mask !== 'WRITE_ONLY') {
+								if (this.variables[name] && this.variables[name].mask !== 'WRITE_ONLY') {
 									this.addPendingUpdate(name, values[name]);
 								} else {
 									this.onVariableUpdate(name);

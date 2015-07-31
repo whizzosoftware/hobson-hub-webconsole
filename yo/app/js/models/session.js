@@ -40,7 +40,6 @@ define([
 		},
 
 		setSelectedHub: function(hub) {
-			console.debug('setSelectedHub: ', hub);
 			window.sessionStorage.setItem('hub', JSON.stringify(hub.toJSON()));
 			this.set('hub', hub);
 		},

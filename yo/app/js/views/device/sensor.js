@@ -19,8 +19,6 @@ define([
 		},
 
 		render: function(el) {
-			console.debug(this.model.toJSON());
-
 			this.$el.html(this.template({
 				strings: strings,
 				variables: this.variables
