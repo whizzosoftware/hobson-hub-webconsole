@@ -2,6 +2,11 @@
 	<dd class="<%= !query || query === 'filter=installed' ? 'active' : '' %>"><a href="#settings/plugins?filter=installed">Installed</a></dd>
 	<dd class="<%= query === 'filter=available' ? 'active' : '' %>"><a href="#settings/plugins?filter=available">Available</a></dd>
 </dl>
+<% if (!local) { %>
+<div class="inset right">
+	<input id="betaCheckbox" type="checkbox">&nbsp;<%= strings.IncludeBetaPlugins %>
+</div>
+<% } %>
 <div class="inset">
 	<div id="pluginsContainer">
 	</div>

@@ -7,12 +7,13 @@ define([
 	'models/itemList',
 	'models/plugin',
 	'models/propertyContainer',
+	'services/hub',
 	'views/settings/settingsTab',
 	'views/settings/plugins',
 	'views/settings/pluginSettings',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsPlugins.html'
-], function($, _, Backbone, toastr, ItemList, Plugin, Config, SettingsTab, PluginsView, PluginSettingsView, strings, template) {
+], function($, _, Backbone, toastr, ItemList, Plugin, Config, HubService, SettingsTab, PluginsView, PluginSettingsView, strings, template) {
 
 	return SettingsTab.extend({
 
@@ -22,7 +23,8 @@ define([
 
 		events: {
 			'pluginSettingsClick': 'onClickSettings',
-			'pluginInstallClick': 'onClickInstall'
+			'pluginInstallClick': 'onClickInstall',
+			'click #betaCheckbox': 'onClickBeta'
 		},
 
 		refreshInterval: null,
@@ -42,13 +44,15 @@ define([
 		},
 
 		renderTabContent: function(el) {
+			var showLocal = (this.query !== 'filter=available');
+
 			el.html(this.template({
 				strings: strings,
 				hub: this.hub.toJSON(),
+				local: showLocal,
 				query: this.query
 			}));
 
-			var showLocal = (this.query !== 'filter=available');
 			var filteredModel;
 
 			// if we're showing local plugins, filter the model based on the 'PLUGIN' type
@@ -59,7 +63,9 @@ define([
 				filteredModel = this.model;
 			}
 
-			this.pluginsView = new PluginsView({model: filteredModel});
+			this.pluginsView = new PluginsView({
+				model: filteredModel
+			});
 			this.$el.find('#pluginsContainer').html(this.pluginsView.render().el);
 
 			if (!this.refreshInterval && showLocal) {
@@ -106,6 +112,25 @@ define([
 					toastr.error(strings.PluginInstallFailed);
 				}
 			});
+		},
+
+		onClickBeta: function(event) {
+			var checkbox = event.currentTarget;
+			var enabled = event.currentTarget.checked;
+
+			checkbox.disabled = true;
+
+			HubService.enableBetaPlugins(this, 'local', 'local', enabled).
+                fail(function(response) {
+                	checkbox.enabled = true;
+                    if (response.status === 202) {
+                        toastr.success(strings.TestMessageSuccessful);
+                        this.refresh();
+                    } else {
+                        toastr.error(strings.TestMessageFailure);
+                    }
+                }
+            );            	
 		}
 
 	});

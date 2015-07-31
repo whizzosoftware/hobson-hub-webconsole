@@ -13,9 +13,10 @@ define([
 
 		className: 'plugins small-block-grid-1 medium-block-grid-2 large-block-grid-3',
 
-		subviews: {},
-
-		noPluginsPrompt: false,
+		initialize: function() {
+			this.subviews = {};
+			this.noPluginsPrompt = false;
+		},
 
 		remove: function() {
 			for (var ix in this.subviews) {

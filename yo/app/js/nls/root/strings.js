@@ -35,6 +35,7 @@ define({
 	"HubNamePrompt": "Enter a unique name for the Hub you are adding.",
 	"HubSettings": "Hub Settings",
 	"humidityPct": "Humidity (%)",
+	"IncludeBetaPlugins": "Show beta plugins",
 	"Info": "Info",
 	"Insight": "Insight",
 	"Install": "Install",

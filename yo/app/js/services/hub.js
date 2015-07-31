@@ -5,8 +5,7 @@ define([
 	'models/hubs',
 	'models/hub'
 ], function($, session, Hubs, Hub) {
-	var HubService = {
-
+	return {
 		retrieveHubWithId: function(hubId, hubsUrl, callback) {
 			var hub = session.getSelectedHub();
 			if (hub.get('id') !== hubId) {
@@ -69,9 +68,24 @@ define([
 				type: 'POST'
 			});
 			console.debug('installing plugin: ', url);
+		},
+
+		enableBetaPlugins: function(ctx, userId, hubId, enabled) {
+			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/enableRemoteRepository';
+
+			var req = {
+				url: 'file:///Users/dan/Desktop/repository.xml',
+				enabled: enabled
+			};
+
+			return $.ajax(url, {
+				context: ctx,
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(req),
+				dataType: 'json'
+			});
 		}
 
 	};
-
-	return HubService;
 });
