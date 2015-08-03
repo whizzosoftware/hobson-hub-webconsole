@@ -6,6 +6,8 @@ define([
 	'models/hub'
 ], function($, session, Hubs, Hub) {
 	return {
+		betaRepositoryUrl: 'file:///Users/dan/Desktop/repository.xml',
+
 		retrieveHubWithId: function(hubId, hubsUrl, callback) {
 			var hub = session.getSelectedHub();
 			if (hub.get('id') !== hubId) {
@@ -65,17 +67,16 @@ define([
 
 		installPlugin: function(ctx, url) {
 			return $.ajax(url, {
-				type: 'POST'
+				type: 'POST',
+				timeout: 5000
 			});
-			console.debug('installing plugin: ', url);
 		},
 
-		enableBetaPlugins: function(ctx, userId, hubId, enabled) {
-			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/enableRemoteRepository';
+		enableBetaPlugins: function(ctx, userId, hubId) {
+			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/repositories';
 
 			var req = {
-				url: 'file:///Users/dan/Desktop/repository.xml',
-				enabled: enabled
+				uri: this.betaRepositoryUrl
 			};
 
 			return $.ajax(url, {
@@ -84,6 +85,14 @@ define([
 				contentType: 'application/json',
 				data: JSON.stringify(req),
 				dataType: 'json'
+			});
+		},
+
+		disableBetaPlugins: function(ctx, userId, hubId) {
+			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/repositories/' + encodeURIComponent(this.betaRepositoryUrl);
+			return $.ajax(url, {
+				context: ctx,
+				type: 'DELETE'
 			});
 		}
 

@@ -7,13 +7,14 @@ define([
 	'models/itemList',
 	'models/plugin',
 	'models/propertyContainer',
+	'models/repository',
 	'services/hub',
 	'views/settings/settingsTab',
 	'views/settings/plugins',
 	'views/settings/pluginSettings',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsPlugins.html'
-], function($, _, Backbone, toastr, ItemList, Plugin, Config, HubService, SettingsTab, PluginsView, PluginSettingsView, strings, template) {
+], function($, _, Backbone, toastr, ItemList, Plugin, Config, Repository, HubService, SettingsTab, PluginsView, PluginSettingsView, strings, template) {
 
 	return SettingsTab.extend({
 
@@ -46,6 +47,7 @@ define([
 		renderTabContent: function(el) {
 			var showLocal = (this.query !== 'filter=available');
 
+			// render the core view
 			el.html(this.template({
 				strings: strings,
 				hub: this.hub.toJSON(),
@@ -63,11 +65,25 @@ define([
 				filteredModel = this.model;
 			}
 
+			// disable the beta checkbox while we retrieve its state
+			var checkbox = this.$el.find('#betaCheckbox');
+			checkbox.attr('disabled', true);
+			var items = new ItemList({model: Repository, url: '/api/v1/users/local/hubs/local/repositories'});
+			items.fetch({
+				context: this,
+				success: function(model, response, options) {
+					checkbox.attr('checked', model.models.length > 1);
+					checkbox.attr('disabled', false);
+				}
+			});
+
+			// create the plugins view
 			this.pluginsView = new PluginsView({
 				model: filteredModel
 			});
 			this.$el.find('#pluginsContainer').html(this.pluginsView.render().el);
 
+			// create the refresh timer
 			if (!this.refreshInterval && showLocal) {
 				this.refreshInterval = setInterval(function() {
 					this.refresh();
@@ -101,17 +117,13 @@ define([
 		},
 
 		onClickInstall: function(event, plugin) {
-			$.ajax(plugin.get('links').install, {
-				context: this,
-				type: 'POST',
-				timeout: 5000,
-				success: function(data, status, response) {
+			HubService.installPlugin(this, plugin.get('links').install)
+				.success(function(data, status, response) {
 					toastr.info(strings.PluginInstallStarted);
-				},
-				error: function(response, status, error) {
+				})
+				.fail(function(response, status, error) {
 					toastr.error(strings.PluginInstallFailed);
-				}
-			});
+				});
 		},
 
 		onClickBeta: function(event) {
@@ -120,17 +132,30 @@ define([
 
 			checkbox.disabled = true;
 
-			HubService.enableBetaPlugins(this, 'local', 'local', enabled).
-                fail(function(response) {
-                	checkbox.enabled = true;
-                    if (response.status === 202) {
-                        toastr.success(strings.TestMessageSuccessful);
-                        this.refresh();
-                    } else {
-                        toastr.error(strings.TestMessageFailure);
-                    }
-                }
-            );            	
+			if (!enabled) {
+				HubService.disableBetaPlugins(this, 'local', 'local').
+					success(function(response) {
+						checkbox.disabled = false;
+						toastr.success(strings.BetaPluginSettingUpdated);
+						this.refresh();
+					}).
+					fail(function(response) {
+						toastr.error(strings.BetaPluginSettingFailed);
+					}
+				);
+			} else {
+				HubService.enableBetaPlugins(this, 'local', 'local').
+	                fail(function(response) {
+	                	checkbox.disabled = false;
+	                    if (response.status === 202) {
+	                        toastr.success(strings.BetaPluginSettingUpdated);
+	                        this.refresh();
+	                    } else {
+	                        toastr.error(strings.BetaPluginSettingFailed);
+	                    }
+	                }
+	            );            	
+	        }
 		}
 
 	});
