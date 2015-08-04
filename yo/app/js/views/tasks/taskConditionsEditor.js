@@ -120,8 +120,19 @@ define([
 		validate: function(a) {
 			for (var i=0; i < a.supportedProperties.length; i++) {
 				var sp = a.supportedProperties[i];
-				if (!_.has(a.properties, sp['@id'])) {
+				var varName = sp['@id'];
+				if (!_.has(a.properties, varName)) {
 					return sp.name + ' is a required field.';
+				} else {
+					var value = a.properties[varName];
+					switch (sp.type) {
+						case 'STRING':
+							return _.isString(value) ? null : sp.name + ' must be a string.';
+						case 'NUMBER':
+							return (value === '' || isNaN(value)) ? sp.name + ' must be a number.' : null;
+						default:
+							break;
+					}
 				}
 			}
 			return null;
