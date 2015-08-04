@@ -9,7 +9,7 @@ define([
 	'text!templates/widgets/recurrencePicker.html'
 ], function($, _, Backbone, moment, RecurrenceDefaults, strings, template) {
 
-	var RecurrencePickerView = Backbone.View.extend({
+	return Backbone.View.extend({
 
 		template: _.template(template),
 
@@ -103,5 +103,4 @@ define([
 
 	});
 
-	return RecurrencePickerView;
 });

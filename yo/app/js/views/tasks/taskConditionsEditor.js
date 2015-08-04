@@ -90,7 +90,7 @@ define([
 						options.context.subviews.push(v);
 					},
 					error: function() {
-						console.debug('nope!');
+						toastr.error('Error retrieving condition classes');
 					}
 				});
 			} else {
@@ -99,7 +99,8 @@ define([
 		},
 
 		onClickAdd: function(e, a) {
-			if (a.properties.device) {
+			var msg = this.validate(a);
+			if (!msg) {
 				var c = {
 					cclass: {"@id": a.id},
 					values: a.properties
@@ -112,8 +113,18 @@ define([
 				this.renderConditions();
 				this.closePlusPanel();
 			} else {
-				toastr.error('No device(s) were selected.');
+				toastr.error(msg);
 			}
+		},
+
+		validate: function(a) {
+			for (var i=0; i < a.supportedProperties.length; i++) {
+				var sp = a.supportedProperties[i];
+				if (!_.has(a.properties, sp['@id'])) {
+					return sp.name + ' is a required field.';
+				}
+			}
+			return null;
 		}
 
 	});

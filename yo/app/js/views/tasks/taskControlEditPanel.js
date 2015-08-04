@@ -99,6 +99,7 @@ define([
 			// fire an "add clicked" event containing the control id and form values
 			var val = {
 				id: this.model.get('@id'),
+				supportedProperties: properties, 
 				properties: values
 			};
 

@@ -58,6 +58,7 @@ define({
 	"NoDevicesPublished": "There are no devices to display. You should <a href=\"#settings/plugins?filter=available\">install plugins</a> to create some.",
 	"NoDevicesSelectedSingle": "No device is selected. Choose one from the list below.",
 	"NoDevicesSelectedMultiple": "No devices are selected. Choose some from the list below.",
+	"NoDevicesWereSelected": "No device(s) were selected.",
 	"NoHubs": "No Hubs have been added.",
 	"NoLatLong": "<a href=\"#settings/general\">Click here</a> to set latitude/longitude.",
 	"None": "None",

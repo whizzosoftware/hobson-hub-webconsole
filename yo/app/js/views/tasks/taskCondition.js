@@ -44,22 +44,37 @@ define([
 				}
 				var date = moment(props.date);
 				var s = 'The time is ' + time + ' ';
-				if (props.recurrence && props.recurrence !== '') {
+				if (props.recurrence && props.recurrence !== 'never') {
 					s += this.recurrenceDefaults.getNameForValue(props.recurrence) + ' starting on ' + date.format('L');
 				} else {
 					s += 'on ' + date.format('L');
 				}
 				return s;
 			} else if (cclass.endsWith('turnOff')) {
-				return props.device.name + ' turns off';
+				return this.createOrDescription(props.devices) + ' turns off';
 			} else if (cclass.endsWith('turnOn')) {
-				return props.device.name + ' turns on';
+				return this.createOrDescription(props.devices) + ' turns on';
 			} else if (cclass.endsWith('tempAbove')) {
-				return props.device.name + ' rises above ' + props.tempF + "&deg;";
+				return this.createOrDescription(props.devices) + ' rises above ' + props.tempF + "&deg;";
 			} else if (cclass.endsWith('tempBelow')) {
-				return props.device.name + ' drops below ' + props.tempF + "&deg;";
+				return this.createOrDescription(props.devices) + ' drops below ' + props.tempF + "&deg;";
 			} else {
 				return 'Something else happens';
+			}
+		},
+
+		createOrDescription: function(array) {
+			if (array) {
+				var s = '';
+				for (var i=0; i < array.length; i++) {
+					s += array[i].name;
+					if (i < array.length - 1) {
+						s += ' or ';
+					}
+				}
+				return s;
+			} else {
+				return 'A device';
 			}
 		},
 

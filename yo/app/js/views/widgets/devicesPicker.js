@@ -61,7 +61,7 @@ define([
 						options.context.devicesView = new DevicesView({devices: model});
 						options.context.$el.find('#deviceList').html(options.context.devicesView.render().el);
 						options.context.subviews.push(options.context.devicesView);
-						this.setDeviceCount(0);
+						options.context.setDeviceCount(0);
 					} else {
 						options.context.$el.find('#deviceList').html(strings.NoDevicesAvailable);
 					}
