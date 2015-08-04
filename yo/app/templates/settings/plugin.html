@@ -41,5 +41,15 @@
 	 			</p>
 	 		</p>
 	 	</div>
+	<% } else if (plugin.updateLink) { %>
+	 	<div class="plugin-overlay">
+	 		<p style="margin-top: 2em;">
+		 		<p><%= strings.PluginUpdateAvailable %></p>
+	 			<p>
+	 				<a id="buttonClose" class="tiny radius button"><%= strings.Close %></a>
+	 				<a id="buttonUpdate" class="tiny radius button"><%= strings.Update %></a>
+	 			</p>
+	 		</p>
+	 	</div>
 	<% } %>
 </div>

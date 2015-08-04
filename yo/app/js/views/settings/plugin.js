@@ -17,7 +17,13 @@ define([
 
 		events: {
 			'click #buttonSettings': 'onClickSettings',
-			'click #buttonInstall': 'onClickInstall'
+			'click #buttonInstall': 'onClickInstall',
+			'click #buttonUpdate': 'onClickUpdate',
+			'click #buttonClose': 'onClickClose'
+		},
+
+		initialize: function() {
+			this.listenTo(this.model, 'change', this.render);
 		},
 
 		render: function() {
@@ -44,7 +50,18 @@ define([
 		onClickInstall: function(event) {
 			event.preventDefault();
 			this.$el.trigger('pluginInstallClick', this.model);
+		},
+
+		onClickUpdate: function(event) {
+			event.preventDefault();
+			this.$el.trigger('pluginUpdateClick', this.model);
+		},
+
+		onClickClose: function(event) {
+			event.preventDefault();
+			this.$el.find('.plugin-overlay').attr('hidden', true);
 		}
+
 	});
 
 });

@@ -4,6 +4,7 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
+	'models/session',
 	'models/itemList',
 	'models/plugin',
 	'models/propertyContainer',
@@ -14,7 +15,7 @@ define([
 	'views/settings/pluginSettings',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsPlugins.html'
-], function($, _, Backbone, toastr, ItemList, Plugin, Config, Repository, HubService, SettingsTab, PluginsView, PluginSettingsView, strings, template) {
+], function($, _, Backbone, toastr, session, ItemList, Plugin, Config, Repository, HubService, SettingsTab, PluginsView, PluginSettingsView, strings, template) {
 
 	return SettingsTab.extend({
 
@@ -25,14 +26,14 @@ define([
 		events: {
 			'pluginSettingsClick': 'onClickSettings',
 			'pluginInstallClick': 'onClickInstall',
+			'pluginUpdateClick': 'onClickUpdate',
 			'click #betaCheckbox': 'onClickBeta'
 		},
-
-		refreshInterval: null,
 
 		initialize: function(options) {
 			this.hub = options.hub;
 			this.query = options.query;
+			this.refereshInterval = null;
 		},
 
 		remove: function() {
@@ -83,11 +84,15 @@ define([
 			});
 			this.$el.find('#pluginsContainer').html(this.pluginsView.render().el);
 
-			// create the refresh timer
-			if (!this.refreshInterval && showLocal) {
-				this.refreshInterval = setInterval(function() {
-					this.refresh();
-				}.bind(this), 5000);
+			// if local plugins are being shown, create a refresh timer and check for any remote updates
+			if (showLocal) {
+				if (!this.refreshInterval) {
+					this.refreshInterval = setInterval(function() {
+						this.refresh();
+					}.bind(this), 5000);
+				}
+
+				this.checkForUpdates();
 			}
 		},
 
@@ -97,6 +102,38 @@ define([
 				context: this,
 				success: function(model, response, options) {
 					options.context.pluginsView.reRender(model.where({type: 'PLUGIN'}));
+				}
+			});
+		},
+
+		checkForUpdates: function() {
+			var hub = session.getSelectedHub();
+			var url = hub.get('remotePlugins')['@id'];
+			var plugins = new ItemList({model: Plugin, url: url + '?expand=item'});
+			plugins.fetch({
+				context: this,
+				success: function(model, response, options) {
+					// build a map of plugin ID to version
+					var updateMap = {};
+					for (var ix in model.models) {
+						var p = model.models[ix];
+						updateMap[p.get('pluginId')] = {
+							version: p.get('version'),
+							install: p.get('links').install
+						};
+					}
+
+					// flag any local plugins as having updates
+					for (var ix=0; ix < options.context.model.length; ix++) {
+						var p = options.context.model.at(ix);
+						var u = updateMap[p.get('pluginId')];
+						if (u) {
+							p.set('updateLink', u.install);
+						}
+					}
+				},
+				error: function(model, response, options) {
+					toastr.error(strings.PluginUpdateCheckError);
 				}
 			});
 		},
@@ -126,6 +163,16 @@ define([
 				});
 		},
 
+		onClickUpdate: function(event, plugin) {
+			HubService.installPlugin(this, plugin.get('updateLink'))
+				.success(function(data, status, response) {
+					toastr.info(strings.PluginInstallStarted);
+				})
+				.fail(function(response, status, error) {
+					toastr.error(strings.PluginInstallFailed);
+				});
+			},
+
 		onClickBeta: function(event) {
 			var checkbox = event.currentTarget;
 			var enabled = event.currentTarget.checked;
@@ -140,6 +187,7 @@ define([
 						this.refresh();
 					}).
 					fail(function(response) {
+						checkbox.disabled = false;
 						toastr.error(strings.BetaPluginSettingFailed);
 					}
 				);
