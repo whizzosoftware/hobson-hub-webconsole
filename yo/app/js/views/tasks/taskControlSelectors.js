@@ -32,6 +32,8 @@ define([
 		render: function() {
 			this.$el.empty();
 
+			this.$el.append('<h6 style="text-align: left;">' + strings.TaskConditionActionPrompt + '</h6>');
+
 			for (var i=0; i < this.model.length; i++) {
 				var v = new TaskControlSelectorView({model: this.model.at(i)});
 				this.$el.append(v.render().el);

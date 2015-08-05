@@ -11,6 +11,7 @@ define({
 	"BetaPluginSettingUpdated": "Beta plugin setting updated.",
 	"BetaPluginSettingFailed": "Failed to update beta plugin setting.",
 	"Close": "Close",
+	"TaskConditionActionPrompt": "Based on your available plugins/devices, the following are available:",
 	"Dashboard": "Dashboard",
 	"Debug": "Debug",
 	"Devices": "Devices",
