@@ -6,11 +6,12 @@ define([
 	'toastr',
 	'models/itemList',
 	'models/taskConditionClass',
+	'services/propertyContainerValidator',
 	'views/tasks/taskConditions',
 	'views/tasks/taskControlSelectors',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskConditionsEditor.html'
-], function($, _, Backbone, toastr, ItemList, TaskConditionClass, TaskConditionsView, TaskControlSelectorsView, strings, taskIfTemplate) {
+], function($, _, Backbone, toastr, ItemList, TaskConditionClass, PropertyContainerValidator, TaskConditionsView, TaskControlSelectorsView, strings, taskIfTemplate) {
 
 	return Backbone.View.extend({
 
@@ -99,7 +100,7 @@ define([
 		},
 
 		onClickAdd: function(e, a) {
-			var msg = this.validate(a);
+			var msg = PropertyContainerValidator.validate(a);
 			if (!msg) {
 				var c = {
 					cclass: {"@id": a.id},
@@ -115,27 +116,6 @@ define([
 			} else {
 				toastr.error(msg);
 			}
-		},
-
-		validate: function(a) {
-			for (var i=0; i < a.supportedProperties.length; i++) {
-				var sp = a.supportedProperties[i];
-				var varName = sp['@id'];
-				if (!_.has(a.properties, varName)) {
-					return sp.name + ' is a required field.';
-				} else {
-					var value = a.properties[varName];
-					switch (sp.type) {
-						case 'STRING':
-							return _.isString(value) ? null : sp.name + ' must be a string.';
-						case 'NUMBER':
-							return (value === '' || isNaN(value)) ? sp.name + ' must be a number.' : null;
-						default:
-							break;
-					}
-				}
-			}
-			return null;
 		}
 
 	});

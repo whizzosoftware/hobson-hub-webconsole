@@ -3,13 +3,15 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'toastr',
 	'models/itemList',
 	'models/taskActionClass',
+	'services/propertyContainerValidator',
 	'views/tasks/taskActions',
 	'views/tasks/taskControlSelectors',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskActionsEditor.html'
-], function($, _, Backbone, ItemList, TaskActionClass, TaskActionsView, TaskControlSelectorsView, strings, template) {
+], function($, _, Backbone, toastr, ItemList, TaskActionClass, PropertyContainerValidator, TaskActionsView, TaskControlSelectorsView, strings, template) {
 
 	return Backbone.View.extend({
 
@@ -77,7 +79,6 @@ define([
 				new ItemList({model: TaskActionClass, url: '/api/v1/users/local/hubs/local/tasks/actionClasses?expand=item&constraints=true', sort: 'name'}).fetch({
 					context: this,
 					success: function(model, response, options) {
-						console.log('got action list: ', model);
 						$(e.target).addClass('active');
 						var v = new TaskControlSelectorsView({
 							model: model
@@ -86,7 +87,7 @@ define([
 						options.context.subviews.push(v);
 					},
 					error: function() {
-						console.debug('nope!');
+						toastr.error('Unable to retrieve action list.');
 					}
 				});
 			} else {
@@ -95,12 +96,17 @@ define([
 		},
 
 		onClickAdd: function(e, a) {
-			this.task.addAction({
-				cclass: {'@id': a.id},
-				values: a.properties
-			});
-			this.renderActions();
-			this.closePlusPanel();
+			var msg = PropertyContainerValidator.validate(a);
+			if (!msg) {
+				this.task.addAction({
+					cclass: {"@id": a.id},
+					values: a.properties
+				})
+				this.renderActions();
+				this.closePlusPanel();
+			} else {
+				toastr.error(msg);
+			}
 		}
 
 	});
