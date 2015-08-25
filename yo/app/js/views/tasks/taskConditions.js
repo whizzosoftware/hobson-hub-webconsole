@@ -27,13 +27,24 @@ define([
 		},
 
 		render: function() {
-			if (this.task.hasTriggerCondition()) {
-				var conditionView = new TaskConditionView({
+			if (this.task.triggerCondition) {
+				// add view for trigger condition
+				var cv = new TaskConditionView({
 					devices: this.devices,
-					condition: this.task.get('conditionSet').trigger
+					condition: this.task.triggerCondition
 				});
-				this.$el.append(conditionView.render().el);
-				this.subviews.push(conditionView);
+				this.$el.append(cv.render().el);
+				this.subviews.push(cv);
+
+				// add view for additional conditions
+				for (var i=0; i < this.task.conditions.length; i++) {
+					cv = new TaskConditionView({
+						devices: this.devices,
+						condition: this.task.conditions[i]
+					});
+					this.$el.append(cv.render().el);
+					this.subviews.push(cv);
+				}
 			} else {
 				this.$el.html('<p class="notice">' + strings.TaskIfHelpText + '</p>');
 			}

@@ -4,9 +4,9 @@
 			<fieldset>
 				<legend><%= strings.LogLevel %></legend>
 				<div class="large-10 medium-10 columns">
-					<input id="INFO" type="radio" name="logLevel" <%= logLevel === 'INFO' ? 'checked' : '' %>><label for="INFO"><%= strings.Info %></label>
 					<input id="ERROR" type="radio" name="logLevel" <%= logLevel === 'ERROR' ? 'checked' : '' %>><label for="ERROR"><%= strings.Error %></label>
 					<input id="WARN" type="radio" name="logLevel" <%= logLevel === 'WARN' ? 'checked' : '' %>><label for="WARN"><%= strings.Warn %></label>
+					<input id="INFO" type="radio" name="logLevel" <%= logLevel === 'INFO' ? 'checked' : '' %>><label for="INFO"><%= strings.Info %></label>
 					<input id="DEBUG" type="radio" name="logLevel" <%= logLevel === 'DEBUG' ? 'checked' : '' %>><label for="DEBUG"><%= strings.Debug %></label>
 					<input id="TRACE" type="radio" name="logLevel" <%= logLevel === 'TRACE' ? 'checked' : '' %>><label for="TRACE"><%= strings.Trace %></label>
 				</div>

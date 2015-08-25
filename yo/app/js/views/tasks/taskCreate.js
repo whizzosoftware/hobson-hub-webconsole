@@ -22,7 +22,12 @@ define([
 		},
 
 		initialize: function() {
-			this.task = new Task({url: '/api/v1/users/local/hubs/local/tasks'});
+			this.task = {
+				conditions: [],
+				actionSet: {
+					actions: []
+				}
+			};
 			this.subviews = [];
 		},
 
@@ -37,7 +42,7 @@ define([
 		render: function() {
 			this.$el.append(this.template({
 				strings: strings,
-				task: this.task.toJSON()
+				task: this.task
 			}));
 
 			var devices = new ItemList({
@@ -75,20 +80,48 @@ define([
 		onClickCreate: function(e, model) {
 			this.hideErrors();
 
+			var t = new Task({url: '/api/v1/users/local/hubs/local/tasks'});
+
 			// set the task name
 			var name = this.$el.find('#taskName').val();
 			if (name && name.length > 0) {
-				this.task.set('name', name);
+				t.set('name', name);
 			}
 
 			// set the task description
 			var desc = this.$el.find('#taskDescription').val();
 			if (desc && desc.length > 0) {
-				this.task.set('description', desc);
+				t.set('description', desc);
 			}
 
+			// set the task trigger condition
+			if (this.task.triggerCondition) {
+				t.addCondition({
+					cclass: { '@id': this.task.triggerCondition.id },
+					values: this.task.triggerCondition.properties
+				});
+			}
+
+			// set any additional conditions
+			for (var i=0; i < this.task.conditions.length; i++) {
+				t.addCondition({
+					cclass: { '@id': this.task.conditions[i].id },
+					values: this.task.conditions[i].properties
+				});
+			}
+
+			// set actions
+			for (var i=0; i < this.task.actionSet.actions.length; i++) {
+				t.addAction({
+					cclass: { '@id': this.task.actionSet.actions[i].id },
+					values: this.task.actionSet.actions[i].properties
+				});
+			}
+
+			console.debug('creating task: ', this.task, t);
+
 			// send the create task request
-			this.task.save(null, {
+			t.save(null, {
 				context: this,
 				error: function(model, response, options) {
 					console.debug(model, response, options);

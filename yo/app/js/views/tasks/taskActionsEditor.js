@@ -98,10 +98,7 @@ define([
 		onClickAdd: function(e, a) {
 			var msg = PropertyContainerValidator.validate(a);
 			if (!msg) {
-				this.task.addAction({
-					cclass: {"@id": a.id},
-					values: a.properties
-				})
+				this.task.actionSet.actions.push(a);
 				this.renderActions();
 				this.closePlusPanel();
 			} else {

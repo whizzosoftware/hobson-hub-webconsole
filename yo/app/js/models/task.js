@@ -12,7 +12,7 @@ define([
 				this.url = options['@id'];
 			}
 			this.set('actionSet', {actions: []});
-			this.set('conditionSet', {conditions: []});
+			this.set('conditions', []);
 		},
 
 		idAttribute : '@id',
@@ -21,20 +21,12 @@ define([
 			return this.url;
 		},
 
-		hasTriggerCondition: function() {
-			return this.get('conditionSet').trigger;
-		},
-
-		setTriggerCondition: function(c) {
-			this.get('conditionSet').trigger = c;
-		},
-
-		hasConditions: function() {
-			return (this.get('conditionSet').conditions > 0);
-		},
-
 		addCondition: function(c) {
-			this.get('conditionSet').conditions.push(c);
+			this.get('conditions').push(c);
+		},
+
+		getConditions: function() {
+			return this.get('conditions');
 		},
 
 		hasActions: function() {

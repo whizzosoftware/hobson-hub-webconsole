@@ -32,8 +32,15 @@ define([
 				scrollInput: false,
 				closeOnDateSelect: true,
 				onChangeDateTime: function(dp, $input) {
+					var now = moment();
 					var time = moment($input.val(), 'MM/DD/YYYY');
-					el.val(time.format('YYYY-MM-DD'));
+
+					// set the hour/minute/second in case GMT offset pushes us into tomorrow
+					time.hour(now.hour());
+					time.minute(now.minute());
+					time.seconds(now.seconds());
+
+					el.val(time.utc().format('YYYY-MM-DD'));
 				}
 			});
 

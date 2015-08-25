@@ -7,7 +7,6 @@ define([
 	return {
 
 		validate: function(a) {
-			console.debug('validate!');
 			for (var i=0; i < a.supportedProperties.length; i++) {
 				var sp = a.supportedProperties[i];
 				var varName = sp['@id'];

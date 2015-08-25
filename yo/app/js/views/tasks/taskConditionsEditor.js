@@ -44,7 +44,7 @@ define([
 		render: function() {
 			this.$el.append(this.template({
 				strings: strings,
-				task: this.task.toJSON()
+				task: this.task
 			}));
 
 			this.renderConditions();
@@ -85,7 +85,7 @@ define([
 					success: function(model, response, options) {
 						// render task condition class selectors
 						var v = new TaskControlSelectorsView({
-							model: model
+							model: options.context.task.triggerCondition ? new ItemList(model.where({type: 'evaluator'})) : new ItemList(model.where({type: 'trigger'}))
 						});
 						options.context.$el.find('#taskConditionSelectors').html(v.render().el);
 						options.context.subviews.push(v);
@@ -100,16 +100,13 @@ define([
 		},
 
 		onClickAdd: function(e, a) {
+			console.debug(a);
 			var msg = PropertyContainerValidator.validate(a);
 			if (!msg) {
-				var c = {
-					cclass: {"@id": a.id},
-					values: a.properties
-				}
-				if (!this.task.hasTriggerCondition()) {
-					this.task.setTriggerCondition(c);
+				if (a.type == 'trigger') {
+					this.task.triggerCondition = a;
 				} else {
-					this.task.addCondition(c);
+					this.task.conditions.push(a);
 				}
 				this.renderConditions();
 				this.closePlusPanel();
