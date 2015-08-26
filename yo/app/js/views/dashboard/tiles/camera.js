@@ -15,7 +15,7 @@ define([
 
 		template: _.template(template),
 
-		className: "tile",
+		className: "tile shadow-1",
 
 		events: {
 			'click #tileIcon': 'onIconClick',

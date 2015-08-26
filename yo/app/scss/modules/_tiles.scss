@@ -6,7 +6,6 @@
 		font-size: 0.75em;
 		font-weight: 100;
 		margin-bottom: 10px;
-		border: 3px solid $color-dash-tile-border;
 		border-radius: $tile-radius;
 		overflow: auto;
 		position: relative;
@@ -175,45 +174,67 @@
 	margin-bottom: 25px;
 	li {
 		.task-tile {
-			background-color: #f9f9f9;
+			background: url(../img/task-tile-bg.png) no-repeat;
+			background-size: 100%;
+  			color: #fff;
 			font-family: $font-1;
 			position: relative;
 			min-height: 175px;
 			max-height: 175px;
 			overflow: hidden;
-			border: 5px solid $color-panel-border;
 			border-radius: 5px;
 			vertical-align: middle;
 			padding: 0;
 			cursor: pointer;
 			.title {
-				background: #ffffff;
 				height: 2em;
 				min-height: 2em;
 				text-align: left;
-				border-bottom: 2px solid $color-panel-border;
-				padding: 0px 10px;
+				padding: 10px 20px;
 				font-size: 1.2em;
-				font-weight: 300;
+				font-weight: bold;
 				line-height: 2em;
 			}
 			.description {
 				font-size: 0.9em;
+				font-weight: 300;
 				line-height: 1.2em;
 				text-align: justify;
-				margin: 10px 10px;
+				margin: 15px 20px;
 			}
 			.footer {
-				background-color: $color-panel-border;
-				font-size: .75em;
+				background: $color-dash-tile-bg;
+				min-height: 50px;
+				max-height: 50px;
+				line-height: 50px;
+				vertical-align: middle;
 				padding-left: 10px;
 				padding-right: 10px;
-				padding-top: 5px;
 				position: absolute;
 				width: 100%;
 				right: 0;
 				bottom: 0;
+				ul {
+					margin-left: 10px;
+					li {
+						float: right;
+						line-height: 50px;
+						display: inline;
+						margin-right: 25px;
+						i {
+							color: white;
+							font-weight: normal; 
+							border: none;
+						}
+						i.active {
+							color: $color-dash-tile-on;
+						}
+					}
+					li:first-child {
+						margin-right: 0px;
+					}
+				}
 			}
 		}
 	}
-}
+}	

@@ -1,23 +1,19 @@
-<div class="task-tile">
+<div class="task-tile shadow-1">
 	<div class="title">
-		<span class="left">
-			<%= task.name %>
-		</span>
-		<span class="right">
-			<i id="deleteButton" class="fa fa-trash-o icon-button"></i>
-		</span>
+		<span><%= task.name %></span>
 	</div>
 	<div class="description">
 		<%= task.description %>
 	</div>
 	<div class="footer">
-		<% if (task.properties && task.properties.hasOwnProperty('scheduled')) { %>
-			<i class="fa fa-clock-o"></i>
-			<% if (task.properties.scheduled) { %>
-				<%= strings.NextRun + ' ' + new moment(task.properties.nextRunTime).fromNow() %>
-			<% } else { %>
-				<%= strings.NotScheduled %>
+		<ul>
+			<li><i class="fa fa-lg fa-trash-o"></i></li>
+			<li><i class="fa fa-lg fa-edit"></i></li>
+			<% if (task.properties && task.properties.hasOwnProperty('scheduled')) { %>
+				<li>
+					<i class="fa fa-lg fa-clock-o has-tip <%= task.properties.scheduled ? 'active' : '' %>" data-tooltip aria-haspopup="true" title="<% if (task.properties.scheduled) { %><%= strings.NextRun + ' ' + new moment(task.properties.nextRunTime).fromNow() %><% } else { %><%= strings.NotScheduled %><% } %>"></i>
+				</li>
 			<% } %>
-		<% } %>
-	</div>
+		</ul>
+ 	</div>
 </div>

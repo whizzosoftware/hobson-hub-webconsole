@@ -5,15 +5,17 @@
 @import "normalize";
 @import "foundation";
 @import "toastr";
+@import "material-shadows";
 
 /* Base */
 @import "base/base";
 
 /* Modules */
 @import "modules/button";
+@import "modules/form";
 @import "modules/nav";
-@import "modules/tiles";
+@import "modules/shadow";
 @import "modules/sidr";
 @import "modules/tabs";
-@import "modules/form";
 @import "modules/tasks";
+@import "modules/tiles";

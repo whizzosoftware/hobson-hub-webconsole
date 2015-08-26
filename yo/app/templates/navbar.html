@@ -13,12 +13,11 @@
 		</div>
 	<% } %>
 </div>
-<div class="subnav">
+<div class="subnav shadow-2">
 	<ul class="subnav-list">
 		<% if (hub) { %>
 			<li class="subnav-item"><a id="dashboard" class="<%= fragment.indexOf('dashboard') > -1 ? 'active' : '' %>" href="#dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp;&nbsp;<%= strings.Dashboard %></a></li>
 			<li class="subnav-item"><a id="tasks" class="<%= fragment.indexOf('tasks') > -1 ? 'active' : '' %>" href="#tasks"><i class="fa fa-wrench fa-lg"></i>&nbsp;&nbsp;<%= strings.Tasks %></a></li>
-			<li class="subnav-item"><a id="insight" class="<%= fragment.indexOf('insight') > -1 ? 'active' : '' %>" href="#insight"><i class="fa fa-leaf fa-lg"></i>&nbsp;&nbsp;<%= strings.Insight %></a></li>
 			<li class="subnav-item"><a id="settings" class="<%= fragment.indexOf('settings') > -1 ? 'active' : '' %>" href="#settings"><i class="fa fa-cog fa-lg"></i>&nbsp;&nbsp;<%= strings.Settings %></a></li>
 		<% } %>
 		<% if (user.remoteInfo) { %>
