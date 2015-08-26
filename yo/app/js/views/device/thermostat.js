@@ -18,6 +18,8 @@ define([
 		},
 
 		render: function(el) {
+			console.debug(this.variables);
+
 			this.$el.html(this.template({
 				strings: strings,
 				device: this.model.toJSON(),
@@ -86,19 +88,23 @@ define([
 		},
 
 		sendTempAdjustCommand: function(offset) {
-			switch (this.variables['tstatMode'].value) {
-				case 'COOL':
-					this.setVariableValues({targetCoolTempF: this.variables['targetCoolTempF'].value + offset});
-					break;
-				case 'HEAT':
-					this.setVariableValues({targetHeatTempF: this.variables['targetHeatTempF'].value + offset});
-					break;
-				case 'AUTO':
-					this.setVariableValues({
-						targetCoolTempF: this.variables['targetCoolTempF'].value + offset,
-						targetHeatTempF: this.variables['targetHeatTempF'].value + offset
-					});
-					break;
+			if (this.variables['targetCoolTempF']) {
+				switch (this.variables['tstatMode'].value) {
+					case 'COOL':
+						this.setVariableValues({targetCoolTempF: this.variables['targetCoolTempF'].value + offset});
+						break;
+					case 'HEAT':
+						this.setVariableValues({targetHeatTempF: this.variables['targetHeatTempF'].value + offset});
+						break;
+					case 'AUTO':
+						this.setVariableValues({
+							targetCoolTempF: this.variables['targetCoolTempF'].value + offset,
+							targetHeatTempF: this.variables['targetHeatTempF'].value + offset
+						});
+						break;
+				}
+			} else if (this.variables['targetTempF']) {
+				this.setVariableValues({targetTempF: this.variables['targetTempF'].value + offset});
 			}
 		}
 	});

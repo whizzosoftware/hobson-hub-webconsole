@@ -12,10 +12,17 @@
 	<div class="medium-6 columns">
 		<center>
 		<ul class="small-block-grid-2">
-			<li style="font-size: 1.2em;">Heat to: <b><%= variables.targetHeatTempF.value %>&deg;</b></li>
-			<li><a href="#" id="up" class="radius button"><i class="fa fa-chevron-up"></i></a></li>
-			<li style="font-size: 1.2em;">Cool to: <b><%= variables.targetCoolTempF.value %>&deg;</b></li>
-			<li><a href="#" id="down" class="radius button"><i class="fa fa-chevron-down"></i></a></li>
+			<% if (variables.targetHeatTempF && variables.targetCoolTempF) { %>
+				<li style="font-size: 1.2em;">Heat to: <b><%= variables.targetHeatTempF.value %>&deg;</b></li>
+				<li><a href="#" id="up" class="radius button"><i class="fa fa-chevron-up"></i></a></li>
+				<li style="font-size: 1.2em;">Cool to: <b><%= variables.targetCoolTempF.value %>&deg;</b></li>
+				<li><a href="#" id="down" class="radius button"><i class="fa fa-chevron-down"></i></a></li>
+			<% } else if (variables.targetTempF) { %>
+				<li style="font-size: 1.2em;">Set to: <b><%= variables.targetTempF.value %>&deg;</b></li>
+				<li><a href="#" id="up" class="radius button"><i class="fa fa-chevron-up"></i></a></li>
+				<li></li>
+				<li><a href="#" id="down" class="radius button"><i class="fa fa-chevron-down"></i></a></li>
+			<% } %>
 		</ul>
 		</center>
 	</div>
