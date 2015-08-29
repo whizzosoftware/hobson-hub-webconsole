@@ -10,9 +10,10 @@ define([
 	'views/dashboard/tiles/sensor',
 	'views/dashboard/tiles/switch',
 	'views/dashboard/tiles/thermostat',
+	'views/dashboard/tiles/weatherStation',
 	'views/dashboard/tiles/unknown',
 	'i18n!nls/strings'
-], function($, _, Backbone, bridget, Masonry, CameraTileView, LightbulbTileView, SensorTileView, SwitchTileView, ThermostatTileView, UnknownTileView, strings) {
+], function($, _, Backbone, bridget, Masonry, CameraTileView, LightbulbTileView, SensorTileView, SwitchTileView, ThermostatTileView, WeatherStationTileView, UnknownTileView, strings) {
 
 	return Backbone.View.extend({
 		className: 'dash-tiles',
@@ -87,6 +88,8 @@ define([
 					tileView = new ThermostatTileView({model: device});
 				} else if (device.get("type") === 'SWITCH') {
 					tileView = new SwitchTileView({model: device});
+				} else if (device.get("type") === 'WEATHER_STATION') {
+					tileView = new WeatherStationTileView({model: device});
 				} else {
 					tileView = new UnknownTileView({model: device});
 				}

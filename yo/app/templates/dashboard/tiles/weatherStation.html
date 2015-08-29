@@ -1,0 +1,16 @@
+<div id="tileIcon" class="tile-icon">
+	<% if (device.preferredVariable && device.preferredVariable.name === 'tempF') { %>
+		<div class="temp"><%= device.preferredVariable.value %>&deg;</div>
+	<% } else { %>
+		<img src="img/icon-<%= device.type.toLowerCase() %>.png" />
+	<% } %>
+	<div id="work-icon" style="display: none;">
+		<i class="fa fa-spinner fa-spin"></i>
+	</div>
+</div>
+<div id="tileButton" class="tile-button">
+	<span><%= device.name %></span>
+	<span class="tile-info-icon">
+		<i class="fa fa-info-circle"></i>
+	</span>
+</div>
