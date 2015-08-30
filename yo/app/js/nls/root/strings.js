@@ -8,6 +8,8 @@ define({
 	"AddressLookupSuccess": "Your address was found successfully.",
 	"AddressLookupFail": "This address could not be found. You can still use it but you'll need to manually enter latitude and longitude if you'd like Hobson to calculate sunrise/sunset times.",
 	"AddTask": "Create New Task",
+  "baromInHg": "Barometric Pressure",
+  "baromInHgUnits": "inches of Hg",
 	"BetaPluginSettingUpdated": "Beta plugin setting updated.",
 	"BetaPluginSettingFailed": "Failed to update beta plugin setting.",
 	"Close": "Close",
