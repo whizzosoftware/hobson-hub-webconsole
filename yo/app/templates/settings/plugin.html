@@ -1,4 +1,4 @@
-<div class="plugin-tile">
+<div class="plugin-tile shadow-1">
 	<div class="plugin-content">
 		<div class="plugin-icon">
 			<% if (plugin.image) { %>
@@ -9,7 +9,7 @@
 		 	<h1><%= plugin.name %></h1>
 		 	<p><%= plugin.description %></p>
 		 	<% if (plugin.version) { %>
-			 	<small>Version <%= plugin.version %></small>
+			 	<div class="plugin-version">Version <%= plugin.version %></div>
 			<% } %>
  		</div>
  		<% if (plugin.configurable) { %>

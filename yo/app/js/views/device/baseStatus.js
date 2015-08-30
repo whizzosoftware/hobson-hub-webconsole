@@ -24,6 +24,7 @@ define([
 			this.variables = {};
 
 			// save initial variable values
+			console.debug('base model', this.model);
 			var variables = this.model.get('variables').itemListElement;
 			for (var ix = 0; ix < variables.length; ix++) {
 				var variable = variables[ix].item;

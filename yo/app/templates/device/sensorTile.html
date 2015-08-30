@@ -1,0 +1,5 @@
+<div class="sensor-tile shadow-1">
+	<div class="title"><%= strings.hasOwnProperty(model.name) ? strings[model.name] : model.name %></div>
+	<div class="value"><%= model.value %></div>
+	<div class="footer"><%= strings.hasOwnProperty(model.name + 'Units') ? strings[model.name + 'Units'] : '' %></div>
+</div>

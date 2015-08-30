@@ -9,10 +9,9 @@ define([
 	'views/device/camera',
 	'views/device/thermostat',
 	'views/device/sensor',
-	'views/device/weatherStation',
 	'i18n!nls/strings',
 	'text!templates/device/deviceState.html'
-], function($, _, Backbone, DeviceTab, LightbulbView, SwitchView, CameraView, ThermostatView, SensorView, WeatherStationView, strings, template) {
+], function($, _, Backbone, DeviceTab, LightbulbView, SwitchView, CameraView, ThermostatView, SensorView, strings, template) {
 
 	return DeviceTab.extend({
 
@@ -49,10 +48,8 @@ define([
 					this.contentView = new ThermostatView({model: this.model});
 					break;
 				case 'SENSOR':
-					this.contentView = new SensorView({model: this.model});
-					break;
 				case 'WEATHER_STATION':
-					this.contentView = new WeatherStationView({model: this.model});
+					this.contentView = new SensorView({model: this.model});
 					break;
 				default:
 					break;

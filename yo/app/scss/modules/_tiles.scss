@@ -80,8 +80,7 @@
 			min-height: 250px;
 			max-height: 250px;
 			overflow: hidden;
-			border: 7px solid $color-panel-border;
-			border-radius: 5px;
+			border-radius: $tile-radius;
 			vertical-align: middle;
 			padding: 0;
 			cursor: pointer;
@@ -114,6 +113,12 @@
 						color: $color-text-light;
 						font-size: .9em;
 						line-height: 1.2em;
+					}
+					.plugin-version {
+						font-size: .6em;
+						position: absolute;
+						right: 10px;
+						bottom: 10px;
 					}
 				}
 				a.icon-button {
@@ -182,7 +187,7 @@
 			min-height: 175px;
 			max-height: 175px;
 			overflow: hidden;
-			border-radius: 5px;
+			border-radius: $tile-radius;
 			vertical-align: middle;
 			padding: 0;
 			cursor: pointer;
@@ -237,4 +242,42 @@
 			}
 		}
 	}
-}	
+}
+
+.sensor-tiles {
+	.sensor-tile {
+		background: $color-dash-tile-bg;
+		color: white;
+		border-radius: $tile-radius;
+		.title {
+			border-top-left-radius: $tile-radius;
+			border-top-right-radius: $tile-radius;
+			background-color: rgba(0, 0, 0, 0.2);
+			text-align: center;
+			min-height: 2em;
+			max-height: 2em;
+			line-height: 2em;
+			vertical-align: middle;
+		}
+		.value {
+			text-align: center;
+			font-size: 2.5em;
+			min-height: 2.5em;
+			max-height: 2.5em;
+			line-height: 2.5em;
+			vertical-align: middle;
+			font-weight: bold;
+		}
+		.footer {
+			background-color: rgba(0, 0, 0, 0.2);
+			border-bottom-left-radius: $tile-radius;
+			border-bottom-right-radius: $tile-radius;
+			font-size: .8em;
+			text-align: center;
+			min-height: 2em;
+			max-height: 2em;
+			line-height: 2em;
+			vertical-align: middle;
+		}
+	}
+}
