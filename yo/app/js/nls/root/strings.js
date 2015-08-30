@@ -82,6 +82,7 @@ define({
 	"NoStatisticsCollected": "Device statistics are enabled but none have been received yet.",
 	"NotScheduled": "Not scheduled today",
 	"NoTasksCreated": "No tasks have been created.",
+	"on": "On/Off",
 	"Other": "Other",
 	"outRh": "Outdoor Humidity",
 	"outRhUnits": "percent",
