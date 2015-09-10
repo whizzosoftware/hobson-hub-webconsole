@@ -1,7 +1,70 @@
-<%
-	for (var v in variables) {
-%>
-	<%= strings[v] ? strings[v] : v %> = <%= variables[v].value %><br/>
-<%
-	}
-%>
+<ul class="sensor-tiles small-block-grid-1 medium-block-grid-2 large-block-grid-3">
+	<% if (variables.outTempF || variables.inTempF) { %>
+		<li>
+			<div class="sensor-tile shadow-1">
+				<div class="title">
+					Temperature
+				</div>
+				<div class="value" style="padding: 10px;">
+					<div class="row">
+						<div class="small-6 columns text-right" style="background-image: url(img/wstation-outdoors.png); background-repeat: no-repeat; background-position: center; height: 80px;">
+							<div style="font-size: 35px; font-weight: bold;">
+								<%= variables.outTempF ? variables.outTempF.value + '&deg;' : '-' %>
+							</div>
+						</div>
+						<div class="small-6 columns text-center" style="background-image: url(img/wstation-house.png); background-repeat: no-repeat; background-position: center; height: 80px;">
+		 					<div style="font-size: 22px; font-weight: bold;">
+								<%= variables.inTempF ? variables.inTempF.value + '&deg;' : '-' %>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>
+	<% } %>
+	<% if (variables.outRh || variables.inRh) { %>
+		<li>
+			<div class="sensor-tile shadow-1">
+				<div class="title">
+					Humidity
+				</div>
+				<div class="value" style="padding: 10px;">
+					<div class="row">
+						<div class="small-6 columns text-right" style="background-image: url(img/wstation-outdoors.png); background-repeat: no-repeat; background-position: center; height: 80px;">
+							<div style="font-size: 35px; font-weight: bold;">
+								<%= variables.outRh ? variables.outRh.value + '<sup style="font-size: .5em;">%</sup>' : '-' %>
+							</div>
+						</div>
+						<div class="small-6 columns text-center" style="background-image: url(img/wstation-house.png); background-repeat: no-repeat; background-position: center; height: 80px;">
+							<div style="font-size: 22px; font-weight: bold;">
+								<%= variables.inRh ? variables.inRh.value + '<sup style="font-size: .5em;">%</sup>' : '-' %>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>
+	<% } %>
+	<% if (variables.windSpdMph || windDir) { %>
+		<li>
+			<div class="sensor-tile shadow-1">
+				<div class="title">
+					Wind
+				</div>
+				<div class="value" style="padding: 10px;">
+					<div class="row">
+						<% if (windDir) { %>
+							<div class="small-6 columns text-center" style="background-image: url(img/wstation-compass-<%= windDir %>.png); background-repeat: no-repeat; background-position: center; height: 80px;">
+							</div>
+						<% } %>
+						<div class="small-6 columns text-center" style="background-image: url(img/wstation-wspd.png); background-repeat: no-repeat; background-position: center; height: 80px;">
+							<div style="font-size: 35px; font-weight: bold;">
+								<%= variables.windSpdMph ? variables.windSpdMph.value + '<span style="font-size: .5em;">mph</span>' : '-' %>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>
+	<% } %>
+</ul>
