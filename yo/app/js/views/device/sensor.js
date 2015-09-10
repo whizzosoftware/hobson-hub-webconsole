@@ -7,17 +7,14 @@ define([
 	'models/variable',
 	'views/device/baseStatus',
 	'views/device/sensorTile',
-	'i18n!nls/strings',
-	'text!templates/device/deviceState.html'
-], function($, _, Backbone, toastr, Variable, BaseStatusView, SensorTileView, strings, template) {
+	'i18n!nls/strings'
+], function($, _, Backbone, toastr, Variable, BaseStatusView, SensorTileView, strings) {
 
 	return BaseStatusView.extend({
 
 		tagName: 'ul',
 
 		className: 'sensor-tiles small-block-grid-2 medium-block-grid-3 large-block-grid-4',
-
-		template: _.template(template),
 
 		events: {
 			'click #switchButton': 'onClick'

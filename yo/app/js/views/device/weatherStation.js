@@ -7,7 +7,7 @@ define([
 	'models/variable',
 	'views/device/baseStatus',
 	'i18n!nls/strings',
-	'text!templates/device/sensor.html'
+	'text!templates/device/weatherStation.html'
 ], function($, _, Backbone, toastr, Variable, BaseStatusView, strings, template) {
 
 	return BaseStatusView.extend({
@@ -19,9 +19,20 @@ define([
 		},
 
 		render: function(el) {
+			var windDir = this.variables.windDirDeg.value;
+
+			if (windDir) {
+				windDir = Math.ceil(windDir/45.0) * 45.0;
+			}
+
+			this.variables.outTempF = null;
+			this.variables.outRh = null;
+			windDir = null;
+
 			this.$el.html(this.template({
 				strings: strings,
-				variables: this.variables
+				variables: this.variables,
+				windDir: windDir
 			}));
 
 			return this;
