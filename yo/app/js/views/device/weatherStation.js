@@ -25,10 +25,6 @@ define([
 				windDir = Math.ceil(windDir/45.0) * 45.0;
 			}
 
-			this.variables.outTempF = null;
-			this.variables.outRh = null;
-			windDir = null;
-
 			this.$el.html(this.template({
 				strings: strings,
 				variables: this.variables,

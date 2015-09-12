@@ -8,9 +8,7 @@ body {
 h1 {
 	font-size: 2.2em;
 	font-weight: 100;
-	margin-bottom: 35px;
-	padding-bottom: 15px;
-	border-bottom: 1px solid $color-panel-border;
+	margin-bottom: 25px;
 }
 
 h2 {
@@ -52,6 +50,10 @@ label {
 		line-height: 1.1em;
 		margin-top: -.9em;
 	}
+}
+
+.title {
+  color: $color-text-light;
 }
 
 #content-container {

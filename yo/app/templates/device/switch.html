@@ -1,6 +1,25 @@
 <div class="row">
-	<div class="large-12-columns" style="text-align: center; margin: 30px 0px;">
-		<i id="switchButton" style="font-size: 10em; cursor: <%= pending ? 'none' : 'pointer' %>; color: <%= pending ? 'grey' : variable.value ? 'green' : 'red' %>; display: <%= pending ? 'none' : 'block' %>;" class="fa fa-power-off fa-4x"></i>
-		<i class="fa fa-spinner fa-spin fa-4x" style="font-size: 10em; display: <%= pending ? 'block' : 'none' %>;"></i>
+	<div class="large-12-columns text-center" style="margin: 30px 0px;">
+    <center>
+      <div class="switchPanel radius shadow-2">
+        <% if (variables.level) { %>
+          <div class="levelSlider">
+            <input id="levelSlider" type="range" step="1" min="0" max="100" value="<%= variables.level.value %>" />
+          </div>
+        <% } %>
+        <div class="onOffSwitch">
+          <label class="switchLabel" id="top-label">On</label>
+          <label class="switchLabel" id="bottom-label">Off</label>
+          <input id="switchToggle" class="switchToggle switchToggleRound" type="checkbox" <%= variables.on.value ? '' : 'checked' %>>
+          <label for="switchToggle"></label>
+        </div>
+        <% if (variables.color) { %>
+          <div class="colorSlider">
+            <input id="colorSlider" type="range" step="1" min="0" max="256" value="<%= colorSliderVal %>"/>
+          </div>
+        <% } %>
+        <i id="spinner" class="fa fa-spinner fa-spin fa-2x" style="opacity: 0;"></i>
+      </div>
+    </center>
 	</div>
 </div>

@@ -1,9 +1,9 @@
 .nav {
-	width: 100%; 
-	text-align: right; 
-	height: $nav-height; 
-	line-height: $nav-height; 
-	background: $color-panel-bg; 
+	width: 100%;
+	text-align: right;
+	height: $nav-height;
+	line-height: $nav-height;
+	background: $color-panel-bg;
 	vertical-align: middle;
 	img {
 		margin-top: -5px;
@@ -61,7 +61,7 @@
 	padding-left: $margin-side;
 	background-color: $color-subnav-bg;
 	vertical-align: middle;
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 	.subnav-list {
 		margin: 0;
 		padding: 0;

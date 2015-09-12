@@ -5,11 +5,12 @@ define([
 	'backbone',
 	'toastr',
 	'jquery-colpick',
+	'services/colorConversion',
 	'models/variable',
 	'views/device/baseStatus',
 	'i18n!nls/strings',
-	'text!templates/device/lightbulb.html'
-], function($, _, Backbone, toastr, colpick, Variable, BaseStatus, strings, template) {
+	'text!templates/device/switch.html'
+], function($, _, Backbone, toastr, colpick, colorConversion, Variable, BaseStatus, strings, template) {
 
 	return BaseStatus.extend({
 
@@ -18,88 +19,95 @@ define([
 		subviews: [],
 		
 		events: {
-			'click #switchButton': 'onClickOn',
-			'change #levelSlider': 'onLevelChange'
+			'click #switchToggle': 'onClickOn',
+			'change #levelSlider': 'onLevelChange',
+			'change #colorSlider': 'onColorChange'
 		},
 		
 		render: function(el) {
+			var rgbs = this.variables.color.value.match(/\d+/g);
+			var colorSliderVal = colorConversion.convertRgbToByte(parseInt(rgbs[0]), parseInt(rgbs[1]), parseInt(rgbs[2]));
 
 			this.$el.html(this.template({
 				strings: strings,
 				device: this.model.toJSON(),
 				pending: this.showPending,
-				variables: this.variables
+				variables: this.variables,
+				colorSliderVal: colorSliderVal
 			}));
-
-			// create color picker
-			var colVal = this.getVariable('color');
-			if (colVal) {
-				this.$el.find('#colorPicker').colpick({
-					layout: 'hex',
-					color: colVal.value.substring(1),
-					onSubmit: function(hsb,hex,rgb,el,bySetColor) {
-						this.onColorChange(hsb,hex,rgb,el,bySetColor);
-					}.bind(this)
-				});
-			}
 
 			return this;
 		},
 
 		onVariableUpdate: function(name, value) {
-			toastr.success('Command sent to device.');
-			this.render();
+			this.showSpinner(false, function() {
+				this.render();
+			}.bind(this));
 		},
 
 		onVariableUpdateTimeout: function(name) {
 			toastr.error('Unable to confirm change with device.');
-			this.render();
+			this.showSpinner(false, function() {
+				this.render();
+			}.bind(this));
 		},
 
 		onVariableUpdateFailure: function() {
 			toastr.error('An error occurred updating the device.');
-			this.render();
+			this.showSpinner(false, function() {
+				this.render();
+			}.bind(this));
 		},
 
 		onClickOn: function() {
-			var el = this.$el.find('#switchButton');
-			if (el && !el.hasClass('disabled')) {
+			if (!this.hasPendingUpdates()) {
 				var onVar = this.getVariable('on');
-				el.html('<i style="font-size: 4em;" class="fa fa-spinner fa-spin"></i>');
+				this.showSpinner(true);
 				this.setVariableValues({on: !onVar.value});
 				this.disableAllControls();
+			} else {
+				return false;
 			}
 		},
 
-		onColorChange: function(hsb,hex,rgb,el,bySetColor) {
-			var el = this.$el.find('#colorPicker');
-			if (el && !el.hasClass('disabled')) {
-				var color = 'rgb(' + rgb.r + "," + rgb.g + "," + rgb.b + ")";
-				el.val(color);
-				el.css('background-color', color);
-				el.colpickHide();
-				this.setVariableValues({color: color});
-			}
+		onColorChange: function(event) {
+			var x = $(event.target).val();
+			var color = colorConversion.convertByteToRgb(x);
+			this.showSpinner(true);
+			this.disableAllControls();
+			this.setVariableValues({color: color});
 		},
 
 		onLevelChange: function(event) {
-			this.setVariableValues({level: $(event.target).val()});
-			this.disableAllControls();
+			if (!this.hasPendingUpdates()) {
+				this.showSpinner(true);
+				this.disableAllControls();
+				this.setVariableValues({level: parseInt($(event.target).val())});
+			} else {
+				return false;
+			}
 		},
 
 		disableAllControls: function() {
-			var el = this.$el.find('#switchButton');
+			var el = this.$el.find('#switchToggle');
 			if (el) {
 				el.addClass('disabled');
 			}
 			el = this.$el.find('#levelSlider');
 			if (el) {
-				console.debug(el);
 				$(el).prop('disabled', true);
 			}
-			el = this.$el.find('#colorPicker');
+			el = this.$el.find('#colorSlider');
 			if (el) {
 				$(el).prop('disabled', true);
+			}
+		},
+
+		showSpinner: function(show, callback) {
+			if (show) {
+				this.$el.find('#spinner').animate({'opacity': 1}, callback);
+			} else {
+				this.$el.find('#spinner').animate({'opacity': 0}, callback);
 			}
 		}
 

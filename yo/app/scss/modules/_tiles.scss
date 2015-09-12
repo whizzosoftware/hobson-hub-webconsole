@@ -43,10 +43,9 @@
 			max-height: 3.5em;
 			line-height: 125%;
 			color: $color-dash-tile-text;
-			background: $color-dash-tile-bg;
+			background-color: rgba(0, 0, 0, 0.3);
 			padding: 5px;
 			padding-left: 10px;
-			border-top: 1px solid $color-dash-tile-border;
 			.tile-info-icon {
 				padding: 0!important;
 				font-size: 1.2em;
@@ -252,7 +251,7 @@
 		.title {
 			border-top-left-radius: $tile-radius;
 			border-top-right-radius: $tile-radius;
-			background-color: rgba(0, 0, 0, 0.2);
+			background-color: rgba(0, 0, 0, 0.3);
 			text-align: center;
 			min-height: 2em;
 			max-height: 2em;
@@ -269,7 +268,7 @@
 			font-weight: bold;
 		}
 		.footer {
-			background-color: rgba(0, 0, 0, 0.2);
+			background-color: rgba(0, 0, 0, 0.3);
 			border-bottom-left-radius: $tile-radius;
 			border-bottom-right-radius: $tile-radius;
 			font-size: .8em;

@@ -25,6 +25,8 @@ module.exports = function (grunt) {
         dist: 'dist'
     };
 
+    grunt.loadNpmTasks('grunt-karma');
+
     grunt.initConfig({
         yeoman: yeomanConfig,
         watch: {
@@ -144,6 +146,27 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>/www'
                 }]
             }
+        },
+        jasmine: {
+          test: {
+            src: ['app/**/*.js', '!app/config.js'],
+            options: {
+              specs: 'test/*Spec.js',
+              helpers: 'test/*Helper.js',
+              template: require('grunt-template-jasmine-requirejs'),
+              templateOptions: {
+                requireConfigFile: 'app/config.js',
+                requireConfig: {
+                  baseUrl: 'app/'
+                }
+              }
+            }
+          }
+        },
+        karma: {
+          karma: {
+            configFile: 'karma.conf.js'
+          }
         }
     });
 
@@ -180,7 +203,7 @@ module.exports = function (grunt) {
         var testTasks = [
                 'clean:server',
                 'connect:test',
-                //'mocha',
+                'karma'
             ];
 
         if(!isConnected) {

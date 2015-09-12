@@ -1,0 +1,207 @@
+.switchPanel {
+  position: relative;
+  background: #31414d;
+  width: 350px;
+  height: 450px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  @mixin thumbCommon {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: #ffffff;
+    cursor: pointer;
+  }
+  .levelSlider {
+    position: absolute;
+    left: -260px;
+    top: 70px;
+    width: 300px;
+    -webkit-transform: rotate(-90deg);
+    -webkit-transform-origin: top right;
+    @mixin bwGradientBackground {
+      background: -webkit-linear-gradient(left, black, white);
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 25px;
+      cursor: pointer;
+      background: #0e486c; /* not working, let's see a color */
+      @include bwGradientBackground;
+      border: 5px solid #1f2f28;
+    }
+    input[type=range]:focus::-webkit-slider-runnable-track {
+      @include bwGradientBackground;
+    }
+    /* Special styling for WebKit/Blink */
+    input[type=range]::-webkit-slider-thumb {
+      @include thumbCommon;
+      -webkit-appearance: none;
+      margin-top: -27px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    }
+  }
+  .colorSlider {
+    position: absolute;
+    right: -260px;
+    top: 70px;
+    width: 300px;
+    -webkit-transform: rotate(90deg);
+    -webkit-transform-origin: top left;
+    @mixin colorGradientBackground {
+      background: -webkit-linear-gradient(left, rgb(255,0,0), rgb(255,255,0), rgb(0,255,0), rgb(0,255,255), rgb(0,0,255), rgb(255,0,255), rgb(255,0,10));  
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 25px;
+      cursor: pointer;
+      background: #0e486c; /* not working, let's see a color */
+      @include colorGradientBackground;
+      border: 5px solid #1f2f28;
+    }
+    input[type=range]:focus::-webkit-slider-runnable-track {
+      @include colorGradientBackground;
+    }
+    /* Special styling for WebKit/Blink */
+    input[type=range]::-webkit-slider-thumb {
+      @include thumbCommon;
+      -webkit-appearance: none;
+      margin-top: -28px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    }
+  }
+  .fa-spinner {
+    position: absolute;
+    color: #94ccf0;
+    right: 10px;
+    bottom: 10px;
+  }
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  input[type=range]::-ms-track {
+    width: 100%;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+  /* All the same stuff for Firefox */
+  input[type=range]::-moz-range-thumb {
+    @include thumbCommon;
+  }
+
+  /* All the same stuff for IE */
+  input[type=range]::-ms-thumb {
+    @include thumbCommon;
+  }
+}
+
+.onOffSwitch {
+  position: absolute;
+  left: 95px;
+  top: 70px;
+}
+
+.switchLabel {
+  position: absolute;
+  color: #94ccf0;
+  font-size: 40px;
+  font-weight: 300;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#top-label {
+  top: 50px;
+  left: 50px;
+}
+
+#bottom-label {
+  bottom: 58px;
+  left: 48px;
+}
+
+.switchToggle {
+  position: absolute;
+  margin-left: -9999px;
+  visibility: hidden;
+}
+
+.switchToggle + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input.switchToggleRound + label {
+  padding: 2px;
+  width: 142px;
+  height: 300px;
+  background-color: #212b34;
+  -webkit-border-radius: 110px;
+  -moz-border-radius: 110px;
+  -ms-border-radius: 110px;
+  -o-border-radius: 110px;
+  border-radius: 110px;
+}
+
+input.switchToggleRound + label:before, input.switchToggleRound + label:after {
+  display: block;
+  position: absolute;
+  top: 8px;
+  left: 6px;
+  bottom: 1px;
+  content: "";
+}
+
+input.switchToggleRound + label:before {
+  right: 1px;
+  background-color: #212b34;
+  -webkit-border-radius: 110px;
+  -moz-border-radius: 110px;
+  -ms-border-radius: 110px;
+  -o-border-radius: 110px;
+  border-radius: 110px;
+}
+
+input.switchToggleRound + label:after {
+  width: 130px;
+  height: 150px;
+  background-color: #0e486c;
+  -webkit-border-radius: 130px;
+  -moz-border-radius: 130px;
+  -ms-border-radius: 130px;
+  -o-border-radius: 130px;
+  border-radius: 130px;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  -webkit-transition: margin 0.4s;
+  -moz-transition: margin 0.4s;
+  -o-transition: margin 0.4s;
+  transition: margin 0.4s;
+}
+
+input.switchToggleRound:checked + label:before {
+  background-color: #212b34;
+}
+
+input.switchToggleRound:checked + label:after {
+  margin-top: 134px;
+}
