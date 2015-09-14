@@ -29,6 +29,7 @@ define([
 
 		render: function() {
 			if (this.task.actionSet.actions && this.task.actionSet.actions.length > 0) {
+				this.$el.html('');
 				var actions = this.task.actionSet.actions;
 				for (var i = 0; i < actions.length; i++) {
 					var actionView = new TaskActionView({

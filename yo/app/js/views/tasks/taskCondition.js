@@ -17,6 +17,10 @@ define([
 
 		className: 'condition',
 
+		events: {
+			'click #delete-condition': 'onDeleteCondition'
+		},
+
 		initialize: function(options) {
 			this.devices = options.devices;
 			this.condition = options.condition;
@@ -31,6 +35,10 @@ define([
 				description: this.description
 			}));
 			return this;
+		},
+
+		onDeleteCondition: function(condition) {
+			this.$el.trigger('deleteCondition', this.condition);
 		}
 
 	});

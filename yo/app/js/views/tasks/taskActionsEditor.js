@@ -19,7 +19,8 @@ define([
 
 		events: {
 			'click #buttonPlus': 'onClickPlus',
-			'onClickAdd': 'onClickAdd'
+			'onClickAdd': 'onClickAdd',
+			'deleteAction': 'onDeleteAction'
 		},
 
 		initialize: function(options) {
@@ -42,7 +43,7 @@ define([
 		},
 
 		render: function() {
-			this.$el.append(this.template({
+			this.$el.html(this.template({
 				strings: strings
 			}));
 
@@ -104,6 +105,21 @@ define([
 			} else {
 				toastr.error(msg);
 			}
+		},
+
+		onDeleteAction: function(event, action) {
+			var actions = this.task.actionSet.actions;
+			var row = -1;
+			for (var i in actions) {
+				if (actions[i].id == action.id) {
+					row = i;
+					break;
+				}
+			}
+			if (row > -1) {
+				actions.splice(row, 1);
+			}
+			this.render();
 		}
 
 	});

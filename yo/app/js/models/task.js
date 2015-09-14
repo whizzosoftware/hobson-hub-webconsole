@@ -3,7 +3,7 @@ define([
 	'backbone'
 ], function(Backbone) {
 
-	var TaskModel = Backbone.Model.extend({
+	return Backbone.Model.extend({
 
 		initialize: function(options) {
 			if (options.url) {
@@ -38,7 +38,5 @@ define([
 		}
 
 	});
-
-	return TaskModel;
 
 });

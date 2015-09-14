@@ -19,7 +19,8 @@ define([
 
 		events: {
 			'click #buttonPlus': 'onClickPlus',
-			'onClickAdd': 'onClickAdd'
+			'onClickAdd': 'onClickAdd',
+			'deleteCondition': 'onDeleteCondition'
 		},
 
 		initialize: function(options) {
@@ -42,7 +43,7 @@ define([
 		},
 
 		render: function() {
-			this.$el.append(this.template({
+			this.$el.html(this.template({
 				strings: strings,
 				task: this.task
 			}));
@@ -113,6 +114,26 @@ define([
 			} else {
 				toastr.error(msg);
 			}
+		},
+
+		onDeleteCondition: function(event, condition) {
+			if (this.task.triggerCondition.id == condition.id) {
+				this.task.triggerCondition = null;
+				this.task.conditions = [];
+			} else {
+				var conditions = this.task.conditions;
+				var row = -1;
+				for (var i in conditions) {
+					if (condition[i].id == condition.id) {
+						row = i;
+						break;
+					}
+				}
+				if (row > -1) {
+					conditions.splice(row, 1);
+				}
+			}
+			this.render();
 		}
 
 	});
