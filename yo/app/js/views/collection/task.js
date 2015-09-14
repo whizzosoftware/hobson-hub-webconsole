@@ -15,7 +15,7 @@ define([
 		template: _.template(template),
 
 		events: {
-			'click #deleteButton': 'onClickDelete'
+			'click #delete-task': 'onClickDelete'
 		},
 
 		render: function() {
@@ -31,16 +31,7 @@ define([
 		},
 
 		onClickDelete: function() {
-			this.model.destroy({
-				context: this,
-				error: function(model, response, options) {
-					if (response.status === 202) {
-						options.context.$el.trigger('taskDeleteSuccess');
-					} else {
-						options.context.$el.trigger('taskDeleteFail');
-					}
-				}
-			});
+			this.$el.trigger('deleteTask', this.model);
 		}
 
 	});

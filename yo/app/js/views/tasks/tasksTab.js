@@ -3,14 +3,19 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'toastr',
 	'views/collection/tasks',
 	'i18n!nls/strings',
 	'text!templates/tasks/tasksTab.html'
-], function($, _, Backbone, TasksView, strings, tasksTemplate) {
+], function($, _, Backbone, toastr, TasksView, strings, tasksTemplate) {
 
 	var TasksTabView = Backbone.View.extend({
 
 		template: _.template(tasksTemplate),
+
+		events: {
+			'deleteTask': 'onDeleteTask'
+		},
 
 		initialize: function(options) {
 			this.userId = options.userId;
@@ -26,7 +31,7 @@ define([
 		},
 
 		render: function() {
-			this.$el.append(this.template({
+			this.$el.html(this.template({
 				strings: strings,
 				tasks: this.tasks
 			}));
@@ -40,6 +45,19 @@ define([
 			);
 
 			return this;
+		},
+
+		onDeleteTask: function(event, task) {
+			task.destroy({
+				context: this,
+				error: function(model, response, options) {
+					if (response.status === 202) {
+						options.context.render();
+					} else {
+						toastr.error('Failed to delete task. See log for details.');
+					}
+				}
+			});
 		}
 
 	});

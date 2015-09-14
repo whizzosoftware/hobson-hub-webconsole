@@ -7,8 +7,7 @@
 	</div>
 	<div class="footer">
 		<ul>
-			<li><i class="fa fa-lg fa-trash-o"></i></li>
-			<li><i class="fa fa-lg fa-edit"></i></li>
+			<li><i id="delete-task" class="fa fa-lg fa-trash-o"></i></li>
 			<% if (task.properties && task.properties.hasOwnProperty('scheduled')) { %>
 				<li>
 					<i class="fa fa-lg fa-clock-o has-tip <%= task.properties.scheduled ? 'active' : '' %>" data-tooltip aria-haspopup="true" title="<% if (task.properties.scheduled) { %><%= strings.NextRun + ' ' + new moment(task.properties.nextRunTime).fromNow() %><% } else { %><%= strings.NotScheduled %><% } %>"></i>
