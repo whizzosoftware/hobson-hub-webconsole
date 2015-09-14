@@ -25,8 +25,12 @@ define([
 		},
 		
 		render: function(el) {
-			var rgbs = this.variables.color.value.match(/\d+/g);
-			var colorSliderVal = colorConversion.convertRgbToByte(parseInt(rgbs[0]), parseInt(rgbs[1]), parseInt(rgbs[2]));
+			var colorSliderVal;
+
+			if (this.variables.color && this.variables.color.value) {
+				var rgbs = this.variables.color.value.match(/\d+/g);
+				colorSliderVal = colorConversion.convertRgbToByte(parseInt(rgbs[0]), parseInt(rgbs[1]), parseInt(rgbs[2]));
+			}
 
 			this.$el.html(this.template({
 				strings: strings,
