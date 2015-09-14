@@ -75,7 +75,7 @@ define({
 	"NoDevicesSelectedMultiple": "No devices are selected. Choose some from the list below.",
 	"NoDevicesWereSelected": "No device(s) were selected.",
 	"NoHubs": "No Hubs have been added.",
-	"NoLatLong": "<a href=\"#settings/general\">Click here</a> to set latitude/longitude.",
+	"NoLatLong": "<a href=\"#settings/general\">Click here</a> to set your address.",
 	"None": "None",
 	"NoPluginsInstalled": "There are no plugins installed. Click the 'Available' link above to browse and install some.",
 	"NoStatisticsEnabled": "Statistics are not enabled for this device.",
