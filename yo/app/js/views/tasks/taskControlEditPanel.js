@@ -8,10 +8,11 @@ define([
 	'views/widgets/timePicker',
 	'views/widgets/recurrencePicker',
 	'views/widgets/devicesPicker',
+	'views/widgets/colorPicker',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskControlEditPanel.html',
 	'text!templates/tasks/taskControlPropertyField.html'
-], function($, _, Backbone, DateTimePicker, DatePickerView, TimePickerView, RecurrencePickerView, DevicesPickerView, strings, template, fieldTemplate) {
+], function($, _, Backbone, DateTimePicker, DatePickerView, TimePickerView, RecurrencePickerView, DevicesPickerView, ColorPickerView, strings, template, fieldTemplate) {
 
 	var TaskControlEditPanelView = Backbone.View.extend({
 
@@ -69,6 +70,10 @@ define([
 						var v = new DevicesPickerView(prop, true);
 						el.append(v.render().el);
 						this.subviews.push(v);
+					} else if (prop.type === 'COLOR') {
+						var v = new ColorPickerView(prop);
+						el.append(v.render().el);
+						this.subviews.push();
 					} else {
 						el.append(this.fieldTemplate({
 							strings: strings,
