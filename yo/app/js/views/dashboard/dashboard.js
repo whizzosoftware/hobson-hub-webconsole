@@ -3,12 +3,13 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'toastr',
 	'models/itemList',
 	'models/device',
 	'views/dashboard/deviceTiles',
 	'i18n!nls/strings',
 	'text!templates/dashboard/dashboard.html'
-], function($, _, Backbone, ItemList, Device, DeviceTilesView, strings, template) {
+], function($, _, Backbone, toastr, ItemList, Device, DeviceTilesView, strings, template) {
 
 	return Backbone.View.extend({
 		tagName: 'div',
@@ -75,7 +76,7 @@ define([
 						options.context.renderTiles(options.context);
 					},
 					error: function(model, response, options) {
-						console.error('Error retrieving devices');
+						toastr.error(strings.DeviceListRetrieveError);
 					}
 				});
 			}

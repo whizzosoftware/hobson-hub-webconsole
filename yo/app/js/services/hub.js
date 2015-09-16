@@ -94,6 +94,14 @@ define([
 				context: ctx,
 				type: 'DELETE'
 			});
+		},
+
+		shutdown: function(ctx, userId, hubId) {
+			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/shutdown';
+			return $.ajax(url, {
+				context: ctx,
+				type: 'POST'
+			});
 		}
 
 	};
