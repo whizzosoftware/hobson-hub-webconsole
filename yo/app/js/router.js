@@ -37,6 +37,7 @@ define([
 			'device/:deviceUrl/statistics': 'showDeviceStatistics',
 			'settings': 'showHubSettings',
 			'settings/general': 'showHubSettingsGeneral',
+			'settings/advanced': 'showHubSettingsAdvanced',
 			'settings/email': 'showHubSettingsEmail',
 			'settings/log': 'showHubSettingsLog',
 			'settings/plugins': 'showHubSettingsPlugins',
@@ -132,6 +133,11 @@ define([
 		showHubSettingsGeneral: function() {
 			this.renderAppRoot('hub');
 			this.appView.showHubSettingsGeneral();
+		},
+
+		showHubSettingsAdvanced: function() {
+			this.renderAppRoot('hub');
+			this.appView.showHubSettingsAdvanced();
 		},
 
 		showHubSettingsEmail: function() {

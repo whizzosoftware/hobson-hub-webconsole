@@ -18,14 +18,17 @@ define([
 		
 		initialize: function(logEntries) {
 			this.logEntries = logEntries;
-			console.debug('log entries: ', logEntries);
 		},
 
 		render: function() {
 			this.$el.append('<thead><td>Level</td><td>Time</td><td>Thread</td><td>Message</td></thead>');
-			for (var i = 0; i < this.model.length; i++) {
-				var logEntry = this.model.at(i);
-				this.$el.append(this.template({entry: logEntry}));
+			if (this.model.length > 0) {
+				for (var i = 0; i < this.model.length; i++) {
+					var logEntry = this.model.at(i);
+					this.$el.append(this.template({entry: logEntry}));
+				}
+			} else {
+				this.$el.append('<tr><td class="text-center" style="padding: 25px;" colspan="4">The log is empty.</td></tr>');
 			}
 			return this;
 		}

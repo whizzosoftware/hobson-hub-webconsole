@@ -1,7 +1,9 @@
 // Filename: services/device.js
 define([
 	'jquery',
-], function($) {
+	'models/itemList',
+	'models/deviceBootstrap'
+], function($, ItemList, DeviceBootstrap) {
 	var DeviceService = {
 
 		setDeviceVariable: function(url, value) {
@@ -19,6 +21,25 @@ define([
 				type: 'PUT',
 				contentType: 'application/json',
 				data: JSON.stringify({values: values}),
+				dataType: 'json'
+			});
+		},
+
+		getDeviceBootstraps: function(context, url, success, error) {
+			var bootstraps = new ItemList({model: DeviceBootstrap, url: url, sort: 'deviceId'});
+			bootstraps.fetch({
+				context: this,
+				success: success,
+				error: error
+			});
+		},
+
+		addDeviceBootstrap: function(context, url, deviceId) {
+			return $.ajax(url, {
+				context: context,
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({deviceId: deviceId}),
 				dataType: 'json'
 			});
 		}

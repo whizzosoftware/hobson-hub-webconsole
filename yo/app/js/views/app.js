@@ -27,6 +27,7 @@ define([
 	'views/device/deviceSettings',
 	'views/device/deviceStatistics',
 	'views/settings/settingsGeneral',
+	'views/settings/settingsAdvanced',
 	'views/settings/settingsEmail',
 	'views/settings/settingsLog',
 	'views/settings/settingsPlugins',
@@ -34,7 +35,7 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, DeviceTelemetry, TelemetryDataset, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, DeviceTelemetry, TelemetryDataset, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	var AppView = Backbone.View.extend({
 
@@ -103,6 +104,26 @@ define([
 						context: options.context,
 						success: function(model, response, options) {
 							options.context.renderContentView(new HubSettingsGeneralView({
+								model: model
+							}));
+						},
+						error: function(model, response, options) {
+							console.debug('nope');
+						}
+					});
+				}
+			});
+		},
+
+		showHubSettingsAdvanced: function() {
+			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
+				context: this,
+				success: function(model, response, options) {
+					var config = new Config({url: model.get('configuration')['@id']});
+					config.fetch({
+						context: options.context,
+						success: function(model, response, options) {
+							options.context.renderContentView(new HubSettingsAdvancedView({
 								model: model
 							}));
 						},

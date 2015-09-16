@@ -14,7 +14,7 @@ define([
 	'text!templates/settings/settingsLog.html'
 ], function($, _, Backbone, toastr, session, Config, ItemList, LogEntry, SettingsTab, LogTableView, strings, template) {
 
-	var ProfileView = SettingsTab.extend({
+	return SettingsTab.extend({
 
 		tabName: 'log',
 
@@ -85,5 +85,4 @@ define([
 
 	});
 
-	return ProfileView;
 });
