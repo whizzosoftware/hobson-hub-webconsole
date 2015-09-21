@@ -1,4 +1,4 @@
-// Filename: views/device/lightbulb.js
+// Filename: views/device/baseStatus.js
 define([
 	'jquery',
 	'underscore',

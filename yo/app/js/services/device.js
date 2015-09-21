@@ -42,6 +42,25 @@ define([
 				data: JSON.stringify({deviceId: deviceId}),
 				dataType: 'json'
 			});
+		},
+
+		resetDeviceBootstrap: function(context, url) {
+			return $.ajax(url, {
+				context: context,
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({}),
+				dataType: 'json'
+			});
+		},
+
+		deleteDeviceBootstrap: function(context, url) {
+			return $.ajax(url, {
+				context: context,
+				type: 'DELETE',
+				contentType: 'application/json',
+				dataType: 'json'
+			});
 		}
 
 	};

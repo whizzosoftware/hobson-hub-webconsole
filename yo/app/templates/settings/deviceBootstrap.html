@@ -1,5 +1,9 @@
-<tr>
-	<td><%= bootstrap.get('deviceId') %></td>
-	<td><%= bootstrap.get('creationTime') %></td>
-	<td><%= bootstrap.get('bootstrapTime') ? bootstrap.get('bootstrapTime') : 'Never' %></td>
-</tr>
+<td><%= bootstrap.deviceId %></td>
+<td><%= new moment(bootstrap.creationTime).format("L LT") %></td>
+<td><%= bootstrap.bootstrapTime ? new moment(bootstrap.bootstrapTime).format("L LT") : 'Never' %></td>
+<td>
+	<% if (bootstrap.bootstrapTime) { %>
+		<div id="resetButton" class="tiny radius secondary button" title="Reset"><i class="fa fa-sign-out fa-lg"></i></div>
+	<% } %>
+	<div id="deleteButton" class="tiny radius secondary button" title="Delete"><i class="fa fa-trash-o fa-lg"></i></div>
+</td>

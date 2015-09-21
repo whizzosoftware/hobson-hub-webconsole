@@ -43,7 +43,7 @@ define([
 					toastr.success('Device bootstrap created.');
 				}).fail(function(response) {
 					console.debug('fail');
-					toastr.success('Error creating device bootstrap. See the log for details.');
+					toastr.error('Error creating device bootstrap. See the log for details.');
 				});
 		}
 

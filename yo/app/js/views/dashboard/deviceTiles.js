@@ -20,7 +20,7 @@ define([
 
 		initialize: function() {
 			bridget('masonry', Masonry);
-			this.subviews = [];
+			this.subviews = {};
 			this.noDevicesPrompt = false;
 		},
 

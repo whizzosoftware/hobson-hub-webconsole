@@ -30,7 +30,7 @@ define([
 			for (var ix in this.subviews) {
 				this.subviews[ix].remove();
 			}
-			Backbone.View.prototype.remove.call(this);
+			BaseStatusView.prototype.remove.call(this);
 		},
 
 		render: function(el) {
