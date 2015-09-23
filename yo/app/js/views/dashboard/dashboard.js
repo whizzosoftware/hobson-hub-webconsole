@@ -25,6 +25,7 @@ define([
 			this.url = options.url;
 			this.initialRender = true;
 			this.subviews = [];
+			this.deviceTypes = {};
 		},
 
 		remove: function() {
@@ -95,6 +96,15 @@ define([
 		},
 
 		renderTileGroups: function(self) {
+			// check if there's a device type we haven't encountered before
+			for (var ix=0; ix < self.model.length; ix++) {
+				var d = self.model.at(ix);
+				if (!self.deviceTypes[d.get('type')]) {
+					this.initialRender = true;
+					self.deviceTypes[d.get('type')] = true;
+				}
+			}
+
 			for (var ix in self.subviews) {
 				var tg = self.subviews[ix];
 				var newModel = new Devices(self.model.filter(tg.filterFunc));

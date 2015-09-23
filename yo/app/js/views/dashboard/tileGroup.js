@@ -27,6 +27,7 @@ define([
 			this.name = options.name;
 			this.filterFunc = options.filterFunc;
 			this.subviews = {};
+			this.subviewCount = 0;
 		},
 
 		remove: function() {
@@ -42,13 +43,7 @@ define([
 			if (this.model) {
 				for (var ix=0; ix < this.model.length; ix++) {
 					var d = this.model.at(ix);
-					var v = this.subviews[d.get('@id')];
-					if (!v) {
-						this.addDeviceView(d);
-					} else {
-						console.debug('Updating device view', v);
-						v.reRender(d);
-					}
+					this.addDeviceView(d);
 				}
 
 				// force masonry to re-layout the tile grid
@@ -63,11 +58,17 @@ define([
 
 		reRender: function() {
 			if (this.model.length > 0) {
-				for (var ix=0; ix < this.model.length; ix++) {
-					var d = this.model.at(ix);
-					var v = this.subviews[d.get('@id')];
-					if (v) {
-						v.reRender(d);
+				// if the new device count is different than the subview count, do a complete re-render
+				if (this.model.length != this.subviewCount) {
+					this.render();
+				} else {
+					// re-render existing tiles
+					for (var ix=0; ix < this.model.length; ix++) {
+						var d = this.model.at(ix);
+						var v = this.subviews[d.get('@id')];
+						if (v) {
+							v.reRender(d);
+						}
 					}
 				}
 			}
@@ -93,6 +94,7 @@ define([
 				}
 				this.$el.find('.dash-tiles').append(tileView.render().el);
 				this.subviews[device.get('@id')] = tileView;
+				this.subviewCount++;
 			}
 		}		
 
