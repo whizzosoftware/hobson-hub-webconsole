@@ -3,7 +3,7 @@ define({
 	"Account": "Account",
 	"ActivityFeed": "Activity feed",
 	"Add": "Add",
-	"AddDeviceBoostrap": "Add Device Bootstrap",
+	"NewDeviceBootstrap": "New Device Bootstrap",
 	"Address": "Address",
 	"AddressLookup": "Looking up address...",
 	"AddressLookupSuccess": "Your address was found successfully.",
