@@ -10,8 +10,10 @@ $font-1: "Open Sans", Helvetica, sans-serif;
 /* Colors */
 $color-background-dark: #2D2D2D;
 $color-bg-page: #FFFFFF;
-$color-btn-primary: #10649e;
-$color-btn-primary-hover: #053b61;
+$color-disabled: #bbc8d0;
+$color-btn-primary: #0c4a71;
+$color-btn-primary-hover: #10649e;
+$color-btn-primary-disabled: $color-disabled;
 $color-btn-secondary: #3cb8d1;
 $color-btn-secondary-hover: #038ca5;
 $color-dash-tile-bg: #353535;
@@ -58,3 +60,4 @@ $row-width: 90%;
 $legend-bg: none;
 $legend-font-weight: 100;
 $accordion-navigation-font-color: $color-btn-primary;
+$button-group-border-width: 0px;

@@ -34,7 +34,7 @@ define([
 
 			var el = $(event.currentTarget);
 
-			if (!el.hasClass('disabled')) {
+			if (!el.hasClass('disabled') && !el.hasClass('active')) {
 				el.html('<i class="fa fa-spinner fa-spin"></i>');
 				this.disableAllButtons();
 

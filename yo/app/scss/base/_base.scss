@@ -57,6 +57,10 @@ label {
   color: $color-text-light;
 }
 
+.disabled {
+	color: $color-disabled;
+}
+
 #content-container {
 	padding-top: 25px;
 }

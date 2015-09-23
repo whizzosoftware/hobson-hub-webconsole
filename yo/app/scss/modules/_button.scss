@@ -10,6 +10,16 @@
 	outline: none;
 }
 
+.button.disabled {
+	background: $color-btn-primary-disabled;
+	outline: none;
+}
+
+.button.disabled:hover {
+	background: $color-btn-primary-disabled;
+	outline: none;
+}
+
 .button:hover {
 	background-color: $color-btn-primary-hover;
 }
@@ -28,3 +38,13 @@
 	text-align: center;
 	margin: 25px 0;
 }
+
+.button-group .button {
+	background: $color-btn-primary;
+}
+
+.button-group .button.active {
+	background: $color-btn-secondary;
+	cursor: default;
+}
+
