@@ -1,4 +1,4 @@
-// Filename: views/deviceTiles
+// Filename: views/dashboard/tileGroup.js
 define([
 	'jquery',
 	'underscore',
@@ -12,16 +12,21 @@ define([
 	'views/dashboard/tiles/thermostat',
 	'views/dashboard/tiles/weatherStation',
 	'views/dashboard/tiles/unknown',
-	'i18n!nls/strings'
-], function($, _, Backbone, bridget, Masonry, CameraTileView, LightbulbTileView, SensorTileView, SwitchTileView, ThermostatTileView, WeatherStationTileView, UnknownTileView, strings) {
+	'i18n!nls/strings',
+	'text!templates/dashboard/tileGroup.html'
+], function($, _, Backbone, bridget, Masonry, CameraTileView, LightbulbTileView, SensorTileView, SwitchTileView, ThermostatTileView, WeatherStationTileView, UnknownTileView, strings, template) {
 
 	return Backbone.View.extend({
-		className: 'dash-tiles',
+		className: 'dash-tile-group',
 
-		initialize: function() {
+		template: _.template(template),
+
+		initialize: function(options) {
 			bridget('masonry', Masonry);
+
+			this.name = options.name;
+			this.filterFunc = options.filterFunc;
 			this.subviews = {};
-			this.noDevicesPrompt = false;
 		},
 
 		remove: function() {
@@ -33,36 +38,16 @@ define([
 		},
 
 		render: function() {
-			if (this.model && this.model.length > 0) {
-				for (var i = 0; i < this.model.length; i++) {
-					this.addDeviceView(this.model.at(i));
-				}
-			} else {
-				this.$el.html('<p class="notice">' + strings.NoDevicesPublished + '</p>');
-				this.noDevicesPrompt = true;
-			}
-
-			return this;
-		},
-
-		reRender: function(model) {
-			this.model = model;
-
-			if (model.length > 0) {
-				// remove the no device prompt
-				if (this.noDevicesPrompt) {
-					this.$el.html('');
-					this.noDevicesPrompt = false;
-				}
-
-				// re-render existing device tiles and/or add new ones
-				for (var ix=0; ix < model.length; ix++) {
-					var device = this.model.at(ix);
-					var dview = this.subviews[device.get('@id')];
-					if (dview) {
-						dview.reRender(device);
+			this.$el.html(this.template({name: this.name, model: this.model, strings: strings}));
+			if (this.model) {
+				for (var ix=0; ix < this.model.length; ix++) {
+					var d = this.model.at(ix);
+					var v = this.subviews[d.get('@id')];
+					if (!v) {
+						this.addDeviceView(d);
 					} else {
-						this.addDeviceView(device);
+						console.debug('Updating device view', v);
+						v.reRender(d);
 					}
 				}
 
@@ -72,11 +57,24 @@ define([
 					gutter: 10
 				});
 			}
+			return this;
+		},
+
+
+		reRender: function() {
+			if (this.model.length > 0) {
+				for (var ix=0; ix < this.model.length; ix++) {
+					var d = this.model.at(ix);
+					var v = this.subviews[d.get('@id')];
+					if (v) {
+						v.reRender(d);
+					}
+				}
+			}
 		},
 
 		addDeviceView: function(device) {
 			if (device) {
-				console.debug(device);
 				var tileView;
 				if (device.get("type") === 'SENSOR') {
 					tileView = new SensorTileView({model: device});
@@ -93,10 +91,10 @@ define([
 				} else {
 					tileView = new UnknownTileView({model: device});
 				}
-				this.$el.append(tileView.render().el);
+				this.$el.find('.dash-tiles').append(tileView.render().el);
 				this.subviews[device.get('@id')] = tileView;
 			}
-		}
+		}		
 
 	});
 

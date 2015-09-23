@@ -34,6 +34,11 @@ define([
 			return this;
 		},
 
+		reRender: function(model) {
+			this.model = model;
+			this.render();
+		},
+
 		onButtonClick: function() {
 			this.$el.trigger('deviceButtonClick', this.model);
 		}

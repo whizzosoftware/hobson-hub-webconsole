@@ -6,10 +6,11 @@ define([
 	'toastr',
 	'models/itemList',
 	'models/device',
-	'views/dashboard/deviceTiles',
+	'models/devices',
+	'views/dashboard/tileGroup',
 	'i18n!nls/strings',
 	'text!templates/dashboard/dashboard.html'
-], function($, _, Backbone, toastr, ItemList, Device, DeviceTilesView, strings, template) {
+], function($, _, Backbone, toastr, ItemList, Device, Devices, TileGroupView, strings, template) {
 
 	return Backbone.View.extend({
 		tagName: 'div',
@@ -22,11 +23,13 @@ define([
 
 		initialize: function(options) {
 			this.url = options.url;
+			this.initialRender = true;
+			this.subviews = [];
 		},
 
 		remove: function() {
-			if (this.tilesView) {
-				this.tilesView.remove();
+			for (var i = 0; i < this.subviews.length; i++) {
+				this.subviews[i].remove();
 			}
 
 			this.clearRefreshInterval();
@@ -38,11 +41,14 @@ define([
 			$('#toolbar').css('display', 'block');
 
 			// create dashboard shell
-			this.$el.append(this.template({strings: strings}));
+			this.$el.html(this.template({strings: strings}));
 
-			// render the device tile container
-			this.tilesView = new DeviceTilesView();
-			this.$el.find('#tile-row').html(this.tilesView.render().el);
+			// create tile groups
+			var el = this.$el.find('#tileGroups');
+			this.addTileGroup('Cameras', function(d) { return d.get('type') === 'CAMERA'});
+			this.addTileGroup('Lights', function(d) { return d.get('type') === 'LIGHTBULB'});
+			this.addTileGroup('Sensors', function(d) { return d.get('type') === 'SENSOR'});
+			this.addTileGroup('Others', function(d) { return (d.get('type') !== 'CAMERA' && d.get('type') !== 'LIGHTBULB' && d.get('type') !== 'SENSOR')});
 
 			// render initial device tiles
 			this.refresh();
@@ -54,6 +60,12 @@ define([
 			}.bind(this), 5000);
 
 			return this;
+		},
+
+		addTileGroup: function(name, filterFunc) {
+			var tg = new TileGroupView({name: name, filterFunc: filterFunc});
+			this.$el.find('#tileGroups').append(tg.render().el);
+			this.subviews.push(tg);
 		},
 
 		refresh: function() {
@@ -73,7 +85,7 @@ define([
 					success: function(model, response, options) {
 						options.context.etag = options.xhr.getResponseHeader('ETag');
 						options.context.model = model;
-						options.context.renderTiles(options.context);
+						options.context.renderTileGroups(options.context);
 					},
 					error: function(model, response, options) {
 						toastr.error(strings.DeviceListRetrieveError);
@@ -82,8 +94,20 @@ define([
 			}
 		},
 
-		renderTiles: function(self) {
-			self.tilesView.reRender(self.model);
+		renderTileGroups: function(self) {
+			for (var ix in self.subviews) {
+				var tg = self.subviews[ix];
+				var newModel = new Devices(self.model.filter(tg.filterFunc));
+				tg.model = newModel;
+				if (this.initialRender) {
+					tg.render();
+				} else {
+					tg.reRender();
+				}
+			}
+			if (this.initialRender) {
+				this.initialRender = false;
+			}
 		},
 
 		clearRefreshInterval: function() {
