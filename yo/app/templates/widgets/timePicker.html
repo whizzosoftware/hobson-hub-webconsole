@@ -1,47 +1,48 @@
+<label><%= property.name %></label>
 <div class="row">
 	<div class="small-12 columns">
-		<label><%= property.name %>
-			<div>
-				<input type="radio" name="timeType" value="absolute" id="timeAbsolute" checked><label for="timeAbsolute">is exactly
+		<div class="row">
+			<div class="small-12 columns text-left">
+				<input type="radio" name="timeType" value="absolute" id="timeAbsolute" checked><label for="timeAbsolute"><%= strings.IsExactly %>
 				&nbsp;&nbsp;
-				<input type="radio" name="timeType" value="sunrise" id="timeSunrise"><label for="timeSunrise">at sunrise
+				<input type="radio" name="timeType" value="sunrise" id="timeSunrise"><label for="timeSunrise"><%= strings.AtSunrise %>
 				&nbsp;&nbsp;
-				<input type="radio" name="timeType" value="sunset" id="timeSunset"><label for="timeSunset">at sunset
+				<input type="radio" name="timeType" value="sunset" id="timeSunset"><label for="timeSunset"><%= strings.AtSunset %>
 			</div>
-			<input id="time" type="text" style="display: none">
-			<div class="row" id="timeAbsolutePanel">
-				<div class="small-12 columns">
-					<label>
-						<input class="radius" id="displayTime" type="text" />
-						<p>The exact time of day the task will occur</p>
-					</label>
-				</div>
+		</div>
+		<input id="time" type="text" style="display: none">
+		<div class="row" id="timeAbsolutePanel">
+			<div class="small-12 columns">
+				<label>
+					<input class="radius" id="displayTime" type="text" />
+					<p><%= strings.TaskExactTOD %></p>
+				</label>
 			</div>
-			<div class="row" id="timeRelativePanel" style="display: none;">
-				<div class="large-12 columns">
-					<label>
-						<div class="row">
-							<div class="medium-6 columns">
-								<div class="row collapse">
-									<div class="small-9 columns">
-										<input id="offsetSeconds" class="radius" type="text" value="0" />
-									</div>
-									<div class="small-3 columns">
-										<span class="radius postfix">minutes</span>
-									</div>
+		</div>
+		<div class="row" id="timeRelativePanel" style="display: none;">
+			<div class="large-12 columns">
+				<label>
+					<div class="row">
+						<div class="medium-6 columns">
+							<div class="row collapse">
+								<div class="small-9 columns">
+									<input id="offsetSeconds" class="radius" type="text" value="0" />
+								</div>
+								<div class="small-3 columns">
+									<span class="radius postfix"><%= strings.mins %></span>
 								</div>
 							</div>
-							<div class="medium-6 columns">
-								<select id="offsetMult" class="radius">
-									<option>before</option>
-									<option>after</option>
-								</select>
-							</div>	
 						</div>
-						<p>The time of day that task will occur relative to sunrise/sunset</p>
-					</label>
-				</div>
+						<div class="medium-6 columns">
+							<select id="offsetMult" class="radius">
+								<option><%= strings.before %></option>
+								<option><%= strings.after %></option>
+							</select>
+						</div>	
+					</div>
+					<p><%= strings.TaskRelativeTOD %></p>
+				</label>
 			</div>
-		</label>
+		</div>
 	</div>
 </div>

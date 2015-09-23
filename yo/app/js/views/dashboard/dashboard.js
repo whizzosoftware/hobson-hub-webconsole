@@ -96,6 +96,8 @@ define([
 		},
 
 		renderTileGroups: function(self) {
+			var hadContent = false;
+
 			// check if there's a device type we haven't encountered before
 			for (var ix=0; ix < self.model.length; ix++) {
 				var d = self.model.at(ix);
@@ -105,9 +107,11 @@ define([
 				}
 			}
 
+			// render all subviews
 			for (var ix in self.subviews) {
 				var tg = self.subviews[ix];
 				var newModel = new Devices(self.model.filter(tg.filterFunc));
+				hadContent = hadContent || newModel.length > 0;
 				tg.model = newModel;
 				if (this.initialRender) {
 					tg.render();
@@ -115,8 +119,14 @@ define([
 					tg.reRender();
 				}
 			}
+
+			// reset initial render flag
 			if (this.initialRender) {
 				this.initialRender = false;
+			}
+
+			if (!hadContent) {
+				self.$el.html('<p class="notice">' + strings.NoDevicesPublished + '</p>');
 			}
 		},
 

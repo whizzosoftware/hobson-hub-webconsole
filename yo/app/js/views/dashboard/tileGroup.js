@@ -72,6 +72,7 @@ define([
 					}
 				}
 			}
+			return this;
 		},
 
 		addDeviceView: function(device) {
