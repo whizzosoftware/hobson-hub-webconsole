@@ -123,10 +123,10 @@ define([
 			// reset initial render flag
 			if (this.initialRender) {
 				this.initialRender = false;
-			}
 
-			if (!hadContent) {
-				self.$el.html('<p class="notice">' + strings.NoDevicesPublished + '</p>');
+				if (!hadContent) {
+					self.$el.html('<p class="notice">' + strings.NoDevicesPublished + '</p>');
+				}
 			}
 		},
 
