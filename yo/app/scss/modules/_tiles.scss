@@ -192,20 +192,18 @@
 			padding: 0;
 			cursor: pointer;
 			.title {
-				height: 2em;
-				min-height: 2em;
+				line-height: 99%;
 				text-align: left;
 				padding: 10px 20px;
 				font-size: 1.2em;
 				font-weight: bold;
-				line-height: 2em;
 			}
 			.description {
 				font-size: 0.9em;
 				font-weight: 300;
 				line-height: 1.2em;
 				text-align: justify;
-				margin: 15px 20px;
+				margin: 0px 20px;
 			}
 			.footer {
 				background: $color-dash-tile-bg;
