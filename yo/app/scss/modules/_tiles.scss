@@ -32,6 +32,9 @@
 				font-size: 1em;
 			}
 		}
+		.tile-icon.disabled {
+			background-color: $color-dash-tile-disabled;
+		}
 		.tile-icon:hover {
 			cursor: pointer;
 		}

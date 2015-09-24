@@ -1,4 +1,4 @@
-<div id="tileIcon" class="tile-icon">
+<div id="tileIcon" class="tile-icon <%= !device.lastCheckIn ? 'disabled' : '' %>">
 	<% if (device.preferredVariable && device.preferredVariable.name === 'outTempF') { %>
 		<div class="temp"><%= Math.round(device.preferredVariable.value) %>&deg;</div>
 	<% } else { %>
