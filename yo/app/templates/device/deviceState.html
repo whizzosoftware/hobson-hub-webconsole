@@ -1,2 +1,7 @@
+<% if (!device.lastCheckIn) { %>
+	<div class="inset">
+		<div data-alert class="alert-box warning radius"><i class="fa fa-warning"></i>&nbsp;&nbsp;<%= strings.DeviceNotCheckedIn %></div>
+	</div>
+<% } %>
 <div id="controlContainer" class="inset">
 </div>
