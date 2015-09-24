@@ -36,7 +36,7 @@ define({
 	"DeviceConfigUpdateFailure": "Failed to update device configuration. See the log for details.",
 	"DeviceConfigUpdateSuccess": "Successfully updated device configuration.",
 	"DeviceMissingVariable": "This device does not have the expected information.",
-	"DeviceNotCheckedIn": "This device has not checked-in yet.",
+	"DeviceNotCheckedIn": "This device has not checked-in yet and may not be available.",
 	"dewPtF": "Dew Point",
 	"dewPtFUnits": "degrees fahrenheit",
 	"ecw": "Energy Consumption (watts)",
