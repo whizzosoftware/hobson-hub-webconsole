@@ -67,6 +67,9 @@ require.config({
                 },
                 'highcharts': {
                         exports: 'Highcharts'
+                },
+                'nlp': {
+                        deps: ['rrule']
                 }
         },
         enforceDefine: false

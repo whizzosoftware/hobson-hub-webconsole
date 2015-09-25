@@ -58,8 +58,6 @@ define([
 				this.renderContentView(new DashboardView({
 					url: session.getSelectedHubDevicesUrl() + '?expand=item,preferredVariable'
 				}), true);
-			} else {
-				this.renderDashboard(this, null);
 			}
 		},
 

@@ -160,28 +160,35 @@ define([
 			return { userId: s[0], hubId: s[1] };
 		},
 
+		removeAppView: function() {
+			console.debug('removeAppView');
+			if (this.appView) {
+				this.appView.remove();
+				this.appView = null;
+			}
+		},
+
 		renderAppRoot: function(name, options) {
-			// if the app view has changed...
-			if (!this.appView || this.appView.name !== name) {
-				// remove the old app root view if present
-				if (this.appView) {
-					this.appView.remove();
-					this.appView = null;
-				}
+			if (this.verifyValidUser() || name === 'login') {
+				// if the app view has changed...
+				if (!this.appView || this.appView.name !== name) {
+					// remove the old app root view if present
+					this.removeAppView();
 
-				// set the new app root view
-				switch (name) {
-					case 'login':
-						this.appView = new LoginAppView();
-						break;
-					case 'hub':
-						this.appView = new HubAppView(options);
-						break;
-				}
+					// set the new app root view
+					switch (name) {
+						case 'login':
+							this.appView = new LoginAppView();
+							break;
+						case 'hub':
+							this.appView = new HubAppView(options);
+							break;
+					}
 
-				// render the new app root view
-				if (this.appView) {
-					$('body').append(this.appView.render().el);
+					// render the new app root view
+					if (this.appView) {
+						$('body').append(this.appView.render().el);
+					}
 				}
 			}
 		},
@@ -196,11 +203,8 @@ define([
 		},
 
 		routeToDefaultHub: function() {
-			console.debug('routeToDefaultHub', session);
 			var hubs = new Hubs(session.getHubsUrl() + '?expand=links');
-			console.debug('fetching hubs collection');
 			hubs.fetch().then(function() {
-				console.debug('hubs collection fetched, ', hubs);
 				if (hubs.length > 0) {
 					console.debug(hubs.at(0));
 					console.debug(hubs.at(0).get('itemListElement'));
@@ -217,7 +221,6 @@ define([
 						}
 					});
 				} else {
-					console.debug('no hubs found; redirecting to account app');
 					Backbone.history.navigate('#account/hubs', {trigger: true});
 				}
 			});
