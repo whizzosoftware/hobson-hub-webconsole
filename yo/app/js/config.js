@@ -25,6 +25,8 @@ require.config({
                 'masonry': '../bower_components/masonry/dist/masonry.pkgd.min',
                 'modernizr': '../bower_components/foundation/js/vendor/modernizr',
                 'moment': '../bower_components/moment/moment',
+                'nlp': '../bower_components/rrule/lib/nlp',
+                'rrule': '../bower_components/rrule/lib/rrule',
                 'sidr': '../bower_components/sidr/jquery.sidr.min',
                 'spin': '../bower_components/ladda/dist/spin.min',
                 'templates': '../templates',

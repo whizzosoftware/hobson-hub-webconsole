@@ -47,9 +47,9 @@ define([
 			// create tile groups
 			var el = this.$el.find('#tileGroups');
 			this.addTileGroup('Cameras', function(d) { return d.get('type') === 'CAMERA'});
-			this.addTileGroup('Lights', function(d) { return d.get('type') === 'LIGHTBULB'});
 			this.addTileGroup('Sensors', function(d) { return d.get('type') === 'SENSOR'});
-			this.addTileGroup('Others', function(d) { return (d.get('type') !== 'CAMERA' && d.get('type') !== 'LIGHTBULB' && d.get('type') !== 'SENSOR')});
+			this.addTileGroup('Devices', function(d) { return (d.get('type') !== 'CAMERA' && d.get('type') !== 'LIGHTBULB' && d.get('type') !== 'SENSOR')});
+			this.addTileGroup('Lights', function(d) { return d.get('type') === 'LIGHTBULB'});
 
 			// render initial device tiles
 			this.refresh();

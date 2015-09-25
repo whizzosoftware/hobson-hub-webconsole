@@ -2,8 +2,10 @@
 define([
 	'jquery',
 	'underscore',
-	'moment'
-], function($, _, moment) {
+	'moment',
+	'rrule',
+	'nlp'
+], function($, _, moment, RRule, nlp) {
 	return {
 
 		createDescription: function(pc) {
@@ -23,6 +25,14 @@ define([
 				} else if (name === 'date') {
 					var date = moment(pc.properties[name]);
 					props[name] = date.format('L');
+				} else if (name === 'recurrence') {
+					var s = pc.properties[name];
+					if (s !== 'never') {
+						var rrule = RRule.fromString(pc.properties[name]);
+						props[name] = rrule.toText();
+					} else {
+						props[name] = s;
+					}
 				} else {
 					props[name] = pc.properties[name];
 				}

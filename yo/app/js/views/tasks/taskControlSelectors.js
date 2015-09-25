@@ -34,10 +34,14 @@ define([
 
 			this.$el.append('<h6 style="text-align: left;">' + strings.TaskConditionActionPrompt + '</h6>');
 
-			for (var i=0; i < this.model.length; i++) {
-				var v = new TaskControlSelectorView({model: this.model.at(i)});
-				this.$el.append(v.render().el);
-				this.subviews.push(v);
+			if (this.model.length > 0) {
+				for (var i=0; i < this.model.length; i++) {
+					var v = new TaskControlSelectorView({model: this.model.at(i)});
+					this.$el.append(v.render().el);
+					this.subviews.push(v);
+				}
+			} else {
+				this.$el.append('<p style="margin-top: 20px;">' + strings.NoAdditionalItemsAppropriate + '</p>');
 			}
 
 			return this;
