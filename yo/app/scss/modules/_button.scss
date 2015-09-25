@@ -48,3 +48,19 @@
 	cursor: default;
 }
 
+.icon-button {
+	cursor: pointer;
+	color: $color-btn-primary;
+}
+
+.icon-button:hover {
+	color: $color-btn-primary-hover;
+}
+
+.icon-button.secondary {
+	color: $color-btn-secondary;
+}
+
+.icon-button.secondary:hover {
+	color: $color-btn-secondary-hover;
+}

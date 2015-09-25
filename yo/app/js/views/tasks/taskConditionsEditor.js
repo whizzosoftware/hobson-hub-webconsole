@@ -101,7 +101,6 @@ define([
 		},
 
 		onClickAdd: function(e, a) {
-			console.debug(a);
 			var msg = PropertyContainerValidator.validate(a);
 			if (!msg) {
 				if (a.type == 'trigger') {

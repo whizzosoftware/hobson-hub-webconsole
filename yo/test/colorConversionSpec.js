@@ -1,5 +1,3 @@
-/*global describe, it */
-
 define(['js/services/colorConversion'], function (colorConversion) {
 	
 	describe('test color conversion to byte', function () {

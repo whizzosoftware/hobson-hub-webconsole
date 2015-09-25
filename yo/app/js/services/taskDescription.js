@@ -7,7 +7,6 @@ define([
 	'nlp'
 ], function($, _, moment, RRule, nlp) {
 	return {
-
 		createDescription: function(pc) {
 			var cclass = pc.id;
 			var props = {};
@@ -19,6 +18,16 @@ define([
 					var time = pc.properties[name];
 					if (time.charAt(0) === 'S') {
 						props[name] = time.substring(0,2) === 'SR' ? 'sunrise' : 'sunset';
+						if (time.length > 2) {
+							if (time.substring(2,3) == '+') {
+								props[name] = 'after ' + props[name];
+							} else if (time.substring(2,3) === '-') {
+								props[name] = 'before ' + props[name];
+							}
+							if (time.length > 3) {
+								props[name] = parseInt(time.substring(3,time.length)) + ' minutes ' + props[name];
+							}
+						}
 					} else {
 						props[name] = moment(time, 'HH:mm:ssZ').format('LT');
 					}		
@@ -38,8 +47,11 @@ define([
 				}
 			}
 
-			var ct = _.template(pc.descriptionTemplate.replace(new RegExp('\{', 'g'), '<%= ').replace(new RegExp('\}', 'g'), ' %>'));
-			return ct(props);
+			if (pc.descriptionTemplate) {
+				return _.template(pc.descriptionTemplate.replace(new RegExp('\{', 'g'), '<%= ').replace(new RegExp('\}', 'g'), ' %>'))(props);
+			} else {
+				return '';
+			}
 		},
 
 		createDeviceListDescription: function(devices) {
