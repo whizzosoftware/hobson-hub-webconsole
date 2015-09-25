@@ -9,7 +9,7 @@ define([
 	'text!templates/widgets/timePicker.html'
 ], function($, _, Backbone, DateTimePicker, moment, strings, template) {
 
-	var TimePickerView = Backbone.View.extend({
+	return Backbone.View.extend({
 		template: _.template(template),
 
 		events: {
@@ -18,15 +18,16 @@ define([
 			'change #offsetMult': 'onChangeOffsetMult'
 		},
 
-		initialize: function(property) {
-			this.property = property;
+		initialize: function(options) {
+			this.showSun = options.showSun;
 		},
 
 		render: function() {
 			this.$el.append(
 				this.template({
 					strings: strings,
-					property: this.property
+					property: this.model,
+					showSun: this.showSun
 				})
 			);
 
@@ -88,5 +89,4 @@ define([
 
 	});
 
-	return TimePickerView;
 });

@@ -20,6 +20,10 @@ define([
 			'click .accordion-item': 'onClick'
 		},
 
+		initialize: function(options) {
+			this.showSun = options.showSun;
+		},
+
 		render: function() {
 			this.$el.html(this.template({
 				strings: strings,
@@ -33,7 +37,10 @@ define([
 			var content = this.$el.find('.content');
 			if (content.css('display') === 'none') {
 				// load and show the edit panel
-				this.editPanel = new TaskControlEditPanelView({model: this.model});
+				this.editPanel = new TaskControlEditPanelView({
+					model: this.model,
+					showSun: this.showSun
+				});
 				content.html(this.editPanel.render().el);
 				content.css('display', 'block');
 			} else {

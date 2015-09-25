@@ -7,11 +7,12 @@ define([
 	'models/itemList',
 	'models/task',
 	'models/device',
+	'models/hubConfig',
 	'views/tasks/taskConditionsEditor',
 	'views/tasks/taskActionsEditor',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskCreate.html'
-], function($, _, Backbone, toastr, ItemList, Task, Device, TaskConditionsEditorView, TaskActionsEditorView, strings, taskAddTemplate) {
+], function($, _, Backbone, toastr, ItemList, Task, Device, HubConfig, TaskConditionsEditorView, TaskActionsEditorView, strings, taskAddTemplate) {
 
 	var TaskCreateView = Backbone.View.extend({
 
@@ -45,32 +46,44 @@ define([
 				task: this.task
 			}));
 
-			var devices = new ItemList({
-				model: Device,
-				url: '/api/v1/users/local/hubs/local/devices?expand=item'
-			});
-
-			devices.fetch({
+			var config = new HubConfig({url: '/api/v1/users/local/hubs/local/configuration'});
+			config.fetch({
 				context: this,
 				success: function(model, response, options) {
-					// render the "if" section
-					var v = new TaskConditionsEditorView({
-						devices: model,
-						task: options.context.task
-					});
-					options.context.$el.find('#taskConditionsEditor').html(v.render().el);
-					options.context.subviews.push(v);
+					var showSun = model.hasLatLong();
 
-					// render the "then" section
-					var v = new TaskActionsEditorView({
-						devices: model,
-						task: options.context.task
+					var devices = new ItemList({
+						model: Device,
+						url: '/api/v1/users/local/hubs/local/devices?expand=item'
 					});
-					options.context.$el.find('#taskActionsPanel').html(v.render().el);
-					options.context.subviews.push(v);
+
+					devices.fetch({
+						context: options.context,
+						success: function(model, response, options) {
+							// render the "if" section
+							var v = new TaskConditionsEditorView({
+								devices: model,
+								task: options.context.task,
+								showSun: showSun
+							});
+							options.context.$el.find('#taskConditionsEditor').html(v.render().el);
+							options.context.subviews.push(v);
+
+							// render the "then" section
+							var v = new TaskActionsEditorView({
+								devices: model,
+								task: options.context.task
+							});
+							options.context.$el.find('#taskActionsPanel').html(v.render().el);
+							options.context.subviews.push(v);
+						},
+						error: function(model, response, options) {
+							console.debug('nope!');
+						}
+					});
 				},
 				error: function(model, response, options) {
-					console.debug('nope!');
+
 				}
 			});
 
@@ -118,13 +131,10 @@ define([
 				});
 			}
 
-			console.debug('creating task: ', this.task, t);
-
 			// send the create task request
 			t.save(null, {
 				context: this,
 				error: function(model, response, options) {
-					console.debug(model, response, options);
 					if (response.status === 202) {
 						toastr.success(strings.TaskCreated);
 						Backbone.history.navigate('tasks', {trigger: true});

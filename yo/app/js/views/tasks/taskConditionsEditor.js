@@ -27,6 +27,7 @@ define([
 			this.devices = options.devices;
 			this.task = options.task;
 			this.subviews = [];
+			this.showSun = options.showSun;
 		},
 
 		remove: function() {
@@ -86,7 +87,8 @@ define([
 					success: function(model, response, options) {
 						// render task condition class selectors
 						var v = new TaskControlSelectorsView({
-							model: options.context.task.triggerCondition ? new ItemList(model.where({type: 'evaluator'})) : new ItemList(model.where({type: 'trigger'}))
+							model: options.context.task.triggerCondition ? new ItemList(model.where({type: 'evaluator'})) : new ItemList(model.where({type: 'trigger'})),
+							showSun: options.context.showSun
 						});
 						options.context.$el.find('#taskConditionSelectors').html(v.render().el);
 						options.context.subviews.push(v);

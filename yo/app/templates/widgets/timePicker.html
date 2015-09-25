@@ -3,11 +3,14 @@
 	<div class="small-12 columns">
 		<div class="row">
 			<div class="small-12 columns text-left">
+				<% if (!showSun) { %>
+					<small class="warn">&nbsp;&nbsp;<i class="fa fa-warning"></i>&nbsp;<%= strings.SunriseSunsetDisabled %></small><br/>
+				<% } %>
 				<input type="radio" name="timeType" value="absolute" id="timeAbsolute" checked><label for="timeAbsolute"><%= strings.IsExactly %>
 				&nbsp;&nbsp;
-				<input type="radio" name="timeType" value="sunrise" id="timeSunrise"><label for="timeSunrise"><%= strings.AtSunrise %>
+				<input type="radio" name="timeType" value="sunrise" id="timeSunrise" <%= showSun ? '' : 'disabled="true"' %>><label for="timeSunrise"><%= strings.AtSunrise %>
 				&nbsp;&nbsp;
-				<input type="radio" name="timeType" value="sunset" id="timeSunset"><label for="timeSunset"><%= strings.AtSunset %>
+				<input type="radio" name="timeType" value="sunset" id="timeSunset" <%= showSun ? '' : 'disabled="true"' %>><label for="timeSunset"><%= strings.AtSunset %>
 			</div>
 		</div>
 		<input id="time" type="text" style="display: none">

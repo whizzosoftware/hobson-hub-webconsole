@@ -14,7 +14,7 @@ define([
 	'text!templates/tasks/taskControlPropertyField.html'
 ], function($, _, Backbone, DateTimePicker, DatePickerView, TimePickerView, RecurrencePickerView, DevicesPickerView, ColorPickerView, strings, template, fieldTemplate) {
 
-	var TaskControlEditPanelView = Backbone.View.extend({
+	return Backbone.View.extend({
 
 		template: _.template(template),
 
@@ -24,8 +24,9 @@ define([
 			'click #buttonAdd': 'onClickAdd'
 		},
 
-		initialize: function() {
+		initialize: function(options) {
 			this.subviews = [];
+			this.showSun = options.showSun;
 		},
 
 		remove: function() {
@@ -55,7 +56,10 @@ define([
 						el.append(v.render().el);
 						this.subviews.push(v);
 					} else if (prop.type === 'TIME') {
-						var v = new TimePickerView(prop);
+						var v = new TimePickerView({
+							model: prop,
+							showSun: this.showSun
+						});
 						el.append(v.render().el);
 						this.subviews.push(v);
 					} else if (prop.type === 'RECURRENCE') {
@@ -115,5 +119,4 @@ define([
 
 	});
 
-	return TaskControlEditPanelView;
 });

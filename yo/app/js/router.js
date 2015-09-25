@@ -161,7 +161,6 @@ define([
 		},
 
 		removeAppView: function() {
-			console.debug('removeAppView');
 			if (this.appView) {
 				this.appView.remove();
 				this.appView = null;

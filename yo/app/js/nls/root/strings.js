@@ -137,6 +137,7 @@ define({
 	"State": "State",
 	"Statistics": "Statistics",
 	"Sunday": "Sunday",
+	"SunriseSunsetDisabled": "No address or lat/long set - sunrise/sunset is disabled.",
 	"targetTempF": "Target Temperature",
 	"targetTempFUnits": "degrees fahrenheit",
 	"TaskExactTOD": "The exact time of day the task will occur",

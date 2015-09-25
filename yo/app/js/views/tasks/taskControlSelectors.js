@@ -17,8 +17,9 @@ define([
 			'data-accordion': ''
 		},
 
-		initialize: function() {
+		initialize: function(options) {
 			this.subviews = [];
+			this.showSun = options.showSun;
 		},
 
 		remove: function() {
@@ -36,7 +37,10 @@ define([
 
 			if (this.model.length > 0) {
 				for (var i=0; i < this.model.length; i++) {
-					var v = new TaskControlSelectorView({model: this.model.at(i)});
+					var v = new TaskControlSelectorView({
+						model: this.model.at(i),
+						showSun: this.showSun
+					});
 					this.$el.append(v.render().el);
 					this.subviews.push(v);
 				}
