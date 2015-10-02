@@ -3,6 +3,7 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+  'moment',
 	'views/device/deviceTab',
 	'views/device/lightbulb',
 	'views/device/switch',
@@ -12,7 +13,7 @@ define([
 	'views/device/weatherStation',
 	'i18n!nls/strings',
 	'text!templates/device/deviceState.html'
-], function($, _, Backbone, DeviceTab, LightbulbView, SwitchView, CameraView, ThermostatView, SensorView, WeatherStationView, strings, template) {
+], function($, _, Backbone, moment, DeviceTab, LightbulbView, SwitchView, CameraView, ThermostatView, SensorView, WeatherStationView, strings, template) {
 
 	return DeviceTab.extend({
 
@@ -32,7 +33,8 @@ define([
 		renderTabContent: function(el) {
 			el.html(this.template({
 				strings: strings,
-				device: this.model.toJSON()
+				device: this.model.toJSON(),
+        lastContactString: this.createLastCheckInString()
 			}));
 
 			switch (this.model.get('type')) {
@@ -63,7 +65,17 @@ define([
 			}
 
 			return this;
-		}
+		},
+
+    createLastCheckInString: function() {
+      var s = null;
+      if (this.model.get('lastCheckIn')) {
+        s = new moment(this.model.get('lastCheckIn')).fromNow();
+      } else {
+        s = 'Never';
+      }
+      return s;
+    }
 
 	});
 
