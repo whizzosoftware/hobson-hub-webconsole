@@ -14,19 +14,29 @@
 	<% } %>
 </div>
 <div class="subnav shadow-2">
-	<ul class="subnav-list">
+	<ul class="show-for-medium-up subnav-list">
 		<% if (hub) { %>
 			<li class="subnav-item"><a id="dashboard" class="<%= fragment.indexOf('dashboard') > -1 ? 'active' : '' %>" href="#dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp;&nbsp;<%= strings.Dashboard %></a></li>
 			<li class="subnav-item"><a id="tasks" class="<%= fragment.indexOf('tasks') > -1 ? 'active' : '' %>" href="#tasks"><i class="fa fa-wrench fa-lg"></i>&nbsp;&nbsp;<%= strings.Tasks %></a></li>
 			<li class="subnav-item"><a id="settings" class="<%= fragment.indexOf('settings') > -1 ? 'active' : '' %>" href="#settings"><i class="fa fa-cog fa-lg"></i>&nbsp;&nbsp;<%= strings.Settings %></a></li>
 		<% } %>
 		<% if (user.remoteInfo) { %>
-			<li class="subnav-item">
+			<li class="show-for-medium-up subnav-item">
 				<a id="cloudlink" class="<%= fragment.indexOf('account') > -1 ? 'active' : '' %>" href="#account"><i class="fa fa-cloud fa-lg"></i>&nbsp;&nbsp;CloudLink</a>
 			</li>
 		<% } %>
-		<li class="subnav-item-right"><i id="power-button" class="fa fa-power-off fa-lg secondary icon-button"></i></li>
+		<li class="show-for-medium-up subnav-item-right"><i id="power-button" class="fa fa-power-off fa-lg secondary icon-button"></i></li>
 	</ul>
+  <ul class="show-for-small-only subnav-list">
+    <li class="subnav-item">
+        <a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false"><i class="fa fa-navicon fa-lg"></i>&nbsp;&nbsp;<%= strings.Menu %></a>
+        <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+          <li><a href="#dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp;&nbsp;<%= strings.Dashboard %></a></li>
+          <li><a href="#tasks"><i class="fa fa-wrench fa-lg"></i>&nbsp;&nbsp;<%= strings.Tasks %></a></li>
+          <li><a href="#settings"><i class="fa fa-cog fa-lg"></i>&nbsp;&nbsp;<%= strings.Settings %></a></li>
+        </ul>
+    </li>
+  </ul>
 </div>
 <div id="power-off-modal" class="reveal-modal" data-reveal>
 </div>

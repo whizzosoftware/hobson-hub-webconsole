@@ -27,9 +27,11 @@ define([
 				})
 			);
 
+      this.$el.foundation('dropdown', 'reflow');
+
 			return this;
 		},
-		
+
 		updateTabs: function() {
 			var fragment = Backbone.history.getFragment();
 			this.$el.find('.subnav-item a').each(function(index, e) {
