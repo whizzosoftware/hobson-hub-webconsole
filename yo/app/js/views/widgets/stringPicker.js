@@ -1,14 +1,14 @@
-// Filename: views/configProperty.js
+// Filename: views/config/stringProperty.js
 define([
-	'jquery',
+	'../../../bower_components/jquery/dist/jquery',
 	'underscore',
 	'backbone',
 	'services/plugin',
 	'i18n!nls/strings',
-	'text!templates/configProperty.html'
+	'text!templates/widgets/stringPicker.html'
 ], function($, _, Backbone, PluginService, strings, pluginConfigTemplate) {
 
-	var ConfigPropertyView = Backbone.View.extend({
+	return Backbone.View.extend({
 
 		template: _.template(pluginConfigTemplate),
 
@@ -37,5 +37,4 @@ define([
 
 	});
 
-	return ConfigPropertyView;
 });

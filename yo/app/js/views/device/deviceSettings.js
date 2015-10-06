@@ -6,7 +6,7 @@ define([
 	'toastr',
 	'models/propertyContainer',
 	'views/device/deviceTab',
-	'views/configProperty',
+	'../widgets/stringPicker',
 	'i18n!nls/strings',
 	'text!templates/device/deviceSettings.html'
 ], function($, _, Backbone, toastr, Config, DeviceTab, ConfigPropertyView, strings, template) {
@@ -35,8 +35,8 @@ define([
 			for (var ix in properties) {
 				var property = properties[ix];
 				var v = new ConfigPropertyView({
-					id: property['@id'], 
-					property: property, 
+					id: property['@id'],
+					property: property,
 					value: this.model.get('configuration').values[property['@id']]
 				});
 				formEl.append(v.render().el);
@@ -71,7 +71,7 @@ define([
 				}
 			});
 			this.$el.foundation('reveal', 'close');
-		}		
+		}
 
 	});
 

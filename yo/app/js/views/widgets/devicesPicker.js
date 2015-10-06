@@ -69,7 +69,7 @@ define([
 				error: function(model, response, options) {
 					console.debug('nope!');
 				}
-			})
+			});
 
 			return this;
 		},
@@ -143,7 +143,15 @@ define([
 			if (el) {
 				el.removeClass('active');
 			}
-		}
+		},
+
+    getId: function() {
+      return this.property['@id'];
+    },
+
+    getValue: function() {
+      return this.property.value;
+    }
 
 	});
 
