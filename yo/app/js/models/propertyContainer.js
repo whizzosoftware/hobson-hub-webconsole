@@ -4,12 +4,9 @@ define([
 ], function(Backbone) {
 	return Backbone.Model.extend({
 
-		defaults: {
-			values: {}
-		},
-
 		initialize: function(options) {
 			this.url = options.url;
+			this.set('values', {});
 		},
 
 		setProperty: function(key, value) {
