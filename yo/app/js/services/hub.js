@@ -40,11 +40,12 @@ define([
 			}
 		},
 
-		sendTestEmail: function(userId, hubId, model) {
+		sendTestEmail: function(ctx, userId, hubId, model) {
 			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/configuration/sendTestEmail';
 			var data = model.toJSON();
 			console.debug('POSTing to URL with data: ', url, data);
 			return $.ajax(url, {
+				context: ctx,
 				type: 'POST',
 				contentType: 'application/json',
 				data: JSON.stringify(data),

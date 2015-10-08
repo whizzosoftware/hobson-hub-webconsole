@@ -23,6 +23,7 @@ define([
 
 		events: {
 			'change input[type=radio]': 'onClickServerType',
+			'keyup input#password': 'onPasswordChange',
 			'click #testButton': 'onClickTest',
 			'click #saveButton': 'onClickSave'
 		},
@@ -82,6 +83,14 @@ define([
 			}
 		},
 
+		onPasswordChange: function(e) {
+			if (this.$el.find('#password').val().length > 0) {
+				this.$el.find('#testButton').removeClass('disabled');
+			} else {
+				this.$el.find('#testButton').addClass('disabled');
+			}
+		},
+
 		onClickServerType: function(e) {
 			this.setServerType(e.target.id);
 		},
@@ -89,20 +98,34 @@ define([
 		onClickTest: function(e) {
 			e.preventDefault();
 
-            var config = this.createEmailConfiguration();
-            if (error) {
-            	toastr.error(error);
-            } else {
-				HubService.sendTestEmail('local', 'local', config).
-                    fail(function(response) {
-                        if (response.status === 202) {
-                            toastr.success(strings.TestMessageSuccessful);
-                        } else {
-                            toastr.error(strings.TestMessageFailure);
-                        }
-                    }
-                );            	
-            }
+			if (!this.$el.find('#testButton').hasClass('disabled')) {
+				this.enableTestButton(false, true);
+	            var config = this.createEmailConfiguration();
+				HubService.sendTestEmail(this, 'local', 'local', config).
+	                fail(function(response) {
+	                    if (response.status === 202) {
+	                        toastr.success(strings.TestMessageSuccessful);
+	                    } else {
+	                        toastr.error(strings.TestMessageFailure);
+	                    }
+	                    this.enableTestButton(true);
+	                }
+	            );
+	        }
+		},
+
+		enableTestButton: function(enable, showSpinner) {
+			var el = this.$el.find('#testButton');
+			if (showSpinner) {
+				el.html('<i class="fa fa-spin fa-spinner"></i>&nbsp;' + strings.SendTestMessage);
+			} else {
+				el.text(strings.SendTestMessage);
+			}
+			if (enable && this.$el.find('#password').val().length > 0) {
+				el.removeClass('disabled');
+			} else {
+				el.addClass('disabled');
+			}
 		},
 
 		onClickSave: function(e) {
