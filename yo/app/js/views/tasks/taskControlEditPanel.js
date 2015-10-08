@@ -3,7 +3,6 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'datetimepicker',
 	'views/widgets/datePicker',
 	'views/widgets/timePicker',
 	'views/widgets/recurrencePicker',
@@ -12,7 +11,7 @@ define([
 	'i18n!nls/strings',
 	'text!templates/tasks/taskControlEditPanel.html',
 	'text!templates/tasks/taskControlPropertyField.html'
-], function($, _, Backbone, DateTimePicker, DatePickerView, TimePickerView, RecurrencePickerView, DevicesPickerView, ColorPickerView, strings, template, fieldTemplate) {
+], function($, _, Backbone, DatePickerView, TimePickerView, RecurrencePickerView, DevicesPickerView, ColorPickerView, strings, template, fieldTemplate) {
 
 	return Backbone.View.extend({
 

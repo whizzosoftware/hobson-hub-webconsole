@@ -27,7 +27,7 @@ define([
 				})
 			);
 
-      this.$el.foundation('dropdown', 'reflow');
+			this.$el.foundation('dropdown', 'reflow');
 
 			return this;
 		},

@@ -5,8 +5,8 @@ define([
 	'backbone',
 	'toastr',
 	'models/propertyContainer',
-	'../widgets/stringPicker',
-  '../widgets/devicesPicker',
+	'views/widgets/stringPicker',
+	'views/widgets/devicesPicker',
 	'i18n!nls/strings',
 	'text!templates/settings/pluginSettings.html'
 ], function($, _, Backbone, toastr, Config, StringPropertyView, DevicesPropertyView, strings, pluginSettingsTemplate) {
@@ -65,8 +65,10 @@ define([
 
 		onClickSave: function(event) {
 			event.preventDefault();
-			console.debug(this.model.get('configuration')['@id']);
 			var config = new Config({url: this.model.get('configuration')['@id']});
+			config.set('cclass', {
+				'@id': this.model.get('configurationClass')['@id']
+			});
 			for (var i=0; i < this.subviews.length; i++) {
 				var v = this.subviews[i];
 				config.setProperty(v.getId(), v.getValue());

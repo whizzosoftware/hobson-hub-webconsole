@@ -6,7 +6,7 @@ define([
 	'toastr',
 	'models/propertyContainer',
 	'views/device/deviceTab',
-	'../widgets/stringPicker',
+	'views/widgets/stringPicker',
 	'i18n!nls/strings',
 	'text!templates/device/deviceSettings.html'
 ], function($, _, Backbone, toastr, Config, DeviceTab, ConfigPropertyView, strings, template) {

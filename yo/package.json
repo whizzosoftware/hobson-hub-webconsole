@@ -23,6 +23,7 @@
     "grunt-mocha": "^0.4.11",
     "grunt-open": "^0.2.3",
     "grunt-rev": "^0.1.0",
+    "grunt-template-jasmine-requirejs": "0.2.3",
     "grunt-usemin": "^2.4.0",
     "jasmine-core": "^2.3.4",
     "jshint-stylish": "^1.0.0",

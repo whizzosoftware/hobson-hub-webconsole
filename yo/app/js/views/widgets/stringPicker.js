@@ -1,6 +1,6 @@
 // Filename: views/config/stringProperty.js
 define([
-	'../../../bower_components/jquery/dist/jquery',
+	'jquery',
 	'underscore',
 	'backbone',
 	'services/plugin',

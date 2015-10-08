@@ -12,16 +12,12 @@ require.config({
                 'datetimepicker': '../bower_components/datetimepicker/jquery.datetimepicker',
                 'dropzone': '../bower_components/dropzone/dist/dropzone-amd-module',
                 'foundation.core': '../bower_components/foundation/js/foundation',
-                'foundation.reveal': '../bower_components/foundation/js/foundation/foundation.reveal',
-                'foundation.accordion': '../bower_components/foundation/js/foundation/foundation.accordion',
                 'foundation.dropdown': '../bower_components/foundation/js/foundation/foundation.dropdown',
-                'foundation.topbar': '../bower_components/foundation/js/foundation/foundation.topbar',
                 'highcharts': '../bower_components/highcharts-release/highcharts',
                 'i18n': '../bower_components/requirejs-i18n/i18n',
                 'jquery': '../bower_components/jquery/dist/jquery',
                 'jquery-colpick': '../bower_components/jquery-colpick/js/colpick',
                 'ladda': '../bower_components/ladda/dist/ladda.min',
-                'marionette': '../bower_components/marionette/lib/backbone.marionette',
                 'masonry': '../bower_components/masonry/dist/masonry.pkgd.min',
                 'modernizr': '../bower_components/foundation/js/vendor/modernizr',
                 'moment': '../bower_components/moment/moment',
@@ -42,22 +38,7 @@ require.config({
                         ],
                         exports: 'Foundation'
                 },
-                'foundation.reveal': {
-                        deps: [
-                                'foundation.core'
-                        ]
-                },
-                'foundation.accordion': {
-                        deps: [
-                                'foundation.core'
-                        ]
-                },
                 'foundation.dropdown': {
-                        deps: [
-                                'foundation.core'
-                        ]
-                },
-                'foundation.topbar': {
                         deps: [
                                 'foundation.core'
                         ]

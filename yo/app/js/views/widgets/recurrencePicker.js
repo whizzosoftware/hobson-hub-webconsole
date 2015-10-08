@@ -3,11 +3,12 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'datetimepicker',
 	'moment',
 	'models/recurrenceDefaults',
 	'i18n!nls/strings',
 	'text!templates/widgets/recurrencePicker.html'
-], function($, _, Backbone, moment, RecurrenceDefaults, strings, template) {
+], function($, _, Backbone, DateTimePicker, moment, RecurrenceDefaults, strings, template) {
 
 	return Backbone.View.extend({
 

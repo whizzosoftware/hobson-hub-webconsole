@@ -28,7 +28,7 @@ require([
 		if (this.onClose) {
 			this.onClose();
 		}
-	}
+	};
 
 	// initialize Foundation Javascript
 	$(document).foundation();
