@@ -119,7 +119,7 @@ define([
 						var p = model.models[ix];
 						updateMap[p.get('pluginId')] = {
 							version: p.get('version'),
-							install: p.get('links').install
+							install: p.get('links') ? p.get('links').install : null
 						};
 					}
 
@@ -144,7 +144,7 @@ define([
 				context: this,
 				success: function (model, response, options) {
 					var el = options.context.$el.find('#plugin-config-modal');
-					el.html(new PluginSettingsView({model: plugin}).render().el);
+					el.html(new PluginSettingsView({model: model}).render().el);
 					el.foundation('reveal', 'open');
 				},
 				error: function() {

@@ -3,13 +3,14 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'toastr',
 	'models/session',
 	'models/itemList',
 	'models/device',
 	'views/collection/devices',
 	'i18n!nls/strings',
 	'text!templates/widgets/devicesPicker.html'
-], function($, _, Backbone, session, ItemList, Device, DevicesView, strings, template) {
+], function($, _, Backbone, toastr, session, ItemList, Device, DevicesView, strings, template) {
 
 	return Backbone.View.extend({
 		template: _.template(template),
@@ -20,15 +21,18 @@ define([
 			'deviceClicked': 'onClickDevice'
 		},
 
-		initialize: function(property, single) {
-			this.property = property;
-			this.single = single;
+		initialize: function(options) {
+			this.property = options.property;
+			this.value = options.value;
+			this.single = options.single;
 			this.subviews = [];
-			this.elMap = {};
+			this.viewMap = {};
 
 			// if single is true, treat as a single device object; if false, treat as an array of devices
-			if (!this.single) {
+			if (!this.value) {
 				this.property.value = [];
+			} else {
+				this.property.value = [this.value];
 			}
 		},
 
@@ -58,7 +62,7 @@ define([
 				context: this,
 				success: function(model, response, options) {
 					if (model.length > 0) {
-						options.context.devicesView = new DevicesView({devices: model});
+						options.context.devicesView = new DevicesView({devices: model, value: options.context.property.value});
 						options.context.$el.find('#deviceList').html(options.context.devicesView.render().el);
 						options.context.subviews.push(options.context.devicesView);
 						options.context.setDeviceCount(0);
@@ -67,7 +71,7 @@ define([
 					}
 				},
 				error: function(model, response, options) {
-					console.debug('nope!');
+					toastr.error('Error retreiving list of devices.');
 				}
 			});
 
@@ -87,71 +91,49 @@ define([
 		onClickDevice: function(event, options) {
 			var deviceId = options.device.get('@id');
 
-			// update selected device or list of selected devices
+			// change the property value
 			if (this.isDeviceSelected(deviceId)) {
-				if (this.single) {
-					if (this.property.value && this.property.value['@id'] === deviceId) {
-						this.removeActiveEl(deviceId);
-						this.property.value = null;
-					}
-				} else {
-					for (var i=0; i < this.property.value.length; i++) {
-						if (this.property.value[i]['@id'] === deviceId) {
-							this.removeActiveEl(deviceId);
-							this.property.value.splice(i, 1);
-							break;
-						}
+				for (var i=0; i < this.property.value.length; i++) {
+					if (this.property.value[i]['@id'] === deviceId) {
+						this.property.value.splice(i,1);
+						break;
 					}
 				}
 			} else {
-				var d = {'@id': deviceId, name: options.device.get('name')};
 				if (this.single) {
-					if (this.property.value) {
-						this.removeActiveEl(this.property.value['@id']);
-					}
-					this.property.value = d;
-				} else {
-					this.property.value.push(d);
+					console.debug('clearing property');
+					this.property.value.splice(0, this.property.value.length);
 				}
-				this.addActiveEl(deviceId, options.el);
+				this.property.value.push({'@id': deviceId, name: options.device.get('name')});
 			}
+
+			// re-render the view
+			this.devicesView.render();
 
 			// update device count selection text
 			this.setDeviceCount(this.single ? (this.property.value ? 1 : 0) : this.property.value.length);
 		},
 
 		isDeviceSelected: function(deviceId) {
-			if (this.single) {
-				return (this.property.value && this.property.value['@id'] === deviceId);
-			} else {
-				for (var i=0; i < this.property.value.length; i++) {
-					if (this.property.value[i]['@id'] === deviceId) {
-						return true;
-					}
+			for (var i=0; i < this.property.value.length; i++) {
+				if (this.property.value[i]['@id'] === deviceId) {
+					return true;
 				}
-				return false;
 			}
+			return false;
 		},
 
-		addActiveEl: function(deviceId, el) {
-			this.elMap[deviceId] = el;
-			el.addClass('active');
-		},
+	    getId: function() {
+			return this.property['@id'];
+	    },
 
-		removeActiveEl: function(deviceId) {
-			var el = this.elMap[deviceId];
-			if (el) {
-				el.removeClass('active');
+	    getValue: function() {
+	    	if (this.single) {
+				return this.property.value.length > 0 ? this.property.value[0] : null;
+	    	} else {
+	      		return this.property.value;
 			}
-		},
-
-    getId: function() {
-      return this.property['@id'];
-    },
-
-    getValue: function() {
-      return this.property.value;
-    }
+	    }
 
 	});
 

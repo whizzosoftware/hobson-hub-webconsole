@@ -1,4 +1,4 @@
-// Filename: views/dashboard
+// Filename: views/settings/plugin.js
 define([
 	'jquery',
 	'underscore',

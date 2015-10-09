@@ -66,11 +66,11 @@ define([
 						el.append(v.render().el);
 						this.subviews.push(v);
 					} else if (prop.type === 'DEVICES') {
-						var v = new DevicesPickerView(prop);
+						var v = new DevicesPickerView({property: prop});
 						el.append(v.render().el);
 						this.subviews.push(v);
 					} else if (prop.type === 'DEVICE') {
-						var v = new DevicesPickerView(prop, true);
+						var v = new DevicesPickerView({property: prop, single: true});
 						el.append(v.render().el);
 						this.subviews.push(v);
 					} else if (prop.type === 'COLOR') {

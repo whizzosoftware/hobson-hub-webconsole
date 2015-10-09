@@ -11,7 +11,7 @@ define([
 	'text!templates/settings/pluginSettings.html'
 ], function($, _, Backbone, toastr, Config, StringPropertyView, DevicesPropertyView, strings, pluginSettingsTemplate) {
 
-	var PluginConfigView = Backbone.View.extend({
+	return Backbone.View.extend({
 
 		template: _.template(pluginSettingsTemplate),
 
@@ -37,27 +37,29 @@ define([
 
 			var formEl = this.$el.find('form');
 
+			console.debug('model', this.model);
+
 			var properties = this.model.get('configurationClass').supportedProperties;
 			for (var ix in properties) {
 				var property = properties[ix];
-        var v;
-        switch (property.type) {
-          case 'STRING':
-          case 'SECURE_STRING':
-            v = new StringPropertyView({
-              id: property['@id'],
-              property: property,
-              value: this.model.get('configuration').values[property['@id']]
-            });
-            break;
-          case 'DEVICE':
-            v = new DevicesPropertyView(property, true);
-            break;
-        }
-        if (v) {
-          formEl.append(v.render().el);
-          this.subviews.push(v);
-        }
+		        var v;
+		        switch (property.type) {
+		          case 'STRING':
+		          case 'SECURE_STRING':
+		            v = new StringPropertyView({
+		              id: property['@id'],
+		              property: property,
+		              value: this.model.get('configuration').values[property['@id']]
+		            });
+		            break;
+		          case 'DEVICE':
+		            v = new DevicesPropertyView({property: property, value: this.model.get('configuration').values[property['@id']], single: true});
+		            break;
+		        }
+		        if (v) {
+		          formEl.append(v.render().el);
+		          this.subviews.push(v);
+		        }
 			}
 
 			return this;
@@ -93,5 +95,4 @@ define([
 
 	});
 
-	return PluginConfigView;
 });

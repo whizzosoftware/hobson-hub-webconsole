@@ -13,6 +13,7 @@ define([
 
 		initialize: function(options) {
 			this.devices = options.devices;
+			this.value = options.value;
 			this.subviews = [];
 		},
 
@@ -24,9 +25,10 @@ define([
 		},
 
 		render: function() {
+			this.$el.html('');
 			for (var i=0; i < this.devices.length; i++) {
 				var device = this.devices.at(i);
-				var v = new DeviceView({device: device});
+				var v = new DeviceView({device: device, value: this.value});
 				this.$el.append(v.render().el);
 				this.subviews.push(v);
 			}
