@@ -13,7 +13,7 @@ define([
 		},
 
 		hasLatLong: function() {
-			return (this.get('values').latitude && this.get('values').longitude);
+			return (this.get('values') && this.get('values').latitude && this.get('values').longitude);
 		},
 
 	});
