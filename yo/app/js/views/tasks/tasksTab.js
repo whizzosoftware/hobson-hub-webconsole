@@ -48,16 +48,23 @@ define([
 		},
 
 		onDeleteTask: function(event, task) {
-			task.destroy({
-				context: this,
-				error: function(model, response, options) {
-					if (response.status === 202) {
+			if (confirm(strings.AreYouSureYouWantToDelete + ' \"' + task.get('name') + '\"?')) {
+				task.destroy({
+					context: this,
+					success: function(model, response, options) {
+						toastr.success(strings.TaskDeleteSuccess);
 						options.context.render();
-					} else {
-						toastr.error('Failed to delete task. See log for details.');
+					},
+					error: function(model, response, options) {
+						if (response.status === 202) {
+							toastr.success(strings.TaskDeleteSuccess);
+							options.context.render();
+						} else {
+							toastr.error(strings.TaskDeleteFailure);
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 
 	});

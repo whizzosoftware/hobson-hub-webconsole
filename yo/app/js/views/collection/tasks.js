@@ -14,11 +14,6 @@ define([
 
 		className: 'small-block-grid-1 medium-block-grid-2 large-block-grid-3',
 
-		events: {
-			'taskDeleteSuccess': 'onTaskDeleteSuccess',
-			'taskDeleteFail': 'onTaskDeleteFail'
-		},
-
 		initialize: function() {
 			this.subviews = [];
 		},
@@ -45,16 +40,6 @@ define([
 				);
 			}
 			return this;
-		},
-
-		onTaskDeleteSuccess: function() {
-			toastr.success(strings.TaskDeleteSuccess);
-			this.$el.html('');
-			this.render();
-		},
-
-		onTaskDeleteFail: function() {
-			toastr.error(strings.TaskDeleteFailure);
 		}
 
 	});

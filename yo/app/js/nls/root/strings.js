@@ -11,6 +11,7 @@ define({
 	"AddressLookupFail": "This address could not be found. You can still use it but you'll need to manually enter latitude and longitude if you'd like Hobson to calculate sunrise/sunset times.",
 	"AddTask": "Create New Task",
 	"Advanced": "Advanced",
+	"AreYouSureYouWantToDelete": "Are you sure you want to delete",
 	"AtSunrise": "at sunrise",
 	"AtSunset": "at sunset",
 	"baromInHg": "Barometric Pressure",
