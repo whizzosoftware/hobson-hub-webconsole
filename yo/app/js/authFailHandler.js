@@ -11,5 +11,6 @@ define([
 			frag += '?expired=true';
 		}
 		Backbone.history.navigate(frag, {trigger: true});
+		location.reload();
 	}
 });
