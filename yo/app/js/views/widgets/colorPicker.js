@@ -5,31 +5,33 @@ define([
 	'backbone',
 	'jquery-colpick',
 	'moment',
+	'views/widgets/baseWidget',
 	'i18n!nls/strings',
 	'text!templates/widgets/colorPicker.html'
-], function($, _, Backbone, DateTimePicker, moment, strings, template) {
+], function($, _, Backbone, DateTimePicker, moment, BaseWidget, strings, template) {
 
-	return Backbone.View.extend({
+	return BaseWidget.extend({
 		template: _.template(template),
 
-		initialize: function(property) {
-			this.property = property;
+		initialize: function(options) {
+			this.required = this.model && this.model.constraints ? this.model.constraints.required : false;
 		},
 
 		render: function() {
 			this.$el.append(
 				this.template({
 					strings: strings,
-					property: this.property
+					property: this.model,
+					required: this.required
 				})
 			);
 
-			this.property.value = 'rgb(255,0,0)';
+			this.model.value = 'rgb(0,0,0)';
 
 			// create color picker
 			this.$el.find('#colorView').colpick({
 				layout: 'hex',
-				color: 'rgb(255,0,0)',
+				color: 'rgb(0,0,0)',
 				onSubmit: function(hsb, hex, rgb, el, bySetColor) {
 					this.onColorChange('rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');
 				}.bind(this)

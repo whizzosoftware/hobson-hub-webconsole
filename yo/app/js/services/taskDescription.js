@@ -55,12 +55,14 @@ define([
 		},
 
 		createDeviceListDescription: function(devices) {
-			if (devices.length === 1) {
+			if (devices && devices.length === 1) {
 				return devices[0].name;
-			} else if (devices.length === 2) {
+			} else if (devices && devices.length === 2) {
 				return devices[0].name + ' or ' + devices[1].name;
-			} else if (devices.length > 2) {
+			} else if (devices && devices.length > 2) {
 				return devices[0].name + ' or ' + (devices.length - 1) + ' other devices';
+			} else {
+				return 'No devices chosen';
 			}
 		}
 

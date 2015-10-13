@@ -5,12 +5,13 @@ define([
 	'backbone',
 	'datetimepicker',
 	'moment',
+	'views/widgets/baseWidget',
 	'models/recurrenceDefaults',
 	'i18n!nls/strings',
 	'text!templates/widgets/recurrencePicker.html'
-], function($, _, Backbone, DateTimePicker, moment, RecurrenceDefaults, strings, template) {
+], function($, _, Backbone, DateTimePicker, moment, BaseWidget, RecurrenceDefaults, strings, template) {
 
-	return Backbone.View.extend({
+	return BaseWidget.extend({
 
 		template: _.template(template),
 
@@ -20,8 +21,7 @@ define([
 			'change input[type=checkbox]': 'onChangeDaySelect'
 		},
 
-		initialize: function(property) {
-			this.property = property;
+		initialize: function(options) {
 			this.defaults = new RecurrenceDefaults();
 		},
 
@@ -29,7 +29,7 @@ define([
 			this.$el.append(
 				this.template({
 					strings: strings,
-					property: this.property,
+					property: this.model,
 					defaults: this.defaults.get('values')
 				})
 			);
@@ -53,7 +53,7 @@ define([
 
 		createICalDateString: function(str) {
 			var date = moment(str, 'MM/DD/YYYY');
-			return date.format('YYYYMMDDT000000');
+			return date.format('YYYYMMDD');
 		},
 
 		createRecurrenceString: function() {
@@ -62,7 +62,7 @@ define([
 			// if an end date is set, append it
 			var end = this.$el.find('#end').val();
 			if (end) {
-				r += ';UNTIL=' + this.createICalDateString(end);
+				r += ';UNTIL=' + this.createICalDateString(end, false);
 			}
 
 			// iterate through all checkboxes and append the days that are checked
@@ -90,7 +90,7 @@ define([
 		onChangeRecurrence: function(event) {
 			var val = $(event.target).val();
 			this.showDaySelector(val.indexOf('WEEKLY') > -1);
-			this.$el.find('#endSelector').css('display', (val === '') ? 'none' : 'block');
+			this.$el.find('#endSelector').css('display', (val === '' || val === 'never') ? 'none' : 'block');
 			this.$el.find('#recurrence').val(this.createRecurrenceString());
 		},
 

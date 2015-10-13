@@ -1,9 +1,10 @@
 <div class="row">
   <div class="large-12 columns">
-    <label><%= property.name %> (<span id="deviceCount" class="device-count"></span>)
-      <div id="deviceList" class="device-list">
+    <label><b><%= property.name %></b><% if (required) { %>&nbsp;<small><%= strings.Required %></small><% } %>
+      <div id="deviceList" class="radius device-list">
       </div>
-      <p><%= property.description %></p>
+      <small style="display: none;" class="error"><%= strings.ThisIsRequiredField %></small>
+      <p><%= property.description %>&nbsp;(<span id="deviceCount"></span>)</p>
     </label>
   </div>
 </div>

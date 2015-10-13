@@ -36,7 +36,7 @@ define([
 				var property = properties[ix];
 				var v = new ConfigPropertyView({
 					id: property['@id'],
-					property: property,
+					model: property,
 					value: this.model.get('configuration').values[property['@id']]
 				});
 				formEl.append(v.render().el);

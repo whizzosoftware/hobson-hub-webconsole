@@ -36,6 +36,9 @@ define([
 						action: actions[i]
 					});
 					var rv = actionView.render().el;
+					if (i > 0) {
+						this.$el.append('<p class="task-list-connector">AND</p>');
+					}
 					this.$el.append(rv);
 					this.subviews.push(actionView);
 				}

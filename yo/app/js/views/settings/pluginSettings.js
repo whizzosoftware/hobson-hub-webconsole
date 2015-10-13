@@ -37,8 +37,6 @@ define([
 
 			var formEl = this.$el.find('form');
 
-			console.debug('model', this.model);
-
 			var properties = this.model.get('configurationClass').supportedProperties;
 			for (var ix in properties) {
 				var property = properties[ix];
@@ -47,13 +45,17 @@ define([
 		          case 'STRING':
 		          case 'SECURE_STRING':
 		            v = new StringPropertyView({
-		              id: property['@id'],
-		              property: property,
-		              value: this.model.get('configuration').values[property['@id']]
+						id: property['@id'],
+						model: property,
+						value: this.model.get('configuration').values[property['@id']]
 		            });
 		            break;
 		          case 'DEVICE':
-		            v = new DevicesPropertyView({property: property, value: this.model.get('configuration').values[property['@id']], single: true});
+		            v = new DevicesPropertyView({
+						model: property, 
+						value: this.model.get('configuration').values[property['@id']], 
+						single: true
+		            });
 		            break;
 		        }
 		        if (v) {
@@ -67,6 +69,10 @@ define([
 
 		onClickSave: function(event) {
 			event.preventDefault();
+
+			this.clearErrors();
+
+			// build the configuration object
 			var config = new Config({url: this.model.get('configuration')['@id']});
 			config.set('cclass', {
 				'@id': this.model.get('configurationClass')['@id']
@@ -76,21 +82,43 @@ define([
 				config.setProperty(v.getId(), v.getValue());
 			}
 			config.set('id', this.model.get('@id'));
-			config.save(null, {
-				error: function(model, response) {
-					if (response.status === 202) {
-						toastr.success(strings.PluginConfigurationSaved);
-					} else {
-						toastr.error(strings.PluginConfigurationNotSaved);
+
+			// validate it
+			var fails = config.validate(this.model.get('configurationClass').supportedProperties);
+			if (fails) {
+				this.showErrors(fails);
+			} else {
+				config.save(null, {
+					error: function(model, response) {
+						if (response.status === 202) {
+							toastr.success(strings.PluginConfigurationSaved);
+						} else {
+							toastr.error(strings.PluginConfigurationNotSaved);
+						}
 					}
-				}
-			});
-			this.$el.foundation('reveal', 'close');
+				});
+				this.$el.foundation('reveal', 'close');
+			}
 		},
 
 		onClickCancel: function(event) {
 			event.preventDefault();
 			this.$el.foundation('reveal', 'close');
+		},
+
+		clearErrors: function() {
+			for (var i=0; i < this.subviews.length; i++) {
+				this.subviews[i].showError(false);
+			}
+		},
+
+		showErrors: function(fields) {
+			for (var i=0; i < this.subviews.length; i++) {
+				var v = this.subviews[i];
+				if (fields.indexOf(v.getId()) > -1) {
+					v.showError(true);
+				}
+			}
 		}
 
 	});

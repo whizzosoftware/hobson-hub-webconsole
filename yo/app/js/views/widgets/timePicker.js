@@ -5,11 +5,12 @@ define([
 	'backbone',
 	'datetimepicker',
 	'moment',
+	'views/widgets/baseWidget',
 	'i18n!nls/strings',
 	'text!templates/widgets/timePicker.html'
-], function($, _, Backbone, DateTimePicker, moment, strings, template) {
+], function($, _, Backbone, DateTimePicker, moment, BaseWidget, strings, template) {
 
-	return Backbone.View.extend({
+	return BaseWidget.extend({
 		template: _.template(template),
 
 		events: {
@@ -20,6 +21,7 @@ define([
 
 		initialize: function(options) {
 			this.showSun = options.showSun;
+			this.required = this.model && this.model.constraints ? this.model.constraints.required : false;
 		},
 
 		render: function() {
@@ -27,6 +29,7 @@ define([
 				this.template({
 					strings: strings,
 					property: this.model,
+					required: this.required,
 					showSun: this.showSun
 				})
 			);
@@ -72,10 +75,30 @@ define([
 			}
 		},
 
+   		showError: function(showError) {
+			BaseWidget.prototype.showError.call(this, showError);
+			if (showError) {
+				this.$el.find('#displayTime').addClass('error');
+			} else {
+				this.$el.find('#displayTime').removeClass('error');
+			}
+		},
+
 		onChangeTimeType: function(event) {
 			var val = $(event.target).val();
-			$('#timeAbsolutePanel').css('display', (val === 'absolute') ? 'block' : 'none');
-			$('#timeRelativePanel').css('display', (val === 'sunrise' || val === 'sunset') ? 'block' : 'none');
+			switch (val) {
+				case 'absolute':
+					this.$el.find('#timeAbsolutePanel').css('display', 'block');
+					this.$el.find('#timeRelativePanel').css('display', 'none');
+					this.$el.find('.description').html(strings.TaskExactTOD);
+					break;
+				case 'sunrise':
+				case 'sunset':
+					this.$el.find('#timeAbsolutePanel').css('display', 'none');
+					this.$el.find('#timeRelativePanel').css('display', 'block');
+					this.$el.find('.description').html(strings.TaskRelativeTOD);
+					break;
+			}
 			this.updateTime(this.$el);
 		},
 

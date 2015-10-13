@@ -125,7 +125,7 @@ define([
 				var conditions = this.task.conditions;
 				var row = -1;
 				for (var i in conditions) {
-					if (condition[i].id == condition.id) {
+					if (condition[i] && condition[i].id == condition.id) {
 						row = i;
 						break;
 					}

@@ -34,43 +34,31 @@ select {
 	margin-top: 20px;
 }
 
-.device-picker {
-	text-align: left;
-	margin-bottom: 20px;
-	ul {
-		li {
-			display: inline-block;
-			overflow: hidden;
-			cursor: pointer;
-			padding: 10px;
-			border-radius: 5px;
-			background: $color-selector-tile-bg;
-			margin-right: 20px;
-			max-width: 75px;
-			min-width: 75px;
-			max-height: 75px;
-			min-height: 75px;
-			text-align: center;
-			img {
-				width: 25px;
-				height: 25px;
-				margin-bottom: 5px;
-			}
-			.title {
-				color: white;
-				font-size: .65em;
-				line-height: 1.1em;
-			}
-		}
-		li.active {
-			background: $color-selector-tile-on-bg;
-		}
-	}
-}
 
 .alert-box {
 	font-weight: 100;
 	ul {
 		margin-bottom: 0;
 	}
+}
+
+.form-field {
+	small {
+		margin-bottom: 0px;
+		text-align: left;
+	}
+	input {
+		margin-bottom: 0px;
+	}
+	input.error {
+		border: 1px solid red;
+	}
+	.description {
+		font-size: .8em;
+		color: $color-text-light;
+	}
+}
+
+.time-type-selector {
+	margin-bottom: 5px;
 }

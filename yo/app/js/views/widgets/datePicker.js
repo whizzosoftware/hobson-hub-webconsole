@@ -5,22 +5,24 @@ define([
 	'backbone',
 	'datetimepicker',
 	'moment',
+	'views/widgets/baseWidget',
 	'i18n!nls/strings',
 	'text!templates/widgets/datePicker.html'
-], function($, _, Backbone, DateTimePicker, moment, strings, template) {
+], function($, _, Backbone, DateTimePicker, moment, BaseWidget, strings, template) {
 
-	var DatePickerView = Backbone.View.extend({
+	return BaseWidget.extend({
 		template: _.template(template),
 
-		initialize: function(property) {
-			this.property = property;
+		initialize: function(options) {
+			this.required = this.model && this.model.constraints ? this.model.constraints.required : false;
 		},
 
 		render: function() {
 			this.$el.append(
 				this.template({
 					strings: strings,
-					property: this.property
+					property: this.model,
+					required: this.required
 				})
 			);
 
@@ -45,9 +47,17 @@ define([
 			});
 
 			return this;
+		},
+
+   		showError: function(showError) {
+			BaseWidget.prototype.showError.call(this, showError);
+			if (showError) {
+				this.$el.find('#displayDate').addClass('error');
+			} else {
+				this.$el.find('#displayDate').removeClass('error');
+			}
 		}
 
 	});
 
-	return DatePickerView;
 });

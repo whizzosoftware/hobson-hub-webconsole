@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="small-12 columns">
-		<label><%= property.name %>
+		<label><b><%= property.name %></b>
 			<input id="recurrence" type="text" value="never" style="display: none;"></input>
 			<select class="radius" id="recurrenceSelect">
 				<option value="never">never</option>
@@ -11,9 +11,9 @@
 		</label>
 	</div>
 </div>
-<div class="row" id="daySelector" style="display: none;">
+<div class="row" id="daySelector" style="display: none; margin-top: 10px;">
 	<div class="small-12 columns">
-		<label>Only on these days</label>
+		<label><b><%= strings.OnlyOnTheseDays %></b></label>
 		<input id="MO" type="checkbox"><label for="monday"><%= strings.Monday %></label></input>
 		<input id="TU" type="checkbox"><label for="tuesday"><%= strings.Tuesday %></label></input>
 		<input id="WE" type="checkbox"><label for="wednesday"><%= strings.Wednesday %></label></input>
@@ -23,11 +23,11 @@
 		<input id="SU" type="checkbox"><label for="sunday"><%= strings.Sunday %></label></input>
 	</div>
 </div>
-<div class="row" id="endSelector" style="display: none;">
-	<div class="small-12 columns">
-		<label>End date
+<div class="row" id="endSelector" style="display: none; margin-top: 20px;">
+	<div class="small-12 columns form-field">
+		<label><b><%= strings.EndDate %></b>
 			<input id="end" class="radius" type="text" placeholder="Never"/>
-			<p class="help-text">The date the task will stop repeating</p>
 		</label>
+		<p class="description"><%= strings.EndDateDescription %></p>
 	</div>
 </div>

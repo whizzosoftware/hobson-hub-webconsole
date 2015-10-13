@@ -42,6 +42,7 @@ define([
 						devices: this.devices,
 						condition: this.task.conditions[i]
 					});
+					this.$el.append('<p class="task-list-connector">AND</p>');
 					this.$el.append(cv.render().el);
 					this.subviews.push(cv);
 				}
