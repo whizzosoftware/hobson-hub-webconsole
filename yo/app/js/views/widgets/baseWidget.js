@@ -11,8 +11,15 @@ define([
 			return this.model['@id'];
 		},
 
+		/**
+		 * This will return a version of the ID that is safe to use in HTML ID attributes.
+		 */
+		getSafeId: function() {
+			return this.model['@id'].replace('.', '-').replace('#', '-');
+		},
+
 		getValue: function() {
-			return this.$el.find('input#' + this.getId()).val();
+			return this.$el.find('input#' + this.getSafeId()).val();
 		},
 
 		showError: function(showError) {
@@ -26,10 +33,10 @@ define([
 						fontSize: '60%'
 					}, 250);
 				});
-				this.$el.find('input#' + this.getId()).addClass('error');
+				this.$el.find('input#' + this.getSafeId()).addClass('error');
 			} else {
 				this.$el.find('label').removeClass('error');
-				this.$el.find('input#' + this.getId()).removeClass('error');
+				this.$el.find('input#' + this.getSafeId()).removeClass('error');
 			}
 		}
 

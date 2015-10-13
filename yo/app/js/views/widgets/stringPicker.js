@@ -21,7 +21,7 @@ define([
 		render: function() {
 			this.$el.html(this.template({
 				strings: strings,
-				id: this.getId(),
+				id: this.getSafeId(),
 				property: this.model,
 				required: this.required,
 				value: this.value

@@ -22,6 +22,7 @@ define([
 				this.template({
 					strings: strings,
 					property: this.model,
+					id: this.getSafeId(),
 					required: this.required
 				})
 			);
