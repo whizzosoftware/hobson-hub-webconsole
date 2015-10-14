@@ -23,7 +23,7 @@ define([
 				this.template({
 					strings: strings,
 					task: this.model.toJSON(),
-					moment: moment
+					schedule: this.createSchedule(this.model)
 				})
 			);
 
@@ -32,6 +32,19 @@ define([
 
 		onClickDelete: function() {
 			this.$el.trigger('deleteTask', this.model);
+		},
+
+		createSchedule: function(task) {
+			var now = moment();
+			var schedule = {};
+			if (task.get('properties').scheduled) {
+				schedule.active = true;
+				var nextRun = new moment(task.get('properties').nextRunTime);
+				if (!nextRun.isBefore(now)) {
+					schedule.nextRunStr = strings.NextRun + ' ' + nextRun.fromNow();
+				}
+			}
+			return schedule;
 		}
 
 	});

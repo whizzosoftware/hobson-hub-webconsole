@@ -140,7 +140,7 @@ define({
 	"ServerType": "Server type",
 	"SessionExpired": "Your session has expired.",
 	"Settings": "Settings",
-	"ShowLatLong": "Show latitude/longitude",
+	"ShowLatLong": "Manually set latitude/longitude",
 	"State": "State",
 	"Statistics": "Statistics",
 	"Sunday": "Sunday",
