@@ -18,6 +18,10 @@ define([
 			'click #cancelButton': 'onClickCancel'
 		},
 
+		initialize: function(options) {
+			this.url = options.url;
+		},
+
 		render: function() {
 			this.$el.html(this.template({
 				strings: strings
@@ -28,7 +32,7 @@ define([
 
 		onClickSave: function(event) {
 			event.preventDefault();
-			HubService.shutdown(this, 'local', 'local').
+			HubService.shutdown(this, this.url).
 				success(function(response) {
                     toastr.success(strings.HubShuttingDown);
 				}).

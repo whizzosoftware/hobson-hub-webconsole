@@ -97,8 +97,7 @@ define([
 			});
 		},
 
-		shutdown: function(ctx, userId, hubId) {
-			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/shutdown';
+		shutdown: function(ctx, url) {
 			return $.ajax(url, {
 				context: ctx,
 				type: 'POST'

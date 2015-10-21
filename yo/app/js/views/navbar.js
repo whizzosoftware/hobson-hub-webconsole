@@ -49,9 +49,12 @@ define([
 		},
 
 		onClickPowerOff: function() {
-			var el = this.$el.find('#power-off-modal');
-			el.html(new PowerOffConfirmView().render().el);
-			el.foundation('reveal', 'open');
+			var url = session.hasSelectedHub() && session.getSelectedHub().get('links') ? session.getSelectedHub().get('links').powerOff : null;
+			if (url) {
+				var el = this.$el.find('#power-off-modal');
+				el.html(new PowerOffConfirmView({url: url}).render().el);
+				el.foundation('reveal', 'open');
+			}
 		}
 	});
 

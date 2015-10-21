@@ -25,7 +25,9 @@
 				<a id="cloudlink" class="<%= fragment.indexOf('account') > -1 ? 'active' : '' %>" href="#account"><i class="fa fa-cloud fa-lg"></i>&nbsp;&nbsp;CloudLink</a>
 			</li>
 		<% } %>
-		<li class="show-for-medium-up subnav-item-right"><i id="power-button" class="fa fa-power-off fa-lg secondary icon-button"></i></li>
+		<% if (hub && hub.links && hub.links.powerOff) { %>
+			<li class="show-for-medium-up subnav-item-right"><i id="power-button" class="fa fa-power-off fa-lg secondary icon-button"></i></li>
+		<% } %>
 	</ul>
   <ul class="show-for-small-only subnav-list">
     <li class="subnav-item">
