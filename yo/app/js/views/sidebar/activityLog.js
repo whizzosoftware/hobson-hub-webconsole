@@ -31,22 +31,24 @@ define([
 			var lastTimeString = null;
 			var now = moment();
 			var yesterday = moment().subtract(1, 'day');
-			for (var i = 0; i < this.model.length; i++) {
-				var activity = this.model.at(i);
-				var activityTime = moment(activity.get('timestamp'));
-				var newHeader = this.formatDate2(activityTime, now, yesterday);
-				if (!lastHeaderString || lastHeaderString !== newHeader) {
-					this.$el.append('<tr><td></td><td class="header"><h2>' + newHeader + '</h2></td></tr>');
-					lastHeaderString = newHeader;
-				}
-				if (activity) {
-					var timeString = activityTime.format('h:mm A');
-					var activityView = new ActivityLogEntryView({model: activity, timeString: (timeString !== lastTimeString) ? timeString : ''});
-					if (lastTimeString !== timeString) {
-						lastTimeString = timeString;
+			if (this.model) {
+				for (var i = 0; i < this.model.length; i++) {
+					var activity = this.model.at(i);
+					var activityTime = moment(activity.get('timestamp'));
+					var newHeader = this.formatDate2(activityTime, now, yesterday);
+					if (!lastHeaderString || lastHeaderString !== newHeader) {
+						this.$el.append('<tr><td></td><td class="header"><h2>' + newHeader + '</h2></td></tr>');
+						lastHeaderString = newHeader;
 					}
-					this.$el.append(activityView.render().el);
-					this.subviews.push(activityView);
+					if (activity) {
+						var timeString = activityTime.format('h:mm A');
+						var activityView = new ActivityLogEntryView({model: activity, timeString: (timeString !== lastTimeString) ? timeString : ''});
+						if (lastTimeString !== timeString) {
+							lastTimeString = timeString;
+						}
+						this.$el.append(activityView.render().el);
+						this.subviews.push(activityView);
+					}
 				}
 			}
 			return this;

@@ -2,9 +2,11 @@
 	<div class="left">
 		<img id="logo" class="icon-left icon-button" src="img/logo.png" />
 	</div>
-	<div class="right">
-		<i id="sidebar-button" class="fa fa-bars icon-button"></i>
-	</div>
+	<% if (hub && hub.links && hub.links.activityLog) { %>
+		<div class="right">
+			<i id="sidebar-button" class="fa fa-bars icon-button"></i>
+		</div>
+	<% } %>
 	<% if (false) { %>
 		<div class="center">
 			<select class="custom radius">

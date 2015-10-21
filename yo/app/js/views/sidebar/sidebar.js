@@ -3,7 +3,10 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'toastr',
 	'moment',
+	'models/session',
+	'services/hub',
 	'models/itemList',
 	'models/variable',
 	'models/activityLogEntry',
@@ -11,7 +14,7 @@ define([
 	'i18n!nls/strings',
 	'text!templates/sidebar/sidebar.html',
 	'text!templates/sidebar/sunriseSunset.html'
-], function($, _, Backbone, moment, ItemList, ActivityLogEntry, Variable, ActivitiesView, strings, template, sunriseTemplate) {
+], function($, _, Backbone, toastr, moment, session, HubService, ItemList, ActivityLogEntry, Variable, ActivitiesView, strings, template, sunriseTemplate) {
 	var SidebarView = Backbone.View.extend({
 
 		template: _.template(template),
@@ -46,21 +49,20 @@ define([
 						options.context.$el.find('.sidebar-subheader').html(strings.NoLatLong);
 					}
 				}, error: function(model, response, options) {
-					console.debug("error getting global variables", response);
+					toastr.error(strings.GlobalVariableError);
 				}
 			});
 
-			this.activities = new ItemList({model: ActivityLogEntry, url: '/api/v1/users/local/hubs/local/activityLog'});
-			this.activities.fetch({
-				context: this,
-				success: function(model, response, options) {
+			HubService.getActivityLog(
+				this,
+				function(model, response, options) {
 					var el = new ActivitiesView({model: model}).render().el;
 					options.context.$el.find('.activity-container').html(el);
 				},
-				error: function() {
-					console.log('nope!');
+				function(model, response, options) {
+					toastr.error(strings.ActivityLogError);
 				}
-			});
+			);
 
 			return this;
 		},

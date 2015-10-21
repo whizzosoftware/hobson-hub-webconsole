@@ -3,8 +3,10 @@ define([
 	'jquery',
 	'models/session',
 	'models/hubs',
-	'models/hub'
-], function($, session, Hubs, Hub) {
+	'models/hub',
+	'models/itemList',
+	'models/activityLogEntry',
+], function($, session, Hubs, Hub, ItemList, ActivityLogEntry) {
 	return {
 		betaRepositoryUrl: 'file:///Users/dan/Desktop/repository.xml',
 
@@ -38,6 +40,23 @@ define([
 			} else {
 				hub.fetch(callback);
 			}
+		},
+
+		getActivityLog: function(ctx, success, error) {
+			var hub = session.getSelectedHub();
+			if (hub) {
+				var url = hub.get('links') ? hub.get('links').activityLog : null;
+				if (url) {
+					this.activities = new ItemList({model: ActivityLogEntry, url: url});
+					this.activities.fetch({
+						context: ctx,
+						success: success,
+						error: error
+					});
+					return;
+				}
+			}
+			success(null, null, {context: ctx});
 		},
 
 		sendTestEmail: function(ctx, userId, hubId, model) {
