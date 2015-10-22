@@ -54,6 +54,16 @@ define([
 
 		getSelectedHubDevicesUrl: function() {
 			return this.getSelectedHub().get('devices')['@id'];
+		},
+
+		showActivityLog: function() {
+			var hub = this.getSelectedHub();
+			return (hub && hub.get('links') && hub.get('links').activityLog);
+		},
+
+		showPowerOff: function() {
+			var hub = this.getSelectedHub();
+			return (hub && hub.get('links') && hub.get('links').powerOff);
 		}
 
 	});

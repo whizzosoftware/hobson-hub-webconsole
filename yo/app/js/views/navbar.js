@@ -23,6 +23,8 @@ define([
 					strings: strings,
 					user: session.hasUser() ? session.getUser().toJSON() : null,
 					hub: session.hasSelectedHub() ? session.getSelectedHub().toJSON() : null,
+					showActivityLog: session.showActivityLog(),
+					showPowerOff: session.showPowerOff(),
 					fragment: Backbone.history.getFragment()
 				})
 			);

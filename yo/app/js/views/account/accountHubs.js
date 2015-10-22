@@ -4,25 +4,27 @@ define([
 	'underscore',
 	'backbone',
 	'models/session',
-	'models/hubs',
+	'models/itemList',
 	'models/hub',
 	'views/account/accountTab',
 	'views/account/hubs',
 	'i18n!nls/strings',
 	'text!templates/account/accountHubs.html'
-], function($, _, Backbone, session, Hubs, Hub, AccountTab, HubsView, strings, template) {
+], function($, _, Backbone, session, ItemList, Hub, AccountTab, HubsView, strings, template) {
 
-	var AccountHubsView = AccountTab.extend({
+	return AccountTab.extend({
 
 		tabName: 'Hubs',
 
 		template: _.template(template),
 
-		subviews: [],
-
 		events: {
 			'click #button-add': 'onClickAdd'
 		},
+
+    	initialize: function() {
+    		this.subviews = [];
+    	},
 
 		remove: function() {
 			for (var i = 0; i < this.subviews.length; i++) {
@@ -39,14 +41,14 @@ define([
 			}));
 
 			// retrieve list of user hubs
-			var hubs = new Hubs(session.getHubsUrl());
+			var hubs = new ItemList({model: Hub, url: session.getHubsUrl() + '?expand=item'});
 			hubs.fetch({
 				context: this,
 				success: function(model, response, options) {
 					var ctx = options.context;
 					console.debug('got hubs: ', model);
 					if (model && model.length > 0) {
-						var v = new HubsView({hubs: model});
+						var v = new HubsView({model: model});
 						ctx.$el.find('#hubListContainer').html(v.render().el);
 						ctx.subviews.push(v);
 					} else {
@@ -56,7 +58,7 @@ define([
 				error: function(model, response, options) {
 					options.context.$el.find('#hubListContainer').html('<p class="notice">An error occurred</p>');
 				}
-			});			
+			});
 		},
 
 		onClickAdd: function(e) {
@@ -75,5 +77,4 @@ define([
 
 	});
 
-	return AccountHubsView;
 });

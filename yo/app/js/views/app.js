@@ -45,11 +45,15 @@ define([
 
 		render: function() {
 			this.$el.append(this.template());
-			this.$el.find('#sidr').sidr({
-				side: 'right',
-				onOpen: this.onSidebarOpen,
-				onClose: this.onSidebarClose
-			});
+
+			if (session.showActivityLog()) {
+				this.$el.find('#sidr').sidr({
+					side: 'right',
+					onOpen: this.onSidebarOpen,
+					onClose: this.onSidebarClose
+				});
+			}
+			
 			return this;
 		},
 

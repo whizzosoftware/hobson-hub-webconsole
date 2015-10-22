@@ -13,10 +13,6 @@ define([
 
 		subviews: [],
 
-		initialize: function(options) {
-			this.hubs = options.hubs;
-		},
-
 		remove: function() {
 			for (var i = 0; i < this.subviews.length; i++) {
 				this.subviews[i].remove();
@@ -25,11 +21,11 @@ define([
 		},
 
 		render: function() {
-			for (var i = 0; i < this.hubs.length; i++) {
-				var hub = this.hubs.at(i);
+			for (var i = 0; i < this.model.length; i++) {
+				var hub = this.model.at(i);
 				if (hub) {
 					var hubView = new HubView({ 
-						hub: hub 
+						model: hub 
 					});
 					this.$el.append(hubView.render().el);
 					this.subviews.push(hubView);

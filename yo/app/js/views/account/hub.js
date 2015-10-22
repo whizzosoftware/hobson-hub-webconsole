@@ -15,14 +15,11 @@ define([
 
 		tagName: 'li',
 
-		initialize: function(options) {
-			this.hub = options.hub;
-		},
-
 		render: function() {
+			console.debug('ind. model: ', this.model);
 			this.$el.html(this.template({
 				user: session.getUser().toJSON(),
-				hub: this.hub.toJSON()
+				hub: this.model.toJSON()
 			}));
 			return this;
 		}		
