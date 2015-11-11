@@ -77,7 +77,7 @@ define([
 
 			if (el.css('display') === 'none') {
 				el.css('display', 'block');
-				new ItemList({model: TaskActionClass, url: '/api/v1/users/local/hubs/local/tasks/actionClasses?expand=item&constraints=true', sort: 'name'}).fetch({
+				new ItemList(null, {model: TaskActionClass, url: '/api/v1/users/local/hubs/local/tasks/actionClasses?expand=item&constraints=true', sort: 'name'}).fetch({
 					context: this,
 					success: function(model, response, options) {
 						$(e.target).addClass('active');

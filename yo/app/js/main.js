@@ -3,10 +3,11 @@ require([
 	'jquery',
 	'underscore',
 	'backbone',
+	'backbone.validation',
 	'foundation.core',
 	'router',
 	'authFailHandler'
-], function($, _, Backbone, Foundation, Router, authFailHandler) {
+], function($, _, Backbone, Validation, Foundation, Router, authFailHandler) {
 	// make sure all 401 responses route to the login page
 	$.ajaxSetup({
 		statusCode: {
@@ -32,6 +33,20 @@ require([
 
 	// initialize Foundation Javascript
 	$(document).foundation();
+
+	// add default form validation callbacks
+	_.extend(Validation.callbacks, {
+		valid: function(view, attr) {
+			view.$el.find('#' + attr).removeClass('error');
+			view.$el.find('#' + attr + 'Error').css('display', 'none');
+		},
+		invalid: function(view, attr, error, selector) {
+			view.$el.find('#' + attr).addClass('error');
+			var el = view.$el.find('#' + attr + 'Error');
+			el.css('display', 'block');
+			el.html(error);
+		}
+	})
 
 	// initialize the router
 	new Router();

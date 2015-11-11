@@ -44,14 +44,12 @@ select {
 
 .form-field {
 	small {
-		margin-bottom: 0px;
+		margin-bottom: 10px;
 		text-align: left;
-	}
-	input {
-		margin-bottom: 0px;
 	}
 	input.error {
 		border: 1px solid red;
+		margin-bottom: 0px;
 	}
 	.description {
 		font-size: .8em;

@@ -37,7 +37,7 @@ define([
 		createSchedule: function(task) {
 			var now = moment();
 			var schedule = {};
-			if (task.get('properties').scheduled) {
+			if (task.get('properties') && task.get('properties').scheduled) {
 				schedule.active = true;
 				var nextRun = new moment(task.get('properties').nextRunTime);
 				if (!nextRun.isBefore(now)) {

@@ -32,46 +32,7 @@ define([
 
 		render: function() {
 			this.$el.html(this.template({ device: this.model.toJSON(), on: this.model.isOn(), strings: strings }));
-			this.updateImage();
 			return this;
-		},
-
-		reRender: function(device) {
-			this.model = device;
-			this.render();
-		},
-
-		updateImage: function() {
-			// start image loading if there's a preferred image URL and we're not waiting on a previous image load
-			var preferredVariable = this.model.get('preferredVariable');
-			if (preferredVariable && preferredVariable.name == 'imageStatusUrl' && !this.imageLoading) {
-				// show the user a wait spinner
-				this.showSpinner(true);
-				this.imageLoading = true;
-
-				var imageEl = this.$el.find('#image-container');
-				$.ajax({
-					context: this,
-					url: preferredVariable.value + '?base64=true',
-					type: 'GET',
-					success: function(data) {
-						this.showSpinner(false);
-						this.imageLoading = false;
-						imageEl.html($('<img src="data:image/jpg;base64,' + data + '" />'));
-					},
-					error: function(response) {
-						this.showSpinner(false);
-						this.imageLoading = false;
-						var msg;
-						if (response.status === 403) {
-							msg = strings.AccessDenied;
-						} else {
-							msg = strings.ErrorOccurred;
-						}
-						imageEl.html('<p class="error">' + msg + '</p>');
-					}
-				});
-			}
 		},
 
 		onIconClick: function() {
@@ -82,9 +43,6 @@ define([
 					case 'on':
 						newValue = !prefVar.value;
 						DeviceService.setDeviceVariable(prefVar["@id"], newValue);
-						break;
-					case 'imageStatusUrl':
-						this.updateImage();
 						break;
 				}
 			}

@@ -1,0 +1,25 @@
+<div class="inset">
+	<div class="row">
+		<div class="large-12 columns text-right">
+			<div id="add-person-button" class="radius button tiny shadow-1"><i class="fa fa-user-plus fa-lg"></i>&nbsp;<%= strings.NewPerson %></div>
+			<div id="add-location-button" class="radius button tiny shadow-1"><i class="fa fa-plus-circle fa-lg"></i>&nbsp;<%= strings.NewLocation %></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="large-12 columns">
+			<h2><%= strings.People %></h2>
+			<p><%= strings.PeopleSummary %></p>
+			<div id="people-table-container"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="large-12 columns">
+			<h2><%= strings.Locations %></h2>
+			<p><%= strings.LocationsSummary %></p>
+			<div id="locations-table-container"></div>
+		</div>
+	</div>
+</div>
+<div id="add-person-modal" class="reveal-modal" data-reveal>
+<div id="add-location-modal" class="reveal-modal" data-reveal>
+</div>

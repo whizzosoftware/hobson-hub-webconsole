@@ -29,7 +29,7 @@ define([
 			this.hub = options.hub;
 			this.logLevel = this.model.get('values').logLevel;
 
-			var logEntries = new ItemList({model: LogEntry, url: this.hub.get('log')['@id']});
+			var logEntries = new ItemList(null, {model: LogEntry, url: this.hub.get('log')['@id']});
 
 			logEntries.fetch({
 				context: this,

@@ -1,0 +1,66 @@
+<div class="row">
+	<div class="columns small-12">
+		<h1><%= strings.NewLocation %></h1>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns form-field">
+		<label><%= strings.Name %>
+			<input id="name" class="radius" type="text" placeholder="<%= strings.EnterLocationName %>">
+		</label>
+		<small id="nameError" class="error" style="display: none;"></small>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns form-field">
+		<label><%= strings.Type %>
+			<select id="type">
+				<option value="map" selected>Map location</option>
+				<option value="beacon">Beacon location</option>
+			</select>
+		</label>
+	</div>
+</div>
+<div id="mapInfo" class="row">
+	<div class="large-4 columns form-field">
+		<label><%= strings.Latitude %>
+			<input id="latitude" class="radius" type="text">
+		</label>
+		<small id="latitudeError" class="error" style="display: none;"></small>
+	</div>
+	<div class="large-4 columns form-field">
+		<label><%= strings.Longitude %>
+			<input id="longitude" class="radius" type="text">
+		</label>
+		<small id="longitudeError" class="error" style="display: none;"></small>
+	</div>
+	<div class="large-4 columns form-field">
+		<label><%= strings.Radius %>
+			<input id="radius" class="radius" type="text">
+		</label>
+		<small id="radiusError" class="error" style="display: none;"></small>
+	</div>
+</div>
+<div id="beaconInfo" class="row" style="display: none;">
+	<div class="large-6 columns form-field">
+		<label><%= strings.BeaconMajor %>
+			<input id="beaconMajor" class="radius" type="text">
+		</label>
+		<small id="beaconMajorError" class="error" style="display: none;"></small>
+	</div>
+	<div class="large-6 columns form-field">
+		<label><%= strings.BeaconMinor %>
+			<input id="beaconMinor" class="radius" type="text">
+		</label>
+		<small id="beaconMinorError" class="error" style="display: none;"></small>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns">
+		<div class="form-control-bar">
+			<a id="cancelButton" class="small radius secondary button shadow-1 left" href="#"><%= strings.Cancel %></a>
+			<a id="addButton" class="small radius button shadow-1 right" href="#"><%= strings.Add %></a>
+		</div>
+	</div>
+</div>
+

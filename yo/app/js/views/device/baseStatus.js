@@ -134,7 +134,7 @@ define([
 		},
 
 		refresh: function() {
-			var variables = new ItemList({model: Variable, url: this.model.get('variables')['@id'] + '?expand=item'});
+			var variables = new ItemList(null, {model: Variable, url: this.model.get('variables')['@id'] + '?expand=item'});
 			variables.fetch({
 				context: this,
 				success: function(model, response, options) {

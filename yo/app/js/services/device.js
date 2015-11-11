@@ -1,10 +1,20 @@
 // Filename: services/device.js
 define([
 	'jquery',
+	'models/session',
 	'models/itemList',
+	'models/device',
 	'models/deviceBootstrap'
-], function($, ItemList, DeviceBootstrap) {
+], function($, session, ItemList, Device, DeviceBootstrap) {
 	var DeviceService = {
+
+		createDevicesModel: function(expansions, sort) {
+			var url = session.getSelectedHubDevicesUrl();
+			if (expansions) {
+				url += '?expand=' + expansions;
+			}
+			return new ItemList(null, {url: url, model: Device, sort: sort});
+		},
 
 		setDeviceVariable: function(url, value) {
 			return $.ajax(url, {
@@ -26,7 +36,7 @@ define([
 		},
 
 		getDeviceBootstraps: function(context, url, success, error) {
-			var bootstraps = new ItemList({model: DeviceBootstrap, url: url, sort: 'deviceId'});
+			var bootstraps = new ItemList(null, {model: DeviceBootstrap, url: url, sort: 'deviceId'});
 			bootstraps.fetch({
 				context: this,
 				success: success,

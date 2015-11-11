@@ -52,7 +52,7 @@ define([
 				success: function(model, response, options) {
 					var showSun = model.hasLatLong();
 
-					var devices = new ItemList({
+					var devices = new ItemList(null, {
 						model: Device,
 						url: '/api/v1/users/local/hubs/local/devices?expand=item'
 					});

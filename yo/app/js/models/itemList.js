@@ -4,7 +4,7 @@ define([
 ], function(Backbone) {
 	var ItemList = Backbone.Collection.extend({
 
-		initialize: function(options) {
+		initialize: function(data, options) {
 			this.url = options.url;
 			this.model = options.model;
 			if (options.sort) {
@@ -29,7 +29,7 @@ define([
 	        filtered = this.filter(function (item) {
 	            return item.get(propName) === propValue;
 	        });
-	        return new ItemList(filtered);
+	        return new ItemList(filtered, null);
 	    }
 
 	});

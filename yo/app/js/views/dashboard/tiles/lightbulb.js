@@ -35,11 +35,6 @@ define([
 			return this;
 		},
 
-		reRender: function(device) {
-			this.model = device;
-			this.render();
-		},
-
 		onIconClick: function() {
 			var prefVar = this.model.get('preferredVariable');
 			var newValue = null;

@@ -37,7 +37,7 @@ define([
 
 			var formEl = this.$el.find('form');
 
-			var properties = this.model.get('configurationClass').supportedProperties;
+			var properties = this.model.get('cclass').supportedProperties;
 			for (var ix in properties) {
 				var property = properties[ix];
 		        var v;
@@ -75,7 +75,7 @@ define([
 			// build the configuration object
 			var config = new Config({url: this.model.get('configuration')['@id']});
 			config.set('cclass', {
-				'@id': this.model.get('configurationClass')['@id']
+				'@id': this.model.get('cclass')['@id']
 			});
 			for (var i=0; i < this.subviews.length; i++) {
 				var v = this.subviews[i];
@@ -84,7 +84,7 @@ define([
 			config.set('id', this.model.get('@id'));
 
 			// validate it
-			var fails = config.validate(this.model.get('configurationClass').supportedProperties);
+			var fails = config.validate(this.model.get('cclass').supportedProperties);
 			if (fails) {
 				this.showErrors(fails);
 			} else {

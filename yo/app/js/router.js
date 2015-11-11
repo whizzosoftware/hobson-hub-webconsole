@@ -39,6 +39,7 @@ define([
 			'settings/general': 'showHubSettingsGeneral',
 			'settings/advanced': 'showHubSettingsAdvanced',
 			'settings/email': 'showHubSettingsEmail',
+			'settings/presence': 'showHubSettingsPresence',
 			'settings/log': 'showHubSettingsLog',
 			'settings/plugins': 'showHubSettingsPlugins',
 			'settings/plugins?queryString': 'showHubSettingsPlugins',
@@ -143,6 +144,11 @@ define([
 		showHubSettingsEmail: function() {
 			this.renderAppRoot('hub');
 			this.appView.showHubSettingsEmail();
+		},
+
+		showHubSettingsPresence: function() {
+			this.renderAppRoot('hub');
+			this.appView.showHubSettingsPresence();
 		},
 
 		showHubSettingsLog: function() {

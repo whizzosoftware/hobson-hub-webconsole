@@ -59,7 +59,7 @@ define([
 				url += '&var=' + this.model.constraints.deviceVariable;
 			}
 
-			var devices = new ItemList({model: Device, url: url, sort: 'name'});
+			var devices = new ItemList(null, {model: Device, url: url, sort: 'name'});
 			devices.fetch({
 				context: this,
 				success: function(model, response, options) {

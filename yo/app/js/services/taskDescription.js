@@ -42,6 +42,8 @@ define([
 					} else {
 						props[name] = s;
 					}
+				} else if (name === 'person' || name === 'location') {
+					props[name] = pc.properties[name].name;
 				} else {
 					props[name] = pc.properties[name];
 				}

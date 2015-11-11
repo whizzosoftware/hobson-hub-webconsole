@@ -10,10 +10,12 @@ define([
 	'views/widgets/devicesPicker',
 	'views/widgets/colorPicker',
 	'views/widgets/stringPicker',
+	'views/widgets/presenceEntityPicker',
+	'views/widgets/locationPicker',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskControlEditPanel.html',
 	'text!templates/tasks/taskControlPropertyField.html'
-], function($, _, Backbone, PropertyContainer, DatePickerView, TimePickerView, RecurrencePickerView, DevicesPickerView, ColorPickerView, StringPickerView, strings, template, fieldTemplate) {
+], function($, _, Backbone, PropertyContainer, DatePickerView, TimePickerView, RecurrencePickerView, DevicesPickerView, ColorPickerView, StringPickerView, PresenceEntityPickerView, LocationPickerView, strings, template, fieldTemplate) {
 
 	return Backbone.View.extend({
 
@@ -86,6 +88,18 @@ define([
 						this.subviews.push(v);
 					} else if (prop.type === 'COLOR') {
 						var v = new ColorPickerView({
+							model: prop
+						});
+						el.append(v.render().el);
+						this.subviews.push(v);
+					} else if (prop.type === 'PRESENCE_ENTITY') {
+						var v = new PresenceEntityPickerView({
+							model: prop
+						});
+						el.append(v.render().el);
+						this.subviews.push(v);
+					} else if (prop.type === 'LOCATION') {
+						var v = new LocationPickerView({
 							model: prop
 						});
 						el.append(v.render().el);

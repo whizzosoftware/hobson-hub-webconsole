@@ -5,8 +5,11 @@ define([
 	'models/hubs',
 	'models/hub',
 	'models/itemList',
+	'models/dashboardData',
+	'models/presenceEntity',
+	'models/presenceLocation',
 	'models/activityLogEntry',
-], function($, session, Hubs, Hub, ItemList, ActivityLogEntry) {
+], function($, session, Hubs, Hub, ItemList, DashboardData, PresenceEntity, PresenceLocation, ActivityLogEntry) {
 	return {
 		betaRepositoryUrl: 'file:///Users/dan/Desktop/repository.xml',
 
@@ -42,12 +45,28 @@ define([
 			}
 		},
 
+		getDashboardData: function(ctx, headers, success, error) {
+			var hub = session.getSelectedHub();
+			var url = '/api/v1/users/local/hubs/local?expand=devices.item.preferredVariable,presenceEntities.item.location';
+			if (hub && url) {
+				var items = new DashboardData({url: url});
+				items.fetch({
+					context: ctx,
+					headers: headers,
+					success: success,
+					error: error
+				});
+			} else {
+				error(null, null, {context: ctx});
+			}
+		},
+
 		getActivityLog: function(ctx, success, error) {
 			var hub = session.getSelectedHub();
 			if (hub) {
 				var url = hub.get('links') ? hub.get('links').activityLog : null;
 				if (url) {
-					this.activities = new ItemList({model: ActivityLogEntry, url: url});
+					this.activities = new ItemList(null, {model: ActivityLogEntry, url: url});
 					this.activities.fetch({
 						context: ctx,
 						success: success,
@@ -57,6 +76,70 @@ define([
 				}
 			}
 			success(null, null, {context: ctx});
+		},
+
+		getLocations: function(ctx, success, error) {
+			var hub = session.getSelectedHub();
+			if (hub) {
+				var url = '/api/v1/users/local/hubs/local/presence/locations?expand=item';
+				if (url) {
+					var locations = new ItemList(null, {model: PresenceLocation, url: url, sort: 'name'});
+					locations.fetch({
+						context: ctx,
+						success: success,
+						error: error
+					});
+					return;
+				}
+			}
+			success(null, null, {context: ctx});
+		},
+
+		createNewPresenceLocation: function() {
+			var hub = session.getSelectedHub();
+			var url = '/api/v1/users/local/hubs/local/presence/locations';
+			if (hub && url) {
+				return new PresenceLocation({url: url});
+			} else {
+				return null;
+			}
+		},
+
+		createPresenceEntitiesModel: function() {
+			var hub = session.getSelectedHub();
+			var url = '/api/v1/users/local/hubs/local/presence/entities?expand=item';
+			if (hub && url) {
+				return new ItemList(null, {model: PresenceEntity, url: url, sort: 'name'});
+			} else {
+				return null;
+			}
+		},
+
+		getPresenceEntities: function(ctx, success, error) {
+			var hub = session.getSelectedHub();
+			if (hub) {
+				var url = '/api/v1/users/local/hubs/local/presence/entities?expand=item';
+				if (url) {
+					var entities = new ItemList(null, {model: PresenceEntity, url: url, sort: 'name'});
+					entities.fetch({
+						context: ctx,
+						success: success,
+						error: error
+					});
+					return;
+				}
+			}
+			success(null, null, {context: ctx});
+		},
+
+		createNewPresenceEntity: function() {
+			var hub = session.getSelectedHub();
+			var url = '/api/v1/users/local/hubs/local/presence/entities';
+			if (hub && url) {
+				return new PresenceEntity({url: url});
+			} else {
+				return null;
+			}
 		},
 
 		sendTestEmail: function(ctx, userId, hubId, model) {

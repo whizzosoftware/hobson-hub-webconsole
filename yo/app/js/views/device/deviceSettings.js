@@ -31,7 +31,7 @@ define([
 
 			var formEl = this.$el.find('form');
 
-			var properties = this.model.get('configurationClass').supportedProperties;
+			var properties = this.model.get('cclass').supportedProperties;
 			for (var ix in properties) {
 				var property = properties[ix];
 				var v = new ConfigPropertyView({
@@ -51,7 +51,7 @@ define([
 			var config = new Config({
 				id: 'id',
 				cclass: {
-					"@id": this.model.get('configurationClass')["@id"]
+					"@id": this.model.get('cclass')["@id"]
 				},
 				url: this.model.get('configuration')['@id']
 			});

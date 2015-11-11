@@ -41,7 +41,7 @@ define([
 			}));
 
 			// retrieve list of user hubs
-			var hubs = new ItemList({model: Hub, url: session.getHubsUrl() + '?expand=item'});
+			var hubs = new ItemList(null, {model: Hub, url: session.getHubsUrl() + '?expand=item'});
 			hubs.fetch({
 				context: this,
 				success: function(model, response, options) {

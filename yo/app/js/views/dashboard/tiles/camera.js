@@ -31,14 +31,12 @@ define([
 		},
 
 		render: function() {
-			this.$el.html(this.template({ device: this.model.toJSON(), on: this.model.isOn(), strings: strings }));
+			if (!this.initialRender) {
+				this.$el.html(this.template({ device: this.model.toJSON(), on: this.model.isOn(), strings: strings }));
+				this.initialRender = true;
+			}
 			this.updateImage();
 			return this;
-		},
-
-		reRender: function(device) {
-			this.model = device;
-			this.render();
 		},
 
 		updateImage: function() {

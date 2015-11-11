@@ -32,7 +32,7 @@ define([
 				this.activities.remove();
 			}
 
-			var itemList = new ItemList({model: Variable, url: '/api/v1/users/local/hubs/local/globalVariables?expand=item'});
+			var itemList = new ItemList(null, {model: Variable, url: '/api/v1/users/local/hubs/local/globalVariables?expand=item'});
 			itemList.fetch({
 				context: this,
 				success: function(model, response, options) {

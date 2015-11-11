@@ -82,12 +82,12 @@ define([
 				$(e.target).addClass('active');
 				el.css('display', 'block');
 
-				new ItemList({model: TaskConditionClass, url: '/api/v1/users/local/hubs/local/tasks/conditionClasses?expand=item&constraints=true', sort: 'name'}).fetch({
+				new ItemList(null, {model: TaskConditionClass, url: '/api/v1/users/local/hubs/local/tasks/conditionClasses?expand=item&constraints=true', sort: 'name'}).fetch({
 					context: this,
 					success: function(model, response, options) {
 						// render task condition class selectors
 						var v = new TaskControlSelectorsView({
-							model: options.context.task.triggerCondition ? new ItemList(model.where({type: 'evaluator'})) : new ItemList(model.where({type: 'trigger'})),
+							model: options.context.task.triggerCondition ? new ItemList(model.where({type: 'evaluator'}), null) : new ItemList(model.where({type: 'trigger'}), null),
 							showSun: options.context.showSun
 						});
 						options.context.$el.find('#taskConditionSelectors').html(v.render().el);

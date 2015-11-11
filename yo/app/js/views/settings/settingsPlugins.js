@@ -69,7 +69,7 @@ define([
 			// disable the beta checkbox while we retrieve its state
 			var checkbox = this.$el.find('#betaCheckbox');
 			checkbox.attr('disabled', true);
-			var items = new ItemList({model: Repository, url: '/api/v1/users/local/hubs/local/repositories'});
+			var items = new ItemList(null, {model: Repository, url: '/api/v1/users/local/hubs/local/repositories'});
 			items.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -97,7 +97,7 @@ define([
 		},
 
 		refresh: function() {
-			var plugins = new ItemList({model: Plugin, url: this.model.url});
+			var plugins = new ItemList(null, {model: Plugin, url: this.model.url});
 			plugins.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -109,7 +109,7 @@ define([
 		checkForUpdates: function() {
 			var hub = session.getSelectedHub();
 			var url = hub.get('remotePlugins')['@id'];
-			var plugins = new ItemList({model: Plugin, url: url + '?expand=item'});
+			var plugins = new ItemList(null, {model: Plugin, url: url + '?expand=item'});
 			plugins.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -139,7 +139,7 @@ define([
 		},
 
 		onClickSettings: function(event, plugin) {
-			var config = new Config({url: plugin.get('@id') + '?expand=configurationClass,configuration'});
+			var config = new Config({url: plugin.get('@id') + '?expand=cclass,configuration'});
 			config.fetch({
 				context: this,
 				success: function (model, response, options) {

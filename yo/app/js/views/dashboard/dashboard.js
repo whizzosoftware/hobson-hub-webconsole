@@ -4,13 +4,14 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
+	'services/hub',
+	'services/device',
 	'models/itemList',
-	'models/device',
-	'models/devices',
-	'views/dashboard/tileGroup',
+	'views/dashboard/devicesSection',
+	'views/dashboard/presenceEntitiesSection',
 	'i18n!nls/strings',
 	'text!templates/dashboard/dashboard.html'
-], function($, _, Backbone, toastr, ItemList, Device, Devices, TileGroupView, strings, template) {
+], function($, _, Backbone, toastr, HubService, DeviceService, ItemList, DevicesSection, PresenceEntitiesSection, strings, template) {
 
 	return Backbone.View.extend({
 		tagName: 'div',
@@ -22,10 +23,9 @@ define([
 		},
 
 		initialize: function(options) {
-			this.url = options.url;
-			this.initialRender = true;
 			this.subviews = [];
 			this.deviceTypes = {};
+			_.bind(this.renderSections, this);
 		},
 
 		remove: function() {
@@ -46,10 +46,25 @@ define([
 
 			// create tile groups
 			var el = this.$el.find('#tileGroups');
-			this.addTileGroup('Cameras', function(d) { return d.get('type') === 'CAMERA'});
-			this.addTileGroup('Sensors', function(d) { return d.get('type') === 'SENSOR'});
-			this.addTileGroup('Devices', function(d) { return (d.get('type') !== 'CAMERA' && d.get('type') !== 'LIGHTBULB' && d.get('type') !== 'SENSOR')});
-			this.addTileGroup('Lights', function(d) { return d.get('type') === 'LIGHTBULB'});
+			this.addSection(new DevicesSection({
+				name: 'Cameras',
+				filter: function(d) { return d.get('type') === 'CAMERA' }
+			}));
+			this.addSection(new PresenceEntitiesSection({
+				name: 'Presence'
+			}));
+			this.addSection(new DevicesSection({
+				name: 'Sensors',
+				filter: function(d) { return d.get('type') === 'SENSOR' }
+			}));
+			this.addSection(new DevicesSection({
+				name: 'Devices',
+				filter: function(d) { return (d.get('type') !== 'CAMERA' && d.get('type') !== 'LIGHTBULB' && d.get('type') !== 'SENSOR') }
+			}));
+			this.addSection(new DevicesSection({
+				name: 'Lights',
+				filter: function(d) { return d.get('type') === 'LIGHTBULB' }
+			}));
 
 			// render initial device tiles
 			this.refresh();
@@ -63,72 +78,68 @@ define([
 			return this;
 		},
 
-		addTileGroup: function(name, filterFunc) {
-			var tg = new TileGroupView({name: name, filterFunc: filterFunc});
-			this.$el.find('#tileGroups').append(tg.render().el);
-			this.subviews.push(tg);
+		addSection: function(section) {
+			this.$el.find('#tileGroups').append(section.render().el);
+			this.subviews.push(section);
 		},
 
 		refresh: function() {
-			if (this.url) {
-				var devices = new ItemList({model: Device, url: this.url, sort: 'name'});
-				var headers = {};
-
-				// set the If-None-Modified header if an ETag was received from a prior response
-				if (this.etag) {
-					headers['If-None-Match'] = this.etag;
-				}
-
-				// fetch the device list
-				devices.fetch({
-					context: this,
-					headers: headers,
-					success: function(model, response, options) {
-						options.context.etag = options.xhr.getResponseHeader('ETag');
-						options.context.model = model;
-						options.context.renderTileGroups(options.context);
-					},
-					error: function(model, response, options) {
-						toastr.error(strings.DeviceListRetrieveError);
-					}
-				});
+			// build request headers
+			var headers = {};
+			if (this.etag) {
+				headers['If-None-Match'] = this.etag;
 			}
+
+			// fetch the device list
+			HubService.getDashboardData(
+				this, 
+				headers, 
+				function(model, response, options) {
+					options.context.etag = options.xhr.getResponseHeader('ETag');
+					if (options.xhr.status !== 304) {
+						options.context.renderSections(model);
+					} else {
+						options.context.renderSections(null);
+					}
+				}, 
+				function(model, response, options) {
+					toastr.error(strings.DeviceListRetrieveError);
+				}
+			);
 		},
 
-		renderTileGroups: function(self) {
+		renderSections: function(newModel) {
 			var hadContent = false;
 
-			// check if there's a device type we haven't encountered before
-			for (var ix=0; ix < self.model.length; ix++) {
-				var d = self.model.at(ix);
-				if (!self.deviceTypes[d.get('type')]) {
-					this.initialRender = true;
-					self.deviceTypes[d.get('type')] = true;
-				}
-			}
-
 			// render all subviews
-			for (var ix in self.subviews) {
-				var tg = self.subviews[ix];
-				var newModel = new Devices(self.model.filter(tg.filterFunc));
-				hadContent = hadContent || newModel.length > 0;
-				tg.model = newModel;
-				if (this.initialRender) {
-					tg.render();
-				} else {
-					tg.reRender();
+			for (var ix in this.subviews) {
+				var section = this.subviews[ix];
+				var m = null;
+
+				if (newModel) {
+					if (section.type && section.type === 'device') {
+						m = newModel.get('devices');
+					} else if (section.type && section.type === 'presence') {
+						m = newModel.get('presenceEntities');
+					}
 				}
+
+				if (m) {
+					section.updateModel(m);
+					hadContent = hadContent || section.hasContent();
+				}
+
+				section.render();
 			}
 
-			// reset initial render flag
-			if (this.initialRender) {
-				this.initialRender = false;
-				if (!hadContent) {
-					self.$el.find('.notice').css('display', 'block');
-				}
-			}
-			if (hadContent) {
-				self.$el.find('.notice').css('display', 'none');
+			// hide the loading indicator
+			this.$el.find('#loading').css('display', 'none');
+
+			// hide/show the "no device" notice as appropriate
+			if (!hadContent && newModel) {
+				this.$el.find('.notice').css('display', 'block');
+			} else {
+				this.$el.find('.notice').css('display', 'none');
 			}
 		},
 
@@ -147,4 +158,4 @@ define([
 		}
 	});
 
-});
+});	

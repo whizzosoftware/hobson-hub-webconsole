@@ -29,13 +29,14 @@ define([
 	'views/settings/settingsGeneral',
 	'views/settings/settingsAdvanced',
 	'views/settings/settingsEmail',
+	'views/settings/settingsPresence',
 	'views/settings/settingsLog',
 	'views/settings/settingsPlugins',
 	'views/account/accountHubs',
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, DeviceTelemetry, TelemetryDataset, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, DeviceTelemetry, TelemetryDataset, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	var AppView = Backbone.View.extend({
 
@@ -58,15 +59,11 @@ define([
 		},
 
 		showDashboard: function() {
-			if (session.hasSelectedHub() && session.getSelectedHubDevicesUrl()) {
-				this.renderContentView(new DashboardView({
-					url: session.getSelectedHubDevicesUrl() + '?expand=item,preferredVariable'
-				}), true);
-			}
+			this.renderContentView(new DashboardView());
 		},
 
 		showTasks: function(userId, hubId) {
-			var tasks = new ItemList({model: Task, url: '/api/v1/users/local/hubs/local/tasks?expand=item', sort: 'name'});
+			var tasks = new ItemList(null, {model: Task, url: '/api/v1/users/local/hubs/local/tasks?expand=item', sort: 'name'});
 			tasks.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -157,6 +154,10 @@ define([
 			});
 		},
 
+		showHubSettingsPresence: function(userId, hubId) {
+			this.renderContentView(new HubSettingsPresenceView());
+		},
+
 		showHubSettingsLog: function() {
 			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
 				context: this,
@@ -185,7 +186,7 @@ define([
 				success: function(model, response, options) {
 					var hub = model;
 					var url = (query === 'filter=available') ? hub.get('remotePlugins')['@id'] : hub.get('localPlugins')['@id'];
-					var plugins = new ItemList({model: Plugin, url: url + '?expand=item'});
+					var plugins = new ItemList(null, {model: Plugin, url: url + '?expand=item'});
 					plugins.fetch({
 						context: options.context,
 						success: function(model, response, options) {
@@ -196,7 +197,6 @@ define([
 							}));
 						},
 						error: function(model, response, options) {
-
 						}
 					});
 				}
@@ -225,7 +225,7 @@ define([
 		},
 
 		showDeviceState: function(deviceUrl) {
-			var device = new Device({url: deviceUrl + '?expand=variables,telemetry'});
+			var device = new Device({url: deviceUrl + '?expand=variables.item,telemetry'});
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -239,7 +239,7 @@ define([
 
 		showDeviceSettings: function(deviceUrl) {
 			// retrieve the device info with full configuration information
-			var device = new Device({url: deviceUrl + '?expand=configurationClass,configuration,telemetry'});
+			var device = new Device({url: deviceUrl + '?expand=cclass,configuration,telemetry'});
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {
@@ -257,7 +257,7 @@ define([
 				context: this,
 				success: function(model, response, options) {
 					var device = model;
-					var datasets = new ItemList({model: TelemetryDataset, url: model.get('telemetry').datasets['@id'] + '?expand=item'});
+					var datasets = new ItemList(null, {model: TelemetryDataset, url: model.get('telemetry').datasets['@id'] + '?expand=item'});
 					datasets.fetch({
 						context: options.context,
 						success: function(model, response, options) {
