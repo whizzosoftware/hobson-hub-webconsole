@@ -86,9 +86,9 @@ define([
 		refresh: function() {
 			// build request headers
 			var headers = {};
-			if (this.etag) {
-				headers['If-None-Match'] = this.etag;
-			}
+			// if (this.etag) {
+			// 	headers['If-None-Match'] = this.etag;
+			// }
 
 			// fetch the device list
 			HubService.getDashboardData(

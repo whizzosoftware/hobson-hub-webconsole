@@ -13,10 +13,9 @@ define([
 
 		template: _.template(template),
 
-		tagName: 'li',
+		tagName: 'tr',
 
 		render: function() {
-			console.debug('ind. model: ', this.model);
 			this.$el.html(this.template({
 				user: session.getUser().toJSON(),
 				hub: this.model.toJSON()

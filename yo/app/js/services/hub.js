@@ -47,7 +47,7 @@ define([
 
 		getDashboardData: function(ctx, headers, success, error) {
 			var hub = session.getSelectedHub();
-			var url = '/api/v1/users/local/hubs/local?expand=devices.item.preferredVariable,presenceEntities.item.location';
+			var url = hub.get('@id') + '?expand=devices.item.preferredVariable,presenceEntities.item.location';
 			if (hub && url) {
 				var items = new DashboardData({url: url});
 				items.fetch({
@@ -81,7 +81,7 @@ define([
 		getLocations: function(ctx, success, error) {
 			var hub = session.getSelectedHub();
 			if (hub) {
-				var url = '/api/v1/users/local/hubs/local/presence/locations?expand=item';
+				var url = hub.get('presenceLocations')['@id'] + '?expand=item';
 				if (url) {
 					var locations = new ItemList(null, {model: PresenceLocation, url: url, sort: 'name'});
 					locations.fetch({
@@ -97,7 +97,7 @@ define([
 
 		createNewPresenceLocation: function() {
 			var hub = session.getSelectedHub();
-			var url = '/api/v1/users/local/hubs/local/presence/locations';
+			var url = hub.get('presenceLocations')['@id'];
 			if (hub && url) {
 				return new PresenceLocation({url: url});
 			} else {
@@ -107,7 +107,7 @@ define([
 
 		createPresenceEntitiesModel: function() {
 			var hub = session.getSelectedHub();
-			var url = '/api/v1/users/local/hubs/local/presence/entities?expand=item';
+			var url = hub.get('presenceEntities')['@id'] + '?expand=item';
 			if (hub && url) {
 				return new ItemList(null, {model: PresenceEntity, url: url, sort: 'name'});
 			} else {
@@ -118,7 +118,7 @@ define([
 		getPresenceEntities: function(ctx, success, error) {
 			var hub = session.getSelectedHub();
 			if (hub) {
-				var url = '/api/v1/users/local/hubs/local/presence/entities?expand=item';
+				var url = hub.get('presenceEntities')['@id'] + '?expand=item';
 				if (url) {
 					var entities = new ItemList(null, {model: PresenceEntity, url: url, sort: 'name'});
 					entities.fetch({
@@ -134,7 +134,7 @@ define([
 
 		createNewPresenceEntity: function() {
 			var hub = session.getSelectedHub();
-			var url = '/api/v1/users/local/hubs/local/presence/entities';
+			var url = hub.get('presenceEntities')['@id'];
 			if (hub && url) {
 				return new PresenceEntity({url: url});
 			} else {

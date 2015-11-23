@@ -81,6 +81,7 @@ define({
 	"IsExactly": "is exactly",
 	"LastCheckIn": "Last check-in",
 	"Latitude": "Latitude",
+	"Loading": "Loading",
 	"LoadingLocations": "Loading locations...",
 	"LoadingPeople": "Loading people...",
 	"LocationCreated": "The location was successfully created.",

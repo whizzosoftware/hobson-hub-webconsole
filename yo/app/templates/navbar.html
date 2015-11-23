@@ -22,8 +22,8 @@
 			<li class="subnav-item"><a id="tasks" class="<%= fragment.indexOf('tasks') > -1 ? 'active' : '' %>" href="#tasks"><i class="fa fa-wrench fa-lg"></i>&nbsp;&nbsp;<%= strings.Tasks %></a></li>
 			<li class="subnav-item"><a id="settings" class="<%= fragment.indexOf('settings') > -1 ? 'active' : '' %>" href="#settings"><i class="fa fa-cog fa-lg"></i>&nbsp;&nbsp;<%= strings.Settings %></a></li>
 		<% } %>
-		<% if (user.remoteInfo) { %>
-			<li class="subnav-item"><a id="cloudlink" class="<%= fragment.indexOf('account') > -1 ? 'active' : '' %>" href="#account"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;Account</a></li>
+		<% if (showAccount) { %>
+			<li class="subnav-item"><a id="account" class="<%= fragment.indexOf('account') > -1 ? 'active' : '' %>" href="#account"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;Account</a></li>
 		<% } %>
 		<% if (showPowerOff) { %>
 			<li class="subnav-item-right"><i id="power-button" class="fa fa-power-off fa-lg secondary icon-button"></i></li>
@@ -36,7 +36,7 @@
           <li><a href="#dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp;&nbsp;<%= strings.Dashboard %></a></li>
           <li><a href="#tasks"><i class="fa fa-wrench fa-lg"></i>&nbsp;&nbsp;<%= strings.Tasks %></a></li>
           <li><a href="#settings"><i class="fa fa-cog fa-lg"></i>&nbsp;&nbsp;<%= strings.Settings %></a></li>
-          <% if (user.remoteInfo) { %>
+          <% if (showAccount) { %>
 			<li><a href="#account"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;Account</a></li>
 		  <% } %>
         </ul>

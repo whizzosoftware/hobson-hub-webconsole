@@ -46,7 +46,7 @@ define([
 					}
 				});				
 			} else {
-				this.$el.html('<p class="notice">' + this.strings.DeviceMissingVariable + '</p>');
+				this.$el.html('<p class="notice">' + strings.DeviceMissingVariable + '</p>');
 			}
 
 			return this;

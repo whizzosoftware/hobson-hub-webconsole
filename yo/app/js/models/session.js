@@ -31,6 +31,14 @@ define([
 			return this.get('user');
 		},
 
+		getUserAccount: function() {
+			var u = this.getUser();
+			if (u) {
+				return u.get('account');
+			}
+			return null;
+		},
+
 		getHubsUrl: function() {
 			return (this.hasUser()) ? this.getUser().get('hubs')['@id'] : null;
 		},
@@ -54,6 +62,10 @@ define([
 
 		getSelectedHubDevicesUrl: function() {
 			return this.getSelectedHub().get('devices')['@id'];
+		},
+
+		showAccount: function() {
+			return this.getUserAccount();
 		},
 
 		showActivityLog: function() {

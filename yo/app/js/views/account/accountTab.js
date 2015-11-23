@@ -29,6 +29,7 @@ define([
 			this.$el.html(
 				this.tabsTemplate({
 					strings: strings,
+					user: session.getUser().toJSON(),
 					tabName: this.tabName
 				})
 			);

@@ -9,7 +9,11 @@ define([
 
 	var HubsView = Backbone.View.extend({
 
-		tagName: 'ul',
+		tagName: 'table',
+
+		attributes: {
+			width: '100%'
+		},
 
 		subviews: [],
 
@@ -21,6 +25,8 @@ define([
 		},
 
 		render: function() {
+			this.$el.html('<thead><td>Name</td><td>Access Key</td></thead>');
+
 			for (var i = 0; i < this.model.length; i++) {
 				var hub = this.model.at(i);
 				if (hub) {
@@ -31,6 +37,7 @@ define([
 					this.subviews.push(hubView);
 				}
 			}
+
 			return this;
 		}		
 
