@@ -32,7 +32,12 @@ define([
 
 		render: function() {
 			if (!this.initialRender) {
-				this.$el.html(this.template({ device: this.model.toJSON(), on: this.model.isOn(), strings: strings }));
+				this.$el.html(this.template({ 
+					device: this.model.toJSON(), 
+					available: DeviceService.isDeviceAvailable(this.model),
+					on: this.model.isOn(), 
+					strings: strings 
+				}));
 				this.initialRender = true;
 			}
 			this.updateImage();

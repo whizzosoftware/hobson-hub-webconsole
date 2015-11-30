@@ -1,11 +1,12 @@
 // Filename: services/device.js
 define([
 	'jquery',
+	'moment',
 	'models/session',
 	'models/itemList',
 	'models/device',
 	'models/deviceBootstrap'
-], function($, session, ItemList, Device, DeviceBootstrap) {
+], function($, moment, session, ItemList, Device, DeviceBootstrap) {
 	var DeviceService = {
 
 		createDevicesModel: function(expansions, sort) {
@@ -71,6 +72,12 @@ define([
 				contentType: 'application/json',
 				dataType: 'json'
 			});
+		},
+
+		isDeviceAvailable: function(device) {
+			var expireTime = moment().add(5, 'm');
+			var lastCheckIn = device.get('lastCheckIn');
+			return lastCheckIn ? (moment(lastCheckIn).isBefore(expireTime)) : false;
 		}
 
 	};
