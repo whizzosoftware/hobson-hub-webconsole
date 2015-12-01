@@ -3,7 +3,8 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-  'moment',
+  	'moment',
+  	'services/device',
 	'views/device/deviceTab',
 	'views/device/lightbulb',
 	'views/device/switch',
@@ -13,7 +14,7 @@ define([
 	'views/device/weatherStation',
 	'i18n!nls/strings',
 	'text!templates/device/deviceState.html'
-], function($, _, Backbone, moment, DeviceTab, LightbulbView, SwitchView, CameraView, ThermostatView, SensorView, WeatherStationView, strings, template) {
+], function($, _, Backbone, moment, DeviceService, DeviceTab, LightbulbView, SwitchView, CameraView, ThermostatView, SensorView, WeatherStationView, strings, template) {
 
 	return DeviceTab.extend({
 
@@ -34,7 +35,8 @@ define([
 			el.html(this.template({
 				strings: strings,
 				device: this.model.toJSON(),
-        lastContactString: this.createLastCheckInString()
+				available: DeviceService.isDeviceAvailable(this.model),
+        		lastContactString: this.createLastCheckInString()
 			}));
 
 			switch (this.model.get('type')) {
