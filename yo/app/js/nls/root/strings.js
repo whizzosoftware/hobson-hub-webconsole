@@ -186,6 +186,7 @@ define({
 	"Username": "Username",
 	"UserNameOrPasswordErrorMsg": "Username or password is incorrect.",
 	"UseSecureConnection": "Use secure connection (SSL/TLS)",
+	"WaitingForCameraImage": "Waiting for camera image...",
 	"Warn": "Warn",
 	"Wednesday": "Wednesday",
 	"windDirDeg": "Wind Direction",

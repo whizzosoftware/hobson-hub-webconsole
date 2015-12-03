@@ -68,6 +68,8 @@ define([
 						var msg;
 						if (response.status === 403) {
 							msg = strings.AccessDenied;
+						} else if (response.status === 404) {
+							msg = strings.WaitingForCameraImage;
 						} else {
 							msg = strings.ErrorOccurred;
 						}
