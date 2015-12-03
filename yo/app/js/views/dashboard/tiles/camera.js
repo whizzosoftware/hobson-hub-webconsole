@@ -71,7 +71,7 @@ define([
 						} else {
 							msg = strings.ErrorOccurred;
 						}
-						imageEl.html('<p class="error">' + msg + '</p>');
+						imageEl.html('<p>' + msg + '</p>');
 					}
 				});
 			}
