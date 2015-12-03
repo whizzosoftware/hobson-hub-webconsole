@@ -75,11 +75,10 @@ define([
 		},
 
 		isDeviceAvailable: function(device) {
-			var expireTime = moment().add(5, 'm');
-			var lastCheckIn = device.get('lastCheckIn');
-			return lastCheckIn ? (moment(lastCheckIn).isBefore(expireTime)) : false;
-		}
-
+			var now = moment().valueOf();
+            var lastCheckIn = device.get('lastCheckIn');
+            return now - lastCheckIn < 300000;		
+        }
 	};
 
 	return DeviceService;
