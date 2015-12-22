@@ -1,4 +1,4 @@
-// Filename: views/settings/settingsAdvanced.js
+// Filename: views/settings/settingsPassports.js
 define([
 	'jquery',
 	'underscore',
@@ -10,15 +10,15 @@ define([
 	'models/logEntry',
 	'services/device',
 	'views/settings/settingsTab',
-	'views/settings/deviceBootstrapsTable',
-	'views/settings/addDeviceBootstrap',
+	'views/settings/devicePassportsTable',
+	'views/settings/addDevicePassport',
 	'i18n!nls/strings',
-	'text!templates/settings/settingsAdvanced.html'
-], function($, _, Backbone, toastr, session, Config, ItemList, LogEntry, DeviceService, SettingsTab, DeviceBootstrapsTableView, AddDeviceBootstrapView, strings, template) {
+	'text!templates/settings/settingsPassports.html'
+], function($, _, Backbone, toastr, session, Config, ItemList, LogEntry, DeviceService, SettingsTab, DevicePassportsTableView, AddDevicePassportView, strings, template) {
 
 	return SettingsTab.extend({
 
-		tabName: 'advanced',
+		tabName: 'passports',
 
 		template: _.template(template),
 
@@ -43,11 +43,11 @@ define([
 				hub: this.hub
 			}));
 
-			DeviceService.getDeviceBootstraps(this, '/api/v1/users/local/hubs/local/deviceBootstraps?expand=item', 
+			DeviceService.getDevicePassports(this, '/api/v1/users/local/hubs/local/devicePassports?expand=item',
 				function(model, response, options) {
-					options.context.bootstrapTableView = new DeviceBootstrapsTableView({model: model});
-					$('#bootstrap-table-container').append(options.context.bootstrapTableView.render().el);
-				}, 
+					options.context.passportTableView = new DevicePassportsTableView({model: model});
+					$('#passport-table-container').append(options.context.passportTableView.render().el);
+				},
 				function(model, response, options) {
 					console.debug('error: ', response);
 				}
@@ -55,8 +55,8 @@ define([
 		},
 
 		onAddButton: function() {
-			var el = this.$el.find('#add-bootstrap-modal');
-			el.html(new AddDeviceBootstrapView().render().el);
+			var el = this.$el.find('#add-passport-modal');
+			el.html(new AddDevicePassportView().render().el);
 			el.foundation('reveal', 'open');
 		},
 

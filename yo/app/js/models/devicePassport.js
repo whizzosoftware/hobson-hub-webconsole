@@ -1,4 +1,4 @@
-// Filename: models/deviceBootstrap.js
+// Filename: models/devicePassport.js
 define([
 	'backbone'
 ], function(Backbone) {

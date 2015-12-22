@@ -1,11 +1,11 @@
-// Filename: views/settings/deviceBootstrap.js
+// Filename: views/settings/devicePassport.js
 define([
 	'jquery',
 	'underscore',
 	'backbone',
 	'moment',
 	'i18n!nls/strings',
-	'text!templates/settings/deviceBootstrap.html'
+	'text!templates/settings/devicePassport.html'
 ], function($, _, Backbone, moment, strings, template) {
 
 	return Backbone.View.extend({
@@ -24,7 +24,7 @@ define([
 				this.template({
 					strings: strings,
 					moment: moment,
-					bootstrap: this.model.toJSON()
+					passport: this.model.toJSON()
 				})
 			);
 

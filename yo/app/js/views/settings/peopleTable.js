@@ -4,10 +4,10 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
-	'services/device',
+	'services/hub',
 	'views/settings/person',
 	'i18n!nls/strings'
-], function($, _, Backbone, toastr, DeviceService, PersonView, strings) {
+], function($, _, Backbone, toastr, HubService, PersonView, strings) {
 
 	return Backbone.View.extend({
 		tagName: 'table',
@@ -40,18 +40,18 @@ define([
 					this.subviews.push(v);
 				}
 			} else {
-				this.$el.append('<tr><td class="text-center" style="padding: 25px;" colspan="5">No people have been created.</td></tr>');
+				this.$el.append('<tr><td class="text-center" style="padding: 25px;" colspan="5">' + strings.NoPeople + '</td></tr>');
 			}
 			return this;
 		},
 
-		onDeleteClick: function(e, bootstrap) {
+		onDeleteClick: function(e, person) {
 			e.preventDefault();
-			DeviceService.deleteDeviceBootstrap(this, bootstrap.get('@id'))
+			HubService.deletePresenceEntity(this, person.get('@id'))
 				.success(function(response) {
-					toastr.success('Device bootstrap deleted.');
+					toastr.success(strings.PersonDeleted);
 				}).fail(function(response) {
-					toastr.error('Error deleting device bootstrap. See the log for details.');
+					toastr.error(strings.PersonDeletedError);
 				});
 		}
 

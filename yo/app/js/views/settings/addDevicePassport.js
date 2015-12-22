@@ -1,4 +1,4 @@
-// Filename: views/settings/addDeviceBootstrap.js
+// Filename: views/settings/addDevicePassport.js
 define([
 	'jquery',
 	'underscore',
@@ -6,7 +6,7 @@ define([
 	'toastr',
 	'services/device',
 	'i18n!nls/strings',
-	'text!templates/settings/addDeviceBootstrap.html'
+	'text!templates/settings/addDevicePassport.html'
 ], function($, _, Backbone, toastr, DeviceService, strings, template) {
 
 	return Backbone.View.extend({
@@ -36,14 +36,17 @@ define([
 
 			var deviceId = this.$el.find('#deviceId').val();
 
-			DeviceService.addDeviceBootstrap(this, '/api/v1/users/local/hubs/local/deviceBootstraps', deviceId)
+			DeviceService.addDevicePassport(this, '/api/v1/users/local/hubs/local/devicePassports', deviceId)
 				.success(function(response) {
-					console.debug('success');
 					this.$el.foundation('reveal', 'close');
-					toastr.success('Device bootstrap created.');
+					toastr.success(strings.DevicePassportCreated);
 				}).fail(function(response) {
-					console.debug('fail');
-					toastr.error('Error creating device bootstrap. See the log for details.');
+					if (response.status === 202) {
+						this.$el.foundation('reveal', 'close');
+						toastr.success(strings.DevicePassportCreated);
+					} else {
+						toastr.error(strings.DevicePassportCreationError);
+					}
 				});
 		}
 

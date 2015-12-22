@@ -27,7 +27,7 @@ define([
 	'views/device/deviceSettings',
 	'views/device/deviceStatistics',
 	'views/settings/settingsGeneral',
-	'views/settings/settingsAdvanced',
+	'views/settings/settingsPassports',
 	'views/settings/settingsEmail',
 	'views/settings/settingsPresence',
 	'views/settings/settingsLog',
@@ -114,7 +114,7 @@ define([
 			});
 		},
 
-		showHubSettingsAdvanced: function() {
+		showHubSettingsPassports: function() {
 			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
 				context: this,
 				success: function(model, response, options) {

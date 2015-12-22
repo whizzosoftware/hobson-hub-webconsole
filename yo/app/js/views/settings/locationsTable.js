@@ -39,18 +39,18 @@ define([
 					this.subviews.push(v);
 				}
 			} else {
-				this.$el.append('<tr><td class="text-center" style="padding: 25px;" colspan="5">No locations have been created.</td></tr>');
+				this.$el.append('<tr><td class="text-center" style="padding: 25px;" colspan="5">' + strings.NoLocations + '</td></tr>');
 			}
 			return this;
 		},
 
-		onDeleteClick: function(e, bootstrap) {
+		onDeleteClick: function(e, location) {
 			e.preventDefault();
-			DeviceService.deleteDeviceBootstrap(this, bootstrap.get('@id'))
+			HubService.deletePresenceLocation(this, location.get('@id'))
 				.success(function(response) {
-					toastr.success('Device bootstrap deleted.');
+					toastr.success(strings.LocationDeleted);
 				}).fail(function(response) {
-					toastr.error('Error deleting device bootstrap. See the log for details.');
+					toastr.error(strings.LocationDeletedError);
 				});
 		}
 

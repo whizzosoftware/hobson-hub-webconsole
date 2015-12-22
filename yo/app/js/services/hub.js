@@ -105,6 +105,15 @@ define([
 			}
 		},
 
+		deletePresenceLocation: function(context, url) {
+			return $.ajax(url, {
+				context: context,
+				type: 'DELETE',
+				contentType: 'application/json',
+				dataType: 'json'
+			});
+		},
+
 		createPresenceEntitiesModel: function() {
 			var hub = session.getSelectedHub();
 			var url = hub.get('presenceEntities')['@id'] + '?expand=item';
@@ -140,6 +149,15 @@ define([
 			} else {
 				return null;
 			}
+		},
+
+		deletePresenceEntity: function(context, url) {
+			return $.ajax(url, {
+				context: context,
+				type: 'DELETE',
+				contentType: 'application/json',
+				dataType: 'json'
+			});
 		},
 
 		sendTestEmail: function(ctx, userId, hubId, model) {

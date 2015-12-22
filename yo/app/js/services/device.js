@@ -5,8 +5,8 @@ define([
 	'models/session',
 	'models/itemList',
 	'models/device',
-	'models/deviceBootstrap'
-], function($, moment, session, ItemList, Device, DeviceBootstrap) {
+	'models/devicePassport'
+], function($, moment, session, ItemList, Device, DevicePassport) {
 	var DeviceService = {
 
 		createDevicesModel: function(expansions, sort) {
@@ -36,16 +36,16 @@ define([
 			});
 		},
 
-		getDeviceBootstraps: function(context, url, success, error) {
-			var bootstraps = new ItemList(null, {model: DeviceBootstrap, url: url, sort: 'deviceId'});
-			bootstraps.fetch({
+		getDevicePassports: function(context, url, success, error) {
+			var passports = new ItemList(null, {model: DevicePassport, url: url, sort: 'deviceId'});
+			passports.fetch({
 				context: this,
 				success: success,
 				error: error
 			});
 		},
 
-		addDeviceBootstrap: function(context, url, deviceId) {
+		addDevicePassport: function(context, url, deviceId) {
 			return $.ajax(url, {
 				context: context,
 				type: 'POST',
@@ -55,7 +55,7 @@ define([
 			});
 		},
 
-		resetDeviceBootstrap: function(context, url) {
+		resetDevicePassport: function(context, url) {
 			return $.ajax(url, {
 				context: context,
 				type: 'POST',
@@ -65,7 +65,7 @@ define([
 			});
 		},
 
-		deleteDeviceBootstrap: function(context, url) {
+		deleteDevicePassport: function(context, url) {
 			return $.ajax(url, {
 				context: context,
 				type: 'DELETE',
