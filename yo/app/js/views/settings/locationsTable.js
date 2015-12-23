@@ -4,9 +4,10 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
+	'services/hub',
 	'views/settings/location',
 	'i18n!nls/strings'
-], function($, _, Backbone, toastr, LocationView, strings) {
+], function($, _, Backbone, toastr, HubService, LocationView, strings) {
 
 	return Backbone.View.extend({
 		tagName: 'table',
@@ -46,12 +47,17 @@ define([
 
 		onDeleteClick: function(e, location) {
 			e.preventDefault();
-			HubService.deletePresenceLocation(this, location.get('@id'))
-				.success(function(response) {
-					toastr.success(strings.LocationDeleted);
-				}).fail(function(response) {
-					toastr.error(strings.LocationDeletedError);
-				});
+			if (confirm(strings.AreYouSureYouWantToDelete + ' \"' + location.get('name') + '\"?')) {
+				HubService.deletePresenceLocation(this, location.get('@id'))
+					.fail(function(response) {
+						if (response.status === 202) {
+							toastr.success(strings.LocationDeleted);
+							this.$el.trigger('entityDeleted', location);
+						} else {
+							toastr.error(strings.LocationDeletedError);
+						}
+					});
+			}
 		}
 
 	});

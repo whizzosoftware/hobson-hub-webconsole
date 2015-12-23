@@ -47,12 +47,17 @@ define([
 
 		onDeleteClick: function(e, person) {
 			e.preventDefault();
-			HubService.deletePresenceEntity(this, person.get('@id'))
-				.success(function(response) {
-					toastr.success(strings.PersonDeleted);
-				}).fail(function(response) {
-					toastr.error(strings.PersonDeletedError);
-				});
+			if (confirm(strings.AreYouSureYouWantToDelete + ' \"' + person.get('name') + '\"?')) {
+				HubService.deletePresenceEntity(this, person.get('@id'))
+					.fail(function(response) {
+						if (response.status === 202) {
+							toastr.success(strings.PersonDeleted);
+							this.$el.trigger('entityDeleted', person);
+						} else {
+							toastr.error(strings.PersonDeletedError);
+						}
+					});
+			}
 		}
 
 	});

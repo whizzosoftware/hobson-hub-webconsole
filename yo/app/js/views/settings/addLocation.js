@@ -98,7 +98,7 @@ define([
 						if (response.status === 202) {
 							toastr.success(strings.LocationCreated);
 						} else {
-							toastr.error(strings.LocationCreationFailed);
+							toastr.error(strings.LocationCreatedFailed);
 						}
 					}
 				});

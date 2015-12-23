@@ -26,7 +26,8 @@ define([
 
 		events: {
 			'click #add-person-button': 'onAddPersonButton',
-			'click #add-location-button': 'onAddLocationButton'
+			'click #add-location-button': 'onAddLocationButton',
+			'entityDeleted': 'render'
 		},
 
 		initialize: function(options) {
@@ -52,7 +53,7 @@ define([
 					options.context.$el.find('#people-table-container').html(options.context.peopleTableView.render().el);
 				}, 
 				function(model, response, options) {
-					toastr.error('Error retrieving people');
+					toastr.error(strings.PersonRetrieveError);
 				}
 			);
 
@@ -62,7 +63,7 @@ define([
 					options.context.$el.find('#locations-table-container').html(options.context.locationsTableView.render().el);
 				},
 				function(model, response, options) {
-					toastr.error('Error retrieving locations');
+					toastr.error(strings.LocationRetrieveError);
 				}
 			);
 		},

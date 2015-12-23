@@ -65,9 +65,9 @@ define([
 					error: function(model, response, options) {
 						options.context.$el.foundation('reveal', 'close');
 						if (response.status === 202) {
-							toastr.success('Person created.');
+							toastr.success(strings.PersonCreated);
 						} else {
-							toastr.error('Error creating person. See the log for details.');
+							toastr.error(strings.PersonCreatedError);
 						}
 					}
 				});
