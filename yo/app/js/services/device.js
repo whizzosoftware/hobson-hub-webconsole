@@ -75,9 +75,7 @@ define([
 		},
 
 		isDeviceAvailable: function(device) {
-			var now = moment().valueOf();
-            var lastCheckIn = device.get('lastCheckIn');
-            return now - lastCheckIn < 300000;		
+            return device.get('available');
         }
 	};
 
