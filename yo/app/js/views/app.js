@@ -13,19 +13,16 @@ define([
 	'models/device',
 	'models/deviceConfig',
 	'models/task',
-	'models/deviceTelemetry',
-	'models/telemetryDataset',
 	'services/hub',
 	'views/navbar',
 	'views/sidebar/sidebar',
 	'views/dashboard/dashboard',
 	'views/tasks/tasksTab',
 	'views/tasks/taskCreate',
-	'views/insight/insight',
-	'views/insight/electric',
 	'views/device/deviceState',
 	'views/device/deviceSettings',
-	'views/device/deviceStatistics',
+	'views/data/dataTab',
+	'views/data/dataViewer',
 	'views/settings/settingsGeneral',
 	'views/settings/settingsPassports',
 	'views/settings/settingsEmail',
@@ -36,7 +33,7 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, DeviceTelemetry, TelemetryDataset, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, InsightView, InsightElectricView, DeviceStateView, DeviceSettingsView, DeviceStatisticsView, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, DeviceStateView, DeviceSettingsView, DataTabView, DataViewer, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	var AppView = Backbone.View.extend({
 
@@ -60,6 +57,14 @@ define([
 
 		showDashboard: function() {
 			this.renderContentView(new DashboardView());
+		},
+
+		showData: function() {
+			this.renderContentView(new DataTabView());
+		},
+
+		showDataViewer: function(dataStreamId, inr) {
+			this.renderContentView(new DataViewer({dataStreamId: dataStreamId, inr: inr}));
 		},
 
 		showTasks: function(userId, hubId) {

@@ -9,6 +9,7 @@ require.config({
                 'backbone.stickit': '../bower_components/backbone.stickit/backbone.stickit',
                 'base64': '../bower_components/base-64/base64',
                 'bridget': '../bower_components/jquery-bridget/jquery.bridget',
+                'chartist': '../bower_components/chartist/dist/chartist',
                 'cookies': '../bower_components/cookies-js/dist/cookies',
                 'datetimepicker': '../bower_components/datetimepicker/jquery.datetimepicker',
                 'dropzone': '../bower_components/dropzone/dist/dropzone-amd-module',

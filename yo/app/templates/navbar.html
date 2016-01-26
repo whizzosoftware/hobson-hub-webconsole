@@ -20,6 +20,9 @@
 		<% if (hub) { %>
 			<li class="subnav-item"><a id="dashboard" class="<%= fragment.indexOf('dashboard') > -1 ? 'active' : '' %>" href="#dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp;&nbsp;<%= strings.Dashboard %></a></li>
 			<li class="subnav-item"><a id="tasks" class="<%= fragment.indexOf('tasks') > -1 ? 'active' : '' %>" href="#tasks"><i class="fa fa-wrench fa-lg"></i>&nbsp;&nbsp;<%= strings.Tasks %></a></li>
+			<% if (showDataStreams) { %>
+				<li class="subnav-item"><a id="data" class="<%= fragment.indexOf('data') > -1 ? 'active' : '' %>" href="#data"><i class="fa fa-bar-chart fa-lg"></i>&nbsp;&nbsp;Data</a></li>
+			<% } %>
 			<li class="subnav-item"><a id="settings" class="<%= fragment.indexOf('settings') > -1 ? 'active' : '' %>" href="#settings"><i class="fa fa-cog fa-lg"></i>&nbsp;&nbsp;<%= strings.Settings %></a></li>
 		<% } %>
 		<% if (showAccount) { %>

@@ -1,4 +1,4 @@
-// Filename: collections/devices.js
+// Filename: models/devices.js
 define([
 	'backbone',
 	'models/device'

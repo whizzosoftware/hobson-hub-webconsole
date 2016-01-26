@@ -64,6 +64,15 @@ define([
 			return this.getSelectedHub().get('devices')['@id'];
 		},
 
+		hasDataStreams: function() {
+			return (this.getUser().get('dataStreams'));
+		},
+
+		getDataStreamsUrl: function() {
+			var d = this.getUser() ? this.getUser().get('dataStreams') : null;
+			return (d ? d['@id'] : null);
+		},
+
 		showAccount: function() {
 			return this.getUserAccount();
 		},

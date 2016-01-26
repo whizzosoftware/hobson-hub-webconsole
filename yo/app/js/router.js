@@ -27,6 +27,9 @@ define([
 			// hub app
 			'hub': 'showHubRoot',
 			'dashboard': 'showDashboard',
+			'data': 'showData',
+			'data/:dataStreamId/view': 'showDataViewer',
+			'data/:dataStreamId/view?inr=:inr': 'showDataViewer',
 			'tasks': 'showTasks',
 			'tasks/add': 'showTaskAdd',
 			'insight': 'showInsight',
@@ -95,6 +98,17 @@ define([
 		showTaskAdd: function() {
 			this.renderAppRoot('hub');
 			this.appView.showTaskAdd();
+		},
+
+		showData: function() {
+			this.renderAppRoot('hub');
+			this.appView.showData();
+		},
+
+		showDataViewer: function(dataStreamId, inr) {
+			var s = inr ? inr.replace('inr=', '') : null;
+			this.renderAppRoot('hub');
+			this.appView.showDataViewer(dataStreamId, s);
 		},
 
 		showInsight: function() {
