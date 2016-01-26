@@ -41,7 +41,7 @@ define([
 
 			// show loading prompt
 			var n = this.$el.find('.ct-chart');
-			n.html('<div id="loading" style="margin-top: 50px; text-align: center;">Loading...</div>');
+			this.showLoadingPrompt(strings.Loading);
 
 			UserService.getDataStream(this, this.dataStreamId, this.inr, function(ctx, model) {
 				// var labels = [];
@@ -53,64 +53,65 @@ define([
 
 				ctx.$el.find('#inr-selection').val(inr);
 
-				// build series data model
-				for (var p in data) {
-					var ts = data[p]['timestamp'];
-					for (var k in data[p]) {
-						if (k !== 'timestamp') {
-							// labels.push(data[p][k]);
-						// } else {
-							var s = seriesMap[k];
-							if (!s) {
-								s = {name: strings[k], data: []};
-								series.push(s);
-								seriesMap[k] = s;
+				if (data.length > 0) {
+					// build series data model
+					for (var p in data) {
+						var ts = data[p]['timestamp'];
+						for (var k in data[p]) {
+							if (k !== 'timestamp') {
+								// labels.push(data[p][k]);
+							// } else {
+								var s = seriesMap[k];
+								if (!s) {
+									s = {name: strings[k], data: []};
+									series.push(s);
+									seriesMap[k] = s;
+								}
+								s.data.push({x: new Date(ts), y: data[p][k]});
 							}
-							s.data.push({x: new Date(ts), y: data[p][k]});
 						}
 					}
+
+					// construct chart
+					var chart = new Chartist.Line(n.get(0), {
+						// labels: labels,
+						series: series
+					}, {
+						showPoint: !ctx.inr || ctx.inr === 'HOURS_1',
+						seriesBarDistance: 15,
+						fullWidth: true,
+						axisX: {
+							type: Chartist.FixedScaleAxis,
+							divisor: 10,
+							labelInterpolationFnc: ctx.labelFunc
+						},
+						axisY: {
+							onlyInteger: true
+						}
+					}, [
+						['screen and (min-width: 641px) and (max-width: 1024px)', {
+							seriesBarDistance: 10,
+							axisX: {
+								divisor: 6
+							}
+						}],
+						['screen and (max-width: 640px)', {
+							seriesBarDistance: 5,
+							axisX: {
+								divisor: 4
+							}
+						}]
+					]);
+
+					chart.on('created', function(data) {
+						ctx.removeLoadingPrompt();
+					});
+				} else {
+					ctx.showLoadingPrompt(strings.NoDataAvailable);
 				}
 
-				// remove loading prompt
-				// n.html('');
-
-				// construct chart
-				var chart = new Chartist.Line(n.get(0), {
-					// labels: labels,
-					series: series
-				}, {
-					showPoint: !ctx.inr || ctx.inr === 'HOURS_1',
-					seriesBarDistance: 15,
-					fullWidth: true,
-					axisX: {
-						type: Chartist.FixedScaleAxis,
-						divisor: 10,
-						labelInterpolationFnc: ctx.labelFunc
-					},
-					axisY: {
-						onlyInteger: true
-					}
-				}, [
-					['screen and (min-width: 641px) and (max-width: 1024px)', {
-						seriesBarDistance: 10,
-						axisX: {
-							divisor: 6
-						}
-					}],
-					['screen and (max-width: 640px)', {
-						seriesBarDistance: 5,
-						axisX: {
-							divisor: 4
-						}
-					}]
-				]);
-
-				chart.on('created', function(data) {
-					n.find('#loading').remove();
-				});
-
 			}, function() {
-				console.debug('error getting data stream');
+				toastr.error(strings.ErrorOccurred);
 			});
 		},
 
@@ -122,6 +123,19 @@ define([
 				return t + '<br/>' + d;
 			} else {
 				return t;
+			}
+		},
+
+		showLoadingPrompt: function(str) {
+			this.removeLoadingPrompt();
+			var n = this.$el.find('.ct-chart');
+			n.html('<div id="loading" style="margin-top: 50px; text-align: center;">' + str + '</div>');
+		},
+
+		removeLoadingPrompt: function() {
+			var old = this.$el.find('#loading');
+			if (old) {
+				old.remove();
 			}
 		},
 

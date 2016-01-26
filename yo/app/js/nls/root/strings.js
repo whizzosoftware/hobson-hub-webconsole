@@ -122,6 +122,7 @@ define({
 	"NewPerson": "New Person",
 	"NewTask": "New Task",
 	"NoAdditionalItemsAppropriate": "No additional items are appropriate here.",
+	"NoDataAvailable": "No data is available for the requested time period.",
 	"NoDataStreamsCreated": "No data streams have been created.",
 	"NoDevicesAvailable": "There are no devices available that support this function.",
 	"NoDevicePassports": "No device passports have been created.",
