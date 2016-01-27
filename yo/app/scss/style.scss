@@ -1,3 +1,16 @@
+/* Fonts */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(../fonts/opensans-light-webfont.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(../fonts/opensans-regular-webfont.woff) format('woff');
+}
 
 /* Utilities */
 @import "utilities/settings";
@@ -5,6 +18,7 @@
 @import "normalize";
 @import "foundation";
 @import "toastr";
+@import "font-awesome";
 @import "chartist";
 
 /* Base */

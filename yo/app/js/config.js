@@ -9,19 +9,19 @@ require.config({
                 'backbone.stickit': '../bower_components/backbone.stickit/backbone.stickit',
                 'base64': '../bower_components/base-64/base64',
                 'bridget': '../bower_components/jquery-bridget/jquery.bridget',
-                'chartist': '../bower_components/chartist/dist/chartist',
-                'cookies': '../bower_components/cookies-js/dist/cookies',
+                'chartist': '../bower_components/chartist/dist/chartist.min',
+                'cookies': '../bower_components/cookies-js/dist/cookies.min',
                 'datetimepicker': '../bower_components/datetimepicker/jquery.datetimepicker',
                 'dropzone': '../bower_components/dropzone/dist/dropzone-amd-module',
-                'foundation.core': '../bower_components/foundation/js/foundation',
+                'foundation.core': '../bower_components/foundation/js/foundation.min',
                 'foundation.dropdown': '../bower_components/foundation/js/foundation/foundation.dropdown',
                 'highcharts': '../bower_components/highcharts-release/highcharts',
                 'i18n': '../bower_components/requirejs-i18n/i18n',
-                'jquery': '../bower_components/jquery/dist/jquery',
+                'jquery': '../bower_components/jquery/dist/jquery.min',
                 'jquery-colpick': '../bower_components/jquery-colpick/js/colpick',
                 'masonry': '../bower_components/masonry/dist/masonry.pkgd.min',
                 'modernizr': '../bower_components/foundation/js/vendor/modernizr',
-                'moment': '../bower_components/moment/moment',
+                'moment': '../bower_components/moment/min/moment.min',
                 'nlp': '../bower_components/rrule/lib/nlp',
                 'rrule': '../bower_components/rrule/lib/rrule',
                 'sidr': '../bower_components/sidr/jquery.sidr.min',
@@ -29,7 +29,7 @@ require.config({
                 'templates': '../templates',
                 'text': '../bower_components/requirejs-text/text',
                 'toastr': '../bower_components/toastr/toastr.min',
-                'underscore': '../bower_components/underscore/underscore'
+                'underscore': '../bower_components/underscore/underscore-min'
         },
         shim: {
                 'foundation.core': {
@@ -52,8 +52,10 @@ require.config({
                 },
                 'nlp': {
                         deps: ['rrule']
+                },
+                'sidr': {
+                        deps: ['jquery']
                 }
         },
         enforceDefine: false
 });
-define();
