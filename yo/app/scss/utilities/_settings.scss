@@ -64,3 +64,24 @@ $accordion-navigation-font-color: $color-btn-primary;
 $button-group-border-width: 0px;
 $f-dropdown-bg: $color-subnav-bg;
 $f-dropdown-list-hover-bg: $color-subnav-active;
+
+/* Chartist overrides */
+$ct-line-width: 2px;
+$ct-point-size: 8px;
+$ct-series-colors: (
+  #d70206, // red
+  #0544d3, // blue
+  #f4c63d, // yellow
+  #59922b, // green
+  #6b0392, // purple
+  #86797d, // grey
+  #f05b4f, // pink
+  #6188e2, // light blue
+  #eacf7d, // light yellow
+  #b2c326, // light green
+  #a748ca, // light purple
+  #453d3f, // blue-black
+  #dda458, // dark yellow
+  #d17905, // yellow-brown
+  #f05b4f, // pink
+)

@@ -121,7 +121,8 @@ module.exports = function (grunt) {
                     style: 'expanded',
                     loadPath: [
                         'app/bower_components/foundation/scss', 
-                        'app/bower_components/toastr'
+                        'app/bower_components/toastr',
+                        'app/bower_components/chartist/dist/scss'
                     ]
                 },
                 files: {

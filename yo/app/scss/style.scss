@@ -5,12 +5,14 @@
 @import "normalize";
 @import "foundation";
 @import "toastr";
+@import "chartist";
 
 /* Base */
 @import "base/base";
 
 /* Modules */
 @import "modules/button";
+@import "modules/data";
 @import "modules/devices";
 @import "modules/form";
 @import "modules/nav";

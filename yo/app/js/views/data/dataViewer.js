@@ -7,22 +7,34 @@ define([
 	'chartist',
 	'moment',
 	'services/user',
+	'views/data/dataLegend',
 	'i18n!nls/strings',
 	'text!templates/data/dataViewer.html'
-], function($, _, Backbone, toastr, Chartist, moment, UserService, strings, dataTemplate) {
+], function($, _, Backbone, toastr, Chartist, moment, UserService, DataLegendView, strings, dataTemplate) {
 	return Backbone.View.extend({
 
 		template: _.template(dataTemplate),
 
+		series: null,
+
 		lastDate: null,
 
 		events: {
-			'change #inr-selection': 'onInrSelection'
+			'change #inr-selection': 'onInrSelection',
+			'addSeries': 'onAddSeries',
+			'removeSeries': 'onRemoveSeries'
 		},
 
 		initialize: function(options) {
 			this.dataStreamId = options.dataStreamId + '/data';
 			this.inr = options.inr ? options.inr : 'HOURS_1';
+		},
+
+		remove: function() {
+			if (this.legendView) {
+				this.legendView.remove();
+			}
+			Backbone.View.prototype.remove.call(this);
 		},
 
 		render: function() {
@@ -37,15 +49,13 @@ define([
 		},
 
 		loadData: function() {
-			console.debug('loadData', this.inr);
-
 			// show loading prompt
 			var n = this.$el.find('.ct-chart');
 			this.showLoadingPrompt(strings.Loading);
 
 			UserService.getDataStream(this, this.dataStreamId, this.inr, function(ctx, model) {
-				// var labels = [];
-				var series = [];
+				this.series = [];
+
 				var seriesMap = {};
 				var data = model.get('data');
 				var inr = model.get('interval');
@@ -59,12 +69,10 @@ define([
 						var ts = data[p]['timestamp'];
 						for (var k in data[p]) {
 							if (k !== 'timestamp') {
-								// labels.push(data[p][k]);
-							// } else {
 								var s = seriesMap[k];
 								if (!s) {
 									s = {name: strings[k], data: []};
-									series.push(s);
+									this.series.push(s);
 									seriesMap[k] = s;
 								}
 								s.data.push({x: new Date(ts), y: data[p][k]});
@@ -75,9 +83,9 @@ define([
 					// construct chart
 					var chart = new Chartist.Line(n.get(0), {
 						// labels: labels,
-						series: series
+						series: this.series
 					}, {
-						showPoint: !ctx.inr || ctx.inr === 'HOURS_1',
+						showPoint: data.length < 100,
 						seriesBarDistance: 15,
 						fullWidth: true,
 						axisX: {
@@ -103,9 +111,21 @@ define([
 						}]
 					]);
 
+					// remove the loading prompt once the chart is rendered
 					chart.on('created', function(data) {
 						ctx.removeLoadingPrompt();
 					});
+
+					// remove old legend view if it exists
+					if (ctx.legendView) {
+						ctx.legendView.remove();
+					}
+
+					// create new legend view
+					ctx.legendView = new DataLegendView({model: chart});
+					ctx.$el.find('#legend-container').html(
+						ctx.legendView.render().el
+					);
 				} else {
 					ctx.showLoadingPrompt(strings.NoDataAvailable);
 				}
@@ -144,6 +164,14 @@ define([
 			this.loadData();
 			var url = Backbone.history.getFragment().split('?')[0];
 			Backbone.history.navigate(url + '?inr=' + this.inr, {trigger: false});
+		},
+
+		onAddSeries: function(event, ix) {
+			// TODO
+		},
+
+		onRemoveSeries: function(event, ix) {
+			// TODO
 		}
 	});
 });
