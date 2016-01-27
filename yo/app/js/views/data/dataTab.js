@@ -43,7 +43,6 @@ define([
 
 		onViewDataStream: function(event, ds) {
 			var id = ds.get('@id');
-			console.debug('view data stream', id);
 			Backbone.history.navigate('#data/' + encodeURIComponent(id) + '/view', {trigger: true});
 		}
 	});

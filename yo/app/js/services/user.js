@@ -26,7 +26,20 @@ define([
 			}
 		},
 
-		getDataStream: function(ctx, url, inr, success, error) {
+		getDataStream: function(ctx, url, success, error) {
+			var dataStream = new DataStream({url: url});
+			dataStream.fetch({
+				context: ctx,
+				success: function(model, response, options) {
+					success(ctx, model);
+				},
+				error: function(model, response, options) {
+					error('Error getting data stream');
+				}
+			})
+		},
+
+		getDataStreamData: function(ctx, url, inr, success, error) {
 			if (inr) {
 				url += '?inr=' + inr;
 			}

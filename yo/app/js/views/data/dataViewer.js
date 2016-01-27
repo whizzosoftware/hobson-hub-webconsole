@@ -26,7 +26,7 @@ define([
 		},
 
 		initialize: function(options) {
-			this.dataStreamId = options.dataStreamId + '/data';
+			this.dataStreamId = options.dataStreamId;
 			this.inr = options.inr ? options.inr : 'HOURS_1';
 		},
 
@@ -43,17 +43,34 @@ define([
 				strings: strings
 			}));
 
-			this.loadData();
+			UserService.getDataStream(this, this.dataStreamId, function(ctx, model) {
+				ctx.$el.find('#ds-name').text(model.get('name'));
+				ctx.dataStreamDataId = model.get('links').data;
+				ctx.$el.find('#details-loading').css('display', 'none');
+				ctx.$el.find('#details').css('display', 'block');
+				ctx.loadData(ctx.dataStreamDataId);
+			}, function(ctx, model) {
+				toastr.error(strings.ErrorOccurred);
+			});
 
 			return this;
 		},
 
-		loadData: function() {
+		loadData: function(url) {
+			if (!url) {
+				url = this.dataStreamDataId;
+			}
+
 			// show loading prompt
 			var n = this.$el.find('.ct-chart');
 			this.showLoadingPrompt(strings.Loading);
 
-			UserService.getDataStream(this, this.dataStreamId, this.inr, function(ctx, model) {
+			// remove old legend view if it exists
+			if (this.legendView) {
+				this.legendView.remove();
+			}
+
+			UserService.getDataStreamData(this, url, this.inr, function(ctx, model) {
 				this.series = [];
 
 				var seriesMap = {};
@@ -115,23 +132,20 @@ define([
 					// remove the loading prompt once the chart is rendered
 					chart.on('created', function(data) {
 						ctx.removeLoadingPrompt();
+
+						// create new legend view
+						ctx.legendView = new DataLegendView({model: chart});
+						ctx.$el.find('#legend-container').html(
+							ctx.legendView.render().el
+						);
 					});
 
-					// remove old legend view if it exists
-					if (ctx.legendView) {
-						ctx.legendView.remove();
-					}
-
-					// create new legend view
-					ctx.legendView = new DataLegendView({model: chart});
-					ctx.$el.find('#legend-container').html(
-						ctx.legendView.render().el
-					);
 				} else {
 					ctx.showLoadingPrompt(strings.NoDataAvailable);
 				}
 
 			}, function() {
+				console.debug('data stream data error');
 				toastr.error(strings.ErrorOccurred);
 			});
 		},

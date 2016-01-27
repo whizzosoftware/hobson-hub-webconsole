@@ -1,24 +1,28 @@
 <div class="row">
 	<div class="large-12 columns">
-		<h1><%= name %></h1>
-		<div class="row" style="margin-bottom: 25px;">
-			<div class="medium-6 columns">
-				<select id="inr-selection">
-					<option value="HOURS_1">Past hour</option>
-					<option value="HOURS_24">Past 24 hours</option>
-					<option value="DAYS_7">Past 7 days</option>
-					<option value="DAYS_30">Past 30 days</option>
-				</select>
-			</div>
-			<div class="medium-6 columns">
-			</div>
+		<div id="details-loading" style="margin-top: 50px; text-align: center;">
+			<%= strings.Loading %>
 		</div>
-		<div class="ct-chart ct-perfect-fourth">
-			Loading...
-		</div>
-		<div class="row" style="text-align: center;">
-			<div class="small-12 columns">
-				<div id="legend-container"></div>
+		<div id="details" style="display: none;">
+			<h1 id="ds-name"></h1>
+			<div class="row" style="margin-bottom: 25px;">
+				<div class="medium-6 columns">
+					<select id="inr-selection">
+						<option value="HOURS_1">Past hour</option>
+						<option value="HOURS_24">Past 24 hours</option>
+						<option value="DAYS_7">Past 7 days</option>
+						<option value="DAYS_30">Past 30 days</option>
+					</select>
+				</div>
+				<div class="medium-6 columns">
+				</div>
+			</div>
+			<div class="ct-chart ct-perfect-fourth">
+			</div>
+			<div id="legend-container"></div>
+			<div class="row" style="text-align: center;">
+				<div class="small-12 columns">
+				</div>
 			</div>
 		</div>
 	</div>
