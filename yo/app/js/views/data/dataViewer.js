@@ -71,7 +71,8 @@ define([
 							if (k !== 'timestamp') {
 								var s = seriesMap[k];
 								if (!s) {
-									s = {name: strings[k], data: []};
+									var name = ctx.extractVariableName(k);
+									s = {name: strings[name], data: []};
 									this.series.push(s);
 									seriesMap[k] = s;
 								}
@@ -157,6 +158,16 @@ define([
 			if (old) {
 				old.remove();
 			}
+		},
+
+		extractVariableName: function(s) {
+			if (s) {
+				var n = s.lastIndexOf(':');
+				if (n > -1) {
+					return s.substring(n+1, s.length);
+				}
+			}
+			return s;
 		},
 
 		onInrSelection: function(e) {
