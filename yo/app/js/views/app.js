@@ -41,6 +41,10 @@ define([
 
 		template: _.template(appTemplate),
 
+		initialize: function() {
+			$(document).find('#loading').remove();
+		},
+
 		render: function() {
 			this.$el.append(this.template());
 
@@ -68,20 +72,7 @@ define([
 		},
 
 		showTasks: function(userId, hubId) {
-			var tasks = new ItemList(null, {model: Task, url: '/api/v1/users/local/hubs/local/tasks?expand=item', sort: 'name'});
-			tasks.fetch({
-				context: this,
-				success: function(model, response, options) {
-					options.context.renderContentView(new TasksTabView({
-						userId: userId,
-						hubId: hubId,
-						tasks: model
-					}));
-				},
-				error: function(model, response, options) {
-					console.debug('nope!');
-				}
-			});
+			this.renderContentView(new TasksTabView({userId: userId, hubId: hubId}));
 		},
 
 		showTaskAdd: function(userId, hubId) {

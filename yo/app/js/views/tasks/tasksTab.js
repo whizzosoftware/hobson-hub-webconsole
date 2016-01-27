@@ -4,10 +4,11 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
+	'services/task',
 	'views/collection/tasks',
 	'i18n!nls/strings',
 	'text!templates/tasks/tasksTab.html'
-], function($, _, Backbone, toastr, TasksView, strings, tasksTemplate) {
+], function($, _, Backbone, toastr, TaskService, TasksView, strings, tasksTemplate) {
 
 	var TasksTabView = Backbone.View.extend({
 
@@ -20,7 +21,6 @@ define([
 		initialize: function(options) {
 			this.userId = options.userId;
 			this.hubId = options.hubId;
-			this.tasks = options.tasks;
 		},
 
 		remove: function() {
@@ -32,17 +32,22 @@ define([
 
 		render: function() {
 			this.$el.html(this.template({
-				strings: strings,
-				tasks: this.tasks
+				strings: strings
 			}));
 
 			if (this.tasksView) {
 				this.tasksView.remove();
 			}
-			this.tasksView = new TasksView({model: this.tasks});
-			this.$el.find('.tasks').html(
-				this.tasksView.render().el
-			);
+
+			TaskService.getTasks(this, function(ctx, model) {
+				console.debug(model);
+				ctx.tasksView = new TasksView({model: model});
+				ctx.$el.find('.tasks').html(
+					ctx.tasksView.render().el
+				);
+			}, function(ctx, model) {
+				toastr.error(strings.ErrorOccurred);
+			});
 
 			return this;
 		},

@@ -30,7 +30,7 @@ define([
 					this.dsView.remove();
 				}
 				ctx.dsView = new DataStreamsView({model: model});
-				ctx.$el.find('.tasks').html(
+				ctx.$el.find('.data').html(
 					ctx.dsView.render().el
 				);
 			}, function() {

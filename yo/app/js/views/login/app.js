@@ -25,6 +25,10 @@ define([
 			"keyup #user": "onKeyup"
 		},
 
+		initialize: function() {
+			$(document).find('#loading').remove();
+		},
+
 		render: function() {
 			console.debug('login view render');
 
