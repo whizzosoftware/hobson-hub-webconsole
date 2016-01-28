@@ -76,78 +76,19 @@ define([
 		},
 
 		showTaskAdd: function(userId, hubId) {
-			this.renderContentView(new TaskAddView({
-				userId: userId, 
-				hubId: hubId
-			}), true);
-		},
-
-		showInsight: function() {
-			this.renderContentView(new InsightView(), true);
-		},
-
-		showInsightElectric: function() {
-			this.renderContentView(new InsightElectricView(), true);
+			this.renderContentView(new TaskAddView({userId: userId, hubId: hubId}), true);
 		},
 
 		showHubSettingsGeneral: function() {
-			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
-				context: this,
-				success: function(model, response, options) {
-					var config = new Config({url: model.get('configuration')['@id']});
-					config.fetch({
-						context: options.context,
-						success: function(model, response, options) {
-							options.context.renderContentView(new HubSettingsGeneralView({
-								model: model
-							}));
-						},
-						error: function(model, response, options) {
-							console.debug('nope');
-						}
-					});
-				}
-			});
+			this.renderContentView(new HubSettingsGeneralView(), true);
 		},
 
 		showHubSettingsPassports: function() {
-			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
-				context: this,
-				success: function(model, response, options) {
-					var config = new Config({url: model.get('configuration')['@id']});
-					config.fetch({
-						context: options.context,
-						success: function(model, response, options) {
-							options.context.renderContentView(new HubSettingsAdvancedView({
-								model: model
-							}));
-						},
-						error: function(model, response, options) {
-							console.debug('nope');
-						}
-					});
-				}
-			});
+			this.renderContentView(new HubSettingsAdvancedView(), true);
 		},
 
 		showHubSettingsEmail: function(userId, hubId) {
-			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
-				context: this,
-				success: function(model, response, options) {
-					var config = new Config({url: model.get('configuration')['@id']});
-					config.fetch({
-						context: options.context,
-						success: function(model, response, options) {
-							options.context.renderContentView(new HubSettingsEmailView({
-								model: model
-							}));
-						},
-						error: function(model, response, options) {
-							console.debug('nope');
-						}
-					});
-				}
-			});
+			this.renderContentView(new HubSettingsEmailView(), true);
 		},
 
 		showHubSettingsPresence: function(userId, hubId) {
@@ -155,48 +96,11 @@ define([
 		},
 
 		showHubSettingsLog: function() {
-			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
-				context: this,
-				success: function(model, response, options) {
-					var hub = model;
-					var config = new Config({url: hub.get('configuration')['@id']});
-					config.fetch({
-						context: options.context,
-						success: function(model, response, options) {
-							options.context.renderContentView(new HubSettingsLogView({
-								model: model,
-								hub: hub
-							}));
-						},
-						error: function(model, response, options) {
-							console.debug('nope');
-						}
-					});
-				}
-			});
+			this.renderContentView(new HubSettingsLogView());
 		},
 
 		showHubSettingsPlugins: function(query) {
-			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
-				context: this,
-				success: function(model, response, options) {
-					var hub = model;
-					var url = (query === 'filter=available') ? hub.get('remotePlugins')['@id'] : hub.get('localPlugins')['@id'];
-					var plugins = new ItemList(null, {model: Plugin, url: url + '?expand=item'});
-					plugins.fetch({
-						context: options.context,
-						success: function(model, response, options) {
-							options.context.renderContentView(new HubSettingsPluginsView({
-								hub: hub,
-								model: model,
-								query: query
-							}));
-						},
-						error: function(model, response, options) {
-						}
-					});
-				}
-			});
+			this.renderContentView(new HubSettingsPluginsView({query: query}), true);
 		},
 
 		showCloudlinkHubs: function() {
@@ -243,31 +147,6 @@ define([
 				},
 				error: function(model, response, options) {
 					console.debug('nope!');
-				}
-			});
-		},
-
-		showDeviceStatistics: function(deviceUrl) {
-			var device = new Device({url: deviceUrl + '?expand=telemetry'});
-			device.fetch({
-				context: this,
-				success: function(model, response, options) {
-					var device = model;
-					var datasets = new ItemList(null, {model: TelemetryDataset, url: model.get('telemetry').datasets['@id'] + '?expand=item'});
-					datasets.fetch({
-						context: options.context,
-						success: function(model, response, options) {
-							options.context.renderContentView(new DeviceStatisticsView({
-								model: device,
-								datasets: model,
-							}));
-						},
-						error: function(model, response, options) {
-						}
-					})
-				},
-				fail: function(model, result, options) {
-					console.debug('Nope!');
 				}
 			});
 		},

@@ -37,7 +37,7 @@ define({
 	"DevicePassportReset": "Device passport reset.",
 	"DevicePassportResetError": "Error resetting device passport. See the log for details.",
 	"DevicePassports": "Device Passports",
-	"DevicePassportSummary": "These are the external devices that have been given explicit permission to connect to the Hobson Hub.",
+	"DevicePassportSummary": "Device passports allow external devices to connect to the Hobson Hub.",
 	"DeviceId": "Device ID",
 	"Devices": "Devices",
 	"DeviceListRetrieveError": "Error retreiving device list.",

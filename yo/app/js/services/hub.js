@@ -8,10 +8,13 @@ define([
 	'models/dashboardData',
 	'models/presenceEntity',
 	'models/presenceLocation',
+	'models/logEntry',
 	'models/activityLogEntry',
-], function($, session, Hubs, Hub, ItemList, DashboardData, PresenceEntity, PresenceLocation, ActivityLogEntry) {
+	'models/plugin',
+	'models/repository'
+], function($, session, Hubs, Hub, ItemList, DashboardData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository) {
 	return {
-		betaRepositoryUrl: 'file:///Users/dan/Desktop/repository.xml',
+		betaRepositoryUrl: 'http://www.hobson-automation.com/obr/beta/repository.xml',
 
 		retrieveHubWithId: function(hubId, hubsUrl, callback) {
 			var hub = session.getSelectedHub();
@@ -78,6 +81,21 @@ define([
 			success(null, null, {context: ctx});
 		},
 
+		getLogEntries: function(ctx, success, error) {
+			var hub = session.getSelectedHub();
+			var url = hub.get('log')['@id'];
+			if (hub && url) {
+				var logEntries = new ItemList(null, {model: LogEntry, url: url});
+				logEntries.fetch({
+					context: ctx,
+					success: success,
+					error: error
+				});
+			} else {
+				error(null, null, {context: ctx});
+			}
+		},
+
 		getLocations: function(ctx, success, error) {
 			var hub = session.getSelectedHub();
 			if (hub) {
@@ -93,6 +111,21 @@ define([
 				}
 			}
 			success(null, null, {context: ctx});
+		},
+
+		getRepositories: function(ctx, success, error) {
+			var hub = session.getSelectedHub();
+			var url = hub.get('repositories')['@id'];
+			if (hub && url) {
+				var items = new ItemList(null, {model: Repository, url: url});
+				items.fetch({
+					context: ctx,
+					success: success,
+					error: error
+				});
+			} else {
+				error(null, null, {context: ctx});
+			}		
 		},
 
 		createNewPresenceLocation: function() {
@@ -161,7 +194,8 @@ define([
 		},
 
 		sendTestEmail: function(ctx, userId, hubId, model) {
-			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/configuration/sendTestEmail';
+			var hub = session.getSelectedHub();
+			var url = hub.get('links').sendTestEmail;
 			var data = model.toJSON();
 			console.debug('POSTing to URL with data: ', url, data);
 			return $.ajax(url, {
@@ -174,7 +208,8 @@ define([
 		},
 
 		setPassword: function(ctx, userId, hubId, password) {
-			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/password';
+			var hub = session.getSelectedHub();
+			var url = hub.get('links').password;
 			var data = {currentPassword: 'local', newPassword: password};
 			console.debug('POSTing to URL with data: ', url, data);
 			return $.ajax(url, {
@@ -186,6 +221,15 @@ define([
 			});
 		},
 
+		getPlugins: function(ctx, url, success, error) {
+			var plugins = new ItemList(null, {model: Plugin, url: url + '?expand=item'});
+			plugins.fetch({
+				context: ctx,
+				success: success,
+				error: error
+			});
+		},
+
 		installPlugin: function(ctx, url) {
 			return $.ajax(url, {
 				type: 'POST',
@@ -194,7 +238,8 @@ define([
 		},
 
 		enableBetaPlugins: function(ctx, userId, hubId) {
-			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/repositories';
+			var hub = session.getSelectedHub();
+			var url = hub.get('repositories')['@id'];
 
 			var req = {
 				uri: this.betaRepositoryUrl
@@ -209,12 +254,15 @@ define([
 			});
 		},
 
-		disableBetaPlugins: function(ctx, userId, hubId) {
-			var url = '/api/v1/users/' + userId + '/hubs/' + hubId + '/repositories/' + encodeURIComponent(this.betaRepositoryUrl);
-			return $.ajax(url, {
-				context: ctx,
-				type: 'DELETE'
-			});
+		disableBetaPlugins: function(ctx) {
+			var hub = session.getSelectedHub();
+			var url = hub.get('repositories')['@id'];
+			if (hub && url) {
+				return $.ajax(url + '/' + encodeURIComponent(this.betaRepositoryUrl), {
+					context: ctx,
+					type: 'DELETE'
+				});
+			}
 		},
 
 		shutdown: function(ctx, url) {

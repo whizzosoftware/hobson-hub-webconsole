@@ -4,6 +4,7 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
+	'services/hub',
 	'models/session',
 	'models/propertyContainer',
 	'models/itemList',
@@ -12,7 +13,7 @@ define([
 	'views/settings/logTable',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsLog.html'
-], function($, _, Backbone, toastr, session, Config, ItemList, LogEntry, SettingsTab, LogTableView, strings, template) {
+], function($, _, Backbone, toastr, HubService, session, Config, ItemList, LogEntry, SettingsTab, LogTableView, strings, template) {
 
 	return SettingsTab.extend({
 
@@ -25,40 +26,50 @@ define([
 			'click #saveButton': 'onClickSave'
 		},
 
-		initialize: function(options) {
-			this.hub = options.hub;
-			this.logLevel = this.model.get('values').logLevel;
-
-			var logEntries = new ItemList(null, {model: LogEntry, url: this.hub.get('log')['@id']});
-
-			logEntries.fetch({
-				context: this,
-				success: function(model, response, options) {
-					options.context.logTableView = new LogTableView({model: model});
-					$('#log-table-container').append(options.context.logTableView.render().el);
-				},
-				error: function(model, response, options) {
-					if (response.status === 200 || response.status === 206) {
-						options.context.logTableView = new LogTableView({model: model});
-						$('#log-table-container').append(options.context.logTableView.render().el);
-					} else {
-						toastr.error(strings.LogRetrievalError);
-					}
-				}
-			});
-		},
-
 		remove: function() {
 			this.logTableView.remove();
 			Backbone.View.prototype.remove.call(this);
 		},
 
 		renderTabContent: function(el) {
-			el.html(this.template({
-				strings: strings,
-				hub: this.hub,
-				logLevel: this.logLevel
-			}));
+			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
+				context: this,
+				success: function(model, response, options) {
+					var hub = model;
+					var config = new Config({url: hub.get('configuration')['@id']});
+					config.fetch({
+						context: options.context,
+						success: function(model, response, options) {
+							// render log container
+							el.html(options.context.template({
+								strings: strings,
+								hub: hub,
+								logLevel: model.get('values').logLevel
+							}));
+							// render log entries
+							HubService.getLogEntries(
+								options.context,
+								function(model, response, options) {
+									el.find('#loading').remove();
+									options.context.logTableView = new LogTableView({model: model});
+									$('#log-table-container').append(options.context.logTableView.render().el);
+								},
+								function(model, response, options) {
+									if (response.status === 200 || response.status === 206) {
+										options.context.logTableView = new LogTableView({model: model});
+										$('#log-table-container').append(options.context.logTableView.render().el);
+									} else {
+										toastr.error(strings.LogRetrievalError);
+									}
+								}
+							);
+						},
+						error: function(model, response, options) {
+							toastr.error(strings.ErrorOccurred);
+						}
+					});
+				}
+			});
 		},
 
 		onClickLogLevel: function(e) {

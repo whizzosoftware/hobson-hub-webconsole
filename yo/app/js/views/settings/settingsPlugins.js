@@ -33,6 +33,7 @@ define([
 		initialize: function(options) {
 			this.hub = options.hub;
 			this.query = options.query;
+			this.showLocal = (this.query !== 'filter=available');
 			this.refereshInterval = null;
 		},
 
@@ -46,54 +47,53 @@ define([
 		},
 
 		renderTabContent: function(el) {
-			var showLocal = (this.query !== 'filter=available');
-
-			// render the core view
-			el.html(this.template({
-				strings: strings,
-				hub: this.hub.toJSON(),
-				local: showLocal,
-				query: this.query
-			}));
-
-			var filteredModel;
-
-			// if we're showing local plugins, filter the model based on the 'PLUGIN' type
-			if (showLocal) {
-				filteredModel = this.model.filteredList('type', 'PLUGIN');
-			// otherwise, just display all plugins
-			} else {
-				filteredModel = this.model;
-			}
-
-			// disable the beta checkbox while we retrieve its state
-			var checkbox = this.$el.find('#betaCheckbox');
-			checkbox.attr('disabled', true);
-			var items = new ItemList(null, {model: Repository, url: '/api/v1/users/local/hubs/local/repositories'});
-			items.fetch({
+			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
 				context: this,
 				success: function(model, response, options) {
-					checkbox.attr('checked', model.models.length > 1);
-					checkbox.attr('disabled', false);
+					var hub = model;
+					var url = (options.context.query === 'filter=available') ? hub.get('remotePlugins')['@id'] : hub.get('localPlugins')['@id'];
+					HubService.getPlugins(options.context, url, function(model, response, options) {
+						// render the core view
+						el.html(options.context.template({
+							strings: strings,
+							hub: hub.toJSON(),
+							local: options.context.showLocal,
+							query: options.context.query
+						}));
+
+						var filteredModel;
+
+						// if we're showing local plugins, filter the model based on the 'PLUGIN' type
+						if (options.context.showLocal) {
+							filteredModel = model.filteredList('type', 'PLUGIN');
+						// otherwise, just display all plugins
+						} else {
+							filteredModel = model;
+						}
+
+						// disable the beta checkbox while we retrieve its state
+						var checkbox = el.find('#betaCheckbox');
+						checkbox.attr('disabled', true);
+						HubService.getRepositories(options.context, function(ctx, model) {
+							checkbox.attr('checked', model.numberOfItems > 1);
+							checkbox.attr('disabled', false);
+						}, function(ctx, model) {
+							toastr.error(strings.ErrorOccurred);
+						});
+
+						// create the plugins view
+						options.context.pluginsView = new PluginsView({
+							model: filteredModel
+						});
+						el.find('#pluginsContainer').html(options.context.pluginsView.render().el);
+					}, function(model, response, options) {
+						toastr.error(strings.ErrorOccurred);
+					});
+				},
+				error: function(model, response, options) {
+					toastr.error(strings.ErrorOccurred);
 				}
 			});
-
-			// create the plugins view
-			this.pluginsView = new PluginsView({
-				model: filteredModel
-			});
-			this.$el.find('#pluginsContainer').html(this.pluginsView.render().el);
-
-			// if local plugins are being shown, create a refresh timer and check for any remote updates
-			if (showLocal) {
-				if (!this.refreshInterval) {
-					this.refreshInterval = setInterval(function() {
-						this.refresh();
-					}.bind(this), 5000);
-				}
-
-				this.checkForUpdates();
-			}
 		},
 
 		refresh: function() {

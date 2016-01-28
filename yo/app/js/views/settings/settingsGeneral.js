@@ -4,11 +4,13 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
+	'models/session',
+	'services/hub',
 	'models/propertyContainer',
 	'views/settings/settingsTab',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsGeneral.html'
-], function($, _, Backbone, toastr, Config, SettingsTab, strings, template) {
+], function($, _, Backbone, toastr, session, HubService, Config, SettingsTab, strings, template) {
 
 	var ProfileView = SettingsTab.extend({
 
@@ -34,18 +36,33 @@ define([
 		},
 
 		renderTabContent: function(el) {
-			var values = this.model.get('values');
+			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
+				context: this,
+				success: function(model, response, options) {
+					var config = new Config({url: model.get('configuration')['@id']});
+					config.fetch({
+						context: options.context,
+						success: function(model, response, options) {
+							// render the tab contents
+							el.html(options.context.template({
+								strings: strings,
+								config: model
+							}));
 
-			el.html(this.template({
-				strings: strings,
-				config: values
-			}));
-
-			if (values && values.address) {
-				this.showMap(encodeURIComponent(values.address), 17, true);
-			} else {
-				this.showDefaultMap();
-			}
+							// show map if there is an address
+							var values = model.get('values');
+							if (values && values.address) {
+								options.context.showMap(encodeURIComponent(values.address), 17, true);
+							} else {
+								options.context.showDefaultMap();
+							}
+						},
+						error: function(model, response, options) {
+							toastr.error(strings.ErrorOccurred);
+						}
+					});
+				}
+			});
 		},
 
 		onChangeAddress: function() {

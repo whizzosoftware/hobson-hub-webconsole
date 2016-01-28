@@ -40,7 +40,6 @@ define([
 			}
 
 			TaskService.getTasks(this, function(ctx, model) {
-				console.debug(model);
 				ctx.tasksView = new TasksView({model: model});
 				ctx.$el.find('.tasks').html(
 					ctx.tasksView.render().el

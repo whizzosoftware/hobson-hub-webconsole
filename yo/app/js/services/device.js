@@ -37,9 +37,9 @@ define([
 		},
 
 		getDevicePassports: function(context, url, success, error) {
-			var passports = new ItemList(null, {model: DevicePassport, url: url, sort: 'deviceId'});
+			var passports = new ItemList(null, {model: DevicePassport, url: url + '?expand=item', sort: 'deviceId'});
 			passports.fetch({
-				context: this,
+				context: context,
 				success: success,
 				error: error
 			});

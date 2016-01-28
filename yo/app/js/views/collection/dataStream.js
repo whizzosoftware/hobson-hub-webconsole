@@ -20,8 +20,6 @@ define([
 		},
 
 		render: function() {
-			console.debug('render data stream: ', this.model);
-
 			this.$el.append(
 				this.template({
 					strings: strings,
@@ -33,7 +31,6 @@ define([
 		},
 
 		onClickView: function() {
-			console.debug('onClickView');
 			this.$el.trigger('viewDataStream', this.model);
 		},
 

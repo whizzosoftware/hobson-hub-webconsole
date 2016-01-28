@@ -29,26 +29,38 @@ define([
 		},
 
 		renderTabContent: function(el) {
-			var config = this.model.get('values');
-
-			el.html(this.template({
-				strings: strings,
-				config: config,
-				hasServer: config.emailServer,
-				hasGmailServer: config.emailServer === 'smtp.gmail.com',
-				hasOtherServer: config.emailServer && config.emailServer !== 'smtp.gmail.com' && config.emailServer !== ''
-			}));
-
-			if (config.emailServer) {
-				switch (config.emailServer) {
-					case 'smtp.gmail.com':
-						this.setServerType('serverGmail');
-						break;
-					default:
-						this.setServerType('serverOther');
-						break;
+			HubService.retrieveHubWithId(session.getSelectedHub().id, session.getHubsUrl(), {
+				context: this,
+				success: function(model, response, options) {
+					var config = new Config({url: model.get('configuration')['@id']});
+					config.fetch({
+						context: options.context,
+						success: function(model, response, options) {
+							var config = model.get('values');
+							el.html(options.context.template({
+								strings: strings,
+								config: config,
+								hasServer: config.emailServer,
+								hasGmailServer: config.emailServer === 'smtp.gmail.com',
+								hasOtherServer: config.emailServer && config.emailServer !== 'smtp.gmail.com' && config.emailServer !== ''
+							}));
+							if (config.emailServer) {
+								switch (config.emailServer) {
+									case 'smtp.gmail.com':
+										options.context.setServerType('serverGmail');
+										break;
+									default:
+										options.context.setServerType('serverOther');
+										break;
+								}
+							}
+						},
+						error: function(model, response, options) {
+							toastr.error(strings.ErrorOccurred);
+						}
+					});
 				}
-			}
+			});
 		},
 
 		enableForm: function(enabled) {
