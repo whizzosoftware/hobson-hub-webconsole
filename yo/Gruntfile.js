@@ -223,6 +223,11 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>/www/js/chartist/dist'
                 }, {
                     expand: true,
+                    cwd: '<%= yeoman.app %>/bower_components/chartist-plugin-tooltip/dist',
+                    src: 'chartist-plugin-tooltip.min.js',
+                    dest: '<%= yeoman.dist %>/www/js/chartist-plugin-tooltip/dist'
+                }, {
+                    expand: true,
                     cwd: '<%= yeoman.app %>/bower_components/cookies-js/dist',
                     src: 'cookies.min.js',
                     dest: '<%= yeoman.dist %>/www/js/cookies-js/dist'

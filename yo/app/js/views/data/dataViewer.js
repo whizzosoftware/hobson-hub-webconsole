@@ -5,12 +5,13 @@ define([
 	'backbone',
 	'toastr',
 	'chartist',
+	'chartistTooltip',
 	'moment',
 	'services/user',
 	'views/data/dataLegend',
 	'i18n!nls/strings',
 	'text!templates/data/dataViewer.html'
-], function($, _, Backbone, toastr, Chartist, moment, UserService, DataLegendView, strings, dataTemplate) {
+], function($, _, Backbone, toastr, Chartist, ChartistTooltip, moment, UserService, DataLegendView, strings, dataTemplate) {
 	return Backbone.View.extend({
 
 		template: _.template(dataTemplate),
@@ -63,7 +64,7 @@ define([
 
 			// show loading prompt
 			var n = this.$el.find('.ct-chart');
-			this.showLoadingPrompt(strings.Loading);
+			this.showLoadingPrompt();
 
 			// remove old legend view if it exists
 			if (this.legendView) {
@@ -103,7 +104,7 @@ define([
 						// labels: labels,
 						series: this.series
 					}, {
-						showPoint: data.length < 100,
+						showPoint: true,
 						seriesBarDistance: 15,
 						fullWidth: true,
 						axisX: {
@@ -113,7 +114,17 @@ define([
 						},
 						axisY: {
 							onlyInteger: true
-						}
+						},
+						plugins: [
+							Chartist.plugins.tooltip({
+								'class': 'ct-tooltip',
+								tooltipFnc: function(e,d) {
+									var str = d.split(',');
+									var m = moment(parseInt(str[0]));
+									return (Math.round(parseFloat(str[1]) * 10) / 10) + ' on ' + m.format('MMM Do YYYY h:mma');
+								}
+							})
+						]
 					}, [
 						['screen and (min-width: 641px) and (max-width: 1024px)', {
 							seriesBarDistance: 10,
@@ -164,7 +175,11 @@ define([
 		showLoadingPrompt: function(str) {
 			this.removeLoadingPrompt();
 			var n = this.$el.find('.ct-chart');
-			n.html('<div id="loading" style="margin-top: 50px; text-align: center;">' + str + '</div>');
+			if (str) {
+				n.html('<div id="loading" style="margin-top: 50px; text-align: center;">' + str + '</div>');
+			} else {
+				n.html('<div id="loading" style="margin-top: 50px; text-align: center;"><img src="img/loading.gif" /></div>')
+			}
 		},
 
 		removeLoadingPrompt: function() {

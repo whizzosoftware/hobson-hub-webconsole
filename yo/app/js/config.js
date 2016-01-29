@@ -10,6 +10,7 @@ require.config({
                 'base64': '../bower_components/base-64/base64',
                 'bridget': '../bower_components/jquery-bridget/jquery.bridget',
                 'chartist': '../bower_components/chartist/dist/chartist.min',
+                'chartistTooltip': '../bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min',
                 'cookies': '../bower_components/cookies-js/dist/cookies.min',
                 'datetimepicker': '../bower_components/datetimepicker/jquery.datetimepicker',
                 'dropzone': '../bower_components/dropzone/dist/dropzone-amd-module',
@@ -47,14 +48,14 @@ require.config({
                 'modernizr': {
                         exports: 'Modernizer'
                 },
-                'highcharts': {
-                        exports: 'Highcharts'
-                },
                 'nlp': {
                         deps: ['rrule']
                 },
                 'sidr': {
                         deps: ['jquery']
+                },
+                'chartistTooltip': {
+                        deps: ['chartist']
                 }
         },
         enforceDefine: false
