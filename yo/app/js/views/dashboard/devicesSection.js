@@ -12,10 +12,11 @@ define([
 	'views/dashboard/tiles/switch',
 	'views/dashboard/tiles/thermostat',
 	'views/dashboard/tiles/weatherStation',
+	'views/dashboard/tiles/securityPanel',
 	'views/dashboard/tiles/unknown',
 	'i18n!nls/strings',
 	'text!templates/dashboard/tileGroup.html'
-], function($, _, Backbone, bridget, Masonry, Section, CameraTileView, LightbulbTileView, SensorTileView, SwitchTileView, ThermostatTileView, WeatherStationTileView, UnknownTileView, strings, template) {
+], function($, _, Backbone, bridget, Masonry, Section, CameraTileView, LightbulbTileView, SensorTileView, SwitchTileView, ThermostatTileView, WeatherStationTileView, SecurityPanelTileView, UnknownTileView, strings, template) {
 
 	return Section.extend({
 
@@ -71,6 +72,8 @@ define([
 					tileView = new SwitchTileView({model: device});
 				} else if (device.get("type") === 'WEATHER_STATION') {
 					tileView = new WeatherStationTileView({model: device});
+				} else if (device.get("type") === 'SECURITY_PANEL') {
+					tileView = new SecurityPanelTileView({model: device});
 				} else {
 					tileView = new UnknownTileView({model: device});
 				}

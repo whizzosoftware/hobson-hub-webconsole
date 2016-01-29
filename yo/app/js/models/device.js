@@ -10,6 +10,10 @@ define([
 			var prefVar = this.get('preferredVariable');
 			return (prefVar && prefVar.name === 'on' && prefVar.value);
 		},
+		isArmed: function() {
+			var prefVar = this.get('preferredVariable');
+			return (prefVar && prefVar.name === 'armed' && prefVar.value);
+		},
 		setPreferredVariableValue: function(value) {
 			var prefVar = this.get('preferredVariable');
 			if (prefVar) {

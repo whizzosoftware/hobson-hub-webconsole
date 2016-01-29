@@ -1,0 +1,15 @@
+<div id="tileIcon" class="tile-icon">
+	<img src="img/icon-security_panel.png" />
+	<div id="work-icon" style="display: none;">
+		<i class="fa fa-spinner fa-spin"></i>
+	</div>
+	<div id="status-icon" style="display: <%= armed ? 'block' : 'none' %>;">
+		<i class="fa fa-2x fa-volume-up"></i>
+	</div>
+</div>
+<div id="tileButton" class="tile-button">
+	<span><%= device.name %></span>
+	<span class="tile-info-icon">
+		<i class="fa fa-info-circle"></i>
+	</span>
+</div>
