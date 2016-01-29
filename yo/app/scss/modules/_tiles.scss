@@ -206,7 +206,6 @@
 				text-align: left;
 				padding: 10px 20px;
 				font-size: 1.2em;
-				font-weight: bold;
 			}
 			.description {
 				font-size: 0.9em;
@@ -256,7 +255,7 @@
 	margin-bottom: 25px;
 	li {
 		.data-tile {
-			background: url(../img/task-tile-bg.png) no-repeat;
+			background: url(../img/data-tile-bg.png) no-repeat;
 			background-size: 100%;
   			color: #fff;
 			font-family: $font-1;
@@ -273,7 +272,6 @@
 				text-align: left;
 				padding: 10px 20px;
 				font-size: 1.2em;
-				font-weight: bold;
 			}
 			.description {
 				font-size: 0.9em;

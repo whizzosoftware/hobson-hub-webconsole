@@ -54,7 +54,6 @@ define([
 		},
 
 		clearForm: function() {
-			console.debug('clearForm');
 			for (var ix in this.bindings) {
 				var s = this.bindings[ix];
 
@@ -71,7 +70,6 @@ define([
 		},
 
 		onTypeChange: function(event) {
-			console.debug('onTypeChange');
 			var val = $(event.target).val();
 			this.$el.find('#mapInfo').css('display', val === 'map' ? 'block' : 'none');
 			this.$el.find('#beaconInfo').css('display', val === 'beacon' ? 'block' : 'none');

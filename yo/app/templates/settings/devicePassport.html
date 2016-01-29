@@ -4,7 +4,7 @@
 <td><%= passport.activationTime ? new moment(passport.activationTime).format("L LT") : 'Never' %></td>
 <td>
 	<% if (passport.activationTime) { %>
-		<div id="resetButton" class="tiny radius secondary button shadow-1" title="Reset"><i class="fa fa-sign-out fa-lg"></i></div>
+		<div id="resetButton" title="Reset"><i class="fa fa-sign-out fa-lg icon-button"></i></div>
 	<% } %>
-	<div id="deleteButton" class="tiny radius secondary button shadow-1" title="Delete"><i class="fa fa-trash-o fa-lg"></i></div>
+	<div id="deleteButton" title="Delete"><i class="fa fa-trash fa-lg icon-button"></i></div>
 </td>

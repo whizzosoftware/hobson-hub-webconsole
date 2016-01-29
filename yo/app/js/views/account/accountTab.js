@@ -23,8 +23,6 @@ define([
 		},
 
 		render: function() {
-			console.debug('account tab render');
-
 			// render tabs
 			this.$el.html(
 				this.tabsTemplate({

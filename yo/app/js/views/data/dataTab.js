@@ -34,7 +34,7 @@ define([
 					ctx.dsView.render().el
 				);
 			}, function() {
-				console.debug('Error!');
+				toastr.error(strings.ErrorOccurred);
 			});
 
 

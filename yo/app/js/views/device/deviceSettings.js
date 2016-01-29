@@ -59,10 +59,8 @@ define([
 				var v = this.subviews[i];
 				config.setProperty(v.getId(), v.getValue());
 			}
-			console.debug('Going to save: ', config);
 			config.save(null, {
 				error: function(model, response) {
-					console.debug(model, response);
 					if (response.status === 202) {
 						toastr.success(strings.PluginConfigurationSaved);
 					} else {

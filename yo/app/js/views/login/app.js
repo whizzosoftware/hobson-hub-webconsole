@@ -4,13 +4,14 @@ define([
 	'underscore',
 	'backbone',
 	'cookies',
+	'toastr',
 	'authFailHandler',
 	'models/session',
 	'models/user',
 	'i18n!nls/strings',
 	'text!templates/login/app.html',
 	'text!templates/login/login.html'
-], function($, _, Backbone, Cookies, authFailHandler, session, User, strings, template, loginTemplate) {
+], function($, _, Backbone, Cookies, toastr, authFailHandler, session, User, strings, template, loginTemplate) {
 	var AppView = Backbone.View.extend({
 
 		name: 'login',
@@ -30,8 +31,6 @@ define([
 		},
 
 		render: function() {
-			console.debug('login view render');
-
 			this.$el.html(this.template());
 
 			// request options from login resource to determine if there is a default user
@@ -113,7 +112,6 @@ define([
 
 					// set a cookie for token
 					// note that it's a secure cookie if the user is not local
-					console.debug('cookie token secure=' + !data.local);
 					Cookies.set('Token', data.token, { secure: false });
 
 					// set the user information in the session
@@ -123,7 +121,7 @@ define([
 					Backbone.history.navigate('#' + username, {trigger: true});
 				},
 				error: function(response, status, error) {
-					console.debug('login error!');
+					toastr.error(strings.ErrorOccurred);
 				}
 			});
 		},

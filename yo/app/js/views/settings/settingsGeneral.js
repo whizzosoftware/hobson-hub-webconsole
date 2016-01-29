@@ -43,16 +43,18 @@ define([
 					config.fetch({
 						context: options.context,
 						success: function(model, response, options) {
+							options.context.model = model;
+							var config = model.get('values');
+
 							// render the tab contents
 							el.html(options.context.template({
 								strings: strings,
-								config: model
+								config: config
 							}));
 
 							// show map if there is an address
-							var values = model.get('values');
-							if (values && values.address) {
-								options.context.showMap(encodeURIComponent(values.address), 17, true);
+							if (config && config.address) {
+								options.context.showMap(encodeURIComponent(config.address), 17, true);
 							} else {
 								options.context.showDefaultMap();
 							}

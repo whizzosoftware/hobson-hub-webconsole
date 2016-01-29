@@ -78,7 +78,7 @@ define([
 							options.context.subviews.push(v);
 						},
 						error: function(model, response, options) {
-							console.debug('nope!');
+							toastr.error(strings.ErrorOccurred);
 						}
 					});
 				},

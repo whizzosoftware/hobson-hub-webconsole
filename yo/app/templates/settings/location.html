@@ -1,4 +1,6 @@
-<td><i class="fa fa-location-arrow fa-lg"></i></td>
+<td>
+	<i class="fa <%= locationType === 'Map' ? 'fa-location-arrow' : 'fa-bluetooth-b' %> fa-lg"></i>
+</td>
 <td><%= location.name %></td>
-<td><%= locationType %></td>
+<td><%= strings[locationType] %></td>
 <td><i id="deleteButton" class="fa fa-trash fa-lg icon-button"></i></td>

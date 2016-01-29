@@ -36,11 +36,11 @@ define([
 						if (h != null) {
 							h.fetch(callback);
 						} else {
-							console.debug('no hub found with id: ', hubId);
+							callback.error(null, null, null);
 						}
 					},
 					error: function(model, response, options) {
-						console.debug('error getting hub list');
+						callback.error(null, null, null);
 					}
 				});
 			} else {
@@ -197,7 +197,6 @@ define([
 			var hub = session.getSelectedHub();
 			var url = hub.get('links').sendTestEmail;
 			var data = model.toJSON();
-			console.debug('POSTing to URL with data: ', url, data);
 			return $.ajax(url, {
 				context: ctx,
 				type: 'POST',
@@ -211,7 +210,6 @@ define([
 			var hub = session.getSelectedHub();
 			var url = hub.get('links').password;
 			var data = {currentPassword: 'local', newPassword: password};
-			console.debug('POSTing to URL with data: ', url, data);
 			return $.ajax(url, {
 				context: ctx,
 				type: 'POST',

@@ -65,8 +65,6 @@ define([
 		},
 
 		onRevealClosed: function() {
-			console.log('reveal closed');
-			console.debug(this);
 			this.render();
 		}
 

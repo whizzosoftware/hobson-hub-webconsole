@@ -23,7 +23,6 @@ define([
 		initialize: function() {
 			BaseStatusView.prototype.initialize.call(this);
 			this.subviews = [];
-			console.debug('model', this.model);
 		},
 
 		remove: function() {

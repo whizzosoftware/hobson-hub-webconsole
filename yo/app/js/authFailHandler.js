@@ -4,7 +4,6 @@ define([
 	'cookies'
 ], function(Backbone, Cookies) {
 	return function() {
-		console.debug('auth fail handler invoked');
 		var frag = '#login';
 		if (Cookies.get('Token')) {
 			Cookies.expire('Token');

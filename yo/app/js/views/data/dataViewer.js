@@ -28,7 +28,7 @@ define([
 
 		initialize: function(options) {
 			this.dataStreamId = options.dataStreamId;
-			this.inr = options.inr ? options.inr : 'HOURS_1';
+			this.inr = options.inr ? options.inr : 'HOURS_4';
 		},
 
 		remove: function() {
@@ -118,11 +118,7 @@ define([
 						plugins: [
 							Chartist.plugins.tooltip({
 								'class': 'ct-tooltip',
-								tooltipFnc: function(e,d) {
-									var str = d.split(',');
-									var m = moment(parseInt(str[0]));
-									return (Math.round(parseFloat(str[1]) * 10) / 10) + ' on ' + m.format('MMM Do YYYY h:mma');
-								}
+								tooltipFnc: ctx.tooltipFnc
 							})
 						]
 					}, [
@@ -156,7 +152,6 @@ define([
 				}
 
 			}, function() {
-				console.debug('data stream data error');
 				toastr.error(strings.ErrorOccurred);
 			});
 		},
@@ -170,6 +165,12 @@ define([
 			} else {
 				return t;
 			}
+		},
+
+		tooltipFnc: function(e, d) {
+			var str = d.split(',');
+			var m = moment(parseInt(str[0]));
+			return (Math.round(parseFloat(str[1]) * 10) / 10) + ' on ' + m.format('MMM Do, YYYY h:mma');
 		},
 
 		showLoadingPrompt: function(str) {

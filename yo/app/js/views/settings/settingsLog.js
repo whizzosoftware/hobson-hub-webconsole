@@ -40,6 +40,8 @@ define([
 					config.fetch({
 						context: options.context,
 						success: function(model, response, options) {
+							options.context.model = model;
+
 							// render log container
 							el.html(options.context.template({
 								strings: strings,

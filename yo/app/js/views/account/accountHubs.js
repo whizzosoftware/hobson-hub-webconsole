@@ -34,8 +34,6 @@ define([
 		},
 
 		renderTabContent: function(el) {
-			console.debug('renderTabContent');
-
 			el.html(this.template({
 				strings: strings
 			}));
@@ -46,7 +44,6 @@ define([
 				context: this,
 				success: function(model, response, options) {
 					var ctx = options.context;
-					console.debug('got hubs: ', model);
 					if (model && model.length > 0) {
 						var v = new HubsView({model: model});
 						ctx.$el.find('#hubListContainer').html(v.render().el);
@@ -63,7 +60,6 @@ define([
 
 		onClickAdd: function(e) {
 			e.preventDefault();
-			console.debug('click');
 			var hub = new Hub({name: this.$el.find('#hubName').val(), url: session.getHubsUrl()});
 			hub.save(null, {
 				success: function() {

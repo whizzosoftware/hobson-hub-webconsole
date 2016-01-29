@@ -17,7 +17,6 @@ define([
 		template: _.template(template),
 
 		render: function(el) {
-			console.debug('model: ', this.model);
 			this.$el.html(this.template({
 				model: this.model,
 				strings: strings

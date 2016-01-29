@@ -9,7 +9,6 @@ define([
 		model: HubModel,
 
 		initialize: function(url) {
-			console.debug('creating hubs collection');
 			this.url = url;
 		}
 

@@ -36,6 +36,7 @@ define([
 					config.fetch({
 						context: options.context,
 						success: function(model, response, options) {
+							options.context.model = model;
 							var config = model.get('values');
 							el.html(options.context.template({
 								strings: strings,

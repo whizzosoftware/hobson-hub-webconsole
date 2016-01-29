@@ -225,9 +225,6 @@ define([
 			var hubs = new Hubs(session.getHubsUrl() + '?expand=links');
 			hubs.fetch().then(function() {
 				if (hubs.length > 0) {
-					console.debug(hubs.at(0));
-					console.debug(hubs.at(0).get('itemListElement'));
-					console.debug(hubs.at(0).get('itemListElement')[0]);
 					var h = hubs.at(0).get('itemListElement')[0].item;
 					var hub = new Hub({url: h["@id"]});
 					hub.fetch({

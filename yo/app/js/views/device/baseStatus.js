@@ -3,10 +3,11 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'toastr',
 	'models/itemList',
 	'models/variable',
 	'services/device'
-], function($, _, Backbone, ItemList, Variable, DeviceService) {
+], function($, _, Backbone, toastr, ItemList, Variable, DeviceService) {
 
 	return Backbone.View.extend({
 
@@ -160,7 +161,7 @@ define([
 					}
 				},
 				error: function(model, response, options) {
-					console.debug('variable refresh failed');
+					toastr.error(strings.ErrorOccurred);
 				}
 			});
 		}
