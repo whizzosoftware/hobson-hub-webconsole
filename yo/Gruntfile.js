@@ -243,6 +243,11 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>/www/js/jquery-colpick/js'
                 }, {
                     expand: true,
+                    cwd: '<%= yeoman.app %>/bower_components/sidr',
+                    src: 'colpick.js',
+                    dest: '<%= yeoman.dist %>/www/js/sidr'
+                }, {
+                    expand: true,
                     cwd: '<%= yeoman.app %>/bower_components/datetimepicker',
                     src: 'jquery.datetimepicker.js',
                     dest: '<%= yeoman.dist %>/www/js/datetimepicker'

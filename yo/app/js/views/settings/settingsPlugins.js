@@ -53,6 +53,8 @@ define([
 					var hub = model;
 					var url = (options.context.query === 'filter=available') ? hub.get('remotePlugins')['@id'] : hub.get('localPlugins')['@id'];
 					HubService.getPlugins(options.context, url, function(model, response, options) {
+						options.context.model = model;
+
 						// render the core view
 						el.html(options.context.template({
 							strings: strings,
@@ -83,7 +85,8 @@ define([
 
 						// create the plugins view
 						options.context.pluginsView = new PluginsView({
-							model: filteredModel
+							model: filteredModel,
+							showLocal: options.context.showLocal
 						});
 						el.find('#pluginsContainer').html(options.context.pluginsView.render().el);
 					}, function(model, response, options) {

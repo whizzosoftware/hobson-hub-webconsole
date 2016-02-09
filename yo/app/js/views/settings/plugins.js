@@ -13,8 +13,9 @@ define([
 
 		className: 'plugins small-block-grid-1 medium-block-grid-2 large-block-grid-3',
 
-		initialize: function() {
+		initialize: function(options) {
 			this.subviews = {};
+			this.showLocal = options.showLocal;
 			this.noPluginsPrompt = false;
 		},
 
@@ -32,7 +33,11 @@ define([
 					this.addPluginView(this.model.at(i));
 				}
 			} else {
-				this.$el.html('<p class="notice">' + strings.NoPluginsInstalled + '</p>');
+				if (this.showLocal) {
+					this.$el.html('<p class="notice">' + strings.NoPluginsInstalled + '</p>');
+				} else {
+					this.$el.html('<p class="notice">' + strings.NoPluginsAvailable + '</p>');
+				}
 				noPluginsPrompt = true;
 			}
 

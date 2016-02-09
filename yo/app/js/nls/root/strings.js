@@ -141,6 +141,7 @@ define({
 	"NoLocations": "No locations have been created.",
 	"NoPeople": "No people have been created.",
 	"None": "None",
+	"NoPluginsAvailable": "There are no additional plugins available.",
 	"NoPluginsInstalled": "There are no plugins installed. Click the 'Available' link above to browse and install some.",
 	"NoStatisticsEnabled": "Statistics are not enabled for this device.",
 	"NoStatisticsCollected": "Device statistics are enabled but none have been received yet.",
