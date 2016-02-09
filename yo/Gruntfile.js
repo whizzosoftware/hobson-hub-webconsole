@@ -243,9 +243,9 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>/www/js/jquery-colpick/js'
                 }, {
                     expand: true,
-                    cwd: '<%= yeoman.app %>/bower_components/sidr',
-                    src: 'colpick.js',
-                    dest: '<%= yeoman.dist %>/www/js/sidr'
+                    cwd: '<%= yeoman.app %>/bower_components/sidr/dist',
+                    src: 'jquery.sidr.js',
+                    dest: '<%= yeoman.dist %>/www/js/sidr/dist'                
                 }, {
                     expand: true,
                     cwd: '<%= yeoman.app %>/bower_components/datetimepicker',
@@ -266,11 +266,6 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>/bower_components/rrule/lib',
                     src: '*.js',
                     dest: '<%= yeoman.dist %>/www/js/rrule/lib'
-                }, {
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/bower_components/sidr',
-                    src: 'jquery.sidr.min.js',
-                    dest: '<%= yeoman.dist %>/www/js/sidr'
                 }, {
                     expand: true,
                     cwd: '<%= yeoman.app %>/bower_components/toastr',

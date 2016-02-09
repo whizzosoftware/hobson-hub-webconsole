@@ -25,7 +25,7 @@ require.config({
                 'moment': '../bower_components/moment/min/moment.min',
                 'nlp': '../bower_components/rrule/lib/nlp',
                 'rrule': '../bower_components/rrule/lib/rrule',
-                'sidr': '../bower_components/sidr/jquery.sidr.min',
+                'sidr': '../bower_components/sidr/dist/jquery.sidr',
                 'spin': '../bower_components/ladda/dist/spin.min',
                 'templates': '../templates',
                 'text': '../bower_components/requirejs-text/text',
