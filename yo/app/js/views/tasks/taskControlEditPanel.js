@@ -143,11 +143,8 @@ define([
 			// otherwise, fire an event
 			} else {
 				var val = {
-					id: this.model.get('@id'),
-					type: this.model.get('type'),
-					descriptionTemplate: this.model.get('descriptionTemplate'),
-					supportedProperties: properties, 
-					properties: values.get('values')
+					cclass: {'@id': this.model.get('@id')},
+					values: values.get('values')
 				};
 
 				this.$el.trigger('onClickAdd', val);

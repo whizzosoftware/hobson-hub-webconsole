@@ -17,6 +17,7 @@ define([
 			this.subviews = [];
 			this.devices = options.devices;
 			this.task = options.task;
+			this.actionClasses = options.actionClasses;
 		},
 
 		remove: function() {
@@ -28,12 +29,15 @@ define([
 		},
 
 		render: function() {
-			if (this.task.actionSet.actions && this.task.actionSet.actions.length > 0) {
+			var actionSet = this.task.get('actionSet');
+			if (actionSet.actions && actionSet.actions.length > 0) {
 				this.$el.html('');
-				var actions = this.task.actionSet.actions;
+				var actions = actionSet.actions;
 				for (var i = 0; i < actions.length; i++) {
 					var actionView = new TaskActionView({
-						action: actions[i]
+						action: actions[i],
+						actionClasses: this.actionClasses,
+						devices: this.devices
 					});
 					var rv = actionView.render().el;
 					if (i > 0) {

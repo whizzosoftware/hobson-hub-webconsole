@@ -31,7 +31,8 @@ define([
 			'data/:dataStreamId/view': 'showDataViewer',
 			'data/:dataStreamId/view?inr=:inr': 'showDataViewer',
 			'tasks': 'showTasks',
-			'tasks/add': 'showTaskAdd',
+			'tasks/edit': 'showTaskEdit',
+			'tasks/edit?id=:id': 'showTaskEdit',
 			'insight': 'showInsight',
 			'insight/electric': 'showInsightElectric',
 			'device/:deviceUrl': 'showDeviceDetails',
@@ -95,9 +96,10 @@ define([
 			this.appView.showTasks();
 		},
 
-		showTaskAdd: function() {
+		showTaskEdit: function(id) {
 			this.renderAppRoot('hub');
-			this.appView.showTaskAdd();
+			var s = id ? decodeURIComponent(id.replace('id=', '')) : null;
+			this.appView.showTaskEdit(s);
 		},
 
 		showData: function() {

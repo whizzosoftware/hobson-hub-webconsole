@@ -8,6 +8,7 @@
 	<div class="footer">
 		<ul>
 			<li><i id="delete-task" class="fa fa-lg fa-trash-o"></i></li>
+			<li><a href="#tasks/edit?id=<%= encodeURIComponent(task['@id']) %>"><i id="edit-task" class="fa fa-lg fa-edit"></i></a></li>
 			<% if (task.properties && task.properties.hasOwnProperty('scheduled')) { %>
 				<li>
 					<i class="fa fa-lg fa-clock-o has-tip <%= schedule.nextRunStr ? 'active' : '' %>" data-tooltip aria-haspopup="true" title="<% if (schedule.nextRunStr) { %><%= schedule.nextRunStr %><% } else { %><%= strings.NotScheduled %><% } %>"></i>

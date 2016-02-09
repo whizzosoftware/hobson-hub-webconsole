@@ -5,32 +5,29 @@
 	</div>
 </div>
 <div class="row">
-	<div class="large-12 columns">
-		<label>Task Name
-		<input id="taskName" class="radius" type="text" value="<%= task.name ? task.name : 'New Task' %>" />
-		</label>
-	</div>
-	<div class="large-12 columns">
-		<label>Description
-		<input id="taskDescription" class="radius" type="text" value="<%= task.description %>" placeholder="Optional" />
-		</label>
+	<div class="large-6 columns">
+		<h1><%= editMode ? strings.EditTask : strings.NewTask %></h1>
 	</div>
 </div>
+<div id="taskProperties">
+	<div class="text-center"><img src="img/loading.gif" /></div>
 </div>
 <div class="row">
 	<div class="large-6 columns">
 		<div id="taskConditionsEditor" class="task-panel shadow-1">
+			<div class="text-center"><img src="img/loading.gif" /></div>
 		</div>
 	</div>
 	<div class="large-6 columns">
 		<div id="taskActionsPanel" class="task-panel shadow-1">
+			<div class="text-center"><img src="img/loading.gif" /></div>
 		</div>
 	</div>
 </div>
 <div class="row">
 	<div class="large-12 columns">
 		<div class="form-control-bar">
-			<a id="buttonCancel" class="radius secondary button small left shadow-1" href="#/tasks">Cancel</a><a id="buttonCreate" class="radius button small right shadow-1">Create Task</a>
+			<a id="buttonCancel" class="radius secondary button small left shadow-1" href="#/tasks">Cancel</a><a id="buttonCreate" class="radius button small right shadow-1"><%= editMode ? strings.Update : strings.Create %></a>
 		</div>
 	</div>
 </div>

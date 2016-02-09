@@ -1,0 +1,12 @@
+<div class="row">
+	<div class="large-12 columns">
+		<label>Task Name
+		<input id="taskName" class="radius" type="text" value="<%= task && task.name ? task.name : 'New Task' %>" />
+		</label>
+	</div>
+	<div class="large-12 columns">
+		<label>Description
+		<input id="taskDescription" class="radius" type="text" value="<%= task && task.description %>" placeholder="Optional" />
+		</label>
+	</div>
+</div>

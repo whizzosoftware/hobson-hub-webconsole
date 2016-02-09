@@ -7,8 +7,8 @@ define([
 	return {
 
 		validate: function(a) {
-			for (var i=0; i < a.supportedProperties.length; i++) {
-				var sp = a.supportedProperties[i];
+			for (var i=0; i < a.values.length; i++) {
+				var sp = a.values[i];
 				var varName = sp['@id'];
 				if (!_.has(a.properties, varName)) {
 					return sp.name + ' ' + strings.IsARequiredField + '.';

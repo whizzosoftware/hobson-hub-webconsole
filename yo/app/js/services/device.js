@@ -36,6 +36,19 @@ define([
 			});
 		},
 
+		getDevices: function(context, success, error) {
+			var devices = new ItemList(null, {
+				model: Device,
+				url: session.getSelectedHubDevicesUrl() + '?expand=item'
+			});
+
+			devices.fetch({
+				context: context,
+				success: success,
+				error: error
+			});
+		},
+
 		getDevicePassports: function(context, url, success, error) {
 			var passports = new ItemList(null, {model: DevicePassport, url: url + '?expand=item', sort: 'deviceId'});
 			passports.fetch({

@@ -18,7 +18,7 @@ define([
 	'views/sidebar/sidebar',
 	'views/dashboard/dashboard',
 	'views/tasks/tasksTab',
-	'views/tasks/taskCreate',
+	'views/tasks/taskEdit',
 	'views/device/deviceState',
 	'views/device/deviceSettings',
 	'views/data/dataTab',
@@ -33,7 +33,7 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskAddView, DeviceStateView, DeviceSettingsView, DataTabView, DataViewer, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DeviceSettingsView, DataTabView, DataViewer, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	var AppView = Backbone.View.extend({
 
@@ -75,8 +75,8 @@ define([
 			this.renderContentView(new TasksTabView({userId: userId, hubId: hubId}));
 		},
 
-		showTaskAdd: function(userId, hubId) {
-			this.renderContentView(new TaskAddView({userId: userId, hubId: hubId}), true);
+		showTaskEdit: function(id) {
+			this.renderContentView(new TaskEditView({id: id}), true);
 		},
 
 		showHubSettingsGeneral: function() {

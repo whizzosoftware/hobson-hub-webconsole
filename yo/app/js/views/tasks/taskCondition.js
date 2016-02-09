@@ -4,11 +4,12 @@ define([
 	'underscore',
 	'backbone',
 	'moment',
+	'services/task',
 	'services/taskDescription',
 	'models/recurrenceDefaults',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskCondition.html'
-], function($, _, Backbone, moment, TaskDescription, RecurrenceDefaults, strings, taskConditionTemplate) {
+], function($, _, Backbone, moment, TaskService, TaskDescription, RecurrenceDefaults, strings, taskConditionTemplate) {
 
 	return Backbone.View.extend({
 		template: _.template(taskConditionTemplate),
@@ -24,15 +25,17 @@ define([
 		initialize: function(options) {
 			this.devices = options.devices;
 			this.condition = options.condition;
+			this.conditionClasses = options.conditionClasses;
 			this.recurrenceDefaults = new RecurrenceDefaults();
-			this.description = TaskDescription.createDescription(this.condition);
 		},
 
 		render: function() {
+			var conditionClass = TaskService.findPropertyContainerClass(this.conditionClasses, this.condition.cclass['@id']);
+
 			this.$el.html(this.template({
 				strings: strings,
 				condition: this.condition,
-				description: this.description
+				description: TaskDescription.createDescription(conditionClass.toJSON(), this.condition, this.devices.toJSON())
 			}));
 			return this;
 		},

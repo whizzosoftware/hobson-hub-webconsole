@@ -76,7 +76,7 @@ define([
 					}
 				},
 				error: function(model, response, options) {
-					toastr.error('Error retreiving list of devices.');
+					toastr.error(strings.DeviceListRetrieveError);
 				}
 			});
 
@@ -108,7 +108,7 @@ define([
 				if (this.single) {
 					this.model.value.splice(0, this.model.value.length);
 				}
-				this.model.value.push({'@id': deviceId, name: options.device.get('name')});
+				this.model.value.push({'@id': deviceId});
 			}
 
 			// re-render the view

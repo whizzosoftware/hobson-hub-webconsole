@@ -2,9 +2,10 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'services/task',
 	'views/tasks/taskCondition',
 	'i18n!nls/strings'
-], function($, _, Backbone, TaskConditionView, strings) {
+], function($, _, Backbone, TaskService, TaskConditionView, strings) {
 
 	var TaskConditionsView = Backbone.View.extend({
 
@@ -15,6 +16,7 @@ define([
 		initialize: function(options) {
 			this.devices = options.devices;
 			this.task = options.task;
+			this.conditionClasses = options.conditionClasses;
 			this.subviews = [];
 		},
 
@@ -27,24 +29,31 @@ define([
 		},
 
 		render: function() {
-			if (this.task.triggerCondition) {
+			var conditions = this.task.get('conditions');
+			if (conditions && conditions.length > 0) {
+				var tix = this.task.getTriggerConditionIndex(this.conditionClasses);
+
 				// add view for trigger condition
 				var cv = new TaskConditionView({
 					devices: this.devices,
-					condition: this.task.triggerCondition
+					condition: conditions[tix],
+					conditionClasses: this.conditionClasses
 				});
 				this.$el.append(cv.render().el);
 				this.subviews.push(cv);
 
 				// add view for additional conditions
-				for (var i=0; i < this.task.conditions.length; i++) {
-					cv = new TaskConditionView({
-						devices: this.devices,
-						condition: this.task.conditions[i]
-					});
-					this.$el.append('<p class="task-list-connector">AND</p>');
-					this.$el.append(cv.render().el);
-					this.subviews.push(cv);
+				for (var i=0; i < conditions.length; i++) {
+					if (i != tix) {
+						cv = new TaskConditionView({
+							devices: this.devices,
+							condition: conditions[i],
+							conditionClasses: this.conditionClasses
+						});
+						this.$el.append('<p class="task-list-connector">AND</p>');
+						this.$el.append(cv.render().el);
+						this.subviews.push(cv);
+					}
 				}
 			} else {
 				this.$el.html('<p class="notice">' + strings.TaskIfHelpText + '</p>');

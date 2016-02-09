@@ -4,6 +4,7 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
+	'services/task',
 	'models/itemList',
 	'models/taskActionClass',
 	'services/propertyContainerValidator',
@@ -11,7 +12,7 @@ define([
 	'views/tasks/taskControlSelectors',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskActionsEditor.html'
-], function($, _, Backbone, toastr, ItemList, TaskActionClass, PropertyContainerValidator, TaskActionsView, TaskControlSelectorsView, strings, template) {
+], function($, _, Backbone, toastr, TaskService, ItemList, TaskActionClass, PropertyContainerValidator, TaskActionsView, TaskControlSelectorsView, strings, template) {
 
 	return Backbone.View.extend({
 
@@ -47,21 +48,28 @@ define([
 				strings: strings
 			}));
 
-			this.renderActions();
+			TaskService.getActionClasses(this, function(model, response, options) {
+				options.context.actionClasses = model;
+				options.context.renderActions(options.context);
+			}, function(model, response, options) {
+				toastr.error(strings.ErrorOccurred);
+			});
 
 			return this;
 		},
 
-		renderActions: function() {
-			if (this.taskActionsView) {
-				this.taskActionsView.remove();
+		renderActions: function(ctx) {
+			if (ctx.taskActionsView) {
+				ctx.taskActionsView.remove();
 			}
 
-			this.taskActionsView = new TaskActionsView({
-				task: this.task 
+			ctx.taskActionsView = new TaskActionsView({
+				task: ctx.task,
+				actionClasses: ctx.actionClasses,
+				devices: ctx.devices
 			});
 
-			this.$el.find('#taskActions').html(this.taskActionsView.render().el);
+			ctx.$el.find('#taskActions').html(ctx.taskActionsView.render().el);
 		},
 
 		closePlusPanel: function() {
@@ -77,20 +85,12 @@ define([
 
 			if (el.css('display') === 'none') {
 				el.css('display', 'block');
-				new ItemList(null, {model: TaskActionClass, url: '/api/v1/users/local/hubs/local/tasks/actionClasses?expand=item&constraints=true', sort: 'name'}).fetch({
-					context: this,
-					success: function(model, response, options) {
-						$(e.target).addClass('active');
-						var v = new TaskControlSelectorsView({
-							model: model
-						});
-						el.html(v.render().el);
-						options.context.subviews.push(v);
-					},
-					error: function() {
-						toastr.error('Unable to retrieve action list.');
-					}
+				$(e.target).addClass('active');
+				var v = new TaskControlSelectorsView({
+					model: this.actionClasses
 				});
+				el.html(v.render().el);
+				this.subviews.push(v);
 			} else {
 				this.closePlusPanel();
 			}
@@ -99,8 +99,8 @@ define([
 		onClickAdd: function(e, a) {
 			var msg = PropertyContainerValidator.validate(a);
 			if (!msg) {
-				this.task.actionSet.actions.push(a);
-				this.renderActions();
+				this.task.addAction(a);
+				this.renderActions(this);
 				this.closePlusPanel();
 			} else {
 				toastr.error(msg);
@@ -108,7 +108,7 @@ define([
 		},
 
 		onDeleteAction: function(event, action) {
-			var actions = this.task.actionSet.actions;
+			var actions = this.task.get('actionSet').actions;
 			var row = -1;
 			for (var i in actions) {
 				if (actions[i].id == action.id) {

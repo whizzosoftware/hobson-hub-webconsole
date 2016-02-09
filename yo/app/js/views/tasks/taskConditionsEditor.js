@@ -4,6 +4,7 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
+	'services/task',
 	'models/itemList',
 	'models/taskConditionClass',
 	'services/propertyContainerValidator',
@@ -11,7 +12,7 @@ define([
 	'views/tasks/taskControlSelectors',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskConditionsEditor.html'
-], function($, _, Backbone, toastr, ItemList, TaskConditionClass, PropertyContainerValidator, TaskConditionsView, TaskControlSelectorsView, strings, taskIfTemplate) {
+], function($, _, Backbone, toastr, TaskService, ItemList, TaskConditionClass, PropertyContainerValidator, TaskConditionsView, TaskControlSelectorsView, strings, taskIfTemplate) {
 
 	return Backbone.View.extend({
 
@@ -49,22 +50,28 @@ define([
 				task: this.task
 			}));
 
-			this.renderConditions();
+			TaskService.getConditionClasses(this, function(model, response, options) {
+				options.context.conditionClasses = model;
+				options.context.renderConditions(options.context);
+			}, function(model, response, options) {
+				toastr.error(strings.ErrorOccurred);
+			});
 
 			return this;
 		},
 
-		renderConditions: function() {
-			if (this.taskConditionsView) {
-				this.taskConditionsView.remove();
+		renderConditions: function(ctx) {
+			if (ctx.taskConditionsView) {
+				ctx.taskConditionsView.remove();
 			}
 
-			this.taskConditionsView = new TaskConditionsView({
-				devices: this.devices, 
-				task: this.task 
+			ctx.taskConditionsView = new TaskConditionsView({
+				devices: ctx.devices, 
+				task: ctx.task,
+				conditionClasses: ctx.conditionClasses
 			});
 
-			this.$el.find('#taskConditions').html(this.taskConditionsView.render().el);
+			ctx.$el.find('#taskConditions').html(ctx.taskConditionsView.render().el);
 		},
 
 		closePlusPanel: function() {
@@ -82,21 +89,13 @@ define([
 				$(e.target).addClass('active');
 				el.css('display', 'block');
 
-				new ItemList(null, {model: TaskConditionClass, url: '/api/v1/users/local/hubs/local/tasks/conditionClasses?expand=item&constraints=true', sort: 'name'}).fetch({
-					context: this,
-					success: function(model, response, options) {
-						// render task condition class selectors
-						var v = new TaskControlSelectorsView({
-							model: options.context.task.triggerCondition ? new ItemList(model.where({type: 'evaluator'}), null) : new ItemList(model.where({type: 'trigger'}), null),
-							showSun: options.context.showSun
-						});
-						options.context.$el.find('#taskConditionSelectors').html(v.render().el);
-						options.context.subviews.push(v);
-					},
-					error: function() {
-						toastr.error('Error retrieving condition classes');
-					}
+				// render task condition class selectors
+				var v = new TaskControlSelectorsView({
+					model: this.task.hasTriggerCondition(this.conditionClasses) ? new ItemList(this.conditionClasses.where({type: 'evaluator'}), null) : new ItemList(this.conditionClasses.where({type: 'trigger'}), null),
+					showSun: this.showSun
 				});
+				this.$el.find('#taskConditionSelectors').html(v.render().el);
+				this.subviews.push(v);
 			} else {
 				this.closePlusPanel();
 			}
@@ -105,12 +104,8 @@ define([
 		onClickAdd: function(e, a) {
 			var msg = PropertyContainerValidator.validate(a);
 			if (!msg) {
-				if (a.type == 'trigger') {
-					this.task.triggerCondition = a;
-				} else {
-					this.task.conditions.push(a);
-				}
-				this.renderConditions();
+				this.task.addCondition(a);
+				this.renderConditions(this);
 				this.closePlusPanel();
 			} else {
 				toastr.error(msg);
@@ -118,11 +113,10 @@ define([
 		},
 
 		onDeleteCondition: function(event, condition) {
-			if (this.task.triggerCondition.id == condition.id) {
-				this.task.triggerCondition = null;
-				this.task.conditions = [];
+			if (this.task.getTriggerConditionIndex(this.conditionClasses) === this.task.getConditionIndex(condition)) {
+				this.task.set('conditions', []);
 			} else {
-				var conditions = this.task.conditions;
+				var conditions = this.task.get('conditions');
 				var row = -1;
 				for (var i in conditions) {
 					if (condition[i] && condition[i].id == condition.id) {
