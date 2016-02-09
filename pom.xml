@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 	<groupId>com.whizzosoftware.hobson.hub</groupId>
     <artifactId>hobson-hub-webconsole</artifactId>
-    <version>0.8.1-SNAPSHOT</version>
+    <version>0.8.1</version>
     <packaging>bundle</packaging>
     <name>Hobson Web Console Plugin</name>
     <description>Provides a web-based management interface for the Hobson Hub.</description>
@@ -110,7 +110,7 @@
     <scm>
         <connection>scm:git:ssh://git@github.com/whizzosoftware/hobson-hub-webconsole.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/whizzosoftware/hobson-hub-webconsole.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>hobson-hub-webconsole-0.8.1</tag>
     </scm>
     <distributionManagement>
         <repository>
