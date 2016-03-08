@@ -1,4 +1,4 @@
-// Filename: views/widgets/datePicker.js
+// Filename: views/widgets/devicesPicker.js
 define([
 	'jquery',
 	'underscore',
@@ -23,17 +23,20 @@ define([
 		},
 
 		initialize: function(options) {
-			this.required = this.model.constraints ? this.model.constraints.required : false;
+			this.required = this.model && this.model.constraints ? this.model.constraints.required : false;
 			this.value = options.value;
 			this.single = options.single;
+			this.showDescription = options.showDescription;
 			this.subviews = [];
 			this.viewMap = {};
 
 			// if single is true, treat as a single device object; if false, treat as an array of devices
-			if (!this.value) {
-				this.model.value = [];
-			} else {
-				this.model.value = [this.value];
+			if (this.model) {
+				if (!this.value) {
+					this.model.value = [];
+				} else {
+					this.model.value = [this.value];
+				}
 			}
 		},
 
@@ -50,12 +53,13 @@ define([
 				this.template({
 					strings: strings,
 					property: this.model,
-					required: this.required
+					required: this.required,
+					showDescription: (!this.showDescription && this.showDescription != null) ? false : true
 				})
 			);
 
 			var url = session.getSelectedHubDevicesUrl() + '?expand=item';
-			if (this.model.constraints && this.model.constraints.deviceVariable) {
+			if (this.model && this.model.constraints && this.model.constraints.deviceVariable) {
 				url += '&var=' + this.model.constraints.deviceVariable;
 			}
 
@@ -66,7 +70,7 @@ define([
 					if (model.length > 0) {
 						options.context.devicesView = new DevicesView({
 							devices: model,
-							value: options.context.model.value
+							value: options.context.model ? options.context.model.value : null
 						});
 						options.context.$el.find('#deviceList').html(options.context.devicesView.render().el);
 						options.context.subviews.push(options.context.devicesView);
@@ -95,9 +99,10 @@ define([
 
 		onClickDevice: function(event, options) {
 			var deviceId = options.device.get('@id');
+			var deselection = this.isDeviceSelected(deviceId);
 
 			// change the property value
-			if (this.isDeviceSelected(deviceId)) {
+			if (deselection) {
 				for (var i=0; i < this.model.value.length; i++) {
 					if (this.model.value[i]['@id'] === deviceId) {
 						this.model.value.splice(i,1);
@@ -116,6 +121,8 @@ define([
 
 			// update device count selection text
 			this.setDeviceCount(this.model.value.length);
+
+			this.$el.trigger(deselection ? 'deviceDeselected' : 'deviceSelected', options.device);
 		},
 
 		isDeviceSelected: function(deviceId) {

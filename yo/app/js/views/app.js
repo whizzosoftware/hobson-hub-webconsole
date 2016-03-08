@@ -22,6 +22,7 @@ define([
 	'views/device/deviceState',
 	'views/device/deviceSettings',
 	'views/data/dataTab',
+	'views/data/dataEdit',
 	'views/data/dataViewer',
 	'views/settings/settingsGeneral',
 	'views/settings/settingsPassports',
@@ -33,7 +34,7 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DeviceSettingsView, DataTabView, DataViewer, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DeviceSettingsView, DataTabView, DataEditView, DataViewer, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	var AppView = Backbone.View.extend({
 
@@ -65,6 +66,10 @@ define([
 
 		showData: function() {
 			this.renderContentView(new DataTabView());
+		},
+
+		showDataEdit: function() {
+			this.renderContentView(new DataEditView());
 		},
 
 		showDataViewer: function(dataStreamId, inr) {

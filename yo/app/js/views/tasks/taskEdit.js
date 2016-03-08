@@ -47,7 +47,6 @@ define([
 
 			if (this.id) {
 				TaskService.getTask(this, this.id, function(model, response, options) {
-					console.debug(model);
 					options.context.task = model;
 					options.context.renderEditorViews(options.context);
 				}, function(model, response, options) {

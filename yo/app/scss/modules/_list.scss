@@ -1,0 +1,21 @@
+ul.panelList {
+	list-style-type: none;
+	margin: 0;
+	li {
+		width: 100%;
+		min-height: 50px;
+		display: inline-block;
+		background-color: $color-text;
+		color: white;
+		border: 1px solid $color-text;
+		border-radius: 5px;
+		padding: 10px;
+		margin-bottom: 10px;
+		img {
+			border-radius: 5px;
+			background-color: $color-dash-tile-bg;
+			height: 30px;
+			margin-right: 10px;
+		}
+	}
+}

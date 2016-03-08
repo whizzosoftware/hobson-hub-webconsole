@@ -53,6 +53,21 @@ define([
 					error('Error getting data stream');
 				}
 			})
+		},
+
+		addDataStream: function(ctx, data, success, error) {
+			var user = session.getUser();
+			if (user.get('dataStreams')) {
+				var dataStream = new DataStream({url: user.get('dataStreams')['@id']});
+				dataStream.set('name', data.name);
+				dataStream.set('variables', data.variables);
+				dataStream.save(null, {
+					success: success,
+					error: error
+				});
+			} else {
+				error('Creating data streams is not supported');
+			}
 		}
 
 	};

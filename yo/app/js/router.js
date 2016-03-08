@@ -28,13 +28,12 @@ define([
 			'hub': 'showHubRoot',
 			'dashboard': 'showDashboard',
 			'data': 'showData',
+			'data/edit': 'showDataEdit',
 			'data/:dataStreamId/view': 'showDataViewer',
 			'data/:dataStreamId/view?inr=:inr': 'showDataViewer',
 			'tasks': 'showTasks',
 			'tasks/edit': 'showTaskEdit',
 			'tasks/edit?id=:id': 'showTaskEdit',
-			'insight': 'showInsight',
-			'insight/electric': 'showInsightElectric',
 			'device/:deviceUrl': 'showDeviceDetails',
 			'device/:deviceUrl/state': 'showDeviceState',
 			'device/:deviceUrl/settings': 'showDeviceSettings',
@@ -82,13 +81,20 @@ define([
 			}
 		},
 
-		showHubRoot: function() {
-			Backbone.history.navigate('dashboard', {trigger: true});
-		},
-
 		showDashboard: function() {
 			this.renderAppRoot('hub', {});
 			this.appView.showDashboard();
+		},
+
+
+		showDataEdit: function(id) {
+			this.renderAppRoot('hub', {});
+			var s = id ? decodeURIComponent(id.replace('id=', '')) : null;
+			this.appView.showDataEdit(s);
+		},
+
+		showHubRoot: function() {
+			Backbone.history.navigate('dashboard', {trigger: true});
 		},
 
 		showTasks: function() {
