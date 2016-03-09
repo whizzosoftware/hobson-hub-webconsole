@@ -68,7 +68,9 @@ define([
 				UserService.addDataStream(this, dataStream, function() {
 					toastr.success(strings.DataStreamCreated);
 				}, function(model, response, options) {
-					if (response.status === 501) {
+					if (response.status === 201) {
+						toastr.success(strings.DataStreamCreated);
+					} else if (response.status === 501) {
 						toastr.error(strings.DataStreamCreationUnsupported);
 					} else {
 						toastr.error(strings.DataStreamCreationFailed);
