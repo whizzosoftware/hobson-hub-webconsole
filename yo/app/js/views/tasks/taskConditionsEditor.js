@@ -102,6 +102,12 @@ define([
 		},
 
 		onClickAdd: function(e, a) {
+			// replace property container class ID with actual object
+			a.cclass = TaskService.findPropertyContainerClass(this.conditionClasses, a.cclass['@id']);
+			if (a.cclass) {
+				a.cclass = a.cclass.toJSON();
+			}
+
 			var msg = PropertyContainerValidator.validate(a);
 			if (!msg) {
 				this.task.addCondition(a);

@@ -7,13 +7,13 @@ define([
 	return {
 
 		validate: function(a) {
-			for (var i=0; i < a.values.length; i++) {
-				var sp = a.values[i];
+			for (var ix in a.cclass.supportedProperties) {
+				var sp = a.cclass.supportedProperties[ix];
 				var varName = sp['@id'];
-				if (!_.has(a.properties, varName)) {
+				if (!_.has(a.values, varName)) {
 					return sp.name + ' ' + strings.IsARequiredField + '.';
 				} else {
-					var value = a.properties[varName];
+					var value = a.values[varName];
 					switch (sp.type) {
 						case 'STRING':
 							if (!_.isString(value) || value === '') {
