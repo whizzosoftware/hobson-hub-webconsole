@@ -7,9 +7,10 @@ define([
 	'models/propertyContainer',
 	'views/widgets/stringPicker',
 	'views/widgets/devicesPicker',
+	'views/widgets/serialPortPicker',
 	'i18n!nls/strings',
 	'text!templates/settings/pluginSettings.html'
-], function($, _, Backbone, toastr, Config, StringPropertyView, DevicesPropertyView, strings, pluginSettingsTemplate) {
+], function($, _, Backbone, toastr, Config, StringPropertyView, DevicesPropertyView, SerialPortPropertyView, strings, pluginSettingsTemplate) {
 
 	return Backbone.View.extend({
 
@@ -42,19 +43,24 @@ define([
 				var property = properties[ix];
 		        var v;
 		        switch (property.type) {
-		          case 'STRING':
-		          case 'SECURE_STRING':
+		          case 'DEVICE':
+		            v = new DevicesPropertyView({
+						model: property,
+						value: this.model.get('configuration').values[property['@id']], 
+						single: true
+		            });
+		            break;
+		          case 'SERIAL_PORT':
+		          	v = new SerialPortPropertyView({
+		          		model: property,
+		          		value: this.model.get('configuration').values[property['@id']]
+		          	});
+		          	break;
+		          default:
 		            v = new StringPropertyView({
 						id: property['@id'],
 						model: property,
 						value: this.model.get('configuration').values[property['@id']]
-		            });
-		            break;
-		          case 'DEVICE':
-		            v = new DevicesPropertyView({
-						model: property, 
-						value: this.model.get('configuration').values[property['@id']], 
-						single: true
 		            });
 		            break;
 		        }

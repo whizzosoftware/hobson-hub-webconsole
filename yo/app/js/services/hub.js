@@ -12,8 +12,9 @@ define([
 	'models/logEntry',
 	'models/activityLogEntry',
 	'models/plugin',
-	'models/repository'
-], function($, session, Hubs, Hub, HubConfig, ItemList, DashboardData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository) {
+	'models/repository',
+	'models/serialPort'
+], function($, session, Hubs, Hub, HubConfig, ItemList, DashboardData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository, SerialPort) {
 	return {
 		betaRepositoryUrl: 'http://www.hobson-automation.com/obr/beta/repository.xml',
 
@@ -52,6 +53,16 @@ define([
 		getHubConfiguration: function(ctx, success, error) {
 			var url = session.getSelectedHub().get('configuration')['@id'];
 			new HubConfig({url: url}).fetch({
+				context: ctx,
+				success: success,
+				error: error
+			});
+		},
+
+		getHubSerialPorts: function(ctx, success, error) {
+			var url = session.getSelectedHub().get('serialPorts')['@id'];
+			console.debug(url);
+			new ItemList(null, {url: url, model: SerialPort}).fetch({
 				context: ctx,
 				success: success,
 				error: error
