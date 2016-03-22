@@ -6,16 +6,17 @@ define([
 	'toastr',
 	'models/itemList',
 	'models/variable',
-	'services/device'
-], function($, _, Backbone, toastr, ItemList, Variable, DeviceService) {
+	'services/device',
+	'i18n!nls/strings'
+], function($, _, Backbone, toastr, ItemList, Variable, DeviceService, strings) {
 
 	return Backbone.View.extend({
 
 		defaultRefreshInterval: 5000,
 
-		fastRefreshInterval: 1000,
+		fastRefreshInterval: 500,
 
-		timeoutInterval: 6000,
+		timeoutInterval: 7000,
 
 		alwaysRefresh: false,
 
@@ -75,7 +76,7 @@ define([
 
 		processUpdate: function(name, value) {
 			// clear pending update if the value is what's expected
-			if (this.pendingUpdates[name] && this.pendingUpdates[name].value === value) {
+			if (this.pendingUpdates[name] && DeviceService.isDeviceVariableValueEqual(this.pendingUpdates[name].value, value)) {
 				this.pendingUpdates[name] = null;
 			}
 

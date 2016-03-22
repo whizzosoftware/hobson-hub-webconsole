@@ -99,6 +99,23 @@ define([
 
 		isDeviceAvailable: function(device) {
             return device.get('available');
+        },
+
+        isDeviceVariableValueEqual: function(v1, v2) {
+        	// HSB color values can vary by a few integers due to the granularity of a given color device;
+        	// we therefore compare the individual components of the colors allowing for slight variance
+        	if (typeof v1 === 'string' && typeof v2 === 'string' && v1.startsWith('hsb(') && v2.startsWith('hsb(')) {
+        		var a1 = v1.substring(4).split(',');
+        		var a2 = v2.substring(4).split(',');
+        		return (Math.abs(a1[0] - a2[0]) <= 5 && Math.abs(a2[1] - a2[1]) <= 5);
+        	} else if (typeof v1 === 'string' && typeof v2 === 'string' && v1.startsWith('kb(') && v2.startsWith('kb(')) {
+        		var a1 = v1.substring(3).split(',');
+        		var a2 = v2.substring(3).split(',');
+        		return Math.abs(a1[0] - a2[0]) <= 100 && a2[1] == a2[1];
+        	// anything else should be a spot on match
+        	} else {
+	        	return (v1 === v2);
+	        }
         }
 	};
 

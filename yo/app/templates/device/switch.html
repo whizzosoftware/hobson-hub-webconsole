@@ -2,9 +2,9 @@
 	<div class="large-12-columns text-center" style="margin: 30px 0px;">
     <center>
       <div class="switchPanel radius shadow-2">
-        <% if (variables.level) { %>
+        <% if (levelSliderVal) { %>
           <div class="levelSlider">
-            <input id="levelSlider" type="range" step="1" min="0" max="100" value="<%= variables.level.value %>" />
+            <input id="levelSlider" type="range" step="1" min="0" max="100" value="<%= levelSliderVal %>" />
           </div>
         <% } %>
         <div class="onOffSwitch">
@@ -15,11 +15,18 @@
         </div>
         <% if (variables.color) { %>
           <div class="colorSlider">
-            <input id="colorSlider" type="range" step="1" min="0" max="256" value="<%= colorSliderVal %>"/>
+            <input id="colorSlider" type="range" step="1" min="0" max="360" value="<%= colorSliderVal %>"/>
           </div>
         <% } %>
         <i id="spinner" class="fa fa-spinner fa-spin fa-2x" style="opacity: 0;"></i>
       </div>
     </center>
 	</div>
+</div>
+<div class="row">
+  <div class="large-12-columns text-center">
+        <button id="btnWarm" class="button small radius <%= (color.mode === 'kb' && Math.abs(2850 - color.value) < 50) ? 'active' : '' %>"><%=strings.Warm%></button>
+        <button id="btnNeutral" class="button small radius <%= (color.mode === 'kb' && Math.abs(3500 - color.value) < 50) ? 'active' : '' %>"><%=strings.Neutral%></button>
+        <button id="btnCool" class="button small radius <%= (color.mode === 'kb' && Math.abs(4100 - color.value) < 50) ? 'active' : '' %>"><%=strings.Cool%></button>
+  </div>
 </div>

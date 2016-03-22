@@ -21,15 +21,32 @@ define([
 		events: {
 			'click #switchToggle': 'onClickOn',
 			'change #levelSlider': 'onLevelChange',
-			'change #colorSlider': 'onColorChange'
+			'change #colorSlider': 'onColorChange',
+			'click #btnWarm': 'onColorTempChange',
+			'click #btnNeutral': 'onColorTempChange',
+			'click #btnCool': 'onColorTempChange'
 		},
 		
 		render: function(el) {
 			var colorSliderVal;
+			var levelSliderVal;
 
 			if (this.variables.color && this.variables.color.value) {
-				var rgbs = this.variables.color.value.match(/\d+/g);
-				colorSliderVal = colorConversion.convertRgbToByte(parseInt(rgbs[0]), parseInt(rgbs[1]), parseInt(rgbs[2]));
+				var val = this.variables.color.value;
+				if (val.substring(0, 4) === 'hsb(') {
+					var vals = val.substring(4, val.indexOf(')')).split(',');
+					colorSliderVal = vals[0];
+					levelSliderVal = vals[2];
+					this.color = {mode: 'hsb', value: parseInt(colorSliderVal)};
+				} else if (val.substring(0,3) === 'kb(') {
+					var vals = val.substring(3, val.indexOf(')')).split(',');
+					colorSliderVal = 0;
+					levelSliderVal = vals[1];
+					this.color = {mode: 'kb', value: parseInt(vals[0])};
+				}
+			}
+			if (!levelSliderVal && this.variables.level) {
+				levelSliderVal = this.variables.level.value;
 			}
 
 			this.$el.html(this.template({
@@ -37,7 +54,9 @@ define([
 				device: this.model.toJSON(),
 				pending: this.showPending,
 				variables: this.variables,
-				colorSliderVal: colorSliderVal
+				color: this.color,
+				levelSliderVal: levelSliderVal,
+				colorSliderVal: colorSliderVal,
 			}));
 
 			return this;
@@ -75,21 +94,44 @@ define([
 		},
 
 		onColorChange: function(event) {
-			var x = $(event.target).val();
-			var color = colorConversion.convertByteToRgb(x);
+			var hue = $(event.target).val();
 			this.showSpinner(true);
 			this.disableAllControls();
-			this.setVariableValues({color: color});
+			this.color = {mode: 'hsb', value: hue};
+			this.setVariableValues({color: 'hsb(' + hue + ',100,' + $('#levelSlider').val() + ')'});
 		},
 
 		onLevelChange: function(event) {
 			if (!this.hasPendingUpdates()) {
 				this.showSpinner(true);
 				this.disableAllControls();
-				this.setVariableValues({level: parseInt($(event.target).val())});
+				if (this.variables.color && this.color.mode === 'hsb') {
+					this.setVariableValues({color: 'hsb(' + this.color.value + ',100,' + $(event.target).val() + ')'});
+				} else if (this.variables.color && this.color.mode === 'kb') {
+					this.setVariableValues({color: 'kb(' + this.color.value + ',' + $(event.target).val() + ')'});
+				} else if (this.variables.level) {
+					this.setVariableValues({level: $(event.target).val()});
+				}
 			} else {
 				return false;
 			}
+		},
+
+		onColorTempChange: function(event) {
+			var t = $(event.target).attr('id');
+			console.debug(t);
+			this.showSpinner(true);
+			this.disableAllControls();
+			this.color = {mode: 'kb', value: 3500};
+			if (t === 'btnWarm') {
+				this.color.value = 2850;
+			} else if (t === 'btnCool') {
+				this.color.value = 4100;
+			} else if (t !== 'btnNeutral') {
+				console.debug('Unknown color temp set: ', t);
+			}
+			console.debug({color: 'kb(' + this.color.value + ',' + $('#levelSlider').val() + ')'});
+			this.setVariableValues({color: 'kb(' + this.color.value + ',' + $('#levelSlider').val() + ')'});
 		},
 
 		disableAllControls: function() {
