@@ -37,7 +37,7 @@ define([
 				var v = new ConfigPropertyView({
 					id: property['@id'],
 					model: property,
-					value: this.model.get('configuration').values[property['@id']]
+					value: this.model.get('configuration').values ? this.model.get('configuration').values[property['@id']] : null
 				});
 				formEl.append(v.render().el);
 				this.subviews.push(v);

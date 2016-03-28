@@ -23,7 +23,9 @@ define([
 				strings: strings,
 				device: this.model.toJSON(),
 				variables: this.variables,
-				pending: this.showPending
+				pending: this.showPending,
+				levelSliderVal: null,
+				color: null
 			}));
 
 			return this;

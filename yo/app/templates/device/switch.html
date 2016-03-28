@@ -23,10 +23,12 @@
     </center>
 	</div>
 </div>
-<div class="row">
-  <div class="large-12-columns text-center">
-        <button id="btnWarm" class="button small radius <%= (color.mode === 'kb' && Math.abs(2850 - color.value) < 50) ? 'active' : '' %>"><%=strings.Warm%></button>
-        <button id="btnNeutral" class="button small radius <%= (color.mode === 'kb' && Math.abs(3500 - color.value) < 50) ? 'active' : '' %>"><%=strings.Neutral%></button>
-        <button id="btnCool" class="button small radius <%= (color.mode === 'kb' && Math.abs(4100 - color.value) < 50) ? 'active' : '' %>"><%=strings.Cool%></button>
+<% if (color) { %>
+  <div class="row">
+    <div class="large-12-columns text-center">
+          <button id="btnWarm" class="button small radius <%= (color.mode === 'kb' && Math.abs(2850 - color.value) < 50) ? 'active' : '' %>"><%=strings.Warm%></button>
+          <button id="btnNeutral" class="button small radius <%= (color.mode === 'kb' && Math.abs(3500 - color.value) < 50) ? 'active' : '' %>"><%=strings.Neutral%></button>
+          <button id="btnCool" class="button small radius <%= (color.mode === 'kb' && Math.abs(4100 - color.value) < 50) ? 'active' : '' %>"><%=strings.Cool%></button>
+    </div>
   </div>
-</div>
+<% } %>

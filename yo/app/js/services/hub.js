@@ -61,7 +61,6 @@ define([
 
 		getHubSerialPorts: function(ctx, success, error) {
 			var url = session.getSelectedHub().get('serialPorts')['@id'];
-			console.debug(url);
 			new ItemList(null, {url: url, model: SerialPort}).fetch({
 				context: ctx,
 				success: success,

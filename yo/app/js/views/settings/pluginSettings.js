@@ -46,21 +46,21 @@ define([
 		          case 'DEVICE':
 		            v = new DevicesPropertyView({
 						model: property,
-						value: this.model.get('configuration').values[property['@id']], 
+						value: this.model.get('configuration').values ? this.model.get('configuration').values[property['@id']] : null, 
 						single: true
 		            });
 		            break;
 		          case 'SERIAL_PORT':
 		          	v = new SerialPortPropertyView({
 		          		model: property,
-		          		value: this.model.get('configuration').values[property['@id']]
+		          		value: this.model.get('configuration').values ? this.model.get('configuration').values[property['@id']] : null
 		          	});
 		          	break;
 		          default:
 		            v = new StringPropertyView({
 						id: property['@id'],
 						model: property,
-						value: this.model.get('configuration').values[property['@id']]
+						value: this.model.get('configuration').values ? this.model.get('configuration').values[property['@id']] : null
 		            });
 		            break;
 		        }
