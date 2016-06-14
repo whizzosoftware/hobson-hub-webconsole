@@ -45,7 +45,6 @@ define([
 			this.$el.html(this.template({strings: strings}));
 
 			// create tile groups
-			var el = this.$el.find('#tileGroups');
 			this.addSection(new DevicesSection({
 				name: 'Cameras',
 				filter: function(d) { return d.get('type') === 'CAMERA' }
@@ -92,8 +91,8 @@ define([
 
 			// fetch the device list
 			HubService.getDashboardData(
-				this, 
-				headers, 
+				this,
+				headers,
 				function(model, response, options) {
 					options.context.etag = options.xhr.getResponseHeader('ETag');
 					if (options.xhr.status !== 304) {
@@ -101,7 +100,7 @@ define([
 					} else {
 						options.context.renderSections(null);
 					}
-				}, 
+				},
 				function(model, response, options) {
 					toastr.error(strings.DeviceListRetrieveError);
 				}
@@ -158,4 +157,4 @@ define([
 		}
 	});
 
-});	
+});

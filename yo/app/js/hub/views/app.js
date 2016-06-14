@@ -17,6 +17,7 @@ define([
 	'views/navbar',
 	'views/sidebar/sidebar',
 	'views/dashboard/dashboard',
+	'views/dashboard2/dashboard',
 	'views/tasks/tasksTab',
 	'views/tasks/taskEdit',
 	'views/device/deviceState',
@@ -34,9 +35,9 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DeviceSettingsView, DataTabView, DataEditView, DataViewer, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, Dashboard2View, TasksTabView, TaskEditView, DeviceStateView, DeviceSettingsView, DataTabView, DataEditView, DataViewer, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
-	var AppView = Backbone.View.extend({
+	return Backbone.View.extend({
 
 		name: 'hub',
 
@@ -47,7 +48,8 @@ define([
 		},
 
 		render: function() {
-			this.$el.append(this.template());
+      var t = this.template();
+			this.$el.append(t);
 
 			if (session.showActivityLog()) {
 				this.$el.find('#sidr').sidr({
@@ -56,12 +58,16 @@ define([
 					onClose: this.onSidebarClose
 				});
 			}
-			
+
 			return this;
 		},
 
 		showDashboard: function() {
 			this.renderContentView(new DashboardView());
+		},
+
+		showDashboard2: function() {
+			this.renderContentView(new Dashboard2View());
 		},
 
 		showData: function() {
@@ -159,7 +165,7 @@ define([
 		renderContentView: function(view) {
 			if (!this.navbarView) {
 				this.navbarView = new HubNavbarView({
-					user: this.user, 
+					user: this.user,
 					hub: this.hub
 				});
 				this.$el.find('#navbar-container').html(this.navbarView.render().el);
@@ -188,5 +194,4 @@ define([
 		}
 	});
 
-	return AppView;
 });

@@ -6,15 +6,8 @@ require([
 	'backbone.validation',
 	'foundation.core',
 	'router',
-	'authFailHandler'
-], function($, _, Backbone, Validation, Foundation, Router, authFailHandler) {
-	// make sure all 401 responses route to the login page
-	$.ajaxSetup({
-		statusCode: {
-			401: authFailHandler
-		}
-	});
-
+	'services/auth'
+], function($, _, Backbone, Validation, Foundation, Router, AuthService) {
 	// add a convenient "endsWith" function to String
 	if (typeof String.prototype.endsWith !== 'function') {
     	String.prototype.endsWith = function(suffix) {
@@ -46,9 +39,9 @@ require([
 			el.css('display', 'block');
 			el.html(error);
 		}
-	})
+	});
 
 	// initialize the router
-	new Router();
+	var r = new Router();
 });
 define();

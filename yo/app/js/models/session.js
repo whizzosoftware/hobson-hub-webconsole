@@ -19,7 +19,7 @@ define([
 		},
 
 		hasUser: function() {
-			return this.get('user');
+			return (this.get('user') != null);
 		},
 
 		setUser: function(user) {
@@ -30,6 +30,11 @@ define([
 		getUser: function() {
 			return this.get('user');
 		},
+
+    clearUser: function() {
+      window.sessionStorage.removeItem('user');
+      this.unset('user');
+    },
 
 		getUserAccount: function() {
 			var u = this.getUser();
@@ -65,7 +70,7 @@ define([
 		},
 
 		hasDataStreams: function() {
-			return (this.getUser().get('dataStreams'));
+			return (this.getUser() && this.getUser().get('dataStreams'));
 		},
 
 		getDataStreamsUrl: function() {

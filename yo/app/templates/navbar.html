@@ -28,9 +28,12 @@
 		<% if (showAccount) { %>
 			<li class="subnav-item"><a id="account" class="<%= fragment.indexOf('account') > -1 ? 'active' : '' %>" href="#account"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;Account</a></li>
 		<% } %>
-		<% if (showPowerOff) { %>
-			<li class="subnav-item-right"><i id="power-button" class="fa fa-power-off fa-lg secondary icon-button"></i></li>
-		<% } %>
+			<li class="subnav-item-right">
+        <% if (showPowerOff) { %>
+          <i id="power-button" title="<%= strings.ShutdownHub %>" class="fa fa-power-off fa-lg secondary icon-button"></i>&nbsp;&nbsp;
+        <% } %>
+        <i id="logout" title="<%= strings.Logout %>" class="fa fa-sign-out fa-lg secondary icon-button"></i>
+      </li>
 	</ul>
   <ul class="show-for-small-only subnav-list">
     <li class="subnav-item">

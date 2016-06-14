@@ -3,15 +3,29 @@ define([
 	'jquery',
 	'models/session',
 	'models/itemList',
+  'models/user',
 	'models/dataStream'
-], function($, session, ItemList, DataStream) {
+], function($, session, ItemList, User, DataStream) {
 	return {
+    getAuthenticatedUser: function(ctx, success, error) {
+      var user = new User({url: '/api/v1/userInfo?expand=hubs'});
+      user.fetch({
+        context: ctx,
+        success: function(model, response, options) {
+          console.debug('Got user model', model);
+          success(ctx, model);
+        },
+        error: function(model, response, options) {
+          error(ctx, 'Error retrieving authenticated user info');
+        }
+      })
+    },
 
 		getDataStreams: function(ctx, success, error) {
 			var user = session.getUser();
 			if (user.get('dataStreams')) {
 				var dataStreams = new ItemList(
-					null, 
+					null,
 					{url: user.get('dataStreams')['@id'] + '?expand=item', model: DataStream}
 				);
 				dataStreams.fetch({

@@ -1,15 +1,8 @@
 // Filename: authFailHandler.js
 define([
-	'backbone',
-	'cookies'
-], function(Backbone, Cookies) {
-	return function() {
-		var frag = '#login';
-		if (Cookies.get('Token')) {
-			Cookies.expire('Token');
-			frag += '?expired=true';
-		}
-		Backbone.history.navigate(frag, {trigger: true});
-		location.reload();
+], function() {
+	return function(authService) {
+    console.debug('Auth failure detected; redirecting to login', authService);
+    authService.redirectToLogin();
 	}
 });

@@ -122,7 +122,7 @@ module.exports = function (grunt) {
                 options: {
                     style: 'compressed',
                     loadPath: [
-                        'app/bower_components/foundation/scss', 
+                        'app/bower_components/foundation/scss',
                         'app/bower_components/toastr',
                         'app/bower_components/fontawesome/scss',
                         'app/bower_components/chartist/dist/scss',
@@ -245,7 +245,7 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: '<%= yeoman.app %>/bower_components/sidr/dist',
                     src: 'jquery.sidr.js',
-                    dest: '<%= yeoman.dist %>/www/js/sidr/dist'                
+                    dest: '<%= yeoman.dist %>/www/js/sidr/dist'
                 }, {
                     expand: true,
                     cwd: '<%= yeoman.app %>/bower_components/datetimepicker',
@@ -292,7 +292,8 @@ module.exports = function (grunt) {
         'string-replace': {
             dist: {
                 files: {
-                    '<%= yeoman.dist %>/www/index.html': '<%= yeoman.app %>/index.html'
+                    '<%= yeoman.dist %>/www/index.html': '<%= yeoman.app %>/index.html',
+                    '<%= yeoman.dist %>/www/login.html': '<%= yeoman.app %>/login.html'
                 },
                 options: {
                     replacements: [{
@@ -304,17 +305,18 @@ module.exports = function (grunt) {
                     }, {
                         pattern: 'bower_components/requirejs',
                         replacement: 'js/requirejs'
-                    }, 
+                    },
                     // {
                     //     pattern: '<script data-main="js/config" src="js/requirejs/require.js"></script>',
                     //     replacement: '<script src="js/default.js"></script>'
                     // }
                     ]
                 }
-            }, 
+            },
             dist2: {
                 files: {
-                    '<%= yeoman.dist %>/www/js/config.js': '<%= yeoman.app %>/js/config.js'
+                    '<%= yeoman.dist %>/www/js/hub/config.js': '<%= yeoman.app %>/js/hub/config.js',
+                    '<%= yeoman.dist %>/www/js/login/config.js': '<%= yeoman.app %>/js/login/config.js'
                 },
                 options: {
                     replacements: [{

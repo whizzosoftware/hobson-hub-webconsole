@@ -15,7 +15,7 @@ define([
 	'text!templates/sidebar/sidebar.html',
 	'text!templates/sidebar/sunriseSunset.html'
 ], function($, _, Backbone, toastr, moment, session, HubService, ItemList, ActivityLogEntry, Variable, ActivitiesView, strings, template, sunriseTemplate) {
-	var SidebarView = Backbone.View.extend({
+	return Backbone.View.extend({
 
 		template: _.template(template),
 
@@ -32,10 +32,7 @@ define([
 				this.activities.remove();
 			}
 
-			var itemList = new ItemList(null, {model: Variable, url: '/api/v1/users/local/hubs/local/globalVariables?expand=item'});
-			itemList.fetch({
-				context: this,
-				success: function(model, response, options) {
+      HubService.getGlobalVariables(this, function(model, response, options) {
 					var sunrise = model.findWhere({name: 'sunrise'});
 					var sunset = model.findWhere({name: 'sunset'});
 					if (sunrise && sunrise.get('value') && sunset && sunset.get('value')) {
@@ -48,10 +45,10 @@ define([
 					} else {
 						options.context.$el.find('.sidebar-subheader').html(strings.NoLatLong);
 					}
-				}, error: function(model, response, options) {
+				}, function(model, response, options) {
 					toastr.error(strings.GlobalVariableError);
 				}
-			});
+			);
 
 			HubService.getActivityLog(
 				this,
@@ -80,5 +77,4 @@ define([
 		}
 	});
 
-	return SidebarView;
 });

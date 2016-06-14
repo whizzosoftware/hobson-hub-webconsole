@@ -3,18 +3,20 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+  'services/auth',
 	'models/session',
 	'views/powerOffConfirm',
 	'i18n!nls/strings',
 	'text!templates/navbar.html'
-], function($, _, Backbone, session, PowerOffConfirmView, strings, navbarTemplate) {
+], function($, _, Backbone, AuthService, session, PowerOffConfirmView, strings, navbarTemplate) {
 	var DashboardView = Backbone.View.extend({
 
 		template: _.template(navbarTemplate),
 
 		events: {
 			'click #sidebar-button': 'onClickSidebar',
-			'click #power-button': 'onClickPowerOff'
+			'click #power-button': 'onClickPowerOff',
+      'click #logout': 'onClickLogout'
 		},
 
 		render: function() {
@@ -59,7 +61,11 @@ define([
 				el.html(new PowerOffConfirmView({url: url}).render().el);
 				el.foundation('reveal', 'open');
 			}
-		}
+		},
+
+    onClickLogout: function() {
+      AuthService.logout();
+    }
 	});
 
 	return DashboardView;

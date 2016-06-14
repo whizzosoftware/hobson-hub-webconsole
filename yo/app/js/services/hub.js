@@ -13,14 +13,24 @@ define([
 	'models/activityLogEntry',
 	'models/plugin',
 	'models/repository',
-	'models/serialPort'
-], function($, session, Hubs, Hub, HubConfig, ItemList, DashboardData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository, SerialPort) {
+	'models/serialPort',
+  'models/variable'
+], function($, session, Hubs, Hub, HubConfig, ItemList, DashboardData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository, SerialPort, Variable) {
 	return {
 		betaRepositoryUrl: 'http://www.hobson-automation.com/obr/beta/repository.xml',
 
+    getHubWithId: function(ctx, url, success, error) {
+      var hub = new Hub({url: url});
+      hub.fetch({
+        context: this,
+        success: success,
+        error: error
+      });
+    },
+
 		retrieveHubWithId: function(hubId, hubsUrl, callback) {
 			var hub = session.getSelectedHub();
-			if (hub.get('id') !== hubId) {
+			if (!hub || hub.get('id') !== hubId) {
 				var hubs = new Hubs(hubsUrl);
 				hubs.fetch({
 					context: this,
@@ -68,9 +78,19 @@ define([
 			});
 		},
 
+    getGlobalVariables: function(ctx, success, error) {
+      var url = session.getSelectedHub().get('globalVariables')['@id'];
+      new ItemList(null, {url: url + '?expand=item', model: Variable}).fetch({
+        context: ctx,
+        success: success,
+        error: error
+      });
+    },
+
 		getDashboardData: function(ctx, headers, success, error) {
 			var hub = session.getSelectedHub();
-			var url = hub.get('@id') + '?expand=devices.item.preferredVariable,presenceEntities.item.location';
+      var url = hub ? hub.get('@id') + '?expand=devices.item.preferredVariable,presenceEntities.item.location' : null;
+      console.log(url);
 			if (hub && url) {
 				var items = new DashboardData({url: url});
 				items.fetch({
@@ -145,7 +165,7 @@ define([
 				});
 			} else {
 				error(null, null, {context: ctx});
-			}		
+			}
 		},
 
 		createNewPresenceLocation: function() {
