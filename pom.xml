@@ -27,6 +27,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.whizzosoftware.hobson.hub</groupId>
+            <artifactId>hobson-hub-api</artifactId>
+            <version>0.8.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
@@ -59,8 +65,9 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>org.osgi.framework,org.osgi.service.event,org.osgi.service.cm,org.osgi.util.tracker,org.apache.felix.bundlerepository,org.slf4j,org.restlet.*,com.whizzosoftware.hobson.api.*;version="[0.5.0,0.6)</Import-Package>
-                        <Bundle-Activator>com.whizzosoftware.hobson.webconsole.Activator</Bundle-Activator>
+                        <Import-Package>org.slf4j,org.restlet.*,com.whizzosoftware.hobson.api.*;version="[0.8.0,0.9)"</Import-Package>
+                        <Bundle-Activator>com.whizzosoftware.hobson.api.osgi.activator.HobsonBundleActivator</Bundle-Activator>
+                        <Provide-Capability>hobson.plugin=com.whizzosoftware.hobson.webconsole.WebConsolePlugin</Provide-Capability>
                         <Bundle-Category>hobson-core-plugin</Bundle-Category>
                     </instructions>
                 </configuration>
