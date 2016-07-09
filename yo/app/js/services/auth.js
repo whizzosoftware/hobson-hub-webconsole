@@ -4,11 +4,12 @@ define([
   'backbone',
   'cookies',
   'authFailHandler',
+  'services/url',
   'models/session'
-], function($, Backbone, Cookies, authFailHandler, session) {
+], function($, Backbone, Cookies, authFailHandler, UrlService, session) {
   return {
 
-    redirectToLogin: function() {
+    redirectToLogin: function(error, errorDescription) {
       console.log('authService.redirectToLogin');
       Cookies.set('Token', null);
       this.setAuthFailHandler(false);
@@ -19,14 +20,24 @@ define([
         timeout: 5000,
         success: function (data, status, response) {
           console.log('successfully retrieved openid-configuration', data.authorization_endpoint, data.token_endpoint, data.grant_types_supported);
-          if (data.authorization_endpoint && data.grant_types_supported && data.grant_types_supported.indexOf('authorization_code') > -1) {
-            console.log('code grant supported');
-            window.location.href = data.authorization_endpoint + '?response_type=code&client_id=hobson-webconsole' + (Backbone.history.location.href ? '&redirect_uri=' + encodeURIComponent(Backbone.history.location.href.split('?')[0]) : '');
-          } else if (data.authorization_endpoint && data.grant_types_supported && data.grant_types_supported.indexOf('implicit') > -1) {
-            console.log('password grant supported');
+          if (data.authorization_endpoint && data.grant_types_supported && data.grant_types_supported.indexOf('implicit') > -1) {
+            console.log('implicit grant supported');
             var du = response.getResponseHeader('X-Default-User');
             console.log('found default user', du);
-            window.location.href = data.authorization_endpoint + '?response_type=token&client_id=hobson-webconsole' + (Backbone.history.location.href ? '&redirect_uri=' + encodeURIComponent(Backbone.history.location.href) : '') + (du ? '&username=' + du : '');
+            var redirUri = Backbone.history.location.href;
+            if (redirUri) {
+              redirUri = UrlService.removeQueryParam(redirUri, 'error');
+              redirUri = UrlService.removeQueryParam(redirUri, 'error_description');
+            }
+            var uri = data.authorization_endpoint + '?response_type=token&client_id=hobson-webconsole' + (redirUri ? '&redirect_uri=' + encodeURIComponent(redirUri) : '') + (du ? '&username=' + du : '');
+            // add error and error description (if present) to redirect URI so web page can display them
+            if (error) {
+              uri += '&error=' + error;
+            }
+            if (errorDescription) {
+              uri += '&error_description=' + errorDescription;
+            }
+            window.location.href = uri;
           } else {
             console.log('Not sure what to do!');
           }

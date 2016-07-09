@@ -76,12 +76,6 @@ module.exports = function (grunt) {
               https: false,
               changeOrigin: false
             }, {
-              context: '/token',
-              host: 'localhost',
-              port: 8182,
-              https: false,
-              changeOrigin: false
-            }, {
               context: '/auth',
               host: 'localhost',
               port: 8182,

@@ -65,35 +65,18 @@ define([
       // determine if any OIDC parameter are being passed in
       var l = Backbone.history.location.href;
       var accessToken = UrlService.extractAccessToken(l);
-      var code = UrlService.extractCode(l);
+      var error = UrlService.getQueryParam(l, 'error');
       // if it's an access token (implicit flow) then use it
       if (accessToken) {
-        var uri = UrlService.removeAccessToken(l);
+        var uri = UrlService.removeQueryParams(l, ['access_token', 'id_token', 'token_type']);
         this.processAccessToken(this, accessToken, uri);
-        // if it's a code (authorization code flow), try to exchange for a token
-      } else if (code) {
-        var uri = UrlService.removeCode(l);
-        AuthService.setAuthFailHandler(false);
-        $.ajax('/token', {
-          context: this,
-          method: 'POST',
-          data: {
-            code: code,
-            redirect_uri: (l ? encodeURIComponent(UrlService.removeCode(l)) : null)
-          },
-          success: function(data, status, xhr) {
-            AuthService.setAuthFailHandler(true);
-            this.processAccessToken(this, data.access_token, uri);
-          },
-          error: function(xhr, status, error) {
-            console.debug('error:', error);
-          }
-        });
+      } else if (error) {
+        AuthService.redirectToLogin(error, UrlService.getQueryParam(l, 'error_description'));
       }
 		},
 
     execute: function(callback, args, name) {
-      if (!UrlService.hasAccessTokenOrCode(Backbone.history.location.href)) {
+      if (!UrlService.hasAccessToken(Backbone.history.location.href)) {
         if (session.hasUser()) {
           callback.apply(this, args);
         } else {

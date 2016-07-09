@@ -3,22 +3,66 @@ define([
   'jquery'
 ], function($) {
   return {
-    hasAccessTokenOrCode: function(url) {
-      return (url.indexOf('#access_token=') > -1 || url.indexOf('?code=') > -1);
+    hasAccessToken: function(url) {
+      return (url.indexOf('#access_token=') > -1);
     },
 
     extractAccessToken: function(url) {
       var ix = url.indexOf('#access_token=');
       if (ix > -1) {
-        return url.substring(ix + 14);
+        var ix2 = url.indexOf('&', ix + 14);
+        if (ix2 > -1) {
+          return url.substring(ix + 14, ix2);
+        } else {
+          return url.substring(ix + 14);
+        }
       }
       return null;
     },
 
-    removeAccessToken: function(url) {
-      var ix = url.indexOf('#access_token=');
+    getQueryParam: function(url, name) {
+      var ix = url.indexOf('?' + name + '=');
+      if (ix == -1) {
+        ix = url.indexOf('&' + name + '=');
+      }
       if (ix > -1) {
-        var ix2 = url.indexOf('?', ix);
+        var ix2 = url.indexOf('&', ix + 1);
+        if (ix2 == -1) {
+          ix2 = url.indexOf('#');
+        }
+        if (ix2 > -1) {
+          return url.substring(ix + name.length + 2, ix2);
+        } else {
+          return url.substring(ix + name.length + 2);
+        }
+      }
+      return null;
+    },
+
+    removeQueryParams: function(url, names) {
+      var u = url;
+      for (var i=0; i < names.length; i++) {
+        u = this.removeQueryParam(u, names[i]);
+      }
+      return u;
+    },
+
+    removeQueryParam: function(url, name) {
+      var ix = url.indexOf('?' + name + '=');
+      if (ix == -1) {
+        ix = url.indexOf('#' + name + '=');
+      }
+      if (ix == -1) {
+        ix = url.indexOf('&' + name + '=');
+      }
+      if (ix > -1) {
+        var ix2 = url.indexOf('?', ix + 1);
+        if (ix2 == -1) {
+          ix2 = url.indexOf('#', ix + 1);
+        }
+        if (ix2 == -1) {
+          ix2 = url.indexOf('&', ix + 1);
+        }
         if (ix2 > -1) {
           return url.substring(0, ix) + url.substring(ix2);
         } else {
@@ -26,33 +70,6 @@ define([
         }
       }
       return url;
-    },
-
-    extractCode: function(url) {
-      var ix = url.indexOf('?code=');
-      if (ix > -1) {
-        var ix2 = url.indexOf('#', ix);
-        if (ix2 > -1) {
-          return url.substring(ix + 6, ix2);
-        } else {
-          return url.substring(ix + 6);
-        }
-      }
-      return null;
-    },
-
-    removeCode: function(url) {
-      var ix = url.indexOf('?code=');
-      if (ix > -1) {
-        var ix2 = url.indexOf('#', ix);
-        if (ix2 > -1) {
-          return url.substring(0, ix) + url.substring(ix2);
-        } else {
-          return url.substring(0, ix);
-        }
-      } else {
-        return url;
-      }
     }
   };
 });

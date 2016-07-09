@@ -12,7 +12,6 @@ define([
       user.fetch({
         context: ctx,
         success: function(model, response, options) {
-          console.debug('Got user model', model);
           success(ctx, model);
         },
         error: function(model, response, options) {
