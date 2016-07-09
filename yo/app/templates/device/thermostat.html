@@ -6,19 +6,19 @@
 			</div>
 		<% } %>
 		<div style="text-align: center; font-size: 8em; font-weight: bold;">
-			<%= variables.inTempF.value %>&deg;
+			<%= variables.inTempF.value.toFixed(1) %>&deg;
 		</div>
 	</div>
 	<div class="medium-6 columns">
 		<center>
 		<ul class="small-block-grid-2">
 			<% if (variables.targetHeatTempF && variables.targetCoolTempF) { %>
-				<li style="font-size: 1.2em;" class="<%= variables.tstatMode.value === 'COOL' || variables.tstatMode.value === 'OFF' ? 'disabled' : '' %> text-right">Heat to: <b><%= variables.targetHeatTempF.value %>&deg;</b></li>
+				<li style="font-size: 1.2em;" class="<%= variables.tstatMode.value === 'COOL' || variables.tstatMode.value === 'OFF' ? 'disabled' : '' %> text-right">Heat to: <b><%= variables.targetHeatTempF.value.toFixed(1) %>&deg;</b></li>
 				<li><a href="#" id="up" class="radius button <%= variables.tstatMode.value === 'OFF' ? 'disabled' : '' %>"><i class="fa fa-chevron-up"></i></a></li>
-				<li style="font-size: 1.2em;" class="<%= variables.tstatMode.value === 'HEAT' || variables.tstatMode.value === 'OFF' ? 'disabled' : '' %> text-right">Cool to: <b><%= variables.targetCoolTempF.value %>&deg;</b></li>
+				<li style="font-size: 1.2em;" class="<%= variables.tstatMode.value === 'HEAT' || variables.tstatMode.value === 'OFF' ? 'disabled' : '' %> text-right">Cool to: <b><%= variables.targetCoolTempF.value.toFixed(1) %>&deg;</b></li>
 				<li><a href="#" id="down" class="radius button <%= variables.tstatMode.value === 'OFF' ? 'disabled' : '' %>"><i class="fa fa-chevron-down"></i></a></li>
 			<% } else if (variables.targetTempF) { %>
-				<li style="font-size: 1.2em;" class="text-right">Set to: <b><%= variables.targetTempF.value %>&deg;</b></li>
+				<li style="font-size: 1.2em;" class="text-right">Set to: <b><%= variables.targetTempF.value.toFixed(1) %>&deg;</b></li>
 				<li><a href="#" id="up" class="radius button"><i class="fa fa-chevron-up"></i></a></li>
 				<li></li>
 				<li><a href="#" id="down" class="radius button"><i class="fa fa-chevron-down"></i></a></li>
