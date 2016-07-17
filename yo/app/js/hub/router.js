@@ -30,7 +30,6 @@ define([
 			// hub app
 			'hub': 'showHubRoot',
 			'dashboard': 'showDashboard',
-			'dashboard2': 'showDashboard2',
 			'data': 'showData',
 			'data/edit': 'showDataEdit',
 			'data/:dataStreamId/view': 'showDataViewer',
@@ -105,10 +104,6 @@ define([
 
 		showDashboard: function() {
       this.appView.showDashboard();
-		},
-
-		showDashboard2: function() {
-      this.appView.showDashboard2();
 		},
 
 		showDataEdit: function(id) {

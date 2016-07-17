@@ -17,7 +17,6 @@ require.config({
                 'dropzone': '../../bower_components/dropzone/dist/dropzone-amd-module',
                 'foundation.core': '../../bower_components/foundation/js/foundation.min',
                 'foundation.dropdown': '../../bower_components/foundation/js/foundation/foundation.dropdown',
-                'gridster': '../../bower_components/gridster-js/dist/jquery.gridster.min',
                 'i18n': '../../bower_components/requirejs-i18n/i18n',
                 'jquery': '../../bower_components/jquery/dist/jquery.min',
                 'jquery-colpick': '../../bower_components/jquery-colpick/js/colpick',
@@ -60,9 +59,6 @@ require.config({
                 },
                 'chartistTooltip': {
                         deps: ['chartist']
-                },
-                'gridster': {
-                        deps: ['jquery']
                 }
         },
         enforceDefine: false

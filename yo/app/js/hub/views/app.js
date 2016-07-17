@@ -17,7 +17,6 @@ define([
 	'views/navbar',
 	'views/sidebar/sidebar',
 	'views/dashboard/dashboard',
-	'views/dashboard2/dashboard',
 	'views/tasks/tasksTab',
 	'views/tasks/taskEdit',
 	'views/device/deviceState',
@@ -35,7 +34,7 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, Dashboard2View, TasksTabView, TaskEditView, DeviceStateView, DeviceSettingsView, DataTabView, DataEditView, DataViewer, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DeviceSettingsView, DataTabView, DataEditView, DataViewer, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	return Backbone.View.extend({
 
