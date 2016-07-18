@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="small-12 columns text-center">
+      <button id="armButton" class="radius button" style="background: <%= variables.armed.value ? 'red' : 'green' %>; min-width: 100px; min-height: 100px;">
+        <i class="fa fa-2x <%= variables.armed.value ? 'fa-lock' : 'fa-unlock' %>"></i><br/>
+      </button>
+      <p>
+        <%= variables.armed.value ? strings.PressToDisarm : strings.PressToArm %>
+      </p>
+      <i id="spinner" class="fa fa-spinner fa-spin fa-2x" style="opacity: 0;"></i>
+  </div>
+</div>
