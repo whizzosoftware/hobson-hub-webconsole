@@ -42,6 +42,16 @@ select {
 	}
 }
 
+.presence-entity-list.error {
+  border: 1px solid red;
+  border-radius: 3px;
+}
+
+.location-list.error {
+  border: 1px solid red;
+  border-radius: 3px;
+}
+
 .form-field {
 	small {
 		margin-bottom: 10px;

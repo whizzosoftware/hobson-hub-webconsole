@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="large-12 columns form-field">
 		<label><b><%= property.name %></b><% if (required) { %>&nbsp;<small><%= strings.Required %></small><% } %>
-			<select id="<%= id %>" class="radius" disabled>
+			<select id="<%= id %>" class="radius location-list" disabled>
 				<option><%= strings.LoadingLocations %></option>
 			</select>
 		</label>
