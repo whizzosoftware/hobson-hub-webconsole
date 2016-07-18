@@ -46,23 +46,23 @@ define([
 
 			// create tile groups
 			this.addSection(new DevicesSection({
-				name: 'Cameras',
+				name: strings.Cameras,
 				filter: function(d) { return d.get('type') === 'CAMERA' }
 			}));
 			this.addSection(new PresenceEntitiesSection({
-				name: 'Presence'
+				name: strings.Presence
 			}));
 			this.addSection(new DevicesSection({
-				name: 'Sensors',
+				name: strings.Sensors,
 				filter: function(d) { return d.get('type') === 'SENSOR' }
 			}));
 			this.addSection(new DevicesSection({
-				name: 'Devices',
-				filter: function(d) { return (d.get('type') !== 'CAMERA' && d.get('type') !== 'LIGHTBULB' && d.get('type') !== 'SENSOR') }
+				name: strings.Miscellaneous,
+				filter: function(d) { return (d.get('type') !== 'CAMERA' && d.get('type') !== 'LIGHTBULB' && d.get('type') !== 'SENSOR' && d.get('type') !== 'SWITCH' ) }
 			}));
 			this.addSection(new DevicesSection({
-				name: 'Lights',
-				filter: function(d) { return d.get('type') === 'LIGHTBULB' }
+				name: strings.LightsAndSwitches,
+				filter: function(d) { return d.get('type') === 'LIGHTBULB' || d.get('type') === 'SWITCH' }
 			}));
 
 			// render initial device tiles
