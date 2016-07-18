@@ -35,6 +35,22 @@ define([
 								return sp.name + ' ' + strings.MustBeAValidTime + '.';
 							}
 							break;
+						case 'DEVICE':
+							if (value === '') {
+								return sp.name + ' must be a valid device.';
+							}
+							break;
+						case 'DEVICES':
+							if (!value || value.length === 0) {
+								return sp.name + ' must be at least one valid device.';
+							}
+							break;
+						case 'PRESENCE_ENTITY':
+						case 'LOCATION':
+							if (!value || !value['@id']) {
+								return sp.name + ' must be valid.';
+							}
+							break;
 						default:
 							break;
 					}
