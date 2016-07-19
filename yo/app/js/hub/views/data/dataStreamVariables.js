@@ -36,7 +36,7 @@ define([
 					this.subviews.push(variableView);
 				}
 			} else {
- 				this.$el.html('<p class="notice">You must add at least one variable to the data stream.</p>');
+ 				this.$el.html('<p class="notice">' + strings.DataStreamHelpText + '</p>');
 			}
 
 			return this;

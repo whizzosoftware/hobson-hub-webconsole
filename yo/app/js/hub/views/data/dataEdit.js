@@ -58,18 +58,21 @@ define([
 				this.showErrors(this, errors);
 			} else {
 				// build data stream object
-				var dataStream = {name: name, variables: []};
+				var dataStream = {name: name, fields: []};
 				for (var i in this.dataStreamPropertiesView.model) {
-					dataStream.variables.push({
-						'@id': this.dataStreamPropertiesView.model[i].variable['@id']
+					dataStream.fields.push({
+            name: this.dataStreamPropertiesView.model[i].name,
+						variable: {
+              '@id': this.dataStreamPropertiesView.model[i].variable['@id']
+            }
 					});
 				}
-				console.debug('onClickCreate', dataStream);
 				UserService.addDataStream(this, dataStream, function() {
 					toastr.success(strings.DataStreamCreated);
 				}, function(model, response, options) {
 					if (response.status === 201) {
 						toastr.success(strings.DataStreamCreated);
+            Backbone.history.navigate('data', {trigger: true});
 					} else if (response.status === 501) {
 						toastr.error(strings.DataStreamCreationUnsupported);
 					} else {

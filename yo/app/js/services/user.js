@@ -73,7 +73,7 @@ define([
 			if (user.get('dataStreams')) {
 				var dataStream = new DataStream({url: user.get('dataStreams')['@id']});
 				dataStream.set('name', data.name);
-				dataStream.set('variables', data.variables);
+				dataStream.set('fields', data.fields);
 				dataStream.save(null, {
 					success: success,
 					error: error

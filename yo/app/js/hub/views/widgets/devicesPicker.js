@@ -76,7 +76,7 @@ define([
 						options.context.subviews.push(options.context.devicesView);
 						options.context.setDeviceCount(0);
 					} else {
-						options.context.$el.find('#deviceList').html(strings.NoDevicesAvailable);
+						options.context.$el.find('#deviceList').html('<p>' + strings.NoDevicesAvailable + '</p>');
 					}
 				},
 				error: function(model, response, options) {

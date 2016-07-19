@@ -17,8 +17,8 @@ define([
 
 		events: {
 			'click #buttonPlus': 'onClickPlus',
-			'addVariable': 'onVariableAdded',
-			'deleteVariable': 'onVariableDeleted'
+			'addField': 'onFieldAdded',
+			'deleteField': 'onFieldDeleted'
 		},
 
 		initialize: function(options) {
@@ -78,25 +78,22 @@ define([
 			}
 		},
 
-		onVariableAdded: function(e, variables) {
-			for (var ix=0; ix < variables.value.length; ix++) {
-				this.model.push({
-					device: {
-						name: variables.device.name
-					},
-					variable: {
-						'@id': variables.value[ix]['@id'],
-						name: variables.value[ix].name
-					}
-				})
-			}
+		onFieldAdded: function(e, field) {
+      console.log('onFieldAdded', field);
+      this.model.push({
+        name: field.name,
+        variable: {
+          "@id": field.variable.value[0]['@id']
+        }
+      });
+      console.log('current model value', this.model);
 			this.closePlusPanel();
 			this.renderVariables();
 		},
 
-		onVariableDeleted: function(e, variable) {
+		onFieldDeleted: function(e, field) {
 			for (var ix in this.model) {
-				if (this.model[ix].variable['@id'] === variable['@id']) {
+				if (this.model[ix].name === field.name) {
 					this.model.splice(ix, 1);
 					this.renderVariables();
 					break;

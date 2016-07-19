@@ -22,6 +22,7 @@ define([
 
 		initialize: function(options) {
 			this.subviews = [];
+      this.single = options ? options.single : null;
 			if (options && options.model) {
 				this.model = options;
 			} else {

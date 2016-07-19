@@ -28,7 +28,7 @@ define([
 		},
 
 		onDeleteAction: function(action) {
-			this.$el.trigger('deleteVariable', this.model.variable);
+			this.$el.trigger('deleteField', this.model);
 		}
 	});
 });

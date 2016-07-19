@@ -90,7 +90,7 @@ define([
 								var s = seriesMap[k];
 								if (!s) {
 									var name = ctx.extractVariableName(k);
-									s = {name: strings[name], data: []};
+									s = {name: model.get("fields")[name], data: []};
 									this.series.push(s);
 									seriesMap[k] = s;
 								}

@@ -58,7 +58,8 @@ define([
 			this.$el.find('#deviceSelector').html(this.devicesPicker.render().el);
 
 			this.variablePicker = new VariablePickerView({
-				single: false
+        required: true,
+				single: true
 			});
 			this.$el.find('#variableSelector').html(this.variablePicker.render().el);
 
@@ -77,7 +78,10 @@ define([
 			for (var ix in this.variablePicker.model.value) {
 				this.model.variables.push(this.variablePicker.model.value[ix]);
 			}
-			this.$el.trigger('addVariable', this.variablePicker.model);
+			this.$el.trigger('addField', {
+        name: this.$el.find('#fieldName').val(),
+        variable: this.variablePicker.model
+      });
 		}
 
 	});
