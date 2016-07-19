@@ -15,7 +15,7 @@ define([
 		 * This will return a version of the ID that is safe to use in HTML ID attributes.
 		 */
 		getSafeId: function() {
-			return this.model['@id'].replace('.', '-').replace('#', '-');
+			return this.model && this.model['@id'] ? this.model['@id'].replace('.', '-').replace('#', '-') : null;
 		},
 
 		getValue: function() {

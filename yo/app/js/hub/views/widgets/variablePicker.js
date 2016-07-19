@@ -24,10 +24,13 @@ define([
 			this.subviews = [];
       this.single = options ? options.single : null;
 			if (options && options.model) {
-				this.model = options;
+				this.model = options.model;
 			} else {
 				this.model = {
-					value: []
+					value: [],
+          constraints: {
+            required: false
+          }
 				};
 			}
 		},
@@ -43,7 +46,8 @@ define([
 			this.$el.append(
 				this.template({
 					strings: strings,
-					property: this.model
+					property: this.model,
+          required: this.model.constraints && this.model.constraints.required ? this.model.constraints.required : false
 				})
 			);
 
@@ -55,7 +59,7 @@ define([
 		},
 
 		reset: function() {
-			this.$el.find('#variablesList').html('<p>There are no variables for the selected item.</p>');
+			this.$el.find('#variablesList').html('<p>' + strings.NoVariablesAvailable + '</p>');
 		},
 
 		setDevice: function(device) {
@@ -112,7 +116,16 @@ define([
 				}
 			}
 			return false;
-		}
+		},
+
+    showError: function (showError) {
+      BaseWidget.prototype.showError.call(this, showError);
+      if (showError) {
+        this.$el.find('#variablesList ul').addClass('error');
+      } else {
+        this.$el.find('#variablesList ul').removeClass('error');
+      }
+    }
 
 	});
 

@@ -165,6 +165,7 @@ define({
   "NoStatisticsCollected": "Device statistics are enabled but none have been received yet.",
   "NotScheduled": "Not scheduled today",
   "NoTasksCreated": "No tasks have been created.",
+  "NoVariablesAvailable": "There are no variables for the selected item.",
   "on": "On/Off",
   "OnlyOnTheseDays": "Only on these days",
   "Other": "Other",

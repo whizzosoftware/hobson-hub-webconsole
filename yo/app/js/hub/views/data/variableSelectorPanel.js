@@ -3,11 +3,12 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+  'views/widgets/stringPicker',
 	'views/widgets/devicesPicker',
 	'views/widgets/variablePicker',
 	'i18n!nls/strings',
 	'text!templates/data/variableSelectorsPanel.html'
-], function($, _, Backbone, DevicesPickerView, VariablePickerView, strings, template) {
+], function($, _, Backbone, StringPickerView, DevicesPickerView, VariablePickerView, strings, template) {
 
 	return Backbone.View.extend({
 		template: _.template(template),
@@ -32,6 +33,34 @@ define([
 				name: '',
 				variables: []
 			};
+      this.stringPicker = new StringPickerView({
+        model: {
+          '@id': 'fieldName',
+          name: strings.Name,
+          value: null,
+          constraints: {
+            required: true
+          }
+        }
+      });
+      this.devicesPicker = new DevicesPickerView({
+        model: {
+          name: 'Device',
+          constraints: {
+            required: true
+          }
+        },
+        single: true,
+        showDescription: false
+      });
+      this.variablePicker = new VariablePickerView({
+        model: {
+          constraints: {
+            required: true
+          }
+        },
+        single: true
+      });
 		},
 
 		remove: function() {
@@ -47,20 +76,8 @@ define([
 				})
 			);
 
-			this.devicesPicker = new DevicesPickerView({
-				model: {
-					name: 'Device'
-				},
-				required: true,
-				single: true,
-				showDescription: false
-			});
+      this.$el.find('#nameSelector').html(this.stringPicker.render().el);
 			this.$el.find('#deviceSelector').html(this.devicesPicker.render().el);
-
-			this.variablePicker = new VariablePickerView({
-        required: true,
-				single: true
-			});
 			this.$el.find('#variableSelector').html(this.variablePicker.render().el);
 
 			return this;
@@ -75,13 +92,32 @@ define([
 		},
 
 		onClickAdd: function(evt) {
-			for (var ix in this.variablePicker.model.value) {
-				this.model.variables.push(this.variablePicker.model.value[ix]);
-			}
-			this.$el.trigger('addField', {
-        name: this.$el.find('#fieldName').val(),
-        variable: this.variablePicker.model
-      });
+      this.stringPicker.showError(null);
+      this.devicesPicker.showError(null);
+      this.variablePicker.showError(null);
+
+      var name = this.$el.find('#fieldName').val();
+      console.log('name', name);
+      if (name) {
+        console.log('device', this.devicesPicker.model.value);
+        if (this.devicesPicker.model.value.length > 0) {
+          if (this.variablePicker.model.value.length > 0) {
+            for (var ix in this.variablePicker.model.value) {
+              this.model.variables.push(this.variablePicker.model.value[ix]);
+            }
+            this.$el.trigger('addField', {
+              name: this.$el.find('#fieldName').val(),
+              variable: this.variablePicker.model
+            });
+          } else {
+            this.variablePicker.showError('Name!!!');
+          }
+        } else {
+          this.devicesPicker.showError('Name!!!');
+        }
+      } else {
+        this.stringPicker.showError('Name!!!');
+      }
 		}
 
 	});
