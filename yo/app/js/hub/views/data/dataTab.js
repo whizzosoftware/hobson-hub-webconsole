@@ -1,49 +1,61 @@
 // Filename: views/data/dataTab.js
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'toastr',
-	'services/user',
-	'views/collection/dataStreams',
-	'i18n!nls/strings',
-	'text!templates/data/dataTab.html'
-], function($, _, Backbone, toastr, UserService, DataStreamsView, strings, dataTemplate) {
-	return Backbone.View.extend({
+  'jquery',
+  'underscore',
+  'backbone',
+  'toastr',
+  'services/user',
+  'views/collection/dataStreams',
+  'i18n!nls/strings',
+  'text!templates/data/dataTab.html'
+], function ($, _, Backbone, toastr, UserService, DataStreamsView, strings, dataTemplate) {
+  return Backbone.View.extend({
 
-		template: _.template(dataTemplate),
+    template: _.template(dataTemplate),
 
-		events: {
-			'viewDataStream': 'onViewDataStream'
-		},
+    events: {
+      'viewDataStream': 'onViewDataStream',
+      'deleteDataStream': 'onDeleteDataStream'
+    },
 
-		initialize: function(options) {
-		},
+    initialize: function (options) {
+    },
 
-		render: function() {
-			this.$el.html(this.template({
-				strings: strings
-			}));
+    render: function () {
+      this.$el.html(this.template({
+        strings: strings
+      }));
 
-			UserService.getDataStreams(this, function(ctx, model) {
-				if (this.dsView) {
-					this.dsView.remove();
-				}
-				ctx.dsView = new DataStreamsView({model: model});
-				ctx.$el.find('.data').html(
-					ctx.dsView.render().el
-				);
-			}, function() {
-				toastr.error(strings.ErrorOccurred);
-			});
+      UserService.getDataStreams(this, function (ctx, model) {
+        if (this.dsView) {
+          this.dsView.remove();
+        }
+        ctx.dsView = new DataStreamsView({model: model});
+        ctx.$el.find('.data').html(
+          ctx.dsView.render().el
+        );
+      }, function () {
+        toastr.error(strings.ErrorOccurred);
+      });
 
 
-			return this;
-		},
+      return this;
+    },
 
-		onViewDataStream: function(event, ds) {
-			var id = ds.get('@id');
-			Backbone.history.navigate('#data/' + encodeURIComponent(id) + '/view', {trigger: true});
-		}
-	});
+    onViewDataStream: function (event, ds) {
+      var id = ds.get('@id');
+      Backbone.history.navigate('#data/' + encodeURIComponent(id) + '/view', {trigger: true});
+    },
+
+    onDeleteDataStream: function (event, ds) {
+      if (confirm(strings.AreYouSureYouWantToDelete + ' \"' + ds.get('name') + '\"?')) {
+        UserService.deleteDataStream(this, ds.get('@id'), function () {
+          toastr.success(strings.DataStreamDeleted);
+          this.render();
+        }, function () {
+          toastr.error(strings.ErrorOccurred);
+        });
+      }
+    }
+  });
 });

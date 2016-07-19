@@ -14,7 +14,7 @@ define([
 
 		url: function() {
 			return this.url;
-		},
+		}
 
 	});
 });

@@ -81,7 +81,18 @@ define([
 			} else {
 				error('Creating data streams is not supported');
 			}
-		}
+		},
+
+    deleteDataStream: function(ctx, url, success, error) {
+      return $.ajax(url, {
+        context: ctx,
+        type: 'DELETE',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: success,
+        error: error
+      });
+    }
 
 	};
 });

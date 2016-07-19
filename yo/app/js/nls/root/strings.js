@@ -38,6 +38,7 @@ define({
   "DataStreamCreated": "The data stream was successfully created.",
   "DataStreamCreationFailed": "An error occurred creating the data stream.",
   "DataStreamCreationUnsupported": "Your Hub does not support the creation of data streams. Do you have the proper plugins installed?",
+  "DataStreamDeleted": "Data stream has been successfully deleted.",
   "DataStreamHelpText": "You must add at least one field to the data stream.",
   "Debug": "Debug",
   "DevicePassportCreated": "Device passport created.",
