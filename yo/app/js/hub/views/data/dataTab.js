@@ -18,9 +18,6 @@ define([
       'deleteDataStream': 'onDeleteDataStream'
     },
 
-    initialize: function (options) {
-    },
-
     render: function () {
       this.$el.html(this.template({
         strings: strings

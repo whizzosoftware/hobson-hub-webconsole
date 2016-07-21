@@ -24,7 +24,6 @@ define([
 
 		initialize: function(options) {
 			this.subviews = [];
-			this.deviceTypes = {};
 			_.bind(this.renderSections, this);
 		},
 
@@ -85,15 +84,13 @@ define([
 		refresh: function() {
 			// build request headers
 			var headers = {};
-			// if (this.etag) {
-			// 	headers['If-None-Match'] = this.etag;
-			// }
 
 			// fetch the device list
 			HubService.getDashboardData(
 				this,
 				headers,
 				function(model, response, options) {
+				  console.log('dashboard data', model);
 					options.context.etag = options.xhr.getResponseHeader('ETag');
 					if (options.xhr.status !== 304) {
 						options.context.renderSections(model);
