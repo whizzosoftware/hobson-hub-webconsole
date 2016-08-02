@@ -40,7 +40,7 @@ define([
 		getTasks: function(ctx, success, error) {
 			var url = session.getSelectedHub().get('tasks')['@id'] + '?expand=item';
 			var tasks = new ItemList(
-				null, 
+				null,
 				{url: url, model: Task}
 			);
 			tasks.fetch({
@@ -76,7 +76,20 @@ define([
 
 		createNewTask: function() {
 			return new Task({url: session.getSelectedHub().get('tasks')['@id']});
-		}
+		},
+
+    executeTask: function(ctx, url, success, error) {
+      $.ajax(url, {
+        context: ctx,
+        type: 'POST',
+        success: function(data, status, response) {
+          success();
+        },
+        error: function(response, status, error) {
+          error();
+        }
+      });
+    }
 
 	};
 });

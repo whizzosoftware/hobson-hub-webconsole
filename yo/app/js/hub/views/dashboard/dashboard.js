@@ -90,7 +90,6 @@ define([
 				this,
 				headers,
 				function(model, response, options) {
-				  console.log('dashboard data', model);
 					options.context.etag = options.xhr.getResponseHeader('ETag');
 					if (options.xhr.status !== 304) {
 						options.context.renderSections(model);

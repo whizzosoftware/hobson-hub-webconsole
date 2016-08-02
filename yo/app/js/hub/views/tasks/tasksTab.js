@@ -15,6 +15,7 @@ define([
 		template: _.template(tasksTemplate),
 
 		events: {
+		  'executeTask': 'onExecuteTask',
 			'deleteTask': 'onDeleteTask'
 		},
 
@@ -50,6 +51,16 @@ define([
 
 			return this;
 		},
+
+    onExecuteTask: function(event, task) {
+      if (confirm(strings.AreYouSureYouWantToManuallyExecute + ' \"' + task.get('name') + '\"?')) {
+        TaskService.executeTask(this, task.get('@id'), function() {
+          toastr.success(strings.TaskExecuteSuccess);
+        }, function() {
+          toastr.error(strings.TaskExecuteFailure);
+        });
+      }
+    },
 
 		onDeleteTask: function(event, task) {
 			if (confirm(strings.AreYouSureYouWantToDelete + ' \"' + task.get('name') + '\"?')) {

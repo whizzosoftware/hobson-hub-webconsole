@@ -55,7 +55,6 @@ define([
     },
 
     setAuthFailHandler: function(b, authService) {
-      console.log('setAuthFailHandler', b, authFailHandler);
       $.ajaxSetup({
         cache: false,
         statusCode: {

@@ -15,6 +15,7 @@ define([
 		template: _.template(template),
 
 		events: {
+      'click': 'onClick',
 			'click #delete-task': 'onClickDelete'
 		},
 
@@ -29,6 +30,10 @@ define([
 
 			return this;
 		},
+
+    onClick: function() {
+		  this.$el.trigger('executeTask', this.model);
+    },
 
 		onClickDelete: function() {
 			this.$el.trigger('deleteTask', this.model);
