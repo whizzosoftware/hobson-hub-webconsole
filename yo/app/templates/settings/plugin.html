@@ -30,7 +30,7 @@
 	 			</p>
 	 		</p>
 	 	</div>
-	<% } else if (plugin.status && plugin.status.code === 'ERROR') { %>
+	<% } else if (plugin.status && (plugin.status.code === 'ERROR' || plugin.status.code === 'FAILED')) { %>
 	 	<div class="plugin-overlay">
 	 		<p>
 	 			<i class="fa fa-exclamation-circle fa-4x"></i>
