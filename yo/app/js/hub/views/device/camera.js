@@ -19,21 +19,23 @@ define([
 		initialRender: false,
 
 		render: function(el) {
-			var v = this.getVariable('imageStatusUrl');
-			if (v) {
-				this.$el.html(this.template({
-					strings: strings,
-					device: this.model.toJSON(),
-					variable: v
-				}));
+      this.$el.html(this.template({
+        strings: strings,
+        device: this.model.toJSON(),
+        variable: v
+      }));
 
-				var imageEl = this.$el.find('#image-container');
+			var v = this.getVariable('imageStatusUrl');
+      var v2 = this.getVariable('videoStatusUrl');
+      if (v2 && v2.mediaType === 'VIDEO_MJPEG') {
+        this.$el.find('#image-container').html($('<img width="100%" src="' + v2.value + '" />'));
+      } else if (v) {
 				$.ajax({
 					context: this,
 					url: v.value + '?base64=true',
 					type: 'GET',
 					success: function(data) {
-						imageEl.html($('<img src="data:image/jpg;base64,' + data + '" />'));
+						this.$el.find('#image-container').html($('<img src="data:image/jpg;base64,' + data + '" />'));
 					},
 					error: function(response) {
 						var msg;
@@ -44,10 +46,10 @@ define([
 						}
 						this.$el.find('#image-container').html('<p class="error">' + msg + '</p>');
 					}
-				});				
+				});
 			} else {
-				this.$el.html('<p class="notice">' + strings.DeviceMissingVariable + '</p>');
-			}
+        this.$el.html('<p class="notice">' + strings.DeviceMissingVariable + '</p>');
+      }
 
 			return this;
 		}

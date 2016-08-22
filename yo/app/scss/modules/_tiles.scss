@@ -77,9 +77,17 @@
 			cursor: pointer;
 			background-color: $color-highlight-light;
 		}
-		.temp {
+		.large {
 			color: white;
 			font-size: 5em;
+			font-weight: bold;
+			height: 100px;
+			line-height: 100px;
+			vertical-align: middle;
+		}
+		.medium {
+			color: white;
+			font-size: 3em;
 			font-weight: bold;
 			height: 100px;
 			line-height: 100px;

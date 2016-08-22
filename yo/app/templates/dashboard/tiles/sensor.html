@@ -1,5 +1,9 @@
 <div id="tileIcon" class="tile-icon <%= on && available ? 'active' : '' %> <%= !available ? 'disabled' : '' %>">
-	<img src="img/icon-sensor.png" />
+	<% if (device.preferredVariable && device.preferredVariable.name === 'ecw') { %>
+		<div class="medium"><%= Math.round(device.preferredVariable.value) %> W</div>
+	<% } else { %>
+		<img src="img/icon-sensor.png" />
+	<% } %>
 </div>
 <div id="tileButton" class="tile-button">
 	<span><%= device.name %></span>
