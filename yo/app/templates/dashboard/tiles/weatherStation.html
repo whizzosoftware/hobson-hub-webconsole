@@ -1,6 +1,6 @@
 <div id="tileIcon" class="tile-icon <%= !available ? 'disabled' : '' %>">
 	<% if (device.preferredVariable && device.preferredVariable.name === 'outTempF') { %>
-		<div class="temp"><%= Math.round(device.preferredVariable.value) %>&deg;</div>
+		<div class="large"><%= Math.round(device.preferredVariable.value) %>&deg;</div>
 	<% } else { %>
 		<img src="img/icon-<%= device.type.toLowerCase() %>.png" />
 	<% } %>
