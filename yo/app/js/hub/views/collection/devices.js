@@ -28,7 +28,10 @@ define([
 			this.$el.html('');
 			for (var i=0; i < this.devices.length; i++) {
 				var device = this.devices.at(i);
-				var v = new DeviceView({device: device, value: this.value});
+				var v = new DeviceView({
+					device: device, 
+					selected: this.value.indexOf(device.get('@id')) > -1
+				});
 				this.$el.append(v.render().el);
 				this.subviews.push(v);
 			}

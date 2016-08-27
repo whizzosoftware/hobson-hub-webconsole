@@ -29,7 +29,7 @@ define([
 
 		initialize: function(options) {
 			this.subviews = [];
-			this.showSun = options.showSun;
+			this.timeMode = options.timeMode;
 		},
 
 		remove: function() {
@@ -63,7 +63,7 @@ define([
 					} else if (prop.type === 'TIME') {
 						var v = new TimePickerView({
 							model: prop,
-							showSun: this.showSun
+							mode: this.timeMode
 						});
 						el.append(v.render().el);
 						this.subviews.push(v);

@@ -5,12 +5,14 @@ define([
 	'backbone',
 	'toastr',
 	'models/propertyContainer',
+	'views/widgets/booleanPicker',
 	'views/widgets/stringPicker',
 	'views/widgets/devicesPicker',
 	'views/widgets/serialPortPicker',
+	'views/widgets/timePicker',
 	'i18n!nls/strings',
 	'text!templates/settings/pluginSettings.html'
-], function($, _, Backbone, toastr, Config, StringPropertyView, DevicesPropertyView, SerialPortPropertyView, strings, pluginSettingsTemplate) {
+], function($, _, Backbone, toastr, Config, BooleanPropertyView, StringPropertyView, DevicesPropertyView, SerialPortPropertyView, TimePickerView, strings, pluginSettingsTemplate) {
 
 	return Backbone.View.extend({
 
@@ -43,6 +45,12 @@ define([
 				var property = properties[ix];
 		        var v;
 		        switch (property.type) {
+		          case 'BOOLEAN':
+		            v = new BooleanPropertyView({
+		            	model: property,
+		            	value: this.model.get('configuration').values ? this.model.get('configuration').values[property['@id']] : null
+		            });
+		            break;
 		          case 'DEVICE':
 		            v = new DevicesPropertyView({
 						model: property,
@@ -50,10 +58,24 @@ define([
 						single: true
 		            });
 		            break;
+		          case 'DEVICES':
+		          	v = new DevicesPropertyView({
+		          		model: property,
+		          		value: this.model.get('configuration').values ? this.model.get('configuration').values[property['@id']] : null,
+		          		single: false
+		          	});
+		          	break;
 		          case 'SERIAL_PORT':
 		          	v = new SerialPortPropertyView({
 		          		model: property,
 		          		value: this.model.get('configuration').values ? this.model.get('configuration').values[property['@id']] : null
+		          	});
+		          	break;
+		          case 'TIME':
+		          	v = new TimePickerView({
+		          		mode: 2,
+						model: property,
+						value: this.model.get('configuration').values ? this.model.get('configuration').values[property['@id']] : null
 		          	});
 		          	break;
 		          default:

@@ -1,18 +1,20 @@
 <div class="row">
 	<div class="small-12 columns form-field">
 		<label><b><%= property.name %></b><% if (required) { %>&nbsp;<small><%= strings.Required %></small><% } %></label>
-			<div class="row" style="text-align: left;">
-				<div class="small-12 columns time-type-selector">
-					<% if (!showSun) { %>
-						<small class="warn">&nbsp;&nbsp;<i class="fa fa-warning"></i>&nbsp;<%= strings.SunriseSunsetDisabled %></small><br/>
-					<% } %>
-					<input type="radio" name="timeType" value="absolute" id="timeAbsolute" checked><label for="timeAbsolute"><%= strings.IsExactly %>
-					&nbsp;&nbsp;
-					<input type="radio" name="timeType" value="sunrise" id="timeSunrise" <%= showSun ? '' : 'disabled="true"' %>><label for="timeSunrise"><%= strings.AtSunrise %>
-					&nbsp;&nbsp;
-					<input type="radio" name="timeType" value="sunset" id="timeSunset" <%= showSun ? '' : 'disabled="true"' %>><label for="timeSunset"><%= strings.AtSunset %>
+			<% if (mode < 2) { %>
+				<div class="row" style="text-align: left;">
+					<div class="small-12 columns time-type-selector">
+						<% if (mode === 1) { %>
+							<small class="warn">&nbsp;&nbsp;<i class="fa fa-warning"></i>&nbsp;<%= strings.SunriseSunsetDisabled %></small><br/>
+						<% } %>
+						<input type="radio" name="timeType" value="absolute" id="timeAbsolute" checked><label for="timeAbsolute"><%= strings.IsExactly %>
+						&nbsp;&nbsp;
+						<input type="radio" name="timeType" value="sunrise" id="timeSunrise" <%= mode === 0 ? '' : 'disabled="true"' %>><label for="timeSunrise"><%= strings.AtSunrise %>
+						&nbsp;&nbsp;
+						<input type="radio" name="timeType" value="sunset" id="timeSunset" <%= mode === 0 ? '' : 'disabled="true"' %>><label for="timeSunset"><%= strings.AtSunset %>
+					</div>
 				</div>
-			</div>
+			<% } %>
 			<div class="row" id="timeAbsolutePanel">
 				<div class="small-12 columns">
 					<label>
@@ -45,7 +47,11 @@
 				</div>
 			</div>
 		<small style="display: none;" class="error"><%= strings.ThisIsRequiredField %></small>
-		<p class="description"><%= strings.TaskExactTOD %></p>
+		<% if (property.description) { %>
+			<p class="description"><%= property.description %></p>
+		<% } else { %>
+			<p class="description"><%= strings.TaskExactTOD %></p>
+		<% } %>
 		<input id="<%= id %>" type="text" style="display: none">
 	</div>
 </div>

@@ -21,7 +21,7 @@ define([
 
 		initialize: function(options) {
 			this.device = options.device;
-			this.value = options.value;
+			this.selected = options.selected;
 		},
 
 		render: function() {
@@ -32,8 +32,10 @@ define([
 				})
 			);
 
-			if (this.isActive(this.device.get('@id'), this.value)) {
+			if (this.selected) {
 				this.$el.addClass('active');
+			} else {
+				this.$el.removeClass('active');
 			}
 
 			return this;
@@ -41,16 +43,9 @@ define([
 
 		onClick: function(e) {
 			e.preventDefault();
-			this.$el.trigger('deviceClicked', {device: this.device, el: this.$el});
-		},
-
-		isActive: function(deviceId, values) {
-			for (var ix in values) {
-				if (values[ix]['@id'] == deviceId) {
-					return true;
-				}
-			}
-			return false;
+			this.selected = !this.selected;
+			this.render();
+			this.$el.trigger('deviceClicked', {device: this.device, selected: this.selected});
 		}
 
 	});

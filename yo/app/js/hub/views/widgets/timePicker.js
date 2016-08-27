@@ -3,12 +3,12 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'datetimepicker',
+	'jquery-timepicker',
 	'moment',
 	'views/widgets/baseWidget',
 	'i18n!nls/strings',
 	'text!templates/widgets/timePicker.html'
-], function($, _, Backbone, DateTimePicker, moment, BaseWidget, strings, template) {
+], function($, _, Backbone, TimePicker, moment, BaseWidget, strings, template) {
 
 	return BaseWidget.extend({
 		template: _.template(template),
@@ -19,58 +19,70 @@ define([
 			'change #offsetMult': 'onChangeOffsetMult'
 		},
 
+		// option mode = 0 (include sun chooser), 1 (disable sun chooser), 2 (hide sun chooser)
+
 		initialize: function(options) {
-			this.showSun = options.showSun;
+			_.bindAll(this, 'onTimeChange');
+			this.mode = options.mode ? options.mode : 0;
 			this.required = this.model && this.model.constraints ? this.model.constraints.required : false;
+			this.value = options.value;
 		},
 
 		render: function() {
 			this.$el.append(
 				this.template({
+					mode: this.mode,
 					strings: strings,
 					property: this.model,
 					id: this.getSafeId(),
 					required: this.required,
-					showSun: this.showSun
 				})
 			);
 
 			var context = this;
 
-			this.$el.find('input#displayTime').datetimepicker({
-				datepicker: false,
-				format: 'H:i',
-				hours12: false,
+			var el = this.$el.find('input#displayTime');
+
+			el.timepicker({
 				step: 10,
-				onChangeDateTime: function(dp, $input) {
-					context.updateTime(context.$el);
-				}
-			});
+				scrollDefault: 'now'
+			}).on('change', this.onTimeChange);
+
+			if (this.value) {
+				el.timepicker('setTime', moment(this.value, 'HH:mm:ssZ').toDate());
+			}
 
 			return this;
 		},
 
-		updateTime: function(el) {
-			var timeEl = el.find('input#time');
-			if (el.find('#timeAbsolute').prop('checked')) {
-				var s = el.find('input#displayTime').val();
+		onTimeChange: function(event) {
+			this.onUpdateTime($(event.target));
+		},
+
+		getValue: function() {
+			return this.value;
+		},
+
+		onUpdateTime: function(timeEl) {
+			if (this.mode == 2 || this.$el.find('#timeAbsolute').prop('checked')) {
+				var s = this.$el.find('input#displayTime').val();
 				if (s && s.length > 0) {
-					var time = moment(s, 'HH:mm')
-					timeEl.val(time.utc().format('HH:mm:ss') + 'Z');
+					var time = moment(s, 'HH:mma')
+					this.value = time.utc().format('HH:mm:ss') + 'Z';
 				} else {
-					timeEl.val('');
+					this.value = '';
 				}
-			} else {
-				var sr = el.find('#timeSunrise').prop('checked');
-				var ss = el.find('#timeSunset').prop('checked');
+			} else if (this.mode < 2) {
+				var sr = this.$el.find('#timeSunrise').prop('checked');
+				var ss = this.$el.find('#timeSunset').prop('checked');
 				if (ss || sr) {
 					var s = sr ? 'SR' : 'SS';
-					var i = parseInt(el.find('#offsetSeconds').val());
-					var m = el.find('#offsetMult').val() === 'before' ? '-' : '+';
+					var i = parseInt(this.$el.find('#offsetSeconds').val());
+					var m = this.$el.find('#offsetMult').val() === 'before' ? '-' : '+';
 					if (i > 0) {
-						timeEl.val(s + m + i);
+						this.value = s + m + i;
 					} else {
-						timeEl.val(s);
+						this.value = s;
 					}
 				}
 			}
@@ -100,15 +112,15 @@ define([
 					this.$el.find('.description').html(strings.TaskRelativeTOD);
 					break;
 			}
-			this.updateTime(this.$el);
+			this.onUpdateTime($(event.target));
 		},
 
 		onChangeOffsetSeconds: function(event) {
-			this.updateTime(this.$el);
+			this.onUpdateTime($(event.target));
 		},
 
 		onChangeOffsetMult: function(event) {
-			this.updateTime(this.$el);
+			this.onUpdateTime($(event.target));
 		}
 
 	});

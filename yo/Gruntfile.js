@@ -138,7 +138,6 @@ module.exports = function (grunt) {
                         'app/bower_components/toastr',
                         'app/bower_components/fontawesome/scss',
                         'app/bower_components/chartist/dist/scss',
-                        'app/bower_components/datetimepicker',
                         'app/bower_components/jquery-colpick/css'
                     ]
                 },
@@ -193,6 +192,11 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>/bower_components/jquery-colpick/css',
                     src: 'colpick.css',
                     dest: '<%= yeoman.dist %>/www/css'
+                }, {
+                  expand: true,
+                  cwd: '<%= yeoman.app %>/bower_components/jquery-timepicker-jt',
+                  src: 'jquery.timepicker.css',
+                  dest: '<%= yeoman.dist %>/www/css'
                 }, {
                     expand: true,
                     cwd: '<%= yeoman.app %>/bower_components/almond',
@@ -264,6 +268,11 @@ module.exports = function (grunt) {
                     src: 'jquery.datetimepicker.js',
                     dest: '<%= yeoman.dist %>/www/js/datetimepicker'
                 }, {
+                  expand: true,
+                  cwd: '<%= yeoman.app %>/bower_components/jquery-timepicker-jt',
+                  src: 'jquery.timepicker.js',
+                  dest: '<%= yeoman.dist %>/www/js/jquery-timepicker-jt'
+                }, {
                     expand: true,
                     cwd: '<%= yeoman.app %>/bower_components/moment/min',
                     src: 'moment.min.js',
@@ -310,6 +319,9 @@ module.exports = function (grunt) {
                 options: {
                     replacements: [{
                         pattern: 'bower_components/datetimepicker',
+                        replacement: 'css'
+                    }, {
+                        pattern: 'bower_components/jquery-timepicker-jt',
                         replacement: 'css'
                     }, {
                         pattern: 'bower_components/jquery-colpick/css',

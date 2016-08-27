@@ -68,14 +68,14 @@ define([
 
 			// get hub configuration to determine if lat/long has been set
 			HubService.getHubConfiguration(ctx, function(model, response, options) {
-				var showSun = model.hasLatLong();
+				var timeMode = model.hasLatLong() ? 0 : 1;
 				// get list of devices for the device picker
 				DeviceService.getDevices(options.context, function(model, response, options) {
 					// render the "if" section
 					var v = new TaskConditionsEditorView({
 						devices: model,
 						task: options.context.task,
-						showSun: showSun
+						timeMode: timeMode
 					});
 					options.context.$el.find('#taskConditionsEditor').html(v.render().el);
 					options.context.subviews.push(v);

@@ -21,7 +21,7 @@ define([
 		},
 
 		initialize: function(options) {
-			this.showSun = options.showSun;
+			this.timeMode = options.timeMode;
 		},
 
 		render: function() {
@@ -39,7 +39,7 @@ define([
 				// load and show the edit panel
 				this.editPanel = new TaskControlEditPanelView({
 					model: this.model,
-					showSun: this.showSun
+					timeMode: this.timeMode
 				});
 				content.html(this.editPanel.render().el);
 				content.css('display', 'block');

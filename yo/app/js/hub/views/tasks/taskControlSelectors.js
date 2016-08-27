@@ -19,7 +19,7 @@ define([
 
 		initialize: function(options) {
 			this.subviews = [];
-			this.showSun = options.showSun;
+			this.timeMode = options.timeMode;
 		},
 
 		remove: function() {
@@ -39,7 +39,7 @@ define([
 				for (var i=0; i < this.model.length; i++) {
 					var v = new TaskControlSelectorView({
 						model: this.model.at(i),
-						showSun: this.showSun
+						timeMode: this.timeMode
 					});
 					this.$el.append(v.render().el);
 					this.subviews.push(v);
