@@ -4,6 +4,7 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
+  'jquery.gridList',
 	'services/hub',
 	'services/device',
 	'models/itemList',
@@ -11,7 +12,7 @@ define([
 	'views/dashboard/presenceEntitiesSection',
 	'i18n!nls/strings',
 	'text!templates/dashboard/dashboard.html'
-], function($, _, Backbone, toastr, HubService, DeviceService, ItemList, DevicesSection, PresenceEntitiesSection, strings, template) {
+], function($, _, Backbone, toastr, gridList, HubService, DeviceService, ItemList, DevicesSection, PresenceEntitiesSection, strings, template) {
 
 	return Backbone.View.extend({
 		tagName: 'div',
@@ -72,6 +73,33 @@ define([
 			this.refreshInterval = setInterval(function() {
 				this.refresh();
 			}.bind(this), 5000);
+
+      // start the grid
+      var item;
+      item = $(
+        '<li>' +
+        '<div class="inner">' +
+        '1' +
+        '</div>' +
+        '</li>'
+      );
+      item.attr({
+        'data-w': 1,
+        'data-h': 1,
+        'data-x': 0,
+        'data-y': 0
+      });
+      this.$el.find('#grid').append(item);
+      this.$el.find('#grid').gridList({
+        dragAndDrop: false,
+        direction: 'horizontal',
+        lanes: 3,
+        widthHeightRatio: 264 / 294,
+        heightToFontSizeRatio: 0.25,
+        onChange: function(changedItems) {
+          console.log('onChange', changedItems);
+        }
+      });
 
 			return this;
 		},

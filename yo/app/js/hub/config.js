@@ -17,9 +17,11 @@ require.config({
     'dropzone': '../../bower_components/dropzone/dist/dropzone-amd-module',
     'foundation.core': '../../bower_components/foundation/js/foundation.min',
     'foundation.dropdown': '../../bower_components/foundation/js/foundation/foundation.dropdown',
+    'gridlist': '../../bower_components/grid-list/src/gridList',
     'i18n': '../../bower_components/requirejs-i18n/i18n',
     'jquery': '../../bower_components/jquery/dist/jquery.min',
     'jquery-colpick': '../../bower_components/jquery-colpick/js/colpick',
+    'jquery.gridList': '../../bower_components/grid-list/src/jquery.gridList',
     'jquery-timepicker': '../../bower_components/jquery-timepicker-jt/jquery.timepicker',
     'masonry': '../../bower_components/masonry/dist/masonry.pkgd.min',
     'models': '../models',
@@ -51,6 +53,12 @@ require.config({
     },
     'modernizr': {
       exports: 'Modernizer'
+    },
+    'jquery.gridList': {
+      deps: [
+        'jquery',
+        'gridlist'
+      ]
     },
     'nlp': {
       deps: ['rrule']
