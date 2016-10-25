@@ -43,7 +43,6 @@ define([
 			'device/:deviceUrl/statistics': 'showDeviceStatistics',
 			'settings': 'showHubSettings',
 			'settings/general': 'showHubSettingsGeneral',
-			'settings/passports': 'showHubSettingsPassports',
 			'settings/email': 'showHubSettingsEmail',
 			'settings/presence': 'showHubSettingsPresence',
 			'settings/log': 'showHubSettingsLog',
@@ -155,10 +154,6 @@ define([
 
 		showHubSettingsGeneral: function() {
       this.appView.showHubSettingsGeneral();
-		},
-
-		showHubSettingsPassports: function() {
-      this.appView.showHubSettingsPassports();
 		},
 
 		showHubSettingsEmail: function() {

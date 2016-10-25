@@ -9,6 +9,7 @@ package com.whizzosoftware.hobson.webconsole;
 
 import com.whizzosoftware.hobson.api.hub.HubWebApplication;
 import com.whizzosoftware.hobson.api.plugin.AbstractHobsonPlugin;
+import com.whizzosoftware.hobson.api.plugin.PluginType;
 import com.whizzosoftware.hobson.api.property.PropertyContainer;
 import com.whizzosoftware.hobson.api.property.TypedProperty;
 
@@ -18,18 +19,23 @@ import com.whizzosoftware.hobson.api.property.TypedProperty;
  * @author Dan Noguerol
  */
 public class WebConsolePlugin extends AbstractHobsonPlugin {
-    public WebConsolePlugin(String pluginId) {
-        super(pluginId);
+    public WebConsolePlugin(String pluginId, String version, String description) {
+        super(pluginId, version, description);
     }
 
     @Override
-    protected TypedProperty[] createSupportedProperties() {
+    protected TypedProperty[] getConfigurationPropertyTypes() {
         return null;
     }
 
     @Override
     public String getName() {
         return "Web Console Plugin";
+    }
+
+    @Override
+    public PluginType getType() {
+        return PluginType.CORE;
     }
 
     @Override

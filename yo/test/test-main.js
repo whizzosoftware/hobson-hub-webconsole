@@ -22,9 +22,12 @@ requirejs.config({
     'taskDescription': 'js/services/taskDescription'
   },
 
-  shims: {
+  shim: {
     'underscore': {
       exports: '_'
+    },
+    'nlp': {
+      deps: ['rrule']
     }
   },
 

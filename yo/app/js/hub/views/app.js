@@ -25,7 +25,6 @@ define([
 	'views/data/dataEdit',
 	'views/data/dataViewer',
 	'views/settings/settingsGeneral',
-	'views/settings/settingsPassports',
 	'views/settings/settingsEmail',
 	'views/settings/settingsPresence',
 	'views/settings/settingsLog',
@@ -34,7 +33,7 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DeviceSettingsView, DataTabView, DataEditView, DataViewer, HubSettingsGeneralView, HubSettingsAdvancedView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DeviceSettingsView, DataTabView, DataEditView, DataViewer, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	return Backbone.View.extend({
 
@@ -91,10 +90,6 @@ define([
 
 		showHubSettingsGeneral: function() {
 			this.renderContentView(new HubSettingsGeneralView(), true);
-		},
-
-		showHubSettingsPassports: function() {
-			this.renderContentView(new HubSettingsAdvancedView(), true);
 		},
 
 		showHubSettingsEmail: function(userId, hubId) {
