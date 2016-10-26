@@ -93,7 +93,7 @@ define([
 					console.log('success!'); 
 				}, function(model, xhr, options) {
 					if (xhr.status === 202) {
-						toastr.success('Cool!');
+						toastr.success(strings.DeviceAdded);
 						Backbone.history.navigate('dashboard', {trigger: true});
 					} else {
 						toastr.error(strings.ErrorOccurred);
