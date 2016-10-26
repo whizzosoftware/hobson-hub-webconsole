@@ -6,13 +6,13 @@ define([
 	'toastr',
 	'services/task',
 	'models/itemList',
-	'models/taskActionClass',
+	'models/actionClass',
 	'services/propertyContainerValidator',
 	'views/tasks/taskActions',
 	'views/tasks/taskControlSelectors',
 	'i18n!nls/strings',
 	'text!templates/tasks/taskActionsEditor.html'
-], function($, _, Backbone, toastr, TaskService, ItemList, TaskActionClass, PropertyContainerValidator, TaskActionsView, TaskControlSelectorsView, strings, template) {
+], function($, _, Backbone, toastr, TaskService, ItemList, ActionClass, PropertyContainerValidator, TaskActionsView, TaskControlSelectorsView, strings, template) {
 
 	return Backbone.View.extend({
 

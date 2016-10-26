@@ -22,15 +22,15 @@ define([
 
 		initialize: function(options) {
 			this.subviews = [];
-      this.single = options ? options.single : null;
+      		this.single = options ? options.single : null;
 			if (options && options.model) {
 				this.model = options.model;
 			} else {
 				this.model = {
 					value: [],
-          constraints: {
-            required: false
-          }
+					constraints: {
+            			required: false
+          			}
 				};
 			}
 		},
@@ -118,14 +118,18 @@ define([
 			return false;
 		},
 
-    showError: function (showError) {
-      BaseWidget.prototype.showError.call(this, showError);
-      if (showError) {
-        this.$el.find('#variablesList ul').addClass('error');
-      } else {
-        this.$el.find('#variablesList ul').removeClass('error');
-      }
-    }
+		getValue: function() {
+			return this.$el.find('input#' + this.getSafeId()).val();
+		},
+
+    	showError: function (showError) {
+			BaseWidget.prototype.showError.call(this, showError);
+			if (showError) {
+				this.$el.find('#variablesList ul').addClass('error');
+			} else {
+				this.$el.find('#variablesList ul').removeClass('error');
+			}
+		}
 
 	});
 

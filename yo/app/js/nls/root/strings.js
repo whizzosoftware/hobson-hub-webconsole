@@ -133,6 +133,7 @@ define({
   "Neutral": "Neutral",
   "NextRun": "Next run",
   "NewDataStream": "New Data Stream",
+  "NewDevice": "New Device",
   "NewLocation": "New Location",
   "NewPerson": "New Person",
   "NewTask": "New Task",

@@ -41,6 +41,10 @@ define([
 			return this;
 		},
 
+		getValue: function() {
+			return this.$el.find('input#' + this.getSafeId()).val();
+		},
+
 		onColorChange: function(color) {
 			var el = this.$el.find('#colorView');
 			if (el) {

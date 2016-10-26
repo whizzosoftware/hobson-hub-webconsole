@@ -41,6 +41,7 @@ define([
 			'device/:deviceUrl/state': 'showDeviceState',
 			'device/:deviceUrl/settings': 'showDeviceSettings',
 			'device/:deviceUrl/statistics': 'showDeviceStatistics',
+			'devices/add': 'showDevicesAdd',
 			'settings': 'showHubSettings',
 			'settings/general': 'showHubSettingsGeneral',
 			'settings/email': 'showHubSettingsEmail',
@@ -86,7 +87,7 @@ define([
     },
 
 		showRoot: function() {
-      this.redirectToHub('#dashboard');
+      		this.redirectToHub('#dashboard');
 		},
 
 		showAccount: function() {
@@ -94,20 +95,24 @@ define([
 		},
 
 		showCloudlinkHubs: function() {
-      this.appView.showCloudlinkHubs();
+      		this.appView.showCloudlinkHubs();
 		},
 
 		showCloudlinkProfile: function() {
-      this.appView.showCloudlinkProfile();
+      		this.appView.showCloudlinkProfile();
 		},
 
 		showDashboard: function() {
-      this.appView.showDashboard();
+      		this.appView.showDashboard();
 		},
 
 		showDataEdit: function(id) {
-      var s = id ? decodeURIComponent(id.replace('id=', '')) : null;
-      this.appView.showDataEdit(s);
+	    	var s = id ? decodeURIComponent(id.replace('id=', '')) : null;
+      		this.appView.showDataEdit(s);
+		},
+
+		showDevicesAdd: function(id) {
+			this.appView.showDevicesAdd();
 		},
 
 		showHubRoot: function() {
@@ -115,37 +120,37 @@ define([
 		},
 
 		showTasks: function() {
-      this.appView.showTasks();
+      		this.appView.showTasks();
 		},
 
 		showTaskEdit: function(id) {
-      var s = id ? decodeURIComponent(id.replace('id=', '')) : null;
-      this.appView.showTaskEdit(s);
+      		var s = id ? decodeURIComponent(id.replace('id=', '')) : null;
+      		this.appView.showTaskEdit(s);
 		},
 
 		showData: function() {
-      this.appView.showData();
+      		this.appView.showData();
 		},
 
 		showDataViewer: function(dataStreamId, inr) {
-      var s = inr ? inr.replace('inr=', '') : null;
-      this.appView.showDataViewer(dataStreamId, s);
+      		var s = inr ? inr.replace('inr=', '') : null;
+      		this.appView.showDataViewer(dataStreamId, s);
 		},
 
 		showDeviceDetails: function(deviceUrl) {
-      this.appView.showDeviceDetails(deviceUrl);
+      		this.appView.showDeviceDetails(deviceUrl);
 		},
 
 		showDeviceState: function(deviceUrl) {
-      this.appView.showDeviceState(deviceUrl);
+      		this.appView.showDeviceState(deviceUrl);
 		},
 
 		showDeviceSettings: function(deviceUrl) {
-      this.appView.showDeviceSettings(deviceUrl);
+      		this.appView.showDeviceSettings(deviceUrl);
 		},
 
 		showDeviceStatistics: function(deviceUrl) {
-      this.appView.showDeviceStatistics(deviceUrl);
+      		this.appView.showDeviceStatistics(deviceUrl);
 		},
 
 		showHubSettings: function() {
@@ -153,23 +158,23 @@ define([
 		},
 
 		showHubSettingsGeneral: function() {
-      this.appView.showHubSettingsGeneral();
+      		this.appView.showHubSettingsGeneral();
 		},
 
 		showHubSettingsEmail: function() {
-      this.appView.showHubSettingsEmail();
+      		this.appView.showHubSettingsEmail();
 		},
 
 		showHubSettingsPresence: function() {
-      this.appView.showHubSettingsPresence();
+      		this.appView.showHubSettingsPresence();
 		},
 
 		showHubSettingsLog: function() {
-      this.appView.showHubSettingsLog();
+      		this.appView.showHubSettingsLog();
 		},
 
 		showHubSettingsPlugins: function(query) {
-      this.appView.showHubSettingsPlugins(query);
+      		this.appView.showHubSettingsPlugins(query);
 		},
 
 		getContext: function() {
