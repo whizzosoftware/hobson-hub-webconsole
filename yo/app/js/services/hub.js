@@ -20,7 +20,7 @@ define([
   return {
     betaRepositoryUrl: 'http://www.hobson-automation.com/obr/beta/repository.xml',
 
-    getActionClasses: function(ctx, success, error, id = null) {
+    getActionClasses: function(ctx, success, error, id) {
       var url = session.getSelectedHub().get('actionClasses')['@id'] + '?expand=item&constraints=true';
       if (id) {
         url += '&id=' + id;

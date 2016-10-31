@@ -32,6 +32,7 @@ define({
   "Create": "Create",
   "Created": "Created",
   "FieldName": "Field name",
+  "FollowingErrorsOccurred": "The following errors occurred:",
   "TaskConditionActionPrompt": "Based on your available plugins and devices, the following options are available:",
   "Dashboard": "Dashboard",
   "DataStreamCreated": "The data stream was successfully created.",

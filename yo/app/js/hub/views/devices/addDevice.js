@@ -6,6 +6,7 @@ define([
 	'toastr',
 	'services/hub',
 	'services/device',
+	'services/error',
 	'models/itemList',
 	'models/device',
 	'models/actionClass',
@@ -13,7 +14,7 @@ define([
 	'views/property/propertySetEditPanel',
 	'i18n!nls/strings',
 	'text!templates/devices/addDevice.html'
-], function($, _, Backbone, toastr, HubService, DeviceService, ItemList, Device, ActionClass, HubConfig, PropertySetEditPanelView, strings, template) {
+], function($, _, Backbone, toastr, HubService, DeviceService, ErrorService, ItemList, Device, ActionClass, HubConfig, PropertySetEditPanelView, strings, template) {
 
 	return Backbone.View.extend({
 
@@ -43,7 +44,6 @@ define([
 
 			HubService.getActionClasses(this, function(model, response, options) {
 				var select = options.context.$el.find('#addDeviceList');
-				console.log(select);
 				var options = {};
 				for (var i=0; i < model.length; i++) {
 					var a = model.at(i);
@@ -54,7 +54,6 @@ define([
 				$.each(options, function(key, value) {
 					select.append($("<option></option>").attr("value", value).text(key));
 				});
-				console.log(options);
 			}, function(model, xhr, options) {
 				toastr.error(strings.ErrorOccurred);
 				console.log('An error occurred retrieving the action class list', model, xhr);
@@ -74,10 +73,10 @@ define([
 					options.context.currentPropertySet = model;
 					options.context.propertySetEditPanel = v;
 					options.context.$el.find('#propertySetEditPanel').append(v.render().el);
-				}, function(model, xhr, options) {
+				}, function(response, xhr, options) {
 					options.context.$el.find('#addDeviceList').val('none');
-					toastr.error(strings.ErrorOccurred);
-					console.log('An error occurred retrieving the action class', url, model, xhr);
+					toastr.error(ErrorService.createErrorHtml(xhr, strings));
+					console.debug('An error occurred retrieving the action class', url, model, xhr);
 				});
 			}
 		},
@@ -91,13 +90,13 @@ define([
 					values: properties
 				}, function(model, response, options) {
 					console.log('success!'); 
-				}, function(model, xhr, options) {
+				}, function(response, xhr, options) {
 					if (xhr.status === 202) {
 						toastr.success(strings.DeviceAdded);
 						Backbone.history.navigate('dashboard', {trigger: true});
 					} else {
-						toastr.error(strings.ErrorOccurred);
-						console.log('An error occurred invoking the action class', url, model, xhr); 
+						toastr.error(ErrorService.createErrorHtml(xhr, strings));
+						console.debug('An error occurred invoking the action class', url, response, xhr); 
 					}
 				});
 			}
