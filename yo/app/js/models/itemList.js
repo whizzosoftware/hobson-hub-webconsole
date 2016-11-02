@@ -2,12 +2,11 @@
 define([
 	'backbone'
 ], function(Backbone) {
-	var ItemList = Backbone.Collection.extend({
-
+	return Backbone.Collection.extend({
 		initialize: function(data, options) {
-			this.url = options.url;
+			this.url = options != null ? options.url : null;
 			this.model = options.model;
-			if (options.sort) {
+			if (options != null && options.sort) {
 				this.comparator = function(item) {
 					return item.get(options.sort);
 				};
@@ -31,9 +30,5 @@ define([
 	        });
 	        return new ItemList(filtered, null);
 	    }
-
 	});
-
-	return ItemList;
-
 });
