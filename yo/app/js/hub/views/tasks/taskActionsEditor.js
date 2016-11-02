@@ -87,7 +87,7 @@ define([
 				el.css('display', 'block');
 				$(e.target).addClass('active');
 				var v = new TaskControlSelectorsView({
-					model: new ItemList(this.actionClasses.where({taskAction: true}), {model: this.actionClasses.model})
+					model: this.actionClasses.filteredList('taskAction', true)
 				});
 				el.html(v.render().el);
 				this.subviews.push(v);

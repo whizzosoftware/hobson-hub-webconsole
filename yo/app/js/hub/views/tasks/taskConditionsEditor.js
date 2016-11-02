@@ -91,7 +91,7 @@ define([
 
 				// render task condition class selectors
 				var v = new TaskControlSelectorsView({
-					model: this.task.hasTriggerCondition(this.conditionClasses) ? new ItemList(this.conditionClasses.where({type: 'evaluator'}), null) : new ItemList(this.conditionClasses.where({type: 'trigger'}), null),
+					model: this.task.hasTriggerCondition(this.conditionClasses) ? this.conditionClasses.filteredList('type', 'evaluator') : this.conditionClasses.filteredList('type', 'trigger'),
 					timeMode: this.timeMode
 				});
 				this.$el.find('#taskConditionSelectors').html(v.render().el);

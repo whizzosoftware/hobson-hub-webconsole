@@ -2,7 +2,7 @@
 define([
 	'backbone'
 ], function(Backbone) {
-	return Backbone.Collection.extend({
+	var ItemList = Backbone.Collection.extend({
 		initialize: function(data, options) {
 			this.url = options != null ? options.url : null;
 			this.model = options.model;
@@ -31,4 +31,6 @@ define([
 	        return new ItemList(filtered, null);
 	    }
 	});
+
+	return ItemList;
 });
