@@ -1,6 +1,27 @@
 <div class="row">
 	<div class="large-12 columns">
-		<h1><%= device.name %></h1>
+		<span id="display">
+			<h1>
+				<span id="deviceName"><%= device.name %></span>
+				<% if (showNameEdit) { %>
+					&nbsp;
+					<small><i id="editName" class="fa fa-edit icon-button"></i></small>
+				<% } %>
+			</h1>
+		</span>
+		<span id="edit" style="display: none;">
+				<div class="row collapse">
+					<div class="small-10 columns">
+						<input id="deviceNameField" type="text" value="<%= device.name %>" />
+					</div>
+					<div class="small-1 columns">
+						<a id="cancelName" href="#" class="small secondary button postfix"><%=strings.Cancel%></a>
+					</div>
+					<div class="small-1 columns">
+						<a id="saveName" href="#" class="small button postfix"><%=strings.Save%></a>
+					</div>
+				</div>
+		</span>
 	</div>
 </div>
 <div class="row">

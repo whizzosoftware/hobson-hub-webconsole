@@ -17,6 +17,23 @@ define([
 			return new ItemList(null, {url: url, model: Device, sort: sort});
 		},
 
+		setDeviceName: function(context, url, value, success, error) {
+			return $.ajax(url, {
+				context: context,
+				type: 'PUT',
+				contentType: 'application/json',
+				data: JSON.stringify({value: value}),
+				dataType: 'json',
+				error: function(model, response, options) {
+					if (model.status == 202) {
+						success(this);
+					} else {
+						error(this);
+					}
+				}
+			});
+		},
+
 		setDeviceVariable: function(url, value) {
 			return $.ajax(url, {
 				type: 'PUT',

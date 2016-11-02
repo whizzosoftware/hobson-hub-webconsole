@@ -70,6 +70,7 @@ define({
   "EnterPersonName": "Enter a friendly name for the person",
   "Error": "Error",
   "ErrorOccurred": "An error occurred. See the log for details.",
+  "ErrorUpdatingDeviceName": "An error occurred while updating the device name.",
   "Fields": "Fields",
   "Friday": "Friday",
   "General": "General",
