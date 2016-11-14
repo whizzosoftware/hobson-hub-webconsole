@@ -75,6 +75,19 @@ define([
 			});
 		},
 
+		deleteDevice: function(url, success, error) {
+			return $.ajax(url, {
+				type: 'DELETE',
+				error: function(model, response, options) {
+					if (model.status === 202) {
+						success();
+					} else {
+						error(model, response, options);
+					}
+				}
+			});
+		},
+
 		isDeviceAvailable: function(device) {
             return device.get('available');
         },

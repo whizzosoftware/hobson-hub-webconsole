@@ -46,6 +46,7 @@ define({
   "DeviceId": "Device ID",
   "Devices": "Devices",
   "DeviceAdded": "The device has been successfully added.",
+  "DeviceDeleted": "The device has been successfully deleted.",
   "DeviceListRetrieveError": "Error retrieving device list.",
   "DeviceSelected": "device selected",
   "DevicesSelected": "devices selected",

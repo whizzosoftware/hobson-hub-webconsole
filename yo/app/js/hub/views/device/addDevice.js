@@ -1,4 +1,4 @@
-// Filename: views/devices/addDevice.js
+// Filename: views/device/addDevice.js
 define([
 	'jquery',
 	'underscore',
@@ -15,7 +15,7 @@ define([
 	'views/action/actionExecutionPanel',
 	'views/job/jobStatus',
 	'i18n!nls/strings',
-	'text!templates/devices/addDevice.html'
+	'text!templates/device/addDevice.html'
 ], function($, _, Backbone, toastr, HubService, ActionService, DeviceService, ErrorService, ItemList, Device, ActionClass, HubConfig, ActionExecutionPanelView, JobStatusView, strings, template) {
 
 	return Backbone.View.extend({

@@ -39,8 +39,6 @@ define([
 			'tasks/edit?id=:id': 'showTaskEdit',
 			'device/:deviceUrl': 'showDeviceDetails',
 			'device/:deviceUrl/state': 'showDeviceState',
-			'device/:deviceUrl/settings': 'showDeviceSettings',
-			'device/:deviceUrl/statistics': 'showDeviceStatistics',
 			'devices/add': 'showDevicesAdd',
 			'settings': 'showHubSettings',
 			'settings/general': 'showHubSettingsGeneral',
@@ -143,14 +141,6 @@ define([
 
 		showDeviceState: function(deviceUrl) {
       		this.appView.showDeviceState(deviceUrl);
-		},
-
-		showDeviceSettings: function(deviceUrl) {
-      		this.appView.showDeviceSettings(deviceUrl);
-		},
-
-		showDeviceStatistics: function(deviceUrl) {
-      		this.appView.showDeviceStatistics(deviceUrl);
 		},
 
 		showHubSettings: function() {

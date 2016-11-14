@@ -20,11 +20,10 @@ define([
 	'views/tasks/tasksTab',
 	'views/tasks/taskEdit',
 	'views/device/deviceState',
-	'views/device/deviceSettings',
 	'views/data/dataTab',
 	'views/data/dataEdit',
 	'views/data/dataViewer',
-	'views/devices/addDevice',
+	'views/device/addDevice',
 	'views/settings/settingsGeneral',
 	'views/settings/settingsEmail',
 	'views/settings/settingsPresence',
@@ -34,7 +33,7 @@ define([
 	'views/account/accountProfile',
 	'i18n!nls/strings',
 	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DeviceSettingsView, DataTabView, DataEditView, DataViewer, DevicesAddView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DataTabView, DataEditView, DataViewer, DevicesAddView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
 	return Backbone.View.extend({
 
@@ -135,25 +134,11 @@ define([
 		},
 
 		showDeviceState: function(deviceUrl) {
-			var device = new Device({url: deviceUrl + '?expand=variables.item,actionClasses.item'});
+			var device = new Device({url: deviceUrl + '?expand=actionClasses.item,cclass,configuration,variables.item'});
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {
 					options.context.renderContentView(new DeviceStateView({model: model}));
-				},
-				error: function(model, response, options) {
-					console.debug('nope!');
-				}
-			});
-		},
-
-		showDeviceSettings: function(deviceUrl) {
-			// retrieve the device info with full configuration information
-			var device = new Device({url: deviceUrl + '?expand=cclass,configuration,telemetry'});
-			device.fetch({
-				context: this,
-				success: function(model, response, options) {
-					options.context.renderContentView(new DeviceSettingsView({model: model}));
 				},
 				error: function(model, response, options) {
 					console.debug('nope!');

@@ -10,9 +10,10 @@ define([
 	'models/hubs',
 	'models/actionClass',
 	'views/action/actionExecutionDialog',
+	'views/device/deviceSettingsDialog',
 	'i18n!nls/strings',
 	'text!templates/device/deviceTabs.html'
-], function($, _, Backbone, toastr, DeviceService, ActionService, session, Hubs, ActionClass, ActionExecutionDialogView, strings, tabsTemplate) {
+], function($, _, Backbone, toastr, DeviceService, ActionService, session, Hubs, ActionClass, ActionExecutionDialogView, DeviceSettingsDialogView, strings, tabsTemplate) {
 
 	return Backbone.View.extend({
 
@@ -20,6 +21,8 @@ define([
 			'click #editName': 'onEditName',
 			'click #saveName': 'onSaveName',
 			'click #cancelName': 'onCancelName',
+			'click #deviceSettings': 'onDeviceSettings',
+			'click #deleteDevice': 'onDeleteDevice',
 			'click a.actionItem': 'onAction'
 		},
 
@@ -46,11 +49,12 @@ define([
 				})
 			);
 
+			// create menu
 			var el = this.$el.find('#mainMenuItems');
 
 			// add settings item
-			if (this.model.has('configuration')) {
-				el.append('<li><a id="showSettings"><i class="fa fa-cog"></i>&nbsp;Settings</a></li>');
+			if (this.model.has('cclass') && this.model.get('cclass').supportedProperties) {
+				el.append('<li><a id="deviceSettings"><i class="fa fa-cog"></i>&nbsp;Settings</a></li>');
 			}
 
 			// add any action classes
@@ -61,6 +65,9 @@ define([
 					el.append('<li><a class="actionItem" id="' + item['@id'] + '"><i class="fa fa-wrench"></i>&nbsp;' + item.name + '</a></li>');
 				}
 			}
+
+			// add delete device
+			el.append('<li><a id="deleteDevice"><i class="fa fa-close"></i>&nbsp;Delete This Device</a></li>');
 
 			this.$el.find('#mainMenu').smartmenus({
 				subIndicatorsText: '<i class="fa fa-lg fa-ellipsis-v"></i>',
@@ -110,6 +117,24 @@ define([
 			var el = this.$el.find('#device-config-modal');
 			el.html(new ActionExecutionDialogView({model: ac}).render().el);
 			el.foundation('reveal', 'open');
+		},
+
+		onDeviceSettings: function(e) {
+			e.preventDefault();
+			var el = this.$el.find('#device-config-modal');
+			el.html(new DeviceSettingsDialogView({model: this.model}).render().el);
+			el.foundation('reveal', 'open');
+		},
+
+		onDeleteDevice: function(e) {
+	      if (confirm(strings.AreYouSureYouWantToDelete + ' \"' + this.model.get('name') + '\"?')) {
+	      	DeviceService.deleteDevice(this.model.get('@id'), function(model, response, options) {
+	      		toastr.success(strings.DeviceDeleted);
+	      	}.bind(this), function(model, response, options) {
+				toastr.error(strings.ErrorOccurred);
+	      		console.log('Error deleting device', model, response, options);
+	      	}.bind(this));
+	      }
 		},
 
 		showUpdateMode: function(displayEl, editEl) {
