@@ -205,7 +205,6 @@ define([
       if (hubs && hubs.itemListElement && hubs.itemListElement.length > 0) {
         var h = hubs.itemListElement[0].item;
         HubService.getHubWithId(this, h["@id"], function(hub, response, options) {
-            console.debug('Setting selected hub: ', hub);
             session.setSelectedHub(hub);
             if (!redirectUri) {
               redirectUri = '#dashboard';

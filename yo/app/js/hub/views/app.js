@@ -135,7 +135,7 @@ define([
 		},
 
 		showDeviceState: function(deviceUrl) {
-			var device = new Device({url: deviceUrl + '?expand=variables.item,telemetry'});
+			var device = new Device({url: deviceUrl + '?expand=variables.item,actionClasses.item'});
 			device.fetch({
 				context: this,
 				success: function(model, response, options) {

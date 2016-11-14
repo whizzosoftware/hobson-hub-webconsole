@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="large-12 columns">
+	<div class="large-11 columns">
 		<span id="display">
 			<h1>
 				<span id="deviceName"><%= device.name %></span>
@@ -23,6 +23,14 @@
 				</div>
 		</span>
 	</div>
+	<div class="large-1 columns text-center">
+		<ul id="mainMenu" class="sm sm-clean">
+			<li><a></a>
+				<ul id="mainMenuItems">
+				</ul>
+			</li>
+		</ul>
+	</div>
 </div>
 <div class="row">
 	<div class="large-12 columns">
@@ -38,4 +46,6 @@
 			</div>
 		</div>
 	</div>
+</div>
+<div id="device-config-modal" style="z-index: 10000;" data-options="close_on_background_click:false;clone_on_esc:false;" class="reveal-modal" data-reveal>
 </div>

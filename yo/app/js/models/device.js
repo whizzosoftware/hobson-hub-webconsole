@@ -1,7 +1,8 @@
 // Filename: models/device.js
 define([
-	'backbone'
-], function(Backbone) {
+	'backbone',
+	'models/actionClass'
+], function(Backbone, ActionClass) {
 	var DeviceModel = Backbone.Model.extend({
 		url: function() {
 			return this.get('url');
@@ -19,6 +20,16 @@ define([
 			if (prefVar) {
 				prefVar.value = value;
 			}
+		},
+		getActionClass: function(id) {
+			var acs = this.get('actionClasses');
+			for (var i=0; i < acs.numberOfItems; i++) {
+				var item = acs.itemListElement[i].item;
+				if (item['@id'] === id) {
+					return new ActionClass(item);
+				}
+			}
+			return null;
 		}
 	});
 

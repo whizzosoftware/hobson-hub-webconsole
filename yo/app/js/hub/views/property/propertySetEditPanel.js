@@ -22,7 +22,7 @@ define([
 
 		initialize: function(options) {
 			this.subviews = [];
-			this.timeMode = options.timeMode;
+			this.timeMode = options ? options.timeMode : null;
 		},
 
 		remove: function() {
@@ -37,13 +37,12 @@ define([
 			// render panel
 			this.$el.html(this.template({
 				strings: strings,
-				control: this.model.toJSON()
+				control: this.model
 			}));
 
 			// render form
 			var el = this.$el.find('form');
 			var properties = this.model.get('supportedProperties');
-			console.log('rendering supported properties', properties);
 			if (properties) {
 				for (var i=0; i < properties.length; i++) {
 					var prop = properties[i];

@@ -3,10 +3,12 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'smartmenus',
 	'services/plugin',
+	'services/action',
 	'i18n!nls/strings',
 	'text!templates/settings/plugin.html'
-], function($, _, Backbone, PluginService, strings, pluginTemplate) {
+], function($, _, Backbone, smartmenus, PluginService, ActionService, strings, pluginTemplate) {
 
 	return Backbone.View.extend({
 		template: _.template(pluginTemplate),
@@ -19,7 +21,8 @@ define([
 			'click #buttonSettings': 'onClickSettings',
 			'click #buttonInstall': 'onClickInstall',
 			'click #buttonUpdate': 'onClickUpdate',
-			'click #buttonClose': 'onClickClose'
+			'click #buttonClose': 'onClickClose',
+			'click .buttonAction': 'onClickAction'
 		},
 
 		initialize: function() {
@@ -27,10 +30,17 @@ define([
 		},
 
 		render: function() {
+			var plugin = this.model.toJSON();
 			this.$el.html(this.template({
 				strings: strings,
-				plugin: this.model.toJSON()
+				plugin: plugin
 			}));
+
+			this.$el.find('#plugin-more-menu').smartmenus({
+				subIndicatorsText: '<i class="fa fa-lg fa-ellipsis-v icon-button"></i>',
+				hideOnClick: true,
+				hideTimeout: 1000
+			});
 
 			return this;
 		},
@@ -60,6 +70,11 @@ define([
 		onClickClose: function(event) {
 			event.preventDefault();
 			this.$el.find('.plugin-overlay').attr('hidden', true);
+		},
+
+		onClickAction: function(event) {
+			event.preventDefault();
+			this.$el.trigger('pluginActionClick', event.currentTarget.id);
 		}
 
 	});

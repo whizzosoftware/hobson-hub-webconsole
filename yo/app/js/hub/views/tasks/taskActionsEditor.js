@@ -48,28 +48,28 @@ define([
 				strings: strings
 			}));
 
-			TaskService.getActionClasses(this, function(model, response, options) {
-				options.context.actionClasses = model;
-				options.context.renderActions(options.context);
-			}, function(model, response, options) {
+			TaskService.getActionClasses(function(model, response, options) {
+				this.actionClasses = model;
+				this.renderActions();
+			}.bind(this), function(model, response, options) {
 				toastr.error(strings.ErrorOccurred);
-			});
+			}.bind(this));
 
 			return this;
 		},
 
-		renderActions: function(ctx) {
-			if (ctx.taskActionsView) {
-				ctx.taskActionsView.remove();
+		renderActions: function() {
+			if (this.taskActionsView) {
+				this.taskActionsView.remove();
 			}
 
-			ctx.taskActionsView = new TaskActionsView({
-				task: ctx.task,
-				actionClasses: ctx.actionClasses,
-				devices: ctx.devices
+			this.taskActionsView = new TaskActionsView({
+				task: this.task,
+				actionClasses: this.actionClasses,
+				devices: this.devices
 			});
 
-			ctx.$el.find('#taskActions').html(ctx.taskActionsView.render().el);
+			this.$el.find('#taskActions').html(this.taskActionsView.render().el);
 		},
 
 		closePlusPanel: function() {

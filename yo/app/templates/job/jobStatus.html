@@ -1,0 +1,19 @@
+<div class="row">
+	<div class="large-12 columns">
+		<h1><%= title ? title : 'Job Status' %></h1>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns">
+		<div id="statusContainer" class="shadow-2" style="height: 250px; overflow: scroll; padding: 25px;">
+			<ul id="statusArea"></ul>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns">
+		<div class="form-control-bar" style="margin-top: 40px;">
+			<a id="buttonStop" class="radius secondary button small left shadow-1" href="#/tasks"><%= strings.Stop %></a><a id="buttonDone" class="radius button small right shadow-1 disabled"><%= strings.Done %></a>
+		</div>
+	</div>
+</div>

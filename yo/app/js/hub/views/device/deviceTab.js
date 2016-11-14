@@ -5,18 +5,22 @@ define([
 	'backbone',
 	'toastr',
 	'services/device',
+	'services/action',
 	'models/session',
 	'models/hubs',
+	'models/actionClass',
+	'views/action/actionExecutionDialog',
 	'i18n!nls/strings',
 	'text!templates/device/deviceTabs.html'
-], function($, _, Backbone, toastr, DeviceService, session, Hubs, strings, tabsTemplate) {
+], function($, _, Backbone, toastr, DeviceService, ActionService, session, Hubs, ActionClass, ActionExecutionDialogView, strings, tabsTemplate) {
 
 	return Backbone.View.extend({
 
 		events: {
 			'click #editName': 'onEditName',
 			'click #saveName': 'onSaveName',
-			'click #cancelName': 'onCancelName'
+			'click #cancelName': 'onCancelName',
+			'click a.actionItem': 'onAction'
 		},
 
 		tabsTemplate: _.template(tabsTemplate),
@@ -41,6 +45,28 @@ define([
 					showNameEdit: this.model.get('links') && this.model.get('links').setName
 				})
 			);
+
+			var el = this.$el.find('#mainMenuItems');
+
+			// add settings item
+			if (this.model.has('configuration')) {
+				el.append('<li><a id="showSettings"><i class="fa fa-cog"></i>&nbsp;Settings</a></li>');
+			}
+
+			// add any action classes
+			if (this.model.has('actionClasses')) {
+				var ac = this.model.get('actionClasses');
+				for (var i=0; i < ac.numberOfItems; i++) {
+					var item = ac.itemListElement[i].item;
+					el.append('<li><a class="actionItem" id="' + item['@id'] + '"><i class="fa fa-wrench"></i>&nbsp;' + item.name + '</a></li>');
+				}
+			}
+
+			this.$el.find('#mainMenu').smartmenus({
+				subIndicatorsText: '<i class="fa fa-lg fa-ellipsis-v"></i>',
+				hideOnClick: true,
+				hideTimeout: 500
+			});
 
 			this.renderTabContent(this.$el.find('.content'));
 
@@ -76,6 +102,14 @@ define([
 		onCancelName: function(e) {
 			e.preventDefault();
 			this.hideUpdateMode(this.$el.find('#saveName'), this.$el.find('#display'), this.$el.find('#edit'), this.$el.find('#deviceNameField'));
+		},
+
+		onAction: function(e) {
+			e.preventDefault();
+			var ac = this.model.getActionClass(e.currentTarget.id);
+			var el = this.$el.find('#device-config-modal');
+			el.html(new ActionExecutionDialogView({model: ac}).render().el);
+			el.foundation('reveal', 'open');
 		},
 
 		showUpdateMode: function(displayEl, editEl) {

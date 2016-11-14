@@ -4,6 +4,7 @@ define([
   'underscore',
   'backbone',
   'moment',
+  'smartmenus',
   'services/device',
   'views/device/deviceTab',
   'views/device/lightbulb',
@@ -15,7 +16,7 @@ define([
   'views/device/securityPanel',
   'i18n!nls/strings',
   'text!templates/device/deviceState.html'
-], function ($, _, Backbone, moment, DeviceService, DeviceTab, LightbulbView, SwitchView, CameraView, ThermostatView, SensorView, WeatherStationView, SecurityPanelView, strings, template) {
+], function ($, _, Backbone, moment, smartmenus, DeviceService, DeviceTab, LightbulbView, SwitchView, CameraView, ThermostatView, SensorView, WeatherStationView, SecurityPanelView, strings, template) {
 
   return DeviceTab.extend({
 

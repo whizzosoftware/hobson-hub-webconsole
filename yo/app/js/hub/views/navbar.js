@@ -16,7 +16,7 @@ define([
 		events: {
 			'click #sidebar-button': 'onClickSidebar',
 			'click #power-button': 'onClickPowerOff',
-      'click #logout': 'onClickLogout'
+      		'click #logout': 'onClickLogout'
 		},
 
 		render: function() {
@@ -32,8 +32,6 @@ define([
 					fragment: Backbone.history.getFragment()
 				})
 			);
-
-			this.$el.foundation('dropdown', 'reflow');
 
 			return this;
 		},

@@ -9,19 +9,17 @@ define([
 ], function($, session, ItemList, Task, TaskConditionClass, ActionClass) {
 	return {
 
-		getActionClasses: function(ctx, success, error) {
+		getActionClasses: function(success, error) {
 			var url = session.getSelectedHub().get('actionClasses')['@id'] + '?expand=item&constraints=true';
 			new ItemList(null, {model: ActionClass, url: url, sort: 'name'}).fetch({
-				context: ctx,
 				success: success,
 				error: error
 			});
 		},
 
-		getConditionClasses: function(ctx, success, error) {
+		getConditionClasses: function(success, error) {
 			var url = session.getSelectedHub().get('conditionClasses')['@id'] + '?expand=item&constraints=true';
 			new ItemList(null, {model: TaskConditionClass, url: url, sort: 'name'}).fetch({
-				context: ctx,
 				success: success,
 				error: error
 			});

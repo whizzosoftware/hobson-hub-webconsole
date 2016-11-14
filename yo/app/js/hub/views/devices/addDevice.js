@@ -5,16 +5,18 @@ define([
 	'backbone',
 	'toastr',
 	'services/hub',
+	'services/action',
 	'services/device',
 	'services/error',
 	'models/itemList',
 	'models/device',
 	'models/actionClass',
 	'models/hubConfig',
-	'views/property/propertySetEditPanel',
+	'views/action/actionExecutionPanel',
+	'views/job/jobStatus',
 	'i18n!nls/strings',
 	'text!templates/devices/addDevice.html'
-], function($, _, Backbone, toastr, HubService, DeviceService, ErrorService, ItemList, Device, ActionClass, HubConfig, PropertySetEditPanelView, strings, template) {
+], function($, _, Backbone, toastr, HubService, ActionService, DeviceService, ErrorService, ItemList, Device, ActionClass, HubConfig, ActionExecutionPanelView, JobStatusView, strings, template) {
 
 	return Backbone.View.extend({
 
@@ -26,14 +28,12 @@ define([
 		},
 
 		initialize: function(options) {
-			this.subviews = [];
 		},
 
 		remove: function() {
-			for (var i = 0; i < this.subviews.length; i++) {
-				this.subviews[i].remove();
+			if (this.actionExecutionPanel) {
+				this.actionExecutionPanel.remove();
 			}
-			this.subviews.length = 0;
 			Backbone.View.prototype.remove.call(this);
 		},
 
@@ -42,8 +42,8 @@ define([
 				strings: strings
 			}));
 
-			HubService.getActionClasses(this, function(model, response, options) {
-				var select = options.context.$el.find('#addDeviceList');
+			HubService.getHubActionClasses(function(model, response, options) {
+				var select = this.$el.find('#addDeviceList');
 				var options = {};
 				for (var i=0; i < model.length; i++) {
 					var a = model.at(i);
@@ -54,10 +54,10 @@ define([
 				$.each(options, function(key, value) {
 					select.append($("<option></option>").attr("value", value).text(key));
 				});
-			}, function(model, xhr, options) {
+			}.bind(this), function(model, xhr, options) {
 				toastr.error(strings.ErrorOccurred);
 				console.log('An error occurred retrieving the action class list', model, xhr);
-			}, 'addDevice');
+			}.bind(this), 'addDevice');
 
 			return this;
 		},
@@ -65,56 +65,32 @@ define([
 		onDeviceChange: function(event) {
 			var url = $(event.currentTarget).val();
 			if (url && url !== 'none') {
-				HubService.getActionClass(this, url, function(model, response, options) {
-					if (options.context.propertySetEditPanel) {
-						options.context.propertySetEditPanel.remove();
+				ActionService.getActionClass(url, function(model, response, options) {
+					if (this.actionExecutionPanel) {
+						this.actionExecutionPanel.remove();
 					}
-					var v = new PropertySetEditPanelView({model: model});
-					options.context.currentPropertySet = model;
-					options.context.propertySetEditPanel = v;
-					options.context.$el.find('#propertySetEditPanel').append(v.render().el);
-				}, function(response, xhr, options) {
-					options.context.$el.find('#addDeviceList').val('none');
+					this.actionExecutionPanel = new ActionExecutionPanelView({model: model});
+					this.$el.find('#actionExecutionPanel').html(this.actionExecutionPanel.render().el);
+				}.bind(this), function(response, xhr, options) {
+					this.$el.find('#addDeviceList').val('none');
 					toastr.error(ErrorService.createErrorHtml(xhr, strings));
 					console.debug('An error occurred retrieving the action class', url, model, xhr);
-				});
+				}.bind(this));
 			}
 		},
 
 		onButtonAdd: function(event) {
-			var properties = this.propertySetEditPanel.getValues();
-			var url = this.currentPropertySet.get('@id');
+			var properties = this.actionExecutionPanel.getValues();
+			var url = this.actionExecutionPanel.model.get('@id');
 			if (properties) {
-				HubService.invokeActionClass(this, url, {
-					cclass: {'@id': url},
-					values: properties
-				}, function(model, response, options) {
-					console.log('success!'); 
-				}, function(response, xhr, options) {
-					if (xhr.status === 202) {
-						toastr.success(strings.DeviceAdded);
-						Backbone.history.navigate('dashboard', {trigger: true});
-					} else {
-						toastr.error(ErrorService.createErrorHtml(xhr, strings));
-						console.debug('An error occurred invoking the action class', url, response, xhr); 
-					}
-				});
+				ActionService.executeAction(url, properties, function(model, response, options) {
+					toastr.success('New device successfully added.');
+					Backbone.history.navigate('dashboard', {trigger: true});
+				}.bind(this), function(model, response) {
+					toastr.error(ErrorService.createErrorHtml(response, strings));
+					console.debug('An error occurred invoking the action class', url, response); 
+				}.bind(this));
 			}
-		},
-
-		hideErrors: function() {
-			this.$el.find('#error').css('display', 'none');
-			this.$el.find('#errorMsg').html('');
-		},
-
-		showErrors: function(ctx, errors) {
-			var msg = '<ul>';
-			for (var i=0; i < errors.length; i++) {
-				msg += '<li>' + errors[i].message + '</li>';
-			}
-			msg += '</ul>';
-			ctx.$el.find('#error').css('display', 'block');
-			ctx.$el.find('#errorMsg').html(msg);
 		}
 
 	});

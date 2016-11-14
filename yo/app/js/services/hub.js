@@ -20,21 +20,12 @@ define([
   return {
     betaRepositoryUrl: 'http://www.hobson-automation.com/obr/beta/repository.xml',
 
-    getActionClasses: function(ctx, success, error, id) {
+    getHubActionClasses: function(success, error, id) {
       var url = session.getSelectedHub().get('actionClasses')['@id'] + '?expand=item&constraints=true';
       if (id) {
         url += '&id=' + id;
       }
       new ItemList(null, {model: ActionClass, url: url, sort: 'name'}).fetch({
-        context: ctx,
-        success: success,
-        error: error
-      });
-    },
-
-    getActionClass: function(ctx, url, success, error) {
-      new ActionClass({url: url}).fetch({
-        context: ctx,
         success: success,
         error: error
       });
@@ -54,7 +45,6 @@ define([
           success(status, xhr, {context: ctx});
         }
       });
-
     },
 
     getHubWithId: function(ctx, url, success, error) {
@@ -305,7 +295,7 @@ define([
     },
 
     getPlugins: function(ctx, url, success, error) {
-      var plugins = new ItemList(null, {model: Plugin, url: url + '?expand=item'});
+      var plugins = new ItemList(null, {model: Plugin, url: url + '?expand=item.actionClasses.item'});
       plugins.fetch({
         context: ctx,
         success: success,

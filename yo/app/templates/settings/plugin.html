@@ -2,22 +2,41 @@
 	<div class="plugin-content">
 		<div class="plugin-icon">
 			<% if (plugin.image) { %>
-			<img src="<%= plugin.image['@id'] %>" />
+				<img src="<%= plugin.image['@id'] %>" />
+			<% } %>
+		 	<% if (plugin.links && plugin.links.install) { %>
+		 		<a id="buttonInstall" class="icon-button" title="<%= strings.Install %>"><i class="fa fa-download fa-lg icon-button"></i></a>
+		 	<% } else if (plugin.status && plugin.status.code === 'RUNNING' && (plugin.configurable || plugin.actionClasses)) { %>
+		 		<ul id="plugin-more-menu" class="sm sm-clean">
+		 			<li><a></a>
+		 				<ul>
+					 		<% if (plugin.configurable) { %>
+					 			<li><a id="buttonSettings"><i class="fa fa-cog"></i>&nbsp;<%= strings.Settings %></a></li>
+						 	<% } %>
+						 	<% if (plugin.actionClasses) { 
+						 		for (var i=0; i < plugin.actionClasses.itemListElement.length; i++) {
+						 	%>
+							 	<li><a id="<%= plugin.actionClasses.itemListElement[i].item['@id'] %>" class="buttonAction"><i class="fa fa-wrench"></i>&nbsp;<%= plugin.actionClasses.itemListElement[i].item.name %></a></li>
+							 <% 
+							    } 
+							  } 
+							 %>
+		 				</ul>
+		 			</li>
+		 		</ul>
 			<% } %>
 		</div>
  		<div class="plugin-text">
-		 	<h1><%= plugin.name %></h1>
-		 	<p><%= plugin.description %></p>
-		 	<% if (plugin.version) { %>
-			 	<div class="plugin-version">Version <%= plugin.version %></div>
-			<% } %>
+ 			<div class="row">
+ 				<div class="large-12 columns">
+				 	<h1><%= plugin.name %></h1>
+		 			<p><%= plugin.description %></p>
+		 		</div>
+		 	</div>
  		</div>
- 		<% if (plugin.configurable) { %>
-	 		<a id="buttonSettings" class="icon-button" title="<%= strings.Settings %>"><i class="fa fa-cog fa-lg icon-button"></i></a>
-	 	<% } %>
-	 	<% if (plugin.links && plugin.links.install) { %>
-	 		<a id="buttonInstall" class="icon-button" title="<%= strings.Install %>"><i class="fa fa-download fa-lg icon-button"></i></a>
-	 	<% } %>
+	 	<% if (plugin.version) { %>
+		 	<div class="plugin-version">Version <%= plugin.version %></div>
+		<% } %>
  	</div>
 	<% if (plugin.status && plugin.status.code === 'NOT_CONFIGURED') { %>
 	 	<div class="plugin-overlay">
