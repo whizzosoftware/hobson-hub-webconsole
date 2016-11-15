@@ -15,6 +15,13 @@ define([
 
 		template: _.template(template),
 
+		events: {
+			'click #buttonStop': 'onStopClick',
+			'click #buttonDone': 'onDoneClick',
+			'jobComplete': 'onJobComplete',
+			'jobFailed': 'onJobFailed'
+		},
+
 		initialize: function(options) {
 			this.noPropertiesPrompt = options ? options.noPropertiesPrompt : null;
 			this.propertySetEditView = new PropertySetEditPanelView({model: this.model});
@@ -49,22 +56,45 @@ define([
 		},
 
 		showJobStatus: function(jobUrl) {
-			console.debug('showJobStatus', jobUrl);
 			if (this.executionStatusView) {
 				this.executionStatusView.remove();
 			}
 			this.executionStatusView = new ExecutionStatusView({url: jobUrl});
 			this.$el.find('#actionExecutionContainer').html(this.executionStatusView.render().el);
-		},
-
-		stop: function() {
-			if (this.executionStatusView) {
-				this.executionStatusView.stop();
-			}
+			this.$el.find('.job-control-bar').css('display', 'block');
+			this.$el.find('#buttonDone').addClass('disabled');
 		},
 
 		getValues: function() {
 			return this.propertySetEditView ? this.propertySetEditView.getValues() : null;
+		},
+
+		onStopClick: function(e) {
+			e.preventDefault();
+			if (!$(e.currentTarget).hasClass('disabled')) {
+				if (this.executionStatusView) {
+					this.executionStatusView.stop();
+				}
+				this.$el.find('#buttonStop').addClass('disabled');
+				this.$el.find('#buttonDone').removeClass('disabled');
+			}
+		},
+
+		onDoneClick: function(e) {
+			e.preventDefault();
+			if (!$(e.currentTarget).hasClass('disabled')) {
+				this.$el.trigger('jobExecutionComplete');
+			}
+		},
+
+		onJobComplete: function() {
+			this.$el.find('#buttonStop').addClass('disabled');
+			this.$el.find('#buttonDone').removeClass('disabled');
+		},
+
+		onJobFailed: function() {
+			this.$el.find('#buttonStop').addClass('disabled');
+			this.$el.find('#buttonDone').removeClass('disabled');
 		}
 
 	});

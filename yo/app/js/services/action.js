@@ -52,6 +52,18 @@ define([
           error(e, xhr);
         }
       });
+    },
+
+    stopJob: function(url, success, error) {
+      return $.ajax(url, {
+        type: 'DELETE',
+        success: function(data, status, xhr) {
+          success();
+        },
+        error: function(xhr, status, e) {
+          error();
+        }
+      });
     }
 
   };

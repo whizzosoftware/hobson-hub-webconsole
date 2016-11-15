@@ -14,16 +14,11 @@ define([
 		template: _.template(template),
 
 		initialize: function(options) {
-			this.subviews = [];
 			this.url = options.url;
 		},
 
 		remove: function() {
-			for (var i = 0; i < this.subviews.length; i++) {
-				this.subviews[i].remove();
-			}
-			this.subviews.length = 0;
-			this.stop();
+			this.cancelRefresh();
 			Backbone.View.prototype.remove.call(this);
 		},
 
@@ -40,7 +35,6 @@ define([
 		},
 
 		refresh: function() {
-			console.debug('refresh');
 			ActionService.getJobStatus(this.url, function(model) {
 				// add status messages
 				var el = this.$el.find('#statusArea');
@@ -53,11 +47,12 @@ define([
 
 				// handle completion or failure
 				if (model.status == 'Complete') {
-					this.stop();
+					this.cancelRefresh();
 					this.$el.find('#statusPrompt').html('<i class="fa fa-check"></i>&nbsp;Finished');
 					this.$el.trigger('jobComplete');
 				} else if (model.status == 'Failed') {
-					this.stop();
+					this.cancelRefresh();
+					this.$el.find('#statusPrompt').html('<i class="fa fa-warning"></i>&nbsp;Failed');
 					this.$el.trigger('jobFailed');
 				}
 			}.bind(this), function(a, b) {
@@ -65,11 +60,21 @@ define([
 			}.bind(this));
 		},
 
-		stop: function() {
+		cancelRefresh: function() {
 			if (this.refreshInterval) {
 				clearInterval(this.refreshInterval);
 				this.refreshInterval = null;
 			}
+		},
+
+		stop: function() {
+			ActionService.stopJob(this.url, function() {
+				this.$el.find('#statusPrompt').html('<i class="fa fa-check"></i>&nbsp;Successfully stopped');
+				this.$el.trigger('jobComplete');
+			}.bind(this), function() {
+				this.$el.find('#statusPrompt').html('<i class="fa fa-remove"></i>&nbsp;Failed to stop');
+				this.$el.trigger('jobComplete');
+			}.bind(this));
 		}
 
 	});

@@ -18,12 +18,10 @@ define([
 		events: {
 			'click #buttonExecute': 'onButtonExecute',
 			'click #buttonCancel': 'onButtonCancel',
-			'jobComplete': 'onJobComplete'
+			'jobExecutionComplete': 'onJobExecutionComplete'
 		},
 
 		initialize: function(options) {
-			this.subviews = [];
-
 			if (options && options.title) {
 				this.title = options.title;
 			} else {
@@ -36,11 +34,10 @@ define([
 		},
 
 		remove: function() {
-			$(document).off('closed.fndtn.reveal');
-			for (var i = 0; i < this.subviews.length; i++) {
-				this.subviews[i].remove();
+			if (this.actionExecutionPanel) {
+				this.actionExecutionPanel.remove();
 			}
-			this.subviews.length = 0;
+			$(document).off('closed.fndtn.reveal');
 			Backbone.View.prototype.remove.call(this);
 		},
 
@@ -86,6 +83,7 @@ define([
 								} else {
 									this.$el.find('#promptPanel').html("");
 									this.$el.find('#buttonExecute').text(strings.Close);
+									this.$el.find('.form-control-bar').html('');
 									this.actionExecutionPanel.showJobStatus(loc);
 								}
 							}.bind(this), function(model, response, errors) {
@@ -107,13 +105,12 @@ define([
 			}
 		},
 
-		onJobComplete: function() {
-			this.$el.find('#buttonExecute').removeClass('disabled');
-			this.$el.find('#buttonCancel').addClass('disabled');
+		onJobExecutionComplete: function() {
+			this.$el.foundation('reveal', 'close');
 		},
 
 		onRevealClosed: function() {
-			this.actionExecutionPanel.stop();
+			this.remove();
 		}
 
 	});

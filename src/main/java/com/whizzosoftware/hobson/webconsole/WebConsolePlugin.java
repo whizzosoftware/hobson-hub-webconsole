@@ -39,11 +39,6 @@ public class WebConsolePlugin extends AbstractHobsonPlugin {
     }
 
     @Override
-    public void onPluginConfigurationUpdate(PropertyContainer config) {
-
-    }
-
-    @Override
     public void onStartup(PropertyContainer config) {
         getHubManager().getLocalManager().publishWebApplication(new HubWebApplication(WebConsoleApplication.PATH, WebConsoleApplication.class));
     }

@@ -24,7 +24,8 @@ define([
 
 		events: {
 			'change #addDeviceList': 'onDeviceChange',
-			'click #buttonAdd': 'onButtonAdd'
+			'click #buttonAdd': 'onButtonAdd',
+			'jobExecutionComplete': 'onJobExecutionComplete'
 		},
 
 		initialize: function(options) {
@@ -84,13 +85,32 @@ define([
 			var url = this.actionExecutionPanel.model.get('@id');
 			if (properties) {
 				ActionService.executeAction(url, properties, function(model, response, options) {
-					toastr.success('New device successfully added.');
-					Backbone.history.navigate('dashboard', {trigger: true});
+					var loc = response.getResponseHeader('Location');
+					if (loc) {
+						ActionService.getJobStatus(loc, function(model, response, options) {
+							this.$el.find('#buttonAdd').addClass('disabled');
+							if (model && model.status === 'Complete') {
+								toastr.success('New device successfully added.');
+								Backbone.history.navigate('dashboard', {trigger: true});
+							} else {
+								this.$el.find('#promptPanel').html("");
+								this.$el.find('#buttonAdd').text(strings.Close);
+								this.actionExecutionPanel.showJobStatus(loc);
+								this.$el.find('.form-control-bar').html('');
+							}
+						}.bind(this), function(model, response, errors) {
+							console.log('error job status', model);
+						}.bind(this));
+					}
 				}.bind(this), function(model, response) {
 					toastr.error(ErrorService.createErrorHtml(response, strings));
 					console.debug('An error occurred invoking the action class', url, response); 
 				}.bind(this));
 			}
+		},
+
+		onJobExecutionComplete: function() {
+			Backbone.history.navigate('dashboard', {trigger: true});
 		}
 
 	});
