@@ -78,12 +78,11 @@ define([
 		deleteDevice: function(url, success, error) {
 			return $.ajax(url, {
 				type: 'DELETE',
-				error: function(model, response, options) {
-					if (model.status === 202) {
-						success();
-					} else {
-						error(model, response, options);
-					}
+				success: function(data, status, xhr) {
+					success(null, status, null);
+				},
+				error: function(xhr, status, e) {
+					error(model, response, options);
 				}
 			});
 		},
