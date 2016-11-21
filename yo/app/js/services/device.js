@@ -68,7 +68,8 @@ define([
 			});
 		},
 
-		addDevicePassport: function(context, url, deviceId) {
+		addDevicePassport: function(context, deviceId) {
+			var url = session.getSelectedHubDevicePassportsUrl();
 			return $.ajax(url, {
 				context: context,
 				type: 'POST',

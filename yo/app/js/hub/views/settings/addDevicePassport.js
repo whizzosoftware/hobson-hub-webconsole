@@ -36,7 +36,7 @@ define([
 
 			var deviceId = this.$el.find('#deviceId').val();
 
-			DeviceService.addDevicePassport(this, '/api/v1/users/local/hubs/local/devicePassports', deviceId)
+			DeviceService.addDevicePassport(this, deviceId)
 				.success(function(response) {
 					this.$el.foundation('reveal', 'close');
 					toastr.success(strings.DevicePassportCreated);

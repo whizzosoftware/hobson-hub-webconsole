@@ -69,6 +69,10 @@ define([
 			return this.getSelectedHub().get('devices')['@id'];
 		},
 
+		getSelectedHubDevicePassportsUrl: function() {
+			return this.getSelectedHub().get('devicePassports')['@id'];
+		},
+
 		hasDataStreams: function() {
 			return (this.getUser() && this.getUser().get('dataStreams'));
 		},
