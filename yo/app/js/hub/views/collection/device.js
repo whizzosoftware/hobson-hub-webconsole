@@ -1,53 +1,58 @@
 // Filename: views/collection/devices.js
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'i18n!nls/strings',
-	'text!templates/collection/device.html'
-], function($, _, Backbone, strings, template) {
+  'jquery',
+  'underscore',
+  'backbone',
+  'i18n!nls/strings',
+  'text!templates/collection/device.html'
+], function ($, _, Backbone, strings, template) {
 
-	return Backbone.View.extend({
+  return Backbone.View.extend({
 
-		tagName: 'li',
+    tagName: 'li',
 
-		className: 'device',
+    className: 'device',
 
-		template: _.template(template),
+    template: _.template(template),
 
-		events: {
-			'click': 'onClick'
-		},
+    events: {
+      'click': 'onClick'
+    },
 
-		initialize: function(options) {
-			this.device = options.device;
-			this.selected = options.selected;
-		},
+    initialize: function (options) {
+      this.device = options.device;
+      this.selected = options.selected;
+    },
 
-		render: function() {
-			this.$el.html(
-				this.template({
-					strings: strings,
-					device: this.device.toJSON()
-				})
-			);
+    render: function () {
+      this.$el.html(
+        this.template({
+          strings: strings,
+          device: this.device.toJSON()
+        })
+      );
 
-			if (this.selected) {
-				this.$el.addClass('active');
-			} else {
-				this.$el.removeClass('active');
-			}
+      this.setSelected(this.selected);
 
-			return this;
-		},
+      return this;
+    },
 
-		onClick: function(e) {
-			e.preventDefault();
-			this.selected = !this.selected;
-			this.render();
-			this.$el.trigger('deviceClicked', {device: this.device, selected: this.selected});
-		}
+    setSelected: function (b) {
+      this.selected = b;
+      if (b) {
+        this.$el.addClass('active');
+      } else {
+        this.$el.removeClass('active');
+      }
+    },
 
-	});
+    onClick: function (e) {
+      e.preventDefault();
+      this.setSelected(!this.selected);
+      this.render();
+      this.$el.trigger('deviceClicked', {device: this.device, selected: this.selected});
+    }
+
+  });
 
 });

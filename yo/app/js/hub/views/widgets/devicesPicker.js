@@ -22,21 +22,20 @@ define([
       'deviceClicked': 'onClickDevice'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.required = this.model && this.model.constraints ? this.model.constraints.required : false;
       this.single = options.single;
       this.showDescription = options.showDescription;
       this.subviews = [];
-      this.viewMap = {};
       this.value = [];
       if (options.value) {
-        for (var i=0; i < options.value.length; i++) {
+        for (var i = 0; i < options.value.length; i++) {
           this.value.push(options.value[i]['@id']);
         }
       }
     },
 
-    remove: function() {
+    remove: function () {
       for (var ix in this.subviews) {
         this.subviews[ix].remove();
       }
@@ -44,7 +43,7 @@ define([
       BaseWidget.prototype.remove.call(this);
     },
 
-    render: function() {
+    render: function () {
       this.$el.append(
         this.template({
           strings: strings,
@@ -62,7 +61,7 @@ define([
       var devices = new ItemList(null, {model: Device, url: url, sort: 'name'});
       devices.fetch({
         context: this,
-        success: function(model, response, options) {
+        success: function (model, response, options) {
           if (model.length > 0) {
             options.context.devicesView = new DevicesView({
               devices: model,
@@ -75,7 +74,7 @@ define([
             options.context.$el.find('#deviceList').html('<p>' + strings.NoDevicesAvailable + '</p>');
           }
         },
-        error: function(model, response, options) {
+        error: function (model, response, options) {
           toastr.error(strings.DeviceListRetrieveError);
         }
       });
@@ -83,7 +82,7 @@ define([
       return this;
     },
 
-    setDeviceCount: function(count) {
+    setDeviceCount: function (count) {
       if (count === 0) {
         this.$el.find('#deviceCount').html(this.single ? strings.NoDevicesSelectedSingle : strings.NoDevicesSelectedMultiple);
       } else if (count === 1) {
@@ -93,7 +92,7 @@ define([
       }
     },
 
-    onClickDevice: function(event, options) {
+    onClickDevice: function (event, options) {
       var deviceId = options.device.get('@id');
       var selected = options.selected;
 
@@ -103,7 +102,7 @@ define([
           if (this.single) {
             this.value.splice(0, this.value.length);
           }
-          this.value.push(deviceId);
+          this.value.push(options.device);
         }
       } else {
         for (var i = 0; i < this.value.length; i++) {
@@ -116,9 +115,15 @@ define([
 
       // update device count selection text
       this.setDeviceCount(this.value.length);
+
+      // set the device selector status
+      this.devicesView.setSelectedDevices(this.value);
+
+      // inform listeners of the change
+      this.$el.trigger('devicesSelectionChange', this.value);
     },
 
-    isDeviceSelected: function(deviceId) {
+    isDeviceSelected: function (deviceId) {
       for (var i = 0; i < this.value.length; i++) {
         if (this.value[i]['@id'] === deviceId) {
           return true;
@@ -127,21 +132,21 @@ define([
       return false;
     },
 
-    getValue: function() {
+    getValue: function () {
       if (this.single) {
-        return this.value.length > 0 ? { '@id': this.value[0] } : null;
+        return this.value.length > 0 ? {'@id': this.value[0].get('@id')} : null;
       } else {
         var result = [];
-        for (var i=0; i < this.value.length; i++) {
+        for (var i = 0; i < this.value.length; i++) {
           result.push({
-            '@id': this.value[i]
+            '@id': this.value[i].get('@id')
           });
         }
         return result;
       }
     },
 
-    showError: function(showError) {
+    showError: function (showError) {
       BaseWidget.prototype.showError.call(this, showError);
       if (showError) {
         this.$el.find('#deviceList ul').addClass('error');

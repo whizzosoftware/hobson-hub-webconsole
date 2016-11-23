@@ -1,38 +1,37 @@
 // Filename: views/data/variableSelectorsPanel
 define([
-	'jquery',
-	'underscore',
-	'backbone',
+  'jquery',
+  'underscore',
+  'backbone',
   'views/widgets/stringPicker',
-	'views/widgets/devicesPicker',
-	'views/widgets/variablePicker',
-	'i18n!nls/strings',
-	'text!templates/data/variableSelectorsPanel.html'
-], function($, _, Backbone, StringPickerView, DevicesPickerView, VariablePickerView, strings, template) {
+  'views/widgets/devicesPicker',
+  'views/widgets/variablePicker',
+  'i18n!nls/strings',
+  'text!templates/data/variableSelectorsPanel.html'
+], function ($, _, Backbone, StringPickerView, DevicesPickerView, VariablePickerView, strings, template) {
 
-	return Backbone.View.extend({
-		template: _.template(template),
+  return Backbone.View.extend({
+    template: _.template(template),
 
-		tagName: 'ul',
+    tagName: 'ul',
 
-		className: "accordion",
+    className: "accordion",
 
-		attributes: {
-			'data-accordion': ''
-		},
+    attributes: {
+      'data-accordion': ''
+    },
 
-		events: {
-			'deviceSelected': 'onDeviceSelected',
-			'deviceDeselected': 'onDeviceDeselected',
-			'click #buttonAdd': 'onClickAdd'
-		},
+    events: {
+      'devicesSelectionChange': 'onDevicesSelectionChange',
+      'click #buttonAdd': 'onClickAdd'
+    },
 
-		initialize: function(options) {
-			this.devices = options.devices;
-			this.model = {
-				name: '',
-				variables: []
-			};
+    initialize: function (options) {
+      this.devices = options.devices;
+      this.model = {
+        name: '',
+        variables: []
+      };
       this.stringPicker = new StringPickerView({
         model: {
           '@id': 'fieldName',
@@ -61,46 +60,45 @@ define([
         },
         single: true
       });
-		},
+    },
 
-		remove: function() {
-			this.devicesPicker.remove();
-			this.variablePicker.remove();
-			Backbone.View.prototype.remove.call(this);
-		},
+    remove: function () {
+      this.devicesPicker.remove();
+      this.variablePicker.remove();
+      Backbone.View.prototype.remove.call(this);
+    },
 
-		render: function() {
-			this.$el.append(
-				this.template({
-					strings: strings
-				})
-			);
+    render: function () {
+      this.$el.append(
+        this.template({
+          strings: strings
+        })
+      );
 
       this.$el.find('#nameSelector').html(this.stringPicker.render().el);
-			this.$el.find('#deviceSelector').html(this.devicesPicker.render().el);
-			this.$el.find('#variableSelector').html(this.variablePicker.render().el);
+      this.$el.find('#deviceSelector').html(this.devicesPicker.render().el);
+      this.$el.find('#variableSelector').html(this.variablePicker.render().el);
 
-			return this;
-		},
+      return this;
+    },
 
-		onDeviceSelected: function(evt, device) {
-			this.variablePicker.setDevice(device);
-		},
+    onDevicesSelectionChange: function (evt, devices) {
+      var device = (devices.constructor === Array) ? devices[0] : devices;
+      if (device) {
+        this.variablePicker.setDevice(device);
+      } else {
+        this.variablePicker.setDevice(null);
+      }
+    },
 
-		onDeviceDeselected: function(evt, device) {
-			this.variablePicker.setDevice(null);
-		},
-
-		onClickAdd: function(evt) {
+    onClickAdd: function (evt) {
       this.stringPicker.showError(null);
       this.devicesPicker.showError(null);
       this.variablePicker.showError(null);
 
       var name = this.$el.find('#fieldName').val();
-      console.log('name', name);
       if (name) {
-        console.log('device', this.devicesPicker.model.value);
-        if (this.devicesPicker.model.value.length > 0) {
+        if (this.devicesPicker.value.length > 0) {
           if (this.variablePicker.model.value.length > 0) {
             for (var ix in this.variablePicker.model.value) {
               this.model.variables.push(this.variablePicker.model.value[ix]);
@@ -118,8 +116,8 @@ define([
       } else {
         this.stringPicker.showError('Name!!!');
       }
-		}
+    }
 
-	});
+  });
 
 });
