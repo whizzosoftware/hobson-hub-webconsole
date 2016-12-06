@@ -166,7 +166,7 @@ define([
 		},
 
 		onClickInstall: function(event, plugin) {
-			HubService.installPlugin(this, plugin.get('links').install)
+			HubService.installPlugin(this, plugin.get('links')['install'])
 				.success(function(data, status, response) {
 					toastr.info(strings.PluginInstallStarted);
 				})
@@ -177,7 +177,7 @@ define([
 		},
 
 		onClickUpdate: function(event, plugin) {
-			HubService.installPlugin(this, plugin.get('updateLink'))
+			HubService.installPlugin(this, plugin.get('links')['update'])
 				.success(function(data, status, response) {
 					toastr.info(strings.PluginInstallStarted);
 				})
@@ -231,7 +231,7 @@ define([
 	                        toastr.error(strings.BetaPluginSettingFailed);
 	                    }
 	                }
-	            );            	
+	            );
 	        }
 		}
 
