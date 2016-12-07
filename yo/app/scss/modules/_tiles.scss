@@ -122,6 +122,11 @@
 						width: 200px;
 						margin: 15px;
 					}
+          .upper-left {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+          }
 				}
 				.plugin-text {
 					padding: 15px;
@@ -139,11 +144,6 @@
 						font-size: .9em;
 						line-height: 1.2em;
 					}
-				}
-				ul.sm {
-					position: absolute;
-					left: 5px;
-					top: 5px;
 				}
 			}
 			.plugin-version {
@@ -250,7 +250,7 @@
 						margin-right: 25px;
 						i {
 							color: white;
-							font-weight: normal; 
+							font-weight: normal;
 							border: none;
 						}
 						i.active {
@@ -316,7 +316,7 @@
 						margin-right: 25px;
 						i {
 							color: white;
-							font-weight: normal; 
+							font-weight: normal;
 							border: none;
 						}
 						i.active {
