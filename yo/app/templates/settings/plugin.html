@@ -5,7 +5,7 @@
 				<img src="<%= plugin.image['@id'] %>" />
 			<% } %>
 		 	<% if (plugin.links && plugin.links.install) { %>
-		 		<a id="buttonInstall" class="icon-button upper-left" title="<%= strings.Install %>"><i class="fa fa-download fa-lg icon-button"></i></a>
+		 		<a id="buttonInstall" class="icon-button upper-right" title="<%= strings.Install %>"><i class="fa fa-download fa-lg icon-button"></i></a>
 		 	<% } else if (plugin.status && plugin.status.code === 'RUNNING' && (plugin.configurable || plugin.actionClasses)) { %>
 		 		<ul id="plugin-more-menu" class="sm sm-clean upper-left">
 		 			<li><a></a>

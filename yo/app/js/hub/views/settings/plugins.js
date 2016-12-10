@@ -39,6 +39,7 @@ define([
 					this.$el.html('<p class="notice">' + strings.NoPluginsAvailable + '</p>');
 				}
 				noPluginsPrompt = true;
+				this.noPluginsPrompt = true;
 			}
 
 			return this;
