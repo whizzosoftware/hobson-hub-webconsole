@@ -3,6 +3,7 @@ define([
   'jquery',
   'models/session',
   'models/actionClass',
+  'models/dataStream',
   'models/hubs',
   'models/hub',
   'models/hubConfig',
@@ -16,7 +17,7 @@ define([
   'models/repository',
   'models/serialPort',
   'models/variable'
-], function ($, session, ActionClass, Hubs, Hub, HubConfig, ItemList, DashboardData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository, SerialPort, Variable) {
+], function ($, session, ActionClass, DataStream, Hubs, Hub, HubConfig, ItemList, DashboardData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository, SerialPort, Variable) {
   return {
     betaRepositoryUrl: 'http://www.hobson-automation.com/obr/beta/repository.xml',
 
@@ -94,6 +95,22 @@ define([
         context: ctx,
         success: success,
         error: error
+      });
+    },
+
+    setHubAwayMode: function(away, success, error) {
+      var url = session.getSelectedHub().get('configuration')['@id'];
+      return $.ajax(url, {
+        type: 'PATCH',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({values: {away: away}}),
+        error: function(xhr, status, e) {
+          error(e, xhr);
+        },
+        success: function(data, status, xhr) {
+          success(status, xhr);
+        }
       });
     },
 
@@ -342,6 +359,80 @@ define([
       return $.ajax(url, {
         context: ctx,
         type: 'POST'
+      });
+    },
+
+    getDataStreams: function(ctx, success, error) {
+      var hub = session.getSelectedHub();
+      if (hub.get('dataStreams')) {
+        var dataStreams = new ItemList(
+          null,
+          {url: hub.get('dataStreams')['@id'] + '?expand=item', model: DataStream}
+        );
+        dataStreams.fetch({
+          context: ctx,
+          success: function(model, response, options) {
+            success(ctx, model);
+          },
+          error: function(model, response, options) {
+            error('Error getting data stream list');
+          }
+        });
+      }
+    },
+
+    getDataStream: function(ctx, url, success, error) {
+      var dataStream = new DataStream({url: url});
+      dataStream.fetch({
+        context: ctx,
+        success: function(model, response, options) {
+          success(ctx, model);
+        },
+        error: function(model, response, options) {
+          error('Error getting data stream');
+        }
+      })
+    },
+
+    getDataStreamData: function(ctx, url, inr, success, error) {
+      if (inr) {
+        url += '?inr=' + inr;
+      }
+      var dataStream = new DataStream({url: url});
+      dataStream.fetch({
+        context: ctx,
+        success: function(model, response, options) {
+          success(ctx, model);
+        },
+        error: function(model, response, options) {
+          error('Error getting data stream');
+        }
+      })
+    },
+
+    addDataStream: function(ctx, data, success, error) {
+      var hub = session.getSelectedHub();
+      if (hub.get('dataStreams')) {
+        var dataStream = new DataStream({url: hub.get('dataStreams')['@id']});
+        dataStream.set('name', data.name);
+        dataStream.set('fields', data.fields);
+        dataStream.save(null, {
+          success: success,
+          error: error
+        });
+      } else {
+        error('Creating data streams is not supported');
+      }
+    },
+
+    deleteDataStream: function(ctx, url, success, error) {
+      return $.ajax(url, {
+        context: ctx,
+        type: 'DELETE',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: success,
+        error: error
       });
     }
 

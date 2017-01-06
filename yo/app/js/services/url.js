@@ -28,7 +28,7 @@ define([
       if (ix > -1) {
         var ix2 = url.indexOf('&', ix + 1);
         if (ix2 == -1) {
-          ix2 = url.indexOf('#');
+          ix2 = url.indexOf('#', ix + 1);
         }
         if (ix2 > -1) {
           return url.substring(ix + name.length + 2, ix2);

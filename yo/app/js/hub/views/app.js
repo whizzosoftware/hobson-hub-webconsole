@@ -1,181 +1,210 @@
 // Filename: views/app
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'sidr',
-	'models/session',
-	'models/hub',
-	'models/itemList',
-	'models/propertyContainer',
-	'models/plugin',
-	'models/devices',
-	'models/device',
-	'models/deviceConfig',
-	'models/task',
-	'services/hub',
-	'views/navbar',
-	'views/sidebar/sidebar',
-	'views/dashboard/dashboard',
-	'views/tasks/tasksTab',
-	'views/tasks/taskEdit',
-	'views/device/deviceState',
-	'views/data/dataTab',
-	'views/data/dataEdit',
-	'views/data/dataViewer',
-	'views/device/addDevice',
-	'views/settings/settingsGeneral',
-	'views/settings/settingsEmail',
-	'views/settings/settingsPresence',
-	'views/settings/settingsLog',
-	'views/settings/settingsPlugins',
-	'views/account/accountHubs',
-	'views/account/accountProfile',
-	'i18n!nls/strings',
-	'text!templates/app.html'
-], function($, _, Backbone, Sidr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DataTabView, DataEditView, DataViewer, DevicesAddView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+  'jquery',
+  'underscore',
+  'backbone',
+  'sidr',
+  'toastr',
+  'models/session',
+  'models/hub',
+  'models/itemList',
+  'models/propertyContainer',
+  'models/plugin',
+  'models/devices',
+  'models/device',
+  'models/deviceConfig',
+  'models/task',
+  'services/hub',
+  'services/event',
+  'views/navbar',
+  'views/sidebar/sidebar',
+  'views/dashboard/dashboard',
+  'views/tasks/tasksTab',
+  'views/tasks/taskEdit',
+  'views/device/deviceState',
+  'views/data/dataTab',
+  'views/data/dataEdit',
+  'views/data/dataViewer',
+  'views/device/addDevice',
+  'views/settings/settingsGeneral',
+  'views/settings/settingsEmail',
+  'views/settings/settingsPresence',
+  'views/settings/settingsLog',
+  'views/settings/settingsPlugins',
+  'views/account/accountHubs',
+  'views/account/accountProfile',
+  'i18n!nls/strings',
+  'text!templates/app.html'
+], function ($, _, Backbone, Sidr, toastr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, EventService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DataTabView, DataEditView, DataViewer, DevicesAddView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
-	return Backbone.View.extend({
+  return Backbone.View.extend({
 
-		name: 'hub',
+    name: 'hub',
 
-		template: _.template(appTemplate),
+    template: _.template(appTemplate),
 
-		initialize: function() {
-			$(document).find('#loading').remove();
-		},
+    initialize: function () {
+      $(document).find('#loading').remove();
+      this.webSocketEnabled = false;
+    },
 
-		render: function() {
-      		var t = this.template();
-			this.$el.append(t);
+    render: function () {
+      this.$el.append(this.template());
 
-			if (session.showActivityLog()) {
-				this.$el.find('#sidr').sidr({
-					side: 'right',
-					onOpen: this.onSidebarOpen,
-					onClose: this.onSidebarClose
-				});
-			}
+      if (session.showActivityLog()) {
+        this.$el.find('#sidr').sidr({
+          side: 'right',
+          onOpen: this.onSidebarOpen,
+          onClose: this.onSidebarClose
+        });
+      }
 
-			return this;
-		},
+      if (session.hasSelectedHub()) {
+        var links = session.getSelectedHub().get('links');
+        if (window.WebSocket && links['webSocket']) {
+          console.debug('Opening WebSocket');
+          this.webSocketEnabled = true;
+          this.websocket = new WebSocket(links['webSocket']);
+          this.websocket.onmessage = EventService.handleEvent;
+          this.websocket.onerror = function (error) {
+            console.log('WebSocket error', error);
+            toastr.error('Error creating WebSocket');
+          };
+          this.websocket.onopen = function () {
+            console.debug('WebSocket successfully opened');
+            return false;
+          }.bind(this);
+          this.websocket.onclose = function () {
+            console.debug('WebSocket closed');
+            return false;
+          };
+        }
+      }
 
-		showDashboard: function() {
-			this.renderContentView(new DashboardView());
-		},
+      return this;
+    },
 
-		showDashboard2: function() {
-			this.renderContentView(new Dashboard2View());
-		},
+    showDashboard: function () {
+      this.renderContentView(new DashboardView({
+        polling: !this.webSocketEnabled
+      }));
+    },
 
-		showData: function() {
-			this.renderContentView(new DataTabView());
-		},
+    showDashboard2: function () {
+      this.renderContentView(new Dashboard2View());
+    },
 
-		showDataEdit: function() {
-			this.renderContentView(new DataEditView());
-		},
+    showData: function () {
+      this.renderContentView(new DataTabView());
+    },
 
-		showDataViewer: function(dataStreamId, inr) {
-			this.renderContentView(new DataViewer({dataStreamId: dataStreamId, inr: inr}));
-		},
+    showDataEdit: function () {
+      this.renderContentView(new DataEditView());
+    },
 
-		showDevicesAdd: function() {
-			this.renderContentView(new DevicesAddView(), true);
-		},
+    showDataViewer: function (dataStreamId, inr) {
+      this.renderContentView(new DataViewer({dataStreamId: dataStreamId, inr: inr}));
+    },
 
-		showTasks: function(userId, hubId) {
-			this.renderContentView(new TasksTabView({userId: userId, hubId: hubId}));
-		},
+    showDevicesAdd: function () {
+      this.renderContentView(new DevicesAddView(), true);
+    },
 
-		showTaskEdit: function(id) {
-			this.renderContentView(new TaskEditView({id: id}), true);
-		},
+    showTasks: function (userId, hubId) {
+      this.renderContentView(new TasksTabView({userId: userId, hubId: hubId}));
+    },
 
-		showHubSettingsGeneral: function() {
-			this.renderContentView(new HubSettingsGeneralView(), true);
-		},
+    showTaskEdit: function (id) {
+      this.renderContentView(new TaskEditView({id: id}), true);
+    },
 
-		showHubSettingsEmail: function(userId, hubId) {
-			this.renderContentView(new HubSettingsEmailView(), true);
-		},
+    showHubSettingsGeneral: function () {
+      this.renderContentView(new HubSettingsGeneralView(), true);
+    },
 
-		showHubSettingsPresence: function(userId, hubId) {
-			this.renderContentView(new HubSettingsPresenceView());
-		},
+    showHubSettingsEmail: function (userId, hubId) {
+      this.renderContentView(new HubSettingsEmailView(), true);
+    },
 
-		showHubSettingsLog: function() {
-			this.renderContentView(new HubSettingsLogView());
-		},
+    showHubSettingsPresence: function (userId, hubId) {
+      this.renderContentView(new HubSettingsPresenceView());
+    },
 
-		showHubSettingsPlugins: function(query) {
-			this.renderContentView(new HubSettingsPluginsView({query: query}), true);
-		},
+    showHubSettingsLog: function () {
+      this.renderContentView(new HubSettingsLogView());
+    },
 
-		showCloudlinkHubs: function() {
-			this.renderContentView(new AccountHubsView());
-		},
+    showHubSettingsPlugins: function (query) {
+      this.renderContentView(new HubSettingsPluginsView({query: query}), true);
+    },
 
-		showCloudlinkProfile: function() {
-			this.renderContentView(new AccountProfileView());
-		},
+    showCloudlinkHubs: function () {
+      this.renderContentView(new AccountHubsView());
+    },
 
-		showDeviceDetails: function(deviceUrl) {
-			var device = new Device({url: deviceUrl + '?expand=telemetry'});
-			device.fetch({
-				context: this,
-				success: function(model, response, options) {
-					options.context.renderContentView(new DeviceDetailsView({model: model}));
-				},
-				error: function(model, response, options) {
-					console.debug('nope!');
-				}
-			});
-		},
+    showCloudlinkProfile: function () {
+      this.renderContentView(new AccountProfileView());
+    },
 
-		showDeviceState: function(deviceUrl) {
-			var device = new Device({url: deviceUrl + '?expand=actionClasses.item,cclass,configuration,variables.item'});
-			device.fetch({
-				context: this,
-				success: function(model, response, options) {
-					options.context.renderContentView(new DeviceStateView({model: model}));
-				},
-				error: function(model, response, options) {
-					console.debug('nope!');
-				}
-			});
-		},
+    showDeviceDetails: function (deviceUrl) {
+      var device = new Device({url: deviceUrl + '?expand=telemetry'});
+      device.fetch({
+        context: this,
+        success: function (model, response, options) {
+          options.context.renderContentView(new DeviceDetailsView({model: model}));
+        },
+        error: function (model, response, options) {
+          console.debug('nope!');
+        }
+      });
+    },
 
-		renderContentView: function(view) {
-			if (!this.navbarView) {
-				this.navbarView = new HubNavbarView({
-					user: this.user,
-					hub: this.hub
-				});
-				this.$el.find('#navbar-container').html(this.navbarView.render().el);
-			} else {
-				this.navbarView.updateTabs();
-			}
+    showDeviceState: function (deviceUrl) {
+      var device = new Device({url: deviceUrl + '?expand=actionClasses.item,cclass,configuration,variables.item'});
+      device.fetch({
+        context: this,
+        success: function (model, response, options) {
+          this.renderContentView(new DeviceStateView({
+            model: model,
+            polling: !this.webSocketEnabled
+          }));
+        }.bind(this),
+        error: function (model, response, options) {
+          console.debug('nope!');
+        }
+      });
+    },
 
-			if (this.contentView) {
-				this.contentView.remove();
-			}
-			this.contentView = view;
-			this.$el.find('#content-container').append(view.render().el);
-		},
+    renderContentView: function (view) {
+      if (!this.navbarView) {
+        this.navbarView = new HubNavbarView({
+          user: this.user,
+          hub: this.hub
+        });
+        this.$el.find('#navbar-container').html(this.navbarView.render().el);
+      } else {
+        this.navbarView.updateTabs();
+      }
 
-		onSidebarOpen: function() {
-			this.sidebarView = new SidebarView();
-			$('#sidr').html(this.sidebarView.render().el);
-		},
+      if (this.contentView) {
+        this.contentView.remove();
+      }
+      this.contentView = view;
+      this.$el.find('#content-container').append(view.render().el);
+    },
 
-		onSidebarClose: function() {
-			var context = this;
-			setTimeout(function() {
-				context.sidebarView.remove()
-				context.sidebarView = null;
-			}, 200);
-		}
-	});
+    onSidebarOpen: function () {
+      this.sidebarView = new SidebarView();
+      $('#sidr').html(this.sidebarView.render().el);
+    },
+
+    onSidebarClose: function () {
+      var context = this;
+      setTimeout(function () {
+        context.sidebarView.remove()
+        context.sidebarView = null;
+      }, 200);
+    }
+  });
 
 });

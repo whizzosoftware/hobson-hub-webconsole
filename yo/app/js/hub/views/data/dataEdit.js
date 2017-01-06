@@ -4,11 +4,11 @@ define([
   'underscore',
   'backbone',
   'toastr',
-  'services/user',
+  'services/hub',
   'views/data/dataStreamProperties',
   'i18n!nls/strings',
   'text!templates/data/dataEdit.html'
-], function ($, _, Backbone, toastr, UserService, DataStreamProperties, strings, template) {
+], function ($, _, Backbone, toastr, HubService, DataStreamProperties, strings, template) {
 
   return Backbone.View.extend({
 
@@ -67,7 +67,7 @@ define([
             }
           });
         }
-        UserService.addDataStream(this, dataStream, function () {
+        HubService.addDataStream(this, dataStream, function () {
           toastr.success(strings.DataStreamCreated);
         }, function (model, response, options) {
           if (response.status === 201) {

@@ -42,7 +42,7 @@ define([
 			}
 		},
 
-		onVariableUpdate: function(name) {
+		onVariableUpdate: function(name, value) {
 			this.showSpinner(false);
 		},
 

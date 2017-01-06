@@ -7,11 +7,11 @@ define([
 	'chartist',
 	'chartistTooltip',
 	'moment',
-	'services/user',
+	'services/hub',
 	'views/data/dataLegend',
 	'i18n!nls/strings',
 	'text!templates/data/dataViewer.html'
-], function($, _, Backbone, toastr, Chartist, ChartistTooltip, moment, UserService, DataLegendView, strings, dataTemplate) {
+], function($, _, Backbone, toastr, Chartist, ChartistTooltip, moment, HubService, DataLegendView, strings, dataTemplate) {
 	return Backbone.View.extend({
 
 		template: _.template(dataTemplate),
@@ -44,7 +44,7 @@ define([
 				strings: strings
 			}));
 
-			UserService.getDataStream(this, this.dataStreamId, function(ctx, model) {
+			HubService.getDataStream(this, this.dataStreamId, function(ctx, model) {
 				ctx.$el.find('#ds-name').text(model.get('name'));
 				ctx.dataStreamDataId = model.get('links').data;
 				ctx.$el.find('#details-loading').css('display', 'none');
@@ -71,7 +71,7 @@ define([
 				this.legendView.remove();
 			}
 
-			UserService.getDataStreamData(this, url, this.inr, function(ctx, model) {
+			HubService.getDataStreamData(this, url, this.inr, function(ctx, model) {
 				this.series = [];
 
 				var seriesMap = {};

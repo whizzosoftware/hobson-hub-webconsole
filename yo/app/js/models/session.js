@@ -70,12 +70,13 @@ define([
 		},
 
 		hasDataStreams: function() {
-			return (this.getUser() && this.getUser().get('dataStreams'));
+			var ds = this.getSelectedHub().get('dataStreams');
+			return (ds ? ds['@id'] : null);
 		},
 
 		getDataStreamsUrl: function() {
-			var d = this.getUser() ? this.getUser().get('dataStreams') : null;
-			return (d ? d['@id'] : null);
+			var ds = this.getSelectedHub().get('dataStreams');
+			return (ds ? ds['@id'] : null);
 		},
 
 		showAccount: function() {

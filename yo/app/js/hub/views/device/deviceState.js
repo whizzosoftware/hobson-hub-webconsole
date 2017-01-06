@@ -26,6 +26,10 @@ define([
 
     contentView: null,
 
+    initialize: function (options) {
+      this.polling = options.polling;
+    },
+
     remove: function () {
       if (this.contentView) {
         this.contentView.remove();
@@ -43,7 +47,10 @@ define([
 
       switch (this.model.get('type')) {
         case 'LIGHTBULB':
-          this.contentView = new LightbulbView({model: this.model});
+          this.contentView = new LightbulbView({
+            model: this.model,
+            polling: this.polling
+          });
           break;
         case 'SWITCH':
           this.contentView = new SwitchView({model: this.model});

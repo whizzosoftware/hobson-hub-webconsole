@@ -1,47 +1,61 @@
 // Filename: views/dashboard/tiles/sensor.js
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'toastr',
-	'services/device',
-	'services/polling',
-	'i18n!nls/strings',
-	'text!templates/dashboard/tiles/sensor.html'
-], function($, _, Backbone, toastr, DeviceService, PollingService, strings, template) {
+  'jquery',
+  'underscore',
+  'backbone',
+  'toastr',
+  'services/event',
+  'services/device',
+  'services/polling',
+  'i18n!nls/strings',
+  'text!templates/dashboard/tiles/sensor.html'
+], function ($, _, Backbone, toastr, EventService, DeviceService, PollingService, strings, template) {
 
-	return Backbone.View.extend({
-		tagName: 'div',
+  return Backbone.View.extend({
+    tagName: 'div',
 
-		template: _.template(template),
+    template: _.template(template),
 
-		className: "tile shadow-1",
+    className: "tile shadow-1",
 
-		events: {
-			'click #tileButton': 'onButtonClick'
-		},
+    events: {
+      'click #tileButton': 'onButtonClick'
+    },
 
-		remove: function() {
-			Backbone.View.prototype.remove.call(this);
-		},
+    initialize: function (options) {
+      this.subscription = this.onVarUpdate.bind(this);
+      EventService.subscribe('devVarsUpdate', this.subscription);
+    },
 
-		close: function() {
-			clearInterval(this.time);
-		},
+    onVarUpdate: function (event) {
+      if (this.model.has('preferredVariable') && event.id == this.model.get('preferredVariable')['@id']) {
+        this.model.setPreferredVariableValue(event['value']);
+        this.render();
+      }
+    },
 
-		render: function() {
-			this.$el.html(this.template({
-				device: this.model.toJSON(), 
-				available: DeviceService.isDeviceAvailable(this.model),
-				on: this.model.isOn(), 
-				strings: strings 
-			}));
-			return this;
-		},
+    remove: function () {
+      EventService.unsubscribe(this.subscription);
+      Backbone.View.prototype.remove.call(this);
+    },
 
-		onButtonClick: function() {
-			this.$el.trigger('deviceButtonClick', this.model);
-		}
-	});
+    close: function () {
+      clearInterval(this.time);
+    },
+
+    render: function () {
+      this.$el.html(this.template({
+        device: this.model.toJSON(),
+        available: DeviceService.isDeviceAvailable(this.model),
+        on: this.model.isOn(),
+        strings: strings
+      }));
+      return this;
+    },
+
+    onButtonClick: function () {
+      this.$el.trigger('deviceButtonClick', this.model);
+    }
+  });
 
 });
