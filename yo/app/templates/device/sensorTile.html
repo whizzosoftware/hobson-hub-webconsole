@@ -1,11 +1,13 @@
 <div class="sensor-tile shadow-1">
 	<div class="title"><%= strings.hasOwnProperty(model.name) ? strings[model.name] : model.name %></div>
-	<div class="value">
-		<% if (model.name === 'on') { %>
-			<i class="fa fa-power-off" style="color: <%= model.value ? '#ffffff' : '#2a2a2a' %>;"></i>
+	<div class="value <%= (model.value === undefined) ? 'disabled' : '' %>">
+		<% if (model.name === 'on' && model.value !== undefined) { %>
+        <i class="fa fa-power-off" style="color: <%= model.value ? '#ffffff' : '#2a2a2a' %>;"></i>
+		<% } else if (model.value !== undefined) { %>
+			  <%= model.value %>
 		<% } else { %>
-			<%= model.value %>
-		<% } %>
+        <i class="fa fa-question"></i>
+    <% } %>
 	</div>
 	<div class="footer"><%= strings.hasOwnProperty(model.name + 'Units') ? strings[model.name + 'Units'] : '' %></div>
 </div>

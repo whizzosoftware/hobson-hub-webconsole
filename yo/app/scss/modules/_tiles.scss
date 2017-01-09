@@ -30,7 +30,7 @@
 				right: 10px;
 				top: 5px;
 				font-size: 1.2em;
-				color: red;
+				color: $color-error;
 			}
 			p {
 				padding-top: 20px;
@@ -361,6 +361,9 @@
 			vertical-align: middle;
 			font-weight: bold;
 		}
+    .value.disabled {
+      background: $color-error;
+    }
 		.footer {
 			background-color: rgba(0, 0, 0, 0.3);
 			border-bottom-left-radius: $tile-radius;

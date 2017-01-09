@@ -35,9 +35,7 @@ define([
 		render: function(el) {
 			this.$el.html('');
 			for (var i in this.variables) {
-				if (typeof this.variables[i].value !== 'undefined') {
-					this.addSensorView(this.variables[i]);
-				}
+        this.addSensorView(this.variables[i]);
 			}
 			return this;
 		},
