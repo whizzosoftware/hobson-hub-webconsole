@@ -3,11 +3,24 @@
 	<div class="value <%= (model.value === undefined) ? 'disabled' : '' %>">
 		<% if (model.name === 'on' && model.value !== undefined) { %>
         <i class="fa fa-power-off" style="color: <%= model.value ? '#ffffff' : '#2a2a2a' %>;"></i>
+    <% } else if (model.name === 'armed' && model.value !== undefined) { %>
+        <i class="fa <%= model.value ? 'fa-check' : 'fa-remove' %>"></i>
+    <% } else if ((model.name === 'level' || model.name === 'rh') && model.value !== undefined) { %>
+      <%= model.value %>%
+    <% } else if ((model.name === 'tempC' || model.name === 'tempF') && model.value !== undefined) { %>
+      <%= model.value %>&deg;
+    <% } else if (batteryLevel) { %>
+        <i class="fa fa-battery-<%= batteryLevel %>"></i>
 		<% } else if (model.value !== undefined) { %>
 			  <%= model.value %>
 		<% } else { %>
         <i class="fa fa-question"></i>
     <% } %>
 	</div>
-	<div class="footer"><%= strings.hasOwnProperty(model.name + 'Units') ? strings[model.name + 'Units'] : '' %></div>
+	<div class="footer">
+    <%= strings.hasOwnProperty(model.name + 'Units') ? strings[model.name + 'Units'] : '' %>
+    <% if (model.name === 'battery') { %>
+      <%= model.value %>%
+    <% } %>
+  </div>
 </div>
