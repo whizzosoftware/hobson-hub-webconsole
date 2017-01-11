@@ -26,6 +26,7 @@ define([
       this.intervalRef = null;
       this.pendingUpdates = {};
       this.variables = {};
+      this.available = options.available;
 
       // save initial variable values
       var variables = this.model.get('variables').itemListElement;
@@ -34,19 +35,9 @@ define([
         this.variables[variable.name] = variable;
         this.pendingUpdates[variable.name] = null;
       }
-
-      // start the refresh timer
-      if (this.polling) {
-        this.setRefreshInterval(this.defaultRefreshInterval);
-      } else {
-        // listen for devVarsUpdate events and pass along if applicable
-        this.subscription = this.eventCallback.bind(this);
-        EventService.subscribe('devVarsUpdate', this.subscription);
-      }
     },
 
     remove: function () {
-      EventService.unsubscribe(this.subscription);
       this.setRefreshInterval(null);
       Backbone.View.prototype.remove.call(this);
     },
@@ -58,10 +49,15 @@ define([
           if (v['@id'] == event['id']) {
             v['value'] = event['value'];
             this.onVariableUpdate(event['name'], event['value']);
-            break;
+            return true;
           }
         }
       }
+      return false;
+    },
+
+    setAvailability: function(available) {
+      this.available = available;
     },
 
     getVariable: function (name) {

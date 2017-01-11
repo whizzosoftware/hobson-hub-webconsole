@@ -16,6 +16,8 @@ define([
 			if (hubJson) {
 				this.set('hub', new Hub(JSON.parse(hubJson)));
 			}
+
+			this.websocketStatus = false;
 		},
 
 		hasUser: function() {
@@ -91,7 +93,22 @@ define([
 		showPowerOff: function() {
 			var hub = this.getSelectedHub();
 			return (hub && hub.get('links') && hub.get('links').powerOff);
-		}
+		},
+
+    getWebsocketUrl: function() {
+      var h = this.getSelectedHub();
+      if (h) {
+        return h.get('links') ? h.get('links')['webSocket'] : null;
+      }
+		},
+
+    setWebsocketStatus: function(status) {
+		  this.websocketStatus = status;
+    },
+
+    getWebsocketStatus: function() {
+		  return this.websocketStatus;
+    }
 
 	});
 

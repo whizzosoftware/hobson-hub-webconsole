@@ -45,7 +45,7 @@ define([
 
     initialize: function () {
       $(document).find('#loading').remove();
-      this.webSocketEnabled = false;
+      this.websocketEnabled = false;
     },
 
     render: function () {
@@ -59,34 +59,45 @@ define([
         });
       }
 
-      if (session.hasSelectedHub()) {
-        var links = session.getSelectedHub().get('links');
-        if (window.WebSocket && links['webSocket']) {
-          console.debug('Opening WebSocket');
-          this.webSocketEnabled = true;
-          this.websocket = new WebSocket(links['webSocket']);
-          this.websocket.onmessage = EventService.handleEvent;
-          this.websocket.onerror = function (error) {
-            console.log('WebSocket error', error);
-            toastr.error('Error creating WebSocket');
-          };
-          this.websocket.onopen = function () {
-            console.debug('WebSocket successfully opened');
-            return false;
-          }.bind(this);
-          this.websocket.onclose = function () {
-            console.debug('WebSocket closed');
-            return false;
-          };
-        }
+      if (session.hasSelectedHub() && window.WebSocket && session.getWebsocketUrl()) {
+        this.connectWebsocket();
       }
 
       return this;
     },
 
+    connectWebsocket: function() {
+      this.websocket = new WebSocket(session.getWebsocketUrl());
+      this.websocket.onmessage = EventService.handleEvent;
+      this.websocketEnabled = true;
+
+      var timer = setTimeout(function() {
+        this.connectWebsocket();
+      }.bind(this), 3000);
+
+      this.websocket.onerror = function () {
+        clearTimeout(timer);
+        session.setWebsocketStatus(false);
+        EventService.post('websocketStatus', false);
+        return false;
+      };
+      this.websocket.onopen = function () {
+        clearTimeout(timer);
+        session.setWebsocketStatus(true);
+        EventService.post('websocketStatus', false);
+        return false;
+      };
+      this.websocket.onclose = function () {
+        clearTimeout(timer);
+        session.setWebsocketStatus(false);
+        EventService.post('websocketStatus', false);
+        return false;
+      };
+    },
+
     showDashboard: function () {
       this.renderContentView(new DashboardView({
-        polling: !this.webSocketEnabled
+        polling: !this.websocketEnabled
       }));
     },
 
@@ -166,7 +177,7 @@ define([
         success: function (model, response, options) {
           this.renderContentView(new DeviceStateView({
             model: model,
-            polling: !this.webSocketEnabled
+            polling: !this.websocketEnabled
           }));
         }.bind(this),
         error: function (model, response, options) {

@@ -19,7 +19,6 @@ define([
     },
 
     render: function(el) {
-      console.log(this.variables);
       this.$el.html(this.template({
         strings: strings,
         device: this.model.toJSON(),

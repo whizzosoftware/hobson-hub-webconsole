@@ -20,8 +20,8 @@ define([
 			'click #switchButton': 'onClick'
 		},
 
-		initialize: function() {
-			BaseStatusView.prototype.initialize.call(this);
+		initialize: function(options) {
+			BaseStatusView.prototype.initialize.call(this, options);
 			this.subviews = [];
 		},
 
@@ -45,7 +45,7 @@ define([
 		},
 
 		addSensorView: function(plugin) {
-			var sensorView = new SensorTileView({model: plugin});
+			var sensorView = new SensorTileView({model: plugin, available: this.available});
 			this.subviews.push(sensorView);
 			this.$el.append(sensorView.render().el);
 		}

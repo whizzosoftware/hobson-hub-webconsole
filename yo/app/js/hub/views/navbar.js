@@ -4,6 +4,7 @@ define([
   'underscore',
   'backbone',
   'toastr',
+  'models/session',
   'services/auth',
   'services/event',
   'services/hub',
@@ -11,7 +12,7 @@ define([
   'views/powerOffConfirm',
   'i18n!nls/strings',
   'text!templates/navbar.html'
-], function ($, _, Backbone, toastr, AuthService, EventService, HubService, session, PowerOffConfirmView, strings, navbarTemplate) {
+], function ($, _, Backbone, toastr, session, AuthService, EventService, HubService, session, PowerOffConfirmView, strings, navbarTemplate) {
   return Backbone.View.extend({
 
     template: _.template(navbarTemplate),
@@ -24,19 +25,22 @@ define([
     },
 
     initialize: function () {
-      this.subscription = this.onVarUpdate.bind(this);
+      this.subscription = this.onVariableUpdate.bind(this);
       this.subscription2 = this.onHubConfigUpdate.bind(this);
+      this.subscription3 = this.onWebsocketStatusUpdate.bind(this);
       EventService.subscribe('taskExecute', this.subscription);
       EventService.subscribe('hubConfigurationUpdate', this.subscription2);
+      EventService.subscribe('websocketStatus', this.subscription3);
     },
 
     remove: function () {
       EventService.unsubscribe(this.subscription);
       EventService.unsubscribe(this.subscription2);
+      EventService.unsubscribe(this.subscription3);
       Backbone.View.prototype.remove.call(this);
     },
 
-    onVarUpdate: function (event) {
+    onVariableUpdate: function (event) {
       toastr.info('Task executed: ' + event.name);
     },
 
@@ -59,25 +63,37 @@ define([
       }
     },
 
+    onWebsocketStatusUpdate: function(status) {
+      this.doRender();
+    },
+
     render: function () {
       HubService.getHubConfiguration(this, function(model, response, options) {
-        options.context.away = model.get('values') ? model.get('values')['away'] : false;
-        options.context.$el.html(
-          options.context.template({
+        this.model = model;
+        this.doRender();
+      }.bind(this));
+
+      return this;
+    },
+
+    doRender: function() {
+      if (this.model) {
+        this.away = this.model.get('values') ? this.model.get('values')['away'] : false;
+        this.$el.html(
+          this.template({
             strings: strings,
             user: session.hasUser() ? session.getUser().toJSON() : null,
             hub: session.hasSelectedHub() ? session.getSelectedHub().toJSON() : null,
-            away: options.context.away,
+            away: this.away,
             showDataStreams: session.hasDataStreams(),
             showAccount: session.showAccount(),
             showActivityLog: session.showActivityLog(),
             showPowerOff: session.showPowerOff(),
+            showWebsocketBroken: !session.getWebsocketStatus(),
             fragment: Backbone.history.getFragment()
           })
         );
-      });
-
-      return this;
+      }
     },
 
     updateTabs: function () {
