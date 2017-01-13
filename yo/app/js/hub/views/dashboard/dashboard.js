@@ -25,12 +25,41 @@ define([
     },
 
     initialize: function (options) {
-      this.polling = options.polling;
       this.subviews = [];
       _.bind(this.renderSections, this);
+
+      // listen for devVarsUpdate events and pass along if applicable
+      this.subscription = this.onDeviceAvailability.bind(this);
+      this.subscription2 = this.onDeviceUnavailability.bind(this);
+      this.subscription3 = this.onDeviceVariableUpdate.bind(this);
+      EventService.subscribe('deviceAvailable', this.subscription);
+      EventService.subscribe('deviceUnavailable', this.subscription2);
+      EventService.subscribe('devVarsUpdate', this.subscription3);
+    },
+
+    onDeviceAvailability: function(event) {
+      for (var i = 0; i < this.subviews.length; i++) {
+        this.subviews[i].onDeviceAvailability(event);
+      }
+    },
+
+    onDeviceUnavailability: function(event) {
+      for (var i = 0; i < this.subviews.length; i++) {
+        this.subviews[i].onDeviceUnavailability(event);
+      }
+    },
+
+    onDeviceVariableUpdate: function(event) {
+      for (var i = 0; i < this.subviews.length; i++) {
+        this.subviews[i].onDeviceVariableUpdate(event);
+      }
     },
 
     remove: function () {
+      EventService.unsubscribe(this.subscription);
+      EventService.unsubscribe(this.subscription2);
+      EventService.unsubscribe(this.subscription3);
+
       for (var i = 0; i < this.subviews.length; i++) {
         this.subviews[i].remove();
       }
@@ -77,15 +106,6 @@ define([
 
       // render initial device tiles
       this.refresh();
-
-      // start polling if no websockets connection
-      if (this.polling) {
-        console.log('Starting polling');
-        this.clearRefreshInterval();
-        this.refreshInterval = setInterval(function () {
-          this.refresh();
-        }.bind(this), 5000);
-      }
 
       return this;
     },

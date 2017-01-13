@@ -28,16 +28,14 @@ define([
     contentView: null,
 
     initialize: function (options) {
-      this.polling = options.polling;
-
       this.available = DeviceService.isDeviceAvailable(this.model);
       this.toggle = true;
 
-      // listen for devVarsUpdate events and pass along if applicable
+      // listen for events and pass along if applicable
       this.subscription = this.onVariableUpdate.bind(this);
       this.subscription2 = this.onDeviceAvailability.bind(this);
       EventService.subscribe('devVarsUpdate', this.subscription);
-      EventService.subscribe('deviceNotAvailable', this.subscription2);
+      EventService.subscribe('deviceUnavailable', this.subscription2);
     },
 
     onVariableUpdate: function (event) {
@@ -79,8 +77,7 @@ define([
       switch (this.model.get('type')) {
         case 'LIGHTBULB':
           this.contentView = new LightbulbView({
-            model: this.model,
-            polling: this.polling
+            model: this.model
           });
           break;
         case 'SWITCH':

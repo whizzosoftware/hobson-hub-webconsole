@@ -20,6 +20,15 @@ define([
 			bridget('masonry', Masonry);
 		},
 
+    onDeviceAvailability: function(event) {
+    },
+
+    onDeviceUnavailability: function(event) {
+    },
+
+    onDeviceVariableUpdate: function(event) {
+    },
+
 		renderSection: function(model) {
 			var tilesAdded = false;
 
@@ -56,7 +65,7 @@ define([
 				this.subviews[entity.get('@id')] = tileView;
 				this.subviewCount++;
 			}
-		}		
+		}
 
 	});
 

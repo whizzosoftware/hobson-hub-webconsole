@@ -22,7 +22,6 @@ define([
     alwaysRefresh: false,
 
     initialize: function (options) {
-      this.polling = options ? options.polling : false;
       this.intervalRef = null;
       this.pendingUpdates = {};
       this.variables = {};
@@ -139,17 +138,6 @@ define([
         DeviceService.setDeviceVariables(this, this.model.get('variables')['@id'], values)
           .error(function (response) {
             if (response.status >= 200 && response.status <= 299) {
-              if (this.polling) {
-                for (var name in values) {
-                  if (values.hasOwnProperty(name)) {
-                    if (this.variables[name] && this.variables[name].mask !== 'WRITE_ONLY') {
-                      this.addPendingUpdate(name, values[name]);
-                    } else {
-                      this.onVariableUpdate(name);
-                    }
-                  }
-                }
-              }
             } else {
               this.onVariableUpdateFailure();
             }

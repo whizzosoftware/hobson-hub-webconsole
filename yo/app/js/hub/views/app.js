@@ -97,7 +97,6 @@ define([
 
     showDashboard: function () {
       this.renderContentView(new DashboardView({
-        polling: !this.websocketEnabled
       }));
     },
 
@@ -176,8 +175,7 @@ define([
         context: this,
         success: function (model, response, options) {
           this.renderContentView(new DeviceStateView({
-            model: model,
-            polling: !this.websocketEnabled
+            model: model
           }));
         }.bind(this),
         error: function (model, response, options) {

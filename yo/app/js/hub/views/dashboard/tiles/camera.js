@@ -5,12 +5,12 @@ define([
 	'backbone',
 	'toastr',
 	'services/device',
-	'services/polling',
+  'views/dashboard/tiles/tile',
 	'i18n!nls/strings',
 	'text!templates/dashboard/tiles/camera.html'
-], function($, _, Backbone, toastr, DeviceService, PollingService, strings, template) {
+], function($, _, Backbone, toastr, DeviceService, TileView, strings, template) {
 
-	return Backbone.View.extend({
+	return TileView.extend({
 		tagName: 'div',
 
 		template: _.template(template),
@@ -32,11 +32,11 @@ define([
 
 		render: function() {
 			if (!this.initialRender) {
-				this.$el.html(this.template({ 
-					device: this.model.toJSON(), 
-					available: DeviceService.isDeviceAvailable(this.model),
-					on: this.model.isOn(), 
-					strings: strings 
+				this.$el.html(this.template({
+					device: this.model.toJSON(),
+					available: this.available,
+					on: this.model.isOn(),
+					strings: strings
 				}));
 				this.initialRender = true;
 			}
@@ -92,32 +92,6 @@ define([
 						this.updateImage();
 						break;
 				}
-			}
-
-			// if a new variable value was set, poll to detect when the change is applied
-			if (newValue !== null) {
-				// show the user a wait spinner
-				this.showSpinner(true);
-
-				// kick off the variable URL polling
-				PollingService.poll({
-					context: this,
-					url: prefVar["@id"],
-					interval: 1000,
-					check: function(ctx, json) {
-						return (json.value === newValue);
-					},
-					success: function(ctx) {
-						ctx.showSpinner(false);
-						ctx.$el.find('#work-icon').css('display', 'none');
-						ctx.model.setPreferredVariableValue(newValue);
-						ctx.render();
-					},
-					failure: function(ctx) {
-						ctx.showSpinner(false);
-						toastr.error('Unable to confirm device was updated');
-					}
-				});
 			}
 		},
 

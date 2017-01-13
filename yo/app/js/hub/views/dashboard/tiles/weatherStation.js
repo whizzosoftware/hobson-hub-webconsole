@@ -6,12 +6,12 @@ define([
   'toastr',
   'services/event',
   'services/device',
-  'services/polling',
+  'views/dashboard/tiles/tile',
   'i18n!nls/strings',
   'text!templates/dashboard/tiles/weatherStation.html'
-], function ($, _, Backbone, toastr, EventService, DeviceService, PollingService, strings, template) {
+], function ($, _, Backbone, toastr, EventService, DeviceService, TileView, strings, template) {
 
-  return Backbone.View.extend({
+  return TileView.extend({
     tagName: 'div',
 
     template: _.template(template),
@@ -22,23 +22,6 @@ define([
       'click #tileButton': 'onButtonClick'
     },
 
-    initialize: function (options) {
-      this.subscription = this.onVarUpdate.bind(this);
-      EventService.subscribe('devVarsUpdate', this.subscription);
-    },
-
-    onVarUpdate: function (event) {
-      if (this.model.has('preferredVariable') && event.id == this.model.get('preferredVariable')['@id']) {
-        this.model.setPreferredVariableValue(event['value']);
-        this.render();
-      }
-    },
-
-    remove: function () {
-      EventService.unsubscribe(this.subscription);
-      Backbone.View.prototype.remove.call(this);
-    },
-
     close: function () {
       clearInterval(this.time);
     },
@@ -46,7 +29,7 @@ define([
     render: function () {
       this.$el.html(this.template({
         device: this.model.toJSON(),
-        available: DeviceService.isDeviceAvailable(this.model),
+        available: this.available,
         on: this.model.isOn(),
         strings: strings
       }));
