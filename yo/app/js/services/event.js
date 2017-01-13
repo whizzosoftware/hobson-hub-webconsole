@@ -44,6 +44,11 @@ define([
         eventService.post(e.id, {
           id: e.properties['id']
         });
+      } else if (e.id == 'pluginStarted') {
+        eventService.post(e.id, {
+          id: e.properties['id'],
+          pluginId: e.properties['pluginId']
+        });
       }
     },
 

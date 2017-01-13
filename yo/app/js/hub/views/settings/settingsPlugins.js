@@ -37,14 +37,9 @@ define([
 			this.hub = options.hub;
 			this.query = options.query;
 			this.showLocal = (this.query !== 'filter=available');
-			this.refereshInterval = null;
 		},
 
 		remove: function() {
-			if (this.refreshInterval) {
-				clearInterval(this.refreshInterval);
-				this.refreshInterval = null;
-			}
 			if (this.actionExecutionDialog) {
 				this.actionExecutionDialog.remove();
 			}
