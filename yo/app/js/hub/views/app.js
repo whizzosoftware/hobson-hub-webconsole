@@ -18,7 +18,7 @@ define([
   'services/event',
   'views/navbar',
   'views/sidebar/sidebar',
-  'views/dashboard/dashboard',
+  'views/devices/devices',
   'views/tasks/tasksTab',
   'views/tasks/taskEdit',
   'views/device/deviceState',
@@ -35,7 +35,7 @@ define([
   'views/account/accountProfile',
   'i18n!nls/strings',
   'text!templates/app.html'
-], function ($, _, Backbone, Sidr, toastr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, EventService, HubNavbarView, SidebarView, DashboardView, TasksTabView, TaskEditView, DeviceStateView, DataTabView, DataEditView, DataViewer, DevicesAddView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
+], function ($, _, Backbone, Sidr, toastr, session, Hub, ItemList, Config, Plugin, Devices, Device, DeviceConfig, Task, HubService, EventService, HubNavbarView, SidebarView, DevicesView, TasksTabView, TaskEditView, DeviceStateView, DataTabView, DataEditView, DataViewer, DevicesAddView, HubSettingsGeneralView, HubSettingsEmailView, HubSettingsPresenceView, HubSettingsLogView, HubSettingsPluginsView, AccountHubsView, AccountProfileView, strings, appTemplate) {
 
   return Backbone.View.extend({
 
@@ -95,13 +95,9 @@ define([
       };
     },
 
-    showDashboard: function () {
-      this.renderContentView(new DashboardView({
+    showDevices: function () {
+      this.renderContentView(new DevicesView({
       }));
-    },
-
-    showDashboard2: function () {
-      this.renderContentView(new Dashboard2View());
     },
 
     showData: function () {

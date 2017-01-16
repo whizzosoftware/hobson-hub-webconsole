@@ -131,7 +131,7 @@ define([
 	      		DeviceService.deleteDevice(this.model.get('@id'), function(model, response, options) {
 	      			console.log('delete happened');
 	      			toastr.success(strings.DeviceDeleted);
-					Backbone.history.navigate('dashboard', {trigger: true});
+					Backbone.history.navigate('devices', {trigger: true});
 	      		}.bind(this), function(model, response, options) {
 					toastr.error(strings.ErrorOccurred);
 	      			console.log('Error deleting device', model, response, options);

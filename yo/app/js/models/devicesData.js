@@ -1,4 +1,4 @@
-// Filename: models/dashboardData.js
+// Filename: models/devicesData.js
 define([
 	'backbone',
 	'models/itemList',

@@ -6,9 +6,9 @@ define([
 	'toastr',
 	'services/device',
   'services/event',
-  'views/dashboard/tiles/tile',
+  'views/devices/tiles/tile',
 	'i18n!nls/strings',
-	'text!templates/dashboard/tiles/lightbulb.html'
+	'text!templates/devices/tiles/lightbulb.html'
 ], function($, _, Backbone, toastr, DeviceService, EventService, TileView, strings, template) {
 
 	return TileView.extend({

@@ -1,13 +1,13 @@
-// Filename: views/dashboard/tiles/unknown.js
+// Filename: views/dashboard/tiles/securityPanel.js
 define([
 	'jquery',
 	'underscore',
 	'backbone',
 	'toastr',
 	'services/device',
-  'views/dashboard/tiles/tile',
+  'views/devices/tiles/tile',
 	'i18n!nls/strings',
-	'text!templates/dashboard/tiles/unknown.html'
+	'text!templates/devices/tiles/securityPanel.html'
 ], function($, _, Backbone, toastr, DeviceService, TileView, strings, template) {
 
 	return TileView.extend({
@@ -33,7 +33,7 @@ define([
 			this.$el.html(this.template({
 				device: this.model.toJSON(),
 				available: this.available,
-				on: this.model.isOn(),
+				armed: this.model.isArmed(),
 				strings: strings
 			}));
 			return this;

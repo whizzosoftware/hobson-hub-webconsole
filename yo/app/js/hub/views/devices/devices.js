@@ -9,10 +9,10 @@ define([
   'services/event',
   'models/itemList',
   'models/session',
-  'views/dashboard/devicesSection',
-  'views/dashboard/presenceEntitiesSection',
+  'views/devices/devicesSection',
+  'views/devices/presenceEntitiesSection',
   'i18n!nls/strings',
-  'text!templates/dashboard/dashboard.html'
+  'text!templates/devices/devices.html'
 ], function ($, _, Backbone, toastr, HubService, DeviceService, EventService, ItemList, Session, DevicesSection, PresenceEntitiesSection, strings, template) {
 
   return Backbone.View.extend({
@@ -120,7 +120,7 @@ define([
       var headers = {};
 
       // fetch the device list
-      HubService.getDashboardData(
+      HubService.getDevicesData(
         this,
         headers,
         function (model, response, options) {

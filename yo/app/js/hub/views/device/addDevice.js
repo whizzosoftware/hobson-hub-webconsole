@@ -91,7 +91,7 @@ define([
 							this.$el.find('#buttonAdd').addClass('disabled');
 							if (model && model.status === 'Complete') {
 								toastr.success('New device successfully added.');
-								Backbone.history.navigate('dashboard', {trigger: true});
+								Backbone.history.navigate('devices', {trigger: true});
 							} else {
 								this.$el.find('#promptPanel').html("");
 								this.$el.find('#buttonAdd').text(strings.Close);
@@ -104,15 +104,15 @@ define([
 					}
 				}.bind(this), function(model, response) {
 					toastr.error(ErrorService.createErrorHtml(response, strings));
-					console.debug('An error occurred invoking the action class', url, response); 
+					console.debug('An error occurred invoking the action class', url, response);
 				}.bind(this));
 			}
 		},
 
 		onJobExecutionComplete: function() {
-			Backbone.history.navigate('dashboard', {trigger: true});
+			Backbone.history.navigate('devices', {trigger: true});
 		}
 
 	});
 
-});	
+});

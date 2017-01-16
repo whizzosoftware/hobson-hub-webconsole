@@ -5,15 +5,15 @@ define([
 	'backbone',
 	'bridget',
 	'masonry',
-	'views/dashboard/tiles/camera',
-	'views/dashboard/tiles/lightbulb',
-	'views/dashboard/tiles/sensor',
-	'views/dashboard/tiles/switch',
-	'views/dashboard/tiles/thermostat',
-	'views/dashboard/tiles/weatherStation',
-	'views/dashboard/tiles/unknown',
+	'views/devices/tiles/camera',
+	'views/devices/tiles/lightbulb',
+	'views/devices/tiles/sensor',
+	'views/devices/tiles/switch',
+	'views/devices/tiles/thermostat',
+	'views/devices/tiles/weatherStation',
+	'views/devices/tiles/unknown',
 	'i18n!nls/strings',
-	'text!templates/dashboard/tileGroup.html'
+	'text!templates/devices/tileGroup.html'
 ], function($, _, Backbone, bridget, Masonry, CameraTileView, LightbulbTileView, SensorTileView, SwitchTileView, ThermostatTileView, WeatherStationTileView, UnknownTileView, strings, template) {
 
 	return Backbone.View.extend({
@@ -97,7 +97,7 @@ define([
 				this.subviews[device.get('@id')] = tileView;
 				this.subviewCount++;
 			}
-		}		
+		}
 
 	});
 

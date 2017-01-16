@@ -5,10 +5,10 @@ define([
 	'backbone',
 	'bridget',
 	'masonry',
-	'views/dashboard/section',
-	'views/dashboard/tiles/presenceEntity',
+	'views/devices/section',
+	'views/devices/tiles/presenceEntity',
 	'i18n!nls/strings',
-	'text!templates/dashboard/tileGroup.html'
+	'text!templates/devices/tileGroup.html'
 ], function($, _, Backbone, bridget, Masonry, Section, PresenceEntityView, strings, template) {
 
 	return Section.extend({

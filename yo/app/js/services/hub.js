@@ -8,7 +8,7 @@ define([
   'models/hub',
   'models/hubConfig',
   'models/itemList',
-  'models/dashboardData',
+  'models/devicesData',
   'models/presenceEntity',
   'models/presenceLocation',
   'models/logEntry',
@@ -17,7 +17,7 @@ define([
   'models/repository',
   'models/serialPort',
   'models/variable'
-], function ($, session, ActionClass, DataStream, Hubs, Hub, HubConfig, ItemList, DashboardData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository, SerialPort, Variable) {
+], function ($, session, ActionClass, DataStream, Hubs, Hub, HubConfig, ItemList, DevicesData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository, SerialPort, Variable) {
   return {
     betaRepositoryUrl: 'http://www.hobson-automation.com/obr/beta/repository.xml',
 
@@ -132,11 +132,11 @@ define([
       });
     },
 
-    getDashboardData: function(ctx, headers, success, error) {
+    getDevicesData: function(ctx, headers, success, error) {
       var hub = session.getSelectedHub();
       var url = hub ? hub.get('@id') + '?expand=devices.item.preferredVariable,presenceEntities.item.location' : null;
       if (hub && url) {
-        var items = new DashboardData({url: url});
+        var items = new DevicesData({url: url});
         items.fetch({
           context: ctx,
           headers: headers,

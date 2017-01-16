@@ -25,7 +25,7 @@
 <div class="subnav shadow-2">
 	<ul class="show-for-medium-up subnav-list">
 		<% if (hub) { %>
-			<li class="subnav-item"><a id="dashboard" class="<%= fragment.indexOf('dashboard') > -1 ? 'active' : '' %>" href="#dashboard"><i class="fa fa-lightbulb-o fa-lg"></i>&nbsp;&nbsp;<%= strings.Devices %></a></li>
+			<li class="subnav-item"><a id="devices" class="<%= fragment.indexOf('devices') > -1 ? 'active' : '' %>" href="#devices"><i class="fa fa-lightbulb-o fa-lg"></i>&nbsp;&nbsp;<%= strings.Devices %></a></li>
 			<li class="subnav-item"><a id="tasks" class="<%= fragment.indexOf('tasks') > -1 ? 'active' : '' %>" href="#tasks"><i class="fa fa-wrench fa-lg"></i>&nbsp;&nbsp;<%= strings.Tasks %></a></li>
 			<% if (showDataStreams) { %>
 				<li class="subnav-item"><a id="data" class="<%= fragment.indexOf('data') > -1 ? 'active' : '' %>" href="#data"><i class="fa fa-bar-chart fa-lg"></i>&nbsp;&nbsp;Data</a></li>
@@ -46,7 +46,7 @@
     <li class="subnav-item">
         <a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false"><i class="fa fa-navicon fa-lg"></i>&nbsp;&nbsp;<%= strings.Menu %></a>
         <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
-          <li><a href="#dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp;&nbsp;<%= strings.Dashboard %></a></li>
+          <li><a href="#devices"><i class="fa fa-bulb fa-lg"></i>&nbsp;&nbsp;<%= strings.Devices %></a></li>
           <li><a href="#tasks"><i class="fa fa-wrench fa-lg"></i>&nbsp;&nbsp;<%= strings.Tasks %></a></li>
           <li><a href="#settings"><i class="fa fa-cog fa-lg"></i>&nbsp;&nbsp;<%= strings.Settings %></a></li>
           <% if (showAccount) { %>

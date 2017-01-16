@@ -29,7 +29,7 @@ define([
 
 			// hub app
 			'hub': 'showHubRoot',
-			'dashboard': 'showDashboard',
+			'devices': 'showDevices',
 			'data': 'showData',
 			'data/edit': 'showDataEdit',
 			'data/:dataStreamId/view': 'showDataViewer',
@@ -85,7 +85,7 @@ define([
     },
 
 		showRoot: function() {
-      		this.redirectToHub('#dashboard');
+      		this.redirectToHub('#devices');
 		},
 
 		showAccount: function() {
@@ -100,8 +100,8 @@ define([
       		this.appView.showCloudlinkProfile();
 		},
 
-		showDashboard: function() {
-      		this.appView.showDashboard();
+		showDevices: function() {
+      		this.appView.showDevices();
 		},
 
 		showDataEdit: function(id) {
@@ -114,7 +114,7 @@ define([
 		},
 
 		showHubRoot: function() {
-			Backbone.history.navigate('dashboard', {trigger: true});
+			Backbone.history.navigate('devices', {trigger: true});
 		},
 
 		showTasks: function() {
@@ -197,7 +197,7 @@ define([
         HubService.getHubWithId(this, h["@id"], function(hub, response, options) {
             session.setSelectedHub(hub);
             if (!redirectUri) {
-              redirectUri = '#dashboard';
+              redirectUri = '#devices';
             }
             window.location.href = redirectUri;
           }, function(error, response, options) {

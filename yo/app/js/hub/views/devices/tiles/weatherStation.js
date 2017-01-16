@@ -1,4 +1,4 @@
-// Filename: views/dashboard/tiles/sensor.js
+// Filename: views/dashboard/tiles/weatherStation.js
 define([
   'jquery',
   'underscore',
@@ -6,9 +6,9 @@ define([
   'toastr',
   'services/event',
   'services/device',
-  'views/dashboard/tiles/tile',
+  'views/devices/tiles/tile',
   'i18n!nls/strings',
-  'text!templates/dashboard/tiles/sensor.html'
+  'text!templates/devices/tiles/weatherStation.html'
 ], function ($, _, Backbone, toastr, EventService, DeviceService, TileView, strings, template) {
 
   return TileView.extend({

@@ -4,9 +4,9 @@ define([
 	'underscore',
 	'backbone',
 	'toastr',
-  'views/dashboard/tiles/tile',
+  'views/devices/tiles/tile',
 	'i18n!nls/strings',
-	'text!templates/dashboard/tiles/presenceEntity.html'
+	'text!templates/devices/tiles/presenceEntity.html'
 ], function($, _, Backbone, toastr, TileView, strings, template) {
 
 	return TileView.extend({
