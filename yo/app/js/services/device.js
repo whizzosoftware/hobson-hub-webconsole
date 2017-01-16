@@ -5,9 +5,8 @@ define([
 	'models/session',
 	'models/itemList',
 	'models/device',
-	'models/devicePassport',
 	'models/variable'
-], function($, moment, session, ItemList, Device, DevicePassport, Variable) {
+], function($, moment, session, ItemList, Device, Variable) {
 	var DeviceService = {
 
 		createDevicesModel: function(expansions, sort) {
@@ -16,6 +15,23 @@ define([
 				url += '?expand=' + expansions;
 			}
 			return new ItemList(null, {url: url, model: Device, sort: sort});
+		},
+
+		setDeviceName: function(context, url, value, success, error) {
+			return $.ajax(url, {
+				context: context,
+				type: 'PUT',
+				contentType: 'application/json',
+				data: JSON.stringify({value: value}),
+				dataType: 'json',
+				error: function(model, response, options) {
+					if (model.status == 202) {
+						success(this);
+					} else {
+						error(this);
+					}
+				}
+			});
 		},
 
 		setDeviceVariable: function(url, value) {
@@ -50,15 +66,6 @@ define([
 			});
 		},
 
-		getDevicePassports: function(context, url, success, error) {
-			var passports = new ItemList(null, {model: DevicePassport, url: url + '?expand=item', sort: 'deviceId'});
-			passports.fetch({
-				context: context,
-				success: success,
-				error: error
-			});
-		},
-
 		getDeviceVariables: function(context, url, success, error) {
 			var variables = new ItemList(null, {model: Variable, url: url + '?expand=item'});
 			variables.fetch({
@@ -68,33 +75,15 @@ define([
 			});
 		},
 
-		addDevicePassport: function(context, deviceId) {
-			var url = session.getSelectedHubDevicePassportsUrl();
+		deleteDevice: function(url, success, error) {
 			return $.ajax(url, {
-				context: context,
-				type: 'POST',
-				contentType: 'application/json',
-				data: JSON.stringify({deviceId: deviceId}),
-				dataType: 'json'
-			});
-		},
-
-		resetDevicePassport: function(context, url) {
-			return $.ajax(url, {
-				context: context,
-				type: 'POST',
-				contentType: 'application/json',
-				data: JSON.stringify({}),
-				dataType: 'json'
-			});
-		},
-
-		deleteDevicePassport: function(context, url) {
-			return $.ajax(url, {
-				context: context,
 				type: 'DELETE',
-				contentType: 'application/json',
-				dataType: 'json'
+				success: function(data, status, xhr) {
+					success(null, status, null);
+				},
+				error: function(xhr, status, e) {
+					error(model, response, options);
+				}
 			});
 		},
 

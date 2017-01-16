@@ -8,6 +8,7 @@ define(['js/services/url'], function (url) {
       expect(url.getQueryParam('http://localhost/index.html?error=foo', 'error')).toBe('foo');
       expect(url.getQueryParam('http://localhost/index.html?error=foo#dashboard', 'error')).toBe('foo');
       expect(url.getQueryParam('http://localhost/index.html?error=foo&error_description=bar', 'error_description')).toBe('bar');
+      expect(url.getQueryParam('http://localhost:9000/#dashboard?error=invalid_request&error_description=Invalid+username+and%2For+password.', 'error_description')).toBe('Invalid+username+and%2For+password.');
     });
   });
 

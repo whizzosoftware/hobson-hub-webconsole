@@ -16,6 +16,8 @@ define([
 			if (hubJson) {
 				this.set('hub', new Hub(JSON.parse(hubJson)));
 			}
+
+			this.websocketStatus = false;
 		},
 
 		hasUser: function() {
@@ -74,12 +76,13 @@ define([
 		},
 
 		hasDataStreams: function() {
-			return (this.getUser() && this.getUser().get('dataStreams'));
+			var ds = this.getSelectedHub().get('dataStreams');
+			return (ds ? ds['@id'] : null);
 		},
 
 		getDataStreamsUrl: function() {
-			var d = this.getUser() ? this.getUser().get('dataStreams') : null;
-			return (d ? d['@id'] : null);
+			var ds = this.getSelectedHub().get('dataStreams');
+			return (ds ? ds['@id'] : null);
 		},
 
 		showAccount: function() {
@@ -94,7 +97,22 @@ define([
 		showPowerOff: function() {
 			var hub = this.getSelectedHub();
 			return (hub && hub.get('links') && hub.get('links').powerOff);
-		}
+		},
+
+    getWebsocketUrl: function() {
+      var h = this.getSelectedHub();
+      if (h) {
+        return h.get('links') ? h.get('links')['webSocket'] : null;
+      }
+		},
+
+    setWebsocketStatus: function(status) {
+		  this.websocketStatus = status;
+    },
+
+    getWebsocketStatus: function() {
+		  return this.websocketStatus;
+    }
 
 	});
 

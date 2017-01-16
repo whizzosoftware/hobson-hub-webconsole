@@ -5,13 +5,12 @@ define([
 	'backbone',
 	'toastr',
 	'models/propertyContainer',
-	'views/device/deviceTab',
 	'views/widgets/stringPicker',
 	'i18n!nls/strings',
-	'text!templates/device/deviceSettings.html'
-], function($, _, Backbone, toastr, Config, DeviceTab, ConfigPropertyView, strings, template) {
+	'text!templates/device/deviceSettingsDialog.html'
+], function($, _, Backbone, toastr, Config, ConfigPropertyView, strings, template) {
 
-	return DeviceTab.extend({
+	return Backbone.View.extend({
 
 		tabName: 'settings',
 
@@ -20,14 +19,17 @@ define([
 		subviews: [],
 
 		events: {
-			'click #saveButton': 'onClickSave'
+			'click #buttonSave': 'onClickSave',
+			'click #buttonCancel': 'onClickCancel',
 		},
 
-		renderTabContent: function(el) {
-			el.html(this.template({
+		render: function() {
+			this.$el.html(this.template({
 				strings: strings,
 				device: this.model.toJSON()
 			}));
+
+			console.debug(this.model);
 
 			var formEl = this.$el.find('form');
 
@@ -69,7 +71,12 @@ define([
 				}
 			});
 			this.$el.foundation('reveal', 'close');
-		}
+		},
+
+		onClickCancel: function(e) {
+			e.preventDefault();
+			this.$el.foundation('reveal', 'close');
+		},
 
 	});
 

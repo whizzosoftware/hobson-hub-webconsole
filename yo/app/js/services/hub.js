@@ -2,6 +2,8 @@
 define([
   'jquery',
   'models/session',
+  'models/actionClass',
+  'models/dataStream',
   'models/hubs',
   'models/hub',
   'models/hubConfig',
@@ -15,11 +17,38 @@ define([
   'models/repository',
   'models/serialPort',
   'models/variable'
-], function ($, session, Hubs, Hub, HubConfig, ItemList, DashboardData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository, SerialPort, Variable) {
+], function ($, session, ActionClass, DataStream, Hubs, Hub, HubConfig, ItemList, DashboardData, PresenceEntity, PresenceLocation, LogEntry, ActivityLogEntry, Plugin, Repository, SerialPort, Variable) {
   return {
     betaRepositoryUrl: 'http://www.hobson-automation.com/obr/beta/repository.xml',
 
-    getHubWithId: function (ctx, url, success, error) {
+    getHubActionClasses: function(success, error, id) {
+      var url = session.getSelectedHub().get('actionClasses')['@id'] + '?expand=item&constraints=true';
+      if (id) {
+        url += '&id=' + id;
+      }
+      new ItemList(null, {model: ActionClass, url: url, sort: 'name'}).fetch({
+        success: success,
+        error: error
+      });
+    },
+
+    invokeActionClass: function(ctx, url, properties, success, error) {
+      return $.ajax(url, {
+        context: ctx,
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(properties),
+        error: function(xhr, status, e) {
+          error(e, xhr, {context: ctx});
+        },
+        success: function(data, status, xhr) {
+          success(status, xhr, {context: ctx});
+        }
+      });
+    },
+
+    getHubWithId: function(ctx, url, success, error) {
       var hub = new Hub({url: url});
       hub.fetch({
         context: this,
@@ -28,7 +57,7 @@ define([
       });
     },
 
-    retrieveHubWithId: function (hubId, hubsUrl, callback) {
+    retrieveHubWithId: function(hubId, hubsUrl, callback) {
       var hub = session.getSelectedHub();
       if (!hub || hub.get('id') !== hubId) {
         var hubs = new Hubs(hubsUrl);
@@ -60,7 +89,7 @@ define([
       }
     },
 
-    getHubConfiguration: function (ctx, success, error) {
+    getHubConfiguration: function(ctx, success, error) {
       var url = session.getSelectedHub().get('configuration')['@id'];
       new HubConfig({url: url}).fetch({
         context: ctx,
@@ -69,7 +98,23 @@ define([
       });
     },
 
-    getHubSerialPorts: function (ctx, success, error) {
+    setHubAwayMode: function(away, success, error) {
+      var url = session.getSelectedHub().get('configuration')['@id'];
+      return $.ajax(url, {
+        type: 'PATCH',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({values: {away: away}}),
+        error: function(xhr, status, e) {
+          error(e, xhr);
+        },
+        success: function(data, status, xhr) {
+          success(status, xhr);
+        }
+      });
+    },
+
+    getHubSerialPorts: function(ctx, success, error) {
       var url = session.getSelectedHub().get('serialPorts')['@id'];
       new ItemList(null, {url: url, model: SerialPort}).fetch({
         context: ctx,
@@ -78,7 +123,7 @@ define([
       });
     },
 
-    getGlobalVariables: function (ctx, success, error) {
+    getGlobalVariables: function(ctx, success, error) {
       var url = session.getSelectedHub().get('globalVariables')['@id'];
       new ItemList(null, {url: url + '?expand=item', model: Variable}).fetch({
         context: ctx,
@@ -87,7 +132,7 @@ define([
       });
     },
 
-    getDashboardData: function (ctx, headers, success, error) {
+    getDashboardData: function(ctx, headers, success, error) {
       var hub = session.getSelectedHub();
       var url = hub ? hub.get('@id') + '?expand=devices.item.preferredVariable,presenceEntities.item.location' : null;
       if (hub && url) {
@@ -111,7 +156,7 @@ define([
       }
     },
 
-    getActivityLog: function (ctx, success, error) {
+    getActivityLog: function(ctx, success, error) {
       var hub = session.getSelectedHub();
       if (hub) {
         var url = hub.get('links') ? hub.get('links').activityLog : null;
@@ -128,7 +173,7 @@ define([
       success(null, null, {context: ctx});
     },
 
-    getLogEntries: function (ctx, success, error) {
+    getLogEntries: function(ctx, success, error) {
       var hub = session.getSelectedHub();
       var url = hub.get('log')['@id'];
       if (hub && url) {
@@ -143,7 +188,7 @@ define([
       }
     },
 
-    getLocations: function (ctx, success, error) {
+    getLocations: function(ctx, success, error) {
       var hub = session.getSelectedHub();
       if (hub) {
         var url = hub.get('presenceLocations')['@id'] + '?expand=item';
@@ -160,7 +205,7 @@ define([
       success(null, null, {context: ctx});
     },
 
-    getRepositories: function (ctx, success, error) {
+    getRepositories: function(ctx, success, error) {
       var hub = session.getSelectedHub();
       var url = hub.get('repositories')['@id'];
       if (hub && url) {
@@ -175,7 +220,7 @@ define([
       }
     },
 
-    createNewPresenceLocation: function () {
+    createNewPresenceLocation: function() {
       var hub = session.getSelectedHub();
       var url = hub.get('presenceLocations')['@id'];
       if (hub && url) {
@@ -185,7 +230,7 @@ define([
       }
     },
 
-    deletePresenceLocation: function (context, url) {
+    deletePresenceLocation: function(context, url) {
       return $.ajax(url, {
         context: context,
         type: 'DELETE',
@@ -194,7 +239,7 @@ define([
       });
     },
 
-    createPresenceEntitiesModel: function () {
+    createPresenceEntitiesModel: function() {
       var hub = session.getSelectedHub();
       var url = hub.get('presenceEntities')['@id'] + '?expand=item';
       if (hub && url) {
@@ -204,7 +249,7 @@ define([
       }
     },
 
-    getPresenceEntities: function (ctx, success, error) {
+    getPresenceEntities: function(ctx, success, error) {
       var hub = session.getSelectedHub();
       if (hub) {
         var url = hub.get('presenceEntities')['@id'] + '?expand=item';
@@ -221,7 +266,7 @@ define([
       success(null, null, {context: ctx});
     },
 
-    createNewPresenceEntity: function () {
+    createNewPresenceEntity: function() {
       var hub = session.getSelectedHub();
       var url = hub.get('presenceEntities')['@id'];
       if (hub && url) {
@@ -231,7 +276,7 @@ define([
       }
     },
 
-    deletePresenceEntity: function (context, url) {
+    deletePresenceEntity: function(context, url) {
       return $.ajax(url, {
         context: context,
         type: 'DELETE',
@@ -240,7 +285,7 @@ define([
       });
     },
 
-    sendTestEmail: function (ctx, userId, hubId, model) {
+    sendTestEmail: function(ctx, userId, hubId, model) {
       var hub = session.getSelectedHub();
       var url = hub.get('links').sendTestEmail;
       var data = model.toJSON();
@@ -253,7 +298,7 @@ define([
       });
     },
 
-    setPassword: function (ctx, userId, hubId, password) {
+    setPassword: function(ctx, userId, hubId, password) {
       var hub = session.getSelectedHub();
       var url = hub.get('links').password;
       var data = {currentPassword: 'local', newPassword: password};
@@ -266,8 +311,8 @@ define([
       });
     },
 
-    getPlugins: function (ctx, url, success, error) {
-      var plugins = new ItemList(null, {model: Plugin, url: url + '?expand=item'});
+    getPlugins: function(ctx, url, success, error) {
+      var plugins = new ItemList(null, {model: Plugin, url: url + '?expand=item.actionClasses.item'});
       plugins.fetch({
         context: ctx,
         success: success,
@@ -275,14 +320,14 @@ define([
       });
     },
 
-    installPlugin: function (ctx, url) {
+    installPlugin: function(ctx, url) {
       return $.ajax(url, {
         type: 'POST',
         timeout: 5000
       });
     },
 
-    enableBetaPlugins: function (ctx, userId, hubId) {
+    enableBetaPlugins: function(ctx, userId, hubId) {
       var hub = session.getSelectedHub();
       var url = hub.get('repositories')['@id'];
 
@@ -299,7 +344,7 @@ define([
       });
     },
 
-    disableBetaPlugins: function (ctx) {
+    disableBetaPlugins: function(ctx) {
       var hub = session.getSelectedHub();
       var url = hub.get('repositories')['@id'];
       if (hub && url) {
@@ -310,10 +355,84 @@ define([
       }
     },
 
-    shutdown: function (ctx, url) {
+    shutdown: function(ctx, url) {
       return $.ajax(url, {
         context: ctx,
         type: 'POST'
+      });
+    },
+
+    getDataStreams: function(ctx, success, error) {
+      var hub = session.getSelectedHub();
+      if (hub.get('dataStreams')) {
+        var dataStreams = new ItemList(
+          null,
+          {url: hub.get('dataStreams')['@id'] + '?expand=item', model: DataStream}
+        );
+        dataStreams.fetch({
+          context: ctx,
+          success: function(model, response, options) {
+            success(ctx, model);
+          },
+          error: function(model, response, options) {
+            error('Error getting data stream list');
+          }
+        });
+      }
+    },
+
+    getDataStream: function(ctx, url, success, error) {
+      var dataStream = new DataStream({url: url});
+      dataStream.fetch({
+        context: ctx,
+        success: function(model, response, options) {
+          success(ctx, model);
+        },
+        error: function(model, response, options) {
+          error('Error getting data stream');
+        }
+      })
+    },
+
+    getDataStreamData: function(ctx, url, inr, success, error) {
+      if (inr) {
+        url += '?inr=' + inr;
+      }
+      var dataStream = new DataStream({url: url});
+      dataStream.fetch({
+        context: ctx,
+        success: function(model, response, options) {
+          success(ctx, model);
+        },
+        error: function(model, response, options) {
+          error('Error getting data stream');
+        }
+      })
+    },
+
+    addDataStream: function(ctx, data, success, error) {
+      var hub = session.getSelectedHub();
+      if (hub.get('dataStreams')) {
+        var dataStream = new DataStream({url: hub.get('dataStreams')['@id']});
+        dataStream.set('name', data.name);
+        dataStream.set('fields', data.fields);
+        dataStream.save(null, {
+          success: success,
+          error: error
+        });
+      } else {
+        error('Creating data streams is not supported');
+      }
+    },
+
+    deleteDataStream: function(ctx, url, success, error) {
+      return $.ajax(url, {
+        context: ctx,
+        type: 'DELETE',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: success,
+        error: error
       });
     }
 

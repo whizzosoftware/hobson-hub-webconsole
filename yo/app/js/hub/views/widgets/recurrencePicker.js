@@ -44,6 +44,10 @@ define([
 			return this;
 		},
 
+		getValue: function() {
+			return this.$el.find('input#' + this.getSafeId()).val();
+		},
+
 		showDaySelector: function(visible) {
 			this.$el.find('#daySelector').css('display', visible ? 'block' : 'none');
 			if (!visible) {

@@ -39,11 +39,9 @@ define([
 			'tasks/edit?id=:id': 'showTaskEdit',
 			'device/:deviceUrl': 'showDeviceDetails',
 			'device/:deviceUrl/state': 'showDeviceState',
-			'device/:deviceUrl/settings': 'showDeviceSettings',
-			'device/:deviceUrl/statistics': 'showDeviceStatistics',
+			'devices/add': 'showDevicesAdd',
 			'settings': 'showHubSettings',
 			'settings/general': 'showHubSettingsGeneral',
-			'settings/passports': 'showHubSettingsPassports',
 			'settings/email': 'showHubSettingsEmail',
 			'settings/presence': 'showHubSettingsPresence',
 			'settings/log': 'showHubSettingsLog',
@@ -87,7 +85,7 @@ define([
     },
 
 		showRoot: function() {
-      this.redirectToHub('#dashboard');
+      		this.redirectToHub('#dashboard');
 		},
 
 		showAccount: function() {
@@ -95,20 +93,24 @@ define([
 		},
 
 		showCloudlinkHubs: function() {
-      this.appView.showCloudlinkHubs();
+      		this.appView.showCloudlinkHubs();
 		},
 
 		showCloudlinkProfile: function() {
-      this.appView.showCloudlinkProfile();
+      		this.appView.showCloudlinkProfile();
 		},
 
 		showDashboard: function() {
-      this.appView.showDashboard();
+      		this.appView.showDashboard();
 		},
 
 		showDataEdit: function(id) {
-      var s = id ? decodeURIComponent(id.replace('id=', '')) : null;
-      this.appView.showDataEdit(s);
+	    	var s = id ? decodeURIComponent(id.replace('id=', '')) : null;
+      		this.appView.showDataEdit(s);
+		},
+
+		showDevicesAdd: function(id) {
+			this.appView.showDevicesAdd();
 		},
 
 		showHubRoot: function() {
@@ -116,37 +118,29 @@ define([
 		},
 
 		showTasks: function() {
-      this.appView.showTasks();
+      		this.appView.showTasks();
 		},
 
 		showTaskEdit: function(id) {
-      var s = id ? decodeURIComponent(id.replace('id=', '')) : null;
-      this.appView.showTaskEdit(s);
+      		var s = id ? decodeURIComponent(id.replace('id=', '')) : null;
+      		this.appView.showTaskEdit(s);
 		},
 
 		showData: function() {
-      this.appView.showData();
+      		this.appView.showData();
 		},
 
 		showDataViewer: function(dataStreamId, inr) {
-      var s = inr ? inr.replace('inr=', '') : null;
-      this.appView.showDataViewer(dataStreamId, s);
+      		var s = inr ? inr.replace('inr=', '') : null;
+      		this.appView.showDataViewer(dataStreamId, s);
 		},
 
 		showDeviceDetails: function(deviceUrl) {
-      this.appView.showDeviceDetails(deviceUrl);
+      		this.appView.showDeviceDetails(deviceUrl);
 		},
 
 		showDeviceState: function(deviceUrl) {
-      this.appView.showDeviceState(deviceUrl);
-		},
-
-		showDeviceSettings: function(deviceUrl) {
-      this.appView.showDeviceSettings(deviceUrl);
-		},
-
-		showDeviceStatistics: function(deviceUrl) {
-      this.appView.showDeviceStatistics(deviceUrl);
+      		this.appView.showDeviceState(deviceUrl);
 		},
 
 		showHubSettings: function() {
@@ -154,27 +148,23 @@ define([
 		},
 
 		showHubSettingsGeneral: function() {
-      this.appView.showHubSettingsGeneral();
-		},
-
-		showHubSettingsPassports: function() {
-      this.appView.showHubSettingsPassports();
+      		this.appView.showHubSettingsGeneral();
 		},
 
 		showHubSettingsEmail: function() {
-      this.appView.showHubSettingsEmail();
+      		this.appView.showHubSettingsEmail();
 		},
 
 		showHubSettingsPresence: function() {
-      this.appView.showHubSettingsPresence();
+      		this.appView.showHubSettingsPresence();
 		},
 
 		showHubSettingsLog: function() {
-      this.appView.showHubSettingsLog();
+      		this.appView.showHubSettingsLog();
 		},
 
 		showHubSettingsPlugins: function(query) {
-      this.appView.showHubSettingsPlugins(query);
+      		this.appView.showHubSettingsPlugins(query);
 		},
 
 		getContext: function() {
@@ -205,7 +195,6 @@ define([
       if (hubs && hubs.itemListElement && hubs.itemListElement.length > 0) {
         var h = hubs.itemListElement[0].item;
         HubService.getHubWithId(this, h["@id"], function(hub, response, options) {
-            console.debug('Setting selected hub: ', hub);
             session.setSelectedHub(hub);
             if (!redirectUri) {
               redirectUri = '#dashboard';

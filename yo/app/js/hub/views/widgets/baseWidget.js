@@ -7,6 +7,10 @@ define([
 
 	return Backbone.View.extend({
 
+		initialize: function(options) {
+			_.bind(this.getValue, this);
+		},
+
 		getId: function() {
 			return this.model['@id'];
 		},
@@ -16,10 +20,6 @@ define([
 		 */
 		getSafeId: function() {
 			return this.model && this.model['@id'] ? this.model['@id'].replace('.', '-').replace('#', '-') : null;
-		},
-
-		getValue: function() {
-			return this.$el.find('input#' + this.getSafeId()).val();
 		},
 
 		showError: function(showError) {

@@ -5,12 +5,12 @@ define([
 	'backbone',
 	'toastr',
 	'services/device',
-	'services/polling',
+  'views/dashboard/tiles/tile',
 	'i18n!nls/strings',
 	'text!templates/dashboard/tiles/securityPanel.html'
-], function($, _, Backbone, toastr, DeviceService, PollingService, strings, template) {
+], function($, _, Backbone, toastr, DeviceService, TileView, strings, template) {
 
-	return Backbone.View.extend({
+	return TileView.extend({
 		tagName: 'div',
 
 		template: _.template(template),
@@ -30,11 +30,11 @@ define([
 		},
 
 		render: function() {
-			this.$el.html(this.template({ 
-				device: this.model.toJSON(), 
-				available: DeviceService.isDeviceAvailable(this.model),
-				armed: this.model.isArmed(), 
-				strings: strings 
+			this.$el.html(this.template({
+				device: this.model.toJSON(),
+				available: this.available,
+				armed: this.model.isArmed(),
+				strings: strings
 			}));
 			return this;
 		},

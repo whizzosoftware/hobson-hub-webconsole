@@ -1,11 +1,26 @@
 <div class="sensor-tile shadow-1">
 	<div class="title"><%= strings.hasOwnProperty(model.name) ? strings[model.name] : model.name %></div>
-	<div class="value">
-		<% if (model.name === 'on') { %>
-			<i class="fa fa-power-off" style="color: <%= model.value ? '#ffffff' : '#2a2a2a' %>;"></i>
+	<div class="value <%= (model.value === undefined || !available) ? 'disabled' : '' %>">
+		<% if (model.name === 'on' && model.value !== undefined && available) { %>
+        <i class="fa fa-power-off" style="color: <%= model.value ? '#ffffff' : '#2a2a2a' %>;"></i>
+    <% } else if (model.name === 'armed' && model.value !== undefined && available) { %>
+        <i class="fa <%= model.value ? 'fa-check' : 'fa-remove' %>"></i>
+    <% } else if ((model.name === 'level' || model.name === 'rh') && model.value !== undefined && available) { %>
+      <%= model.value %>%
+    <% } else if ((model.name === 'tempC' || model.name === 'tempF') && model.value !== undefined && available) { %>
+      <%= model.value %>&deg;
+    <% } else if (batteryLevel) { %>
+        <i class="fa fa-battery-<%= batteryLevel %>"></i>
+		<% } else if (model.value !== undefined && available) { %>
+			  <%= model.value %>
 		<% } else { %>
-			<%= model.value %>
-		<% } %>
+        <i class="fa fa-question"></i>
+    <% } %>
 	</div>
-	<div class="footer"><%= strings.hasOwnProperty(model.name + 'Units') ? strings[model.name + 'Units'] : '' %></div>
+	<div class="footer">
+    <%= strings.hasOwnProperty(model.name + 'Units') ? strings[model.name + 'Units'] : '' %>
+    <% if (model.name === 'battery') { %>
+      <%= model.value %>%
+    <% } %>
+  </div>
 </div>

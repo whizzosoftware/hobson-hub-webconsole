@@ -28,6 +28,26 @@ define([
 			bridget('masonry', Masonry);
 		},
 
+    onDeviceAvailability: function(event) {
+		  var s = this.subviews[event.id];
+		  if (s) {
+		    s.onDeviceAvailability(true);
+      }
+    },
+
+    onDeviceUnavailability: function(event) {
+      var s = this.subviews[event.properties.id];
+      if (s) {
+        s.onDeviceAvailability(false);
+      }
+    },
+
+    onDeviceVariableUpdate: function(event) {
+		  for (var i in this.subviews) {
+		    this.subviews[i].onDeviceVariableUpdate(event);
+      }
+    },
+
 		renderSection: function(model) {
 			var tilesAdded = false;
 
@@ -81,7 +101,7 @@ define([
 				this.subviews[device.get('@id')] = tileView;
 				this.subviewCount++;
 			}
-		}		
+		}
 
 	});
 

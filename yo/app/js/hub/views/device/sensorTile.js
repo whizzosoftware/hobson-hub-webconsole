@@ -16,9 +16,33 @@ define([
 
 		template: _.template(template),
 
-		render: function(el) {
+    initialize: function(options) {
+      this.available = options.available;
+    },
+
+		render: function() {
+		  // set battery level if necessary
+		  var batteryLevel = null;
+		  if (this.model.name === 'battery') {
+        var l = this.model.value;
+        if (l > 75) {
+          batteryLevel = 4;
+        } else if (l > 50) {
+          batteryLevel = 3;
+        } else if (l > 25) {
+          batteryLevel = 2;
+        } else if (l > 0) {
+          batteryLevel = 1;
+        } else {
+          batteryLevel = 0;
+        }
+      }
+
+      // render the tile
 			this.$el.html(this.template({
 				model: this.model,
+        available: this.available,
+        batteryLevel: batteryLevel,
 				strings: strings
 			}));
 			return this;

@@ -27,6 +27,7 @@ define([
 
 			this.$el.html(this.template({
 				strings: strings,
+        available: this.available,
 				variables: this.variables,
 				windDir: windDir
 			}));

@@ -310,6 +310,16 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>/www/js/underscore'
                 }, {
                     expand: true,
+                    cwd: '<%= yeoman.app %>/bower_components/smartmenus/dist',
+                    src: 'jquery.smartmenus.js',
+                    dest: '<%= yeoman.dist %>/www/js/smartmenus/dist'
+                }, {
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/bower_components/smartmenus/dist/css',
+                    src: 'sm-core-css.css',
+                    dest: '<%= yeoman.dist %>/www/css'
+                }, {
+                    expand: true,
                     cwd: '<%= yeoman.app %>/bower_components/jquery/dist',
                     src: 'jquery.min.js',
                     dest: '<%= yeoman.dist %>/www/js/jquery/dist'
@@ -333,13 +343,12 @@ module.exports = function (grunt) {
                         pattern: 'bower_components/jquery-colpick/css',
                         replacement: 'css'
                     }, {
+                        pattern: 'bower_components/smartmenus/dist/css',
+                        replacement: 'css'
+                    }, {
                         pattern: 'bower_components/requirejs',
                         replacement: 'js/requirejs'
                     },
-                    // {
-                    //     pattern: '<script data-main="js/config" src="js/requirejs/require.js"></script>',
-                    //     replacement: '<script src="js/default.js"></script>'
-                    // }
                     ]
                 }
             },

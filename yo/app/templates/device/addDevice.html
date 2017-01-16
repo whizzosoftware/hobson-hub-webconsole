@@ -1,0 +1,36 @@
+<div id="error" class="row" style="display: none;">
+	<div class="large-12 columns">
+		<div id="errorMsg" data-alert class="alert-box alert radius">
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="large-6 columns">
+		<h1><%= strings.NewDevice %></h1>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns">
+		<label>
+		What kind of device do you want to add?
+		<select id="addDeviceList" class="radius">
+			<option>Loading...</option>
+		</select>
+		</label>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns">
+		<div id="actionExecutionPanel">
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns">
+		<div class="form-control-bar">
+			<a id="buttonCancel" class="radius secondary button small left shadow-1" href="#/dashboard"><%= strings.Cancel %></a><a id="buttonAdd" class="radius button small right shadow-1"><%= strings.Add %></a>
+		</div>
+	</div>
+</div>
+<div id="job-status-modal" class="reveal-modal" data-reveal>
+</div>

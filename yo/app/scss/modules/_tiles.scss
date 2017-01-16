@@ -30,7 +30,7 @@
 				right: 10px;
 				top: 5px;
 				font-size: 1.2em;
-				color: red;
+				color: $color-error;
 			}
 			p {
 				padding-top: 20px;
@@ -122,6 +122,16 @@
 						width: 200px;
 						margin: 15px;
 					}
+          .upper-left {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+          }
+          .upper-right {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+          }
 				}
 				.plugin-text {
 					padding: 15px;
@@ -139,18 +149,13 @@
 						font-size: .9em;
 						line-height: 1.2em;
 					}
-					.plugin-version {
-						font-size: .6em;
-						position: absolute;
-						right: 10px;
-						bottom: 10px;
-					}
 				}
-				a.icon-button {
-					position: absolute;
-					right: 10px;
-					top: 10px;
-				}
+			}
+			.plugin-version {
+				font-size: .6em;
+				position: absolute;
+				right: 10px;
+				bottom: 5px;
 			}
 			.plugin-footer {
 				width: 100%;
@@ -250,7 +255,7 @@
 						margin-right: 25px;
 						i {
 							color: white;
-							font-weight: normal; 
+							font-weight: normal;
 							border: none;
 						}
 						i.active {
@@ -316,7 +321,7 @@
 						margin-right: 25px;
 						i {
 							color: white;
-							font-weight: normal; 
+							font-weight: normal;
 							border: none;
 						}
 						i.active {

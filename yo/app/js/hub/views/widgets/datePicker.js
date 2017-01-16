@@ -50,6 +50,11 @@ define([
 			return this;
 		},
 
+		getValue: function() {
+			return this.$el.find('input#' + this.getSafeId()).val();
+		},
+
+
    		showError: function(showError) {
 			BaseWidget.prototype.showError.call(this, showError);
 			if (showError) {

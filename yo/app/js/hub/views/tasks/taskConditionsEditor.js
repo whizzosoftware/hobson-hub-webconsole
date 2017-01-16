@@ -50,28 +50,28 @@ define([
 				task: this.task
 			}));
 
-			TaskService.getConditionClasses(this, function(model, response, options) {
-				options.context.conditionClasses = model;
-				options.context.renderConditions(options.context);
-			}, function(model, response, options) {
+			TaskService.getConditionClasses(function(model, response, options) {
+				this.conditionClasses = model;
+				this.renderConditions();
+			}.bind(this), function(model, response, options) {
 				toastr.error(strings.ErrorOccurred);
-			});
+			}.bind(this));
 
 			return this;
 		},
 
-		renderConditions: function(ctx) {
-			if (ctx.taskConditionsView) {
-				ctx.taskConditionsView.remove();
+		renderConditions: function() {
+			if (this.taskConditionsView) {
+				this.taskConditionsView.remove();
 			}
 
-			ctx.taskConditionsView = new TaskConditionsView({
-				devices: ctx.devices, 
-				task: ctx.task,
-				conditionClasses: ctx.conditionClasses
+			this.taskConditionsView = new TaskConditionsView({
+				devices: this.devices, 
+				task: this.task,
+				conditionClasses: this.conditionClasses
 			});
 
-			ctx.$el.find('#taskConditions').html(ctx.taskConditionsView.render().el);
+			this.$el.find('#taskConditions').html(this.taskConditionsView.render().el);
 		},
 
 		closePlusPanel: function() {
@@ -91,7 +91,7 @@ define([
 
 				// render task condition class selectors
 				var v = new TaskControlSelectorsView({
-					model: this.task.hasTriggerCondition(this.conditionClasses) ? new ItemList(this.conditionClasses.where({type: 'evaluator'}), null) : new ItemList(this.conditionClasses.where({type: 'trigger'}), null),
+					model: this.task.hasTriggerCondition(this.conditionClasses) ? this.conditionClasses.filteredList('type', 'evaluator') : this.conditionClasses.filteredList('type', 'trigger'),
 					timeMode: this.timeMode
 				});
 				this.$el.find('#taskConditionSelectors').html(v.render().el);
@@ -111,7 +111,7 @@ define([
 			var msg = PropertyContainerValidator.validate(a);
 			if (!msg) {
 				this.task.addCondition(a);
-				this.renderConditions(this);
+				this.renderConditions();
 				this.closePlusPanel();
 			} else {
 				toastr.error(msg);

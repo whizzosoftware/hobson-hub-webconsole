@@ -1,10 +1,22 @@
-<% if (!available) { %>
-	<div class="inset">
-		<div data-alert class="alert-box alert radius"><i class="fa fa-warning"></i>&nbsp;&nbsp;<%= strings.DeviceNotCheckedIn %></div>
+<div class="row">
+	<div class="large-12 columns">
+		<% if (!available) { %>
+			<div class="inset">
+				<div data-alert class="alert-box alert radius"><i class="fa fa-warning"></i>&nbsp;&nbsp;<%= strings.DeviceNotCheckedIn %></div>
+			</div>
+		<% } %>
 	</div>
-<% } %>
-<div id="controlContainer" class="inset">
 </div>
-<div class="inset">
-  <%= strings.LastCheckIn %>: <%= lastContactString %>
+<div class="row">
+	<div class="large-12 columns">
+		<div id="controlContainer" class="inset">
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns text-left">
+		<div class="inset">
+		  <%= strings.LastCheckIn %>: <%= lastContactString %>
+		</div>
+	</div>
 </div>

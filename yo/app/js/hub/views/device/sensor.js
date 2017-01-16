@@ -20,8 +20,8 @@ define([
 			'click #switchButton': 'onClick'
 		},
 
-		initialize: function() {
-			BaseStatusView.prototype.initialize.call(this);
+		initialize: function(options) {
+			BaseStatusView.prototype.initialize.call(this, options);
 			this.subviews = [];
 		},
 
@@ -35,9 +35,7 @@ define([
 		render: function(el) {
 			this.$el.html('');
 			for (var i in this.variables) {
-				if (typeof this.variables[i].value !== 'undefined') {
-					this.addSensorView(this.variables[i]);
-				}
+        this.addSensorView(this.variables[i]);
 			}
 			return this;
 		},
@@ -47,7 +45,7 @@ define([
 		},
 
 		addSensorView: function(plugin) {
-			var sensorView = new SensorTileView({model: plugin});
+			var sensorView = new SensorTileView({model: plugin, available: this.available});
 			this.subviews.push(sensorView);
 			this.$el.append(sensorView.render().el);
 		}

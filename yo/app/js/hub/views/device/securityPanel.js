@@ -19,7 +19,6 @@ define([
     },
 
     render: function(el) {
-      console.log(this.variables);
       this.$el.html(this.template({
         strings: strings,
         device: this.model.toJSON(),
@@ -42,7 +41,7 @@ define([
       }
     },
 
-    onVariableUpdate: function(name) {
+    onVariableUpdate: function(name, value) {
       this.showSpinner(false);
       this.render();
     },

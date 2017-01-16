@@ -4,6 +4,7 @@ dist
 .tmp
 .sass-cache
 yo/app/bower_components
+yo/app/css
 .classpath
 .idea
 .project

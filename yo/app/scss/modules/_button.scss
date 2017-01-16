@@ -69,3 +69,42 @@
 .icon-button.secondary:hover {
 	color: $color-btn-secondary-hover;
 }
+
+.away-button {
+  margin: 10px auto 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  background-color: $color-btn-primary;
+  position: relative;
+  text-align: center;
+  color: white;
+  line-height: 0;
+  .away-container {
+    font-size: 11px;
+    .away-icon {
+      padding: 0;
+      margin: 5px 0 0;
+      padding-top: 10px;
+    }
+    .away-text {
+      padding: 0;
+      margin: 5px 0 0;
+      padding-top: 3px;
+    }
+  }
+}
+
+.away-button:hover {
+  background-color: $color-btn-primary-hover;
+  color: white;
+}
+
+.away-button.away {
+  background-color: $color-btn-secondary;
+}
+
+.away-button.away:hover {
+  background-color: $color-btn-secondary-hover;
+  color: white;
+}

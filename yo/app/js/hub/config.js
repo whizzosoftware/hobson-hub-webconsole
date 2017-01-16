@@ -16,7 +16,6 @@ require.config({
     'datetimepicker': '../../bower_components/datetimepicker/jquery.datetimepicker',
     'dropzone': '../../bower_components/dropzone/dist/dropzone-amd-module',
     'foundation.core': '../../bower_components/foundation/js/foundation.min',
-    'foundation.dropdown': '../../bower_components/foundation/js/foundation/foundation.dropdown',
     'i18n': '../../bower_components/requirejs-i18n/i18n',
     'jquery': '../../bower_components/jquery/dist/jquery.min',
     'jquery-colpick': '../../bower_components/jquery-colpick/js/colpick',
@@ -30,6 +29,7 @@ require.config({
     'rrule': '../../bower_components/rrule/lib/rrule',
     'services': '../services',
     'sidr': '../../bower_components/sidr/dist/jquery.sidr',
+    'smartmenus': '../../bower_components/smartmenus/dist/jquery.smartmenus',
     'spin': '../../bower_components/ladda/dist/spin.min',
     'templates': '../../templates',
     'text': '../../bower_components/requirejs-text/text',
@@ -43,11 +43,6 @@ require.config({
         'modernizr'
     ],
       exports: 'Foundation'
-    },
-    'foundation.dropdown': {
-      deps: [
-        'foundation.core'
-      ]
     },
     'modernizr': {
       exports: 'Modernizer'

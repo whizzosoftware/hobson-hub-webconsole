@@ -1,4 +1,4 @@
-// Filename: views/account/accountHubs.js
+// Filename: views/settings/settingsTab.js
 define([
 	'jquery',
 	'underscore',

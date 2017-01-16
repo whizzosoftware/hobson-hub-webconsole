@@ -4,11 +4,11 @@ define([
   'underscore',
   'backbone',
   'toastr',
-  'services/user',
+  'services/hub',
   'views/collection/dataStreams',
   'i18n!nls/strings',
   'text!templates/data/dataTab.html'
-], function ($, _, Backbone, toastr, UserService, DataStreamsView, strings, dataTemplate) {
+], function ($, _, Backbone, toastr, HubService, DataStreamsView, strings, dataTemplate) {
   return Backbone.View.extend({
 
     template: _.template(dataTemplate),
@@ -23,7 +23,7 @@ define([
         strings: strings
       }));
 
-      UserService.getDataStreams(this, function (ctx, model) {
+      HubService.getDataStreams(this, function (ctx, model) {
         if (this.dsView) {
           this.dsView.remove();
         }

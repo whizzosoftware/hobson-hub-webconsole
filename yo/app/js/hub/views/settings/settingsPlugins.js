@@ -10,12 +10,14 @@ define([
 	'models/propertyContainer',
 	'models/repository',
 	'services/hub',
+	'services/action',
 	'views/settings/settingsTab',
 	'views/settings/plugins',
 	'views/settings/pluginSettings',
+	'views/action/actionExecutionDialog',
 	'i18n!nls/strings',
 	'text!templates/settings/settingsPlugins.html'
-], function($, _, Backbone, toastr, session, ItemList, Plugin, Config, Repository, HubService, SettingsTab, PluginsView, PluginSettingsView, strings, template) {
+], function($, _, Backbone, toastr, session, ItemList, Plugin, Config, Repository, HubService, ActionService, SettingsTab, PluginsView, PluginSettingsView, ActionExecutionDialogView, strings, template) {
 
 	return SettingsTab.extend({
 
@@ -27,6 +29,7 @@ define([
 			'pluginSettingsClick': 'onClickSettings',
 			'pluginInstallClick': 'onClickInstall',
 			'pluginUpdateClick': 'onClickUpdate',
+			'pluginActionClick': 'onClickAction',
 			'click #betaCheckbox': 'onClickBeta'
 		},
 
@@ -34,13 +37,11 @@ define([
 			this.hub = options.hub;
 			this.query = options.query;
 			this.showLocal = (this.query !== 'filter=available');
-			this.refereshInterval = null;
 		},
 
 		remove: function() {
-			if (this.refreshInterval) {
-				clearInterval(this.refreshInterval);
-				this.refreshInterval = null;
+			if (this.actionExecutionDialog) {
+				this.actionExecutionDialog.remove();
 			}
 			this.pluginsView.remove();
 			Backbone.View.prototype.remove.call(this);
@@ -95,6 +96,7 @@ define([
 				},
 				error: function(model, response, options) {
 					toastr.error(strings.ErrorOccurred);
+					console.debug(response);
 				}
 			});
 		},
@@ -137,6 +139,7 @@ define([
 				},
 				error: function(model, response, options) {
 					toastr.error(strings.PluginUpdateCheckError);
+					console.debug(response);
 				}
 			});
 		},
@@ -152,29 +155,47 @@ define([
 				},
 				error: function() {
 					toastr.error(strings.PluginConfigurationError);
+					console.debug(response);
 				}
 			});
 		},
 
 		onClickInstall: function(event, plugin) {
-			HubService.installPlugin(this, plugin.get('links').install)
+			HubService.installPlugin(this, plugin.get('links')['install'])
 				.success(function(data, status, response) {
 					toastr.info(strings.PluginInstallStarted);
 				})
 				.fail(function(response, status, error) {
 					toastr.error(strings.PluginInstallFailed);
+					console.debug(response);
 				});
 		},
 
 		onClickUpdate: function(event, plugin) {
-			HubService.installPlugin(this, plugin.get('updateLink'))
+			HubService.installPlugin(this, plugin.get('links')['update'])
 				.success(function(data, status, response) {
 					toastr.info(strings.PluginInstallStarted);
 				})
 				.fail(function(response, status, error) {
 					toastr.error(strings.PluginInstallFailed);
+					console.debug(response);
 				});
-			},
+		},
+
+		onClickAction: function(event, actionClassId) {
+				ActionService.getActionClass(actionClassId, function(model, response, options) {
+					var el = this.$el.find('#plugin-config-modal');
+					if (this.actionExecutionDialog != null) {
+						this.actionExecutionDialog.remove();
+					}
+					this.actionExecutionDialog = new ActionExecutionDialogView({model: model});
+					el.html(this.actionExecutionDialog.render().el);
+					el.foundation('reveal', 'open');
+				}.bind(this), function(model, response, options) {
+					toastr.error(strings.ErrorOccurred);
+					console.debug('error', response);
+				}.bind(this));
+		},
 
 		onClickBeta: function(event) {
 			var checkbox = event.currentTarget;
@@ -205,7 +226,7 @@ define([
 	                        toastr.error(strings.BetaPluginSettingFailed);
 	                    }
 	                }
-	            );            	
+	            );
 	        }
 		}
 

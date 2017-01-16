@@ -3,9 +3,10 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+  'services/event',
 	'views/settings/plugin',
 	'i18n!nls/strings'
-], function($, _, Backbone, PluginView, strings) {
+], function($, _, Backbone, EventService, PluginView, strings) {
 
 	return Backbone.View.extend({
 
@@ -17,9 +18,14 @@ define([
 			this.subviews = {};
 			this.showLocal = options.showLocal;
 			this.noPluginsPrompt = false;
+
+      // listen for devVarsUpdate events and pass along if applicable
+      this.subscription = this.onPluginStarted.bind(this);
+      EventService.subscribe('pluginStarted', this.subscription);
 		},
 
 		remove: function() {
+      EventService.unsubscribe(this.subscription);
 			for (var ix in this.subviews) {
 				this.subviews[ix].remove();
 			}
@@ -38,7 +44,7 @@ define([
 				} else {
 					this.$el.html('<p class="notice">' + strings.NoPluginsAvailable + '</p>');
 				}
-				noPluginsPrompt = true;
+				this.noPluginsPrompt = true;
 			}
 
 			return this;
@@ -64,10 +70,23 @@ define([
 
 		addPluginView: function(plugin) {
 			var pluginView = new PluginView({model: plugin});
+			console.log(pluginView);
 			this.subviews[plugin.get('@id')] = pluginView;
 			this.$el.append(pluginView.render().el);
-		}
+		},
 
-	});
+    onPluginStarted: function(event) {
+      for (var i in this.subviews) {
+        if (this.subviews[i].model.get('pluginId') == event.pluginId) {
+          const v = this.subviews[i];
+          v.$el.fadeOut(250, function() {
+            v.remove();
+          });
+          break;
+        }
+      }
+    }
+
+  });
 
 });
