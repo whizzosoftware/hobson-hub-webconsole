@@ -43,16 +43,14 @@ define([
 			if (prefVar.name === 'on') {
 				newValue = !prefVar.value;
 				DeviceService.setDeviceVariable(prefVar["@id"], newValue);
+				this.firePreferredVariableUpdate();
 			}
 		},
 
 		onButtonClick: function() {
 			this.$el.trigger('deviceButtonClick', this.model);
-		},
-
-		showSpinner: function(enabled) {
-			this.$el.find('#work-icon').css('display', enabled ? 'block' : 'none');
 		}
+
 	});
 
 });

@@ -22,7 +22,12 @@ define([
 			'click #tileButton': 'onButtonClick'
 		},
 
+    initialize: function(options) {
+		  this.time = setInterval(this.updateImage.bind(this), 10000);
+    },
+
 		remove: function() {
+		  clearInterval(this.time);
 			Backbone.View.prototype.remove.call(this);
 		},
 
@@ -97,11 +102,8 @@ define([
 
 		onButtonClick: function() {
 			this.$el.trigger('deviceButtonClick', this.model);
-		},
-
-		showSpinner: function(enabled) {
-			this.$el.find('#work-icon').css('display', enabled ? 'block' : 'none');
 		}
+
 	});
 
 });
