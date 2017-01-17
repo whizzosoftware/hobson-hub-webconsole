@@ -54,9 +54,7 @@ define([
 
     onExecuteTask: function(event, task) {
       if (confirm(strings.AreYouSureYouWantToManuallyExecute + ' \"' + task.get('name') + '\"?')) {
-        TaskService.executeTask(this, task.get('@id'), function() {
-          toastr.success(strings.TaskExecuteSuccess);
-        }, function() {
+        TaskService.executeTask(this, task.get('@id'), null, function() {
           toastr.error(strings.TaskExecuteFailure);
         });
       }
