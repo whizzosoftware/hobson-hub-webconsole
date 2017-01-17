@@ -10,6 +10,7 @@ define([
   return Backbone.View.extend({
     initialize: function(options) {
       this.available = DeviceService.isDeviceAvailable(this.model);
+      this.spinnerVisible = false;
     },
 
     onDeviceAvailability: function(available) {
@@ -35,7 +36,13 @@ define([
     },
 
     showSpinner: function(enabled) {
-      this.$el.find('#work-icon').css('display', enabled ? 'block' : 'none');
+      if (!this.spinnerVisible && enabled) {
+        this.$el.find('#work-icon').fadeIn(100);
+        this.spinnerVisible = true;
+      } else if (this.spinnerVisible && !enabled) {
+        this.$el.find('#work-icon').fadeOut(100);
+        this.spinnerVisible = false;
+      }
     },
 
     onUpdateFailed: function() {
