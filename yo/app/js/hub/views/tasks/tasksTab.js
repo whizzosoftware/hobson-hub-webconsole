@@ -16,7 +16,8 @@ define([
 
 		events: {
 		  'executeTask': 'onExecuteTask',
-			'deleteTask': 'onDeleteTask'
+			'deleteTask': 'onDeleteTask',
+      'enableTask': 'onEnableTask'
 		},
 
 		initialize: function(options) {
@@ -54,7 +55,7 @@ define([
 
     onExecuteTask: function(event, task) {
       if (confirm(strings.AreYouSureYouWantToManuallyExecute + ' \"' + task.get('name') + '\"?')) {
-        TaskService.executeTask(this, task.get('@id'), null, function() {
+        TaskService.executeTask(this, task.get('@id'), function() {}, function() {
           toastr.error(strings.TaskExecuteFailure);
         });
       }
@@ -78,7 +79,16 @@ define([
 					}
 				});
 			}
-		}
+		},
+
+    onEnableTask: function(event, task) {
+		  if (confirm((task.get('enabled') ? strings.AreYouSureYouWantToDisable : strings.AreYouSureYouWantToEnable) + '\"' + task.get('name') + '\"?')) {
+        TaskService.enableTask(task.get('@id'), !task.get('enabled'), function() {
+        }, function() {
+          toastr.error(strings.TaskEnableFail);
+        })
+      }
+    }
 
 	});
 

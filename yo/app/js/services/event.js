@@ -7,10 +7,6 @@ define([
   var eventService = {
     vent: _.extend({}, Backbone.Events),
 
-    initialize: function(options) {
-      console.log('new event service');
-    },
-
     subscribe: function(name, callback) {
       this.vent.on(name, callback);
     },
@@ -34,6 +30,15 @@ define([
         eventService.post(e.id, {
           id: e['id'],
           name: e['properties']['name']
+        });
+      } else if (e.id == 'taskUpdated') {
+        var p = e.properties;
+        eventService.post(e.id, {
+          id: p['id'],
+          name: p['name'],
+          description: p['description'],
+          enabled: p['enabled'],
+          properties: p['taskProperties']
         });
       } else if (e.id == 'hubConfigurationUpdate') {
         eventService.post(e.id, {

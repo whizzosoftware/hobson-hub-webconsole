@@ -1,17 +1,18 @@
 <div class="task-tile shadow-1">
 	<div class="title">
 		<%= task.name %>
-	</div>
+  </div>
 	<div class="description">
 		<%= task.description %>
 	</div>
 	<div class="footer">
 		<ul>
-			<li><i id="delete-task" class="fa fa-lg fa-trash-o"></i></li>
-			<li><a href="#tasks/edit?id=<%= encodeURIComponent(task['@id']) %>"><i id="edit-task" class="fa fa-lg fa-edit"></i></a></li>
-			<% if (task.properties && task.properties.hasOwnProperty('scheduled')) { %>
+      <li id="enable-task"><i class="fa fa-lg <%= task.enabled ? 'fa-check-square-o' : 'fa-square-o' %> icon-button" title="<%= task.enabled ? strings.DisableTask : strings.EnableTask %>"></i></li>
+      <li><a href="#tasks/edit?id=<%= encodeURIComponent(task['@id']) %>"><i id="edit-task" class="fa fa-lg fa-pencil icon-button" title="Edit task"></i></a></li>
+      <li id="delete-task"><i class="fa fa-lg fa-trash-o icon-button" title="Delete task"></i></li>
+			<% if (task.properties && task.properties.hasOwnProperty('scheduled') && task.properties['scheduled']) { %>
 				<li>
-					<i class="fa fa-lg fa-clock-o has-tip <%= schedule.nextRunStr ? 'active' : '' %>" data-tooltip aria-haspopup="true" title="<% if (schedule.nextRunStr) { %><%= schedule.nextRunStr %><% } else { %><%= strings.NotScheduled %><% } %>"></i>
+					<i class="fa fa-lg fa-clock-o has-tip" data-tooltip aria-haspopup="true" title="<% if (schedule.nextRunStr) { %><%= schedule.nextRunStr %><% } else { %><%= strings.NotScheduled %><% } %>"></i>
 				</li>
 			<% } %>
 		</ul>

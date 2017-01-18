@@ -146,7 +146,6 @@ define([
           cclass: {'@id': this.model.get('@id')},
           values: values.get('values')
         };
-        console.log('onClickAdd', val);
         this.$el.trigger('onClickAdd', val);
       }
 

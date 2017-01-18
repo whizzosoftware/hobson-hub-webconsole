@@ -222,6 +222,7 @@
 			padding: 0;
 			cursor: pointer;
 			.title {
+        position: relative;
 				line-height: 99%;
 				text-align: left;
 				padding: 10px 20px;
@@ -252,7 +253,7 @@
 						float: right;
 						line-height: 50px;
 						display: inline;
-						margin-right: 25px;
+						margin-right: 15px;
 						i {
 							color: white;
 							font-weight: normal;
@@ -261,6 +262,9 @@
 						i.active {
 							color: $color-dash-tile-on;
 						}
+            i.icon-button:hover {
+              color: $color-btn-primary-hover;
+            }
 					}
 					li:first-child {
 						margin-right: 0px;

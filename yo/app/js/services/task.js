@@ -87,6 +87,22 @@ define([
           error();
         }
       });
+    },
+
+    enableTask: function(url, enabled, success, error) {
+		  $.ajax(url, {
+        type: 'PATCH',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          enabled: enabled
+        }),
+        success: function(data, status, response) {
+		      success();
+        },
+        error: function(response, status, e) {
+		      error();
+        }
+      })
     }
 
 	};

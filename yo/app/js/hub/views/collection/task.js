@@ -16,11 +16,12 @@ define([
 
     events: {
       'click': 'onClick',
-      'click #delete-task': 'onClickDelete'
+      'click #delete-task': 'onClickDelete',
+      'click #enable-task': 'onClickEnable'
     },
 
     render: function () {
-      this.$el.append(
+      this.$el.html(
         this.template({
           strings: strings,
           task: this.model.toJSON(),
@@ -40,6 +41,19 @@ define([
     onClickDelete: function (e) {
       e.preventDefault();
       this.$el.trigger('deleteTask', this.model);
+    },
+
+    onClickEnable: function(e) {
+      e.preventDefault();
+      this.$el.trigger('enableTask', this.model);
+    },
+
+    onTaskUpdate: function (e) {
+      this.model.set('name', e.name);
+      this.model.set('description', e.description);
+      this.model.set('enabled', e.enabled);
+      this.model.set('properties', e.properties);
+      this.render();
     },
 
     createSchedule: function (task) {
