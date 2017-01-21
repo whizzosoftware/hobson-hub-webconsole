@@ -9,12 +9,12 @@
 					<div class="row">
 						<div class="small-6 columns text-right" style="background-image: url(img/wstation-outdoors.png); background-repeat: no-repeat; background-position: center; height: 80px;">
 							<div style="font-size: 35px; font-weight: bold;">
-								<%= variables.outTempF && variables.outTempF.value && available ? variables.outTempF.value + '&deg;' : '<i class="fa fa-question"></i>' %>
+								<%= variables.outTempF && variables.outTempF.value && available ? Math.round(variables.outTempF.value) + '&deg;' : '<i class="fa fa-question"></i>' %>
 							</div>
 						</div>
 						<div class="small-6 columns text-center" style="background-image: url(img/wstation-house.png); background-repeat: no-repeat; background-position: center; height: 80px;">
 		 					<div style="font-size: 22px; font-weight: bold;">
-								<%= variables.inTempF && variables.inTempF.value && available ? variables.inTempF.value + '&deg;' : '<i class="fa fa-question"></i>' %>
+								<%= variables.inTempF && variables.inTempF.value && available ? Math.round(variables.inTempF.value) + '&deg;' : '<i class="fa fa-question"></i>' %>
 							</div>
 						</div>
 					</div>
