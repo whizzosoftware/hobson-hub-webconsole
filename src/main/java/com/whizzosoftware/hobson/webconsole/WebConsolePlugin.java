@@ -75,4 +75,8 @@ public class WebConsolePlugin extends AbstractHobsonPlugin {
     public void onShutdown() {
         getHubManager().getLocalManager().unpublishWebApplication(WebConsoleApplication.PATH);
     }
+
+    @Override
+    public void onPluginConfigurationUpdate(PropertyContainer config) {
+    }
 }
