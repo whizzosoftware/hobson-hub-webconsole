@@ -28,10 +28,12 @@ define([
       this.showDescription = options.showDescription;
       this.subviews = [];
       this.value = [];
-      if (options.value) {
+      if (options.value && Array.isArray(options.value)) {
         for (var i = 0; i < options.value.length; i++) {
           this.value.push(options.value[i]['@id']);
         }
+      } else if (options.value) {
+        this.value.push(options.value['@id']);
       }
     },
 
