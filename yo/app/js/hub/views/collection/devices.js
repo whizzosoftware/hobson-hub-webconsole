@@ -10,9 +10,15 @@ define([
 
     tagName: 'ul',
 
+    /**
+     * Initialize
+     *
+     * @param options ("devices"=list of devices; "value"=currently selected value; "deviceType"=only show devices of a given type)
+     */
     initialize: function (options) {
       this.devices = options.devices;
       this.value = options.value;
+      this.deviceType = options.deviceType;
       this.subviews = [];
     },
 
@@ -31,12 +37,14 @@ define([
       this.$el.html('');
       for (i = 0; i < this.devices.length; i++) {
         var device = this.devices.at(i);
-        var v = new DeviceView({
-          device: device,
-          selected: this.value.indexOf(device.get('@id')) > -1
-        });
-        this.$el.append(v.render().el);
-        this.subviews.push(v);
+        if (!this.deviceType || (this.deviceType && device.get('type') == this.deviceType)) {
+          var v = new DeviceView({
+            device: device,
+            selected: this.value.indexOf(device.get('@id')) > -1
+          });
+          this.$el.append(v.render().el);
+          this.subviews.push(v);
+        }
       }
       return this;
     },

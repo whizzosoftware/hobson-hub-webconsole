@@ -24,6 +24,7 @@ define([
 
     initialize: function (options) {
       this.required = this.model && this.model.constraints ? this.model.constraints.required : false;
+      this.deviceType = this.model && this.model.constraints ? this.model.constraints.deviceType : null;
       this.single = options.single;
       this.showDescription = options.showDescription;
       this.subviews = [];
@@ -51,7 +52,7 @@ define([
           strings: strings,
           property: this.model,
           required: this.required,
-          showDescription: (!this.showDescription && this.showDescription != null) ? false : true
+          showDescription: (!(!this.showDescription && this.showDescription != null))
         })
       );
 
@@ -67,7 +68,8 @@ define([
           if (model.length > 0) {
             options.context.devicesView = new DevicesView({
               devices: model,
-              value: options.context.value
+              value: options.context.value,
+              deviceType: options.context.deviceType
             });
             options.context.$el.find('#deviceList').html(options.context.devicesView.render().el);
             options.context.subviews.push(options.context.devicesView);
