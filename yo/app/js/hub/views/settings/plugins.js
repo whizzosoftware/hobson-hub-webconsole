@@ -20,8 +20,8 @@ define([
 			this.noPluginsPrompt = false;
 
       // listen for devVarsUpdate events and pass along if applicable
-      this.subscription = this.onPluginStarted.bind(this);
-      EventService.subscribe('pluginStarted', this.subscription);
+      this.subscription = this.onPluginStatusChange.bind(this);
+      EventService.subscribe('pluginStatusChange', this.subscription);
 		},
 
 		remove: function() {
@@ -70,19 +70,27 @@ define([
 
 		addPluginView: function(plugin) {
 			var pluginView = new PluginView({model: plugin});
-			console.log(pluginView);
 			this.subviews[plugin.get('@id')] = pluginView;
 			this.$el.append(pluginView.render().el);
 		},
 
-    onPluginStarted: function(event) {
-      for (var i in this.subviews) {
-        if (this.subviews[i].model.get('pluginId') == event.pluginId) {
-          const v = this.subviews[i];
-          v.$el.fadeOut(250, function() {
-            v.remove();
-          });
-          break;
+    onPluginStatusChange: function(event) {
+		  if (event.status.code === 'RUNNING') {
+        for (var i in this.subviews) {
+          var model = this.subviews[i].model;
+          if (model.get('pluginId') == event.pluginId) {
+            var code = model.get('status')['code'];
+            model.set('status', event.status);
+            if (code === 'NOT_CONFIGURED') {
+              this.subviews[i].render();
+            } else if (code === 'NOT_INSTALLED') {
+              const v = this.subviews[i];
+              v.$el.fadeOut(250, function () {
+                v.remove();
+              });
+              break;
+            }
+          }
         }
       }
     }
