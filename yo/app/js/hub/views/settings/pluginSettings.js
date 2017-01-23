@@ -23,7 +23,9 @@ define([
       'click #cancelButton': 'onClickCancel'
     },
 
-    subviews: [],
+    initialize: function(options) {
+      this.subviews = [];
+    },
 
     remove: function () {
       for (var i = 0; i < this.subviews.length; i++) {
