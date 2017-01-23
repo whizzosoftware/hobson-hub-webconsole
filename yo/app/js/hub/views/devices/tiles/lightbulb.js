@@ -23,10 +23,6 @@ define([
 			'click #tileButton': 'onButtonClick'
 		},
 
-		close: function() {
-			clearInterval(this.time);
-		},
-
 		render: function() {
 			this.$el.html(this.template({
 				device: this.model.toJSON(),
@@ -36,6 +32,16 @@ define([
 			}));
 			return this;
 		},
+
+    updateState: function() {
+      var e = TileView.prototype.updateState.bind(this).call();
+
+      if (this.model.isOn()) {
+        e.addClass('active');
+      } else {
+        e.removeClass('active');
+      }
+    },
 
 		onIconClick: function() {
 			var prefVar = this.model.get('preferredVariable');

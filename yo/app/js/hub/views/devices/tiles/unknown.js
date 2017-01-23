@@ -25,10 +25,6 @@ define([
 			Backbone.View.prototype.remove.call(this);
 		},
 
-		close: function() {
-			clearInterval(this.time);
-		},
-
 		render: function() {
 			this.$el.html(this.template({
 				device: this.model.toJSON(),
@@ -39,9 +35,13 @@ define([
 			return this;
 		},
 
+    updateState: function() {
+    },
+
 		onButtonClick: function() {
 			this.$el.trigger('deviceButtonClick', this.model);
 		}
-	});
+
+  });
 
 });

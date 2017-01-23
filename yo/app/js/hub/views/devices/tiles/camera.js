@@ -23,16 +23,12 @@ define([
 		},
 
     initialize: function(options) {
-		  this.time = setInterval(this.updateImage.bind(this), 10000);
+		  this.time = setInterval(this.updateState.bind(this), 10000);
     },
 
 		remove: function() {
 		  clearInterval(this.time);
 			Backbone.View.prototype.remove.call(this);
-		},
-
-		close: function() {
-			clearInterval(this.time);
 		},
 
 		render: function() {
@@ -45,43 +41,45 @@ define([
 				}));
 				this.initialRender = true;
 			}
-			this.updateImage();
+			this.updateState();
 			return this;
 		},
 
-		updateImage: function() {
-			// start image loading if there's a preferred image URL and we're not waiting on a previous image load
-			var preferredVariable = this.model.get('preferredVariable');
-			if (preferredVariable && preferredVariable.name == 'imageStatusUrl' && !this.imageLoading) {
-				// show the user a wait spinner
-				this.showSpinner(true);
-				this.imageLoading = true;
+    updateState: function() {
+      TileView.prototype.updateState.bind(this).call();
 
-				var imageEl = this.$el.find('#image-container');
-				$.ajax({
-					context: this,
-					url: preferredVariable.value + '?base64=true',
-					type: 'GET',
-					success: function(data) {
-						this.showSpinner(false);
-						this.imageLoading = false;
-						imageEl.html($('<img src="data:image/jpg;base64,' + data + '" />'));
-					},
-					error: function(response) {
-						this.showSpinner(false);
-						this.imageLoading = false;
-						var msg;
-						if (response.status === 403) {
-							msg = strings.AccessDenied;
-						} else if (response.status === 404) {
-							msg = strings.WaitingForCameraImage;
-						} else {
-							msg = strings.ErrorOccurred;
-						}
-						imageEl.html('<p>' + msg + '</p>');
-					}
-				});
-			}
+      // start image loading if there's a preferred image URL and we're not waiting on a previous image load
+      var preferredVariable = this.model.get('preferredVariable');
+      if (preferredVariable && preferredVariable.name == 'imageStatusUrl' && !this.imageLoading) {
+        // show the user a wait spinner
+        this.showSpinner(true);
+        this.imageLoading = true;
+
+        var imageEl = this.$el.find('#image-container');
+        $.ajax({
+          context: this,
+          url: preferredVariable.value + '?base64=true',
+          type: 'GET',
+          success: function(data) {
+            this.showSpinner(false);
+            this.imageLoading = false;
+            imageEl.html($('<img src="data:image/jpg;base64,' + data + '" />'));
+          }.bind(this),
+          error: function(response) {
+            this.showSpinner(false);
+            this.imageLoading = false;
+            var msg;
+            if (response.status === 403) {
+              msg = strings.AccessDenied;
+            } else if (response.status === 404) {
+              msg = strings.WaitingForCameraImage;
+            } else {
+              msg = strings.ErrorOccurred;
+            }
+            imageEl.html('<p>' + msg + '</p>');
+          }.bind(this)
+        });
+      }
 		},
 
 		onIconClick: function() {

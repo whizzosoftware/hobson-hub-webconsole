@@ -26,10 +26,6 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
 
-    close: function () {
-      clearInterval(this.time);
-    },
-
     render: function () {
       this.$el.html(this.template({
         device: this.model.toJSON(),
@@ -37,12 +33,25 @@ define([
         on: this.model.isOn(),
         strings: strings
       }));
+      this.updateState();
       return this;
+    },
+
+    updateState: function() {
+      TileView.prototype.updateState.bind(this).call();
+
+      var e = this.$el.find('#tempValue');
+      if (e && this.model.get('preferredVariable') && this.model.get('preferredVariable').value) {
+        e.html(Math.round(this.model.get('preferredVariable').value) + '&deg;');
+      } else {
+        e.html('<i class="fa fa-question"></i>');
+      }
     },
 
     onButtonClick: function () {
       this.$el.trigger('deviceButtonClick', this.model);
-    }
+    },
+
   });
 
 });

@@ -20,17 +20,21 @@ define([
 			Backbone.View.prototype.remove.call(this);
 		},
 
-		close: function() {
-		},
-
 		render: function() {
 			this.$el.html(this.template({
 				entity: this.model.toJSON(),
 				strings: strings
 			}));
+			this.updateState();
 			return this;
-		}
+		},
 
-	});
+    updateState: function() {
+      TileView.prototype.updateState.bind(this).call();
+
+      this.$el.find('.tile-header').html(this.model.get('location') && this.model.get('location').name ? this.model.get('location').name : 'Unknown');
+    }
+
+  });
 
 });

@@ -23,10 +23,6 @@ define([
 			'click #tileButton': 'onButtonClick'
 		},
 
-		close: function() {
-			clearInterval(this.time);
-		},
-
 		render: function() {
 			this.$el.html(this.template({
 				device: this.model.toJSON(),
@@ -51,10 +47,20 @@ define([
 			}
 		},
 
+    updateState: function() {
+      var e = TileView.prototype.updateState.bind(this).call();
+
+      if (this.model.isOn()) {
+        e.addClass('active');
+      } else {
+        e.removeClass('active');
+      }
+    },
+
 		onButtonClick: function() {
 			this.$el.trigger('deviceButtonClick', this.model);
 		}
 
-	});
+  });
 
 });

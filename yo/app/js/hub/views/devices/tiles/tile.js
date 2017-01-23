@@ -15,33 +15,44 @@ define([
 
     onDeviceAvailability: function(available) {
       this.available = available;
-      this.render();
+      this.updateState();
     },
 
     onDeviceVariableUpdate: function(event) {
-      if (this.model.has('preferredVariable') && event.id == this.model.get('preferredVariable')['@id']) {
+      if (this.model.has('preferredVariable') && event.id == this.model.get('preferredVariable')['@id'] && event.value !== this.model.get('preferredVariable')['value']) {
         this.model.setPreferredVariableValue(event['value']);
         this.available = true;
         clearInterval(this.timeoutInterval);
-        this.render();
+        this.showSpinner(false);
+        this.updateState();
       } else if (!this.available) {
         this.available = true;
-        this.render();
+        this.updateState();
       }
     },
 
     firePreferredVariableUpdate: function() {
       this.showSpinner(true);
-      this.timeoutInterval = setTimeout(this.onUpdateFailed.bind(this), 2000);
+      this.timeoutInterval = setTimeout(this.onUpdateFailed.bind(this), 5000);
+    },
+
+    updateState: function() {
+      var e = this.$el.find('#tileIcon');
+      if (this.available) {
+        e.removeClass('disabled');
+      } else {
+        e.addClass('disabled');
+      }
+      return e;
     },
 
     showSpinner: function(enabled) {
       if (!this.spinnerVisible && enabled) {
-        this.$el.find('#work-icon').fadeIn(100);
         this.spinnerVisible = true;
+        this.$el.find('#work-icon').fadeIn(100);
       } else if (this.spinnerVisible && !enabled) {
-        this.$el.find('#work-icon').fadeOut(100);
         this.spinnerVisible = false;
+        this.$el.find('#work-icon').fadeOut(100);
       }
     },
 
