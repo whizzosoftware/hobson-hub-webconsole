@@ -54,7 +54,7 @@ public class WebConsolePlugin extends AbstractHobsonPlugin {
         getHubManager().getLocalManager().publishWebApplication(new HubWebApplication(WebConsoleApplication.PATH, WebConsoleApplication.class));
 
         // determine web app URL prefix
-        PropertyContainer pc = getHubManager().getHub(HubContext.createLocal()).getConfiguration();
+        PropertyContainer pc = getHubManager().getConfiguration(HubContext.createLocal());
         if (pc.getBooleanPropertyValue(HubConfigurationClass.SETUP_COMPLETE)) {
             String consoleURI = pc.getBooleanPropertyValue(HubConfigurationClass.SSL_MODE) ? "https://localhost:8183/console/index.html" : "http://localhost:8182/console/index.html";
 
