@@ -65,18 +65,11 @@ define([
 			if (confirm(strings.AreYouSureYouWantToDelete + ' \"' + task.get('name') + '\"?')) {
 				task.destroy({
 					context: this,
-					success: function(model, response, options) {
-						toastr.success(strings.TaskDeleteSuccess);
-						options.context.render();
-					},
-					error: function(model, response, options) {
-						if (response.status === 202) {
-							toastr.success(strings.TaskDeleteSuccess);
-							options.context.render();
-						} else {
+					error: function(model, response) {
+						if (response.status !== 202) {
 							toastr.error(strings.TaskDeleteFailure);
 						}
-					}
+					}.bind(this)
 				});
 			}
 		},

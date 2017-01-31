@@ -17,16 +17,21 @@ define([
 
     initialize: function () {
       this.subviews = [];
-      this.subscription = this.onTaskUpdate.bind(this);
+      this.subscription = this.onTaskUpdated.bind(this);
+      this.subscription2 = this.onTaskDeleted.bind(this);
       EventService.subscribe('taskUpdated', this.subscription);
+      EventService.subscribe('taskDeleted', this.subscription2);
     },
 
     remove: function () {
       EventService.unsubscribe(this.subscription);
+      EventService.unsubscribe(this.subscription2);
+
       for (var ix in this.subviews) {
         this.subviews[ix].remove();
         this.subviews[ix] = null;
       }
+
       Backbone.View.prototype.remove.call(this);
     },
 
@@ -46,11 +51,25 @@ define([
       return this;
     },
 
-    onTaskUpdate: function (e) {
+    onTaskUpdated: function (e) {
       for (var ix in this.subviews) {
         var id = this.subviews[ix].model.get('@id');
         if (id === e.id) {
           this.subviews[ix].onTaskUpdate(e);
+          break;
+        }
+      }
+    },
+
+    onTaskDeleted: function (e) {
+      for (var ix in this.subviews) {
+        var id = this.subviews[ix].model.get('@id');
+        if (id === e.id) {
+          const el = this.subviews[ix].$el;
+          el.fadeOut(150, function() {
+            el.remove();
+          });
+          break;
         }
       }
     }

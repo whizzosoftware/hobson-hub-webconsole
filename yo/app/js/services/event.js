@@ -17,6 +17,7 @@ define([
 
     handleEvent: function(event) {
       var e = JSON.parse(event.data);
+
       if (e.id == 'devVarsUpdate') {
         for (var i = 0; i < e.properties['updates'].length; i++) {
           var u = e.properties['updates'][i];
@@ -39,6 +40,10 @@ define([
           description: p['description'],
           enabled: p['enabled'],
           properties: p['taskProperties']
+        });
+      } else if (e.id == 'taskDeleted') {
+        eventService.post(e.id, {
+          id: e.properties['id']
         });
       } else if (e.id == 'hubConfigurationUpdate') {
         eventService.post(e.id, {
