@@ -28,6 +28,7 @@ define([
 
 		initialize: function(options) {
 			this.id = options.id;
+			this.editMode = this.id;
 			this.subviews = [];
 		},
 
@@ -44,6 +45,9 @@ define([
 				strings: strings,
 				editMode: this.id
 			}));
+
+			this.spinner = this.$el.find('#spinner');
+			this.spinner.hide();
 
 			if (this.id) {
 				TaskService.getTask(this, this.id, function(model, response, options) {
@@ -109,7 +113,7 @@ define([
 			}
 
 			if (errors.length > 0) {
-				this.showErrors(this, errors);
+				this.showErrors(errors);
 			} else {
 				// set the task name
 				var name = this.$el.find('#taskName').val();
@@ -123,17 +127,26 @@ define([
 					t.set('description', desc);
 				}
 
+        var buttonEl = this.$el.find('#buttonCreate');
+        buttonEl.prop('disabled', true);
+
+        this.spinner.fadeIn(150);
+
 				// send the create task request
 				t.save(null, {
 					context: this,
 					error: function(model, response, options) {
 						if (response.status === 202) {
 							toastr.success(strings.TaskCreated);
-							Backbone.history.navigate('tasks', {trigger: true});
+							this.spinner.fadeOut(150, function() {
+                Backbone.history.navigate('tasks', {trigger: true});
+              });
 						} else {
-							options.context.showErrors(options.context, response.responseJSON.errors);
+							this.showErrors(response.responseJSON.errors);
+              buttonEl.html(this.editMode ? strings.Update : strings.Create);
+              buttonEl.prop('disabled', false);
 						}
-					}
+					}.bind(this)
 				});
 			}
 		},
@@ -143,14 +156,14 @@ define([
 			this.$el.find('#errorMsg').html('');
 		},
 
-		showErrors: function(ctx, errors) {
+		showErrors: function(errors) {
 			var msg = '<ul>';
 			for (var i=0; i < errors.length; i++) {
 				msg += '<li>' + errors[i].message + '</li>';
 			}
 			msg += '</ul>';
-			ctx.$el.find('#error').css('display', 'block');
-			ctx.$el.find('#errorMsg').html(msg);
+			this.$el.find('#error').css('display', 'block');
+			this.$el.find('#errorMsg').html(msg);
 		}
 
 	});
