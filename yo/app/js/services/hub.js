@@ -312,7 +312,7 @@ define([
     },
 
     getPlugins: function(ctx, url, success, error) {
-      var plugins = new ItemList(null, {model: Plugin, url: url + '?expand=item.actionClasses.item'});
+      var plugins = new ItemList(null, {model: Plugin, url: url + '?expand=item.actionClasses.item', sort: 'name'});
       plugins.fetch({
         context: ctx,
         success: success,
