@@ -110,7 +110,7 @@ define([
         }
       } else {
         for (var i = 0; i < this.value.length; i++) {
-          if (this.value[i] === deviceId) {
+          if (this.value[i].get('@id') === deviceId) {
             this.value.splice(i, 1);
             break;
           }
