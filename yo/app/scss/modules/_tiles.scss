@@ -114,7 +114,7 @@
 				overflow: auto;
 				height: 100%;
 				.plugin-icon {
-					background: #ffffff;
+          height: 130px;
 					text-align: center;
 					border-bottom: 2px solid $color-panel-border;
 					img {
@@ -125,16 +125,16 @@
           .upper-left {
             position: absolute;
             left: 10px;
-            top: 10px;
+            top: 5px;
           }
           .upper-right {
             position: absolute;
             right: 10px;
-            top: 10px;
+            top: 5px;
           }
 				}
 				.plugin-text {
-					padding: 15px;
+          padding: 10px 15px 0px 15px;
 					h1 {
 						font-family: $font-1;
 						padding: 0;
