@@ -48,6 +48,7 @@ define([
 								hub: hub,
 								logLevel: model.get('values').logLevel
 							}));
+
 							// render log entries
 							HubService.getLogEntries(
 								options.context,
@@ -57,6 +58,7 @@ define([
 									$('#log-table-container').append(options.context.logTableView.render().el);
 								},
 								function(model, response, options) {
+                  el.find('#loading').remove();
 									if (response.status === 200 || response.status === 206) {
 										options.context.logTableView = new LogTableView({model: model});
 										$('#log-table-container').append(options.context.logTableView.render().el);
@@ -81,20 +83,20 @@ define([
 		onClickSave: function(e) {
 			e.preventDefault();
 
-            var config = new Config({id: 'id', url: this.model.get('@id'), cclass: this.model.get('cclass')});
-            config.setProperty('logLevel', this.logLevel);
+      var config = new Config({id: 'id', url: this.model.get('@id'), cclass: this.model.get('cclass')});
+      config.setProperty('logLevel', this.logLevel);
 
-            config.save(null, {
-                context: this,
-                error: function(model, response, options) {
-                    if (response.status == 202) {
-                    	toastr.success(strings.LogConfigurationSaved);
-                    } else {
-                        toastr.error(strings.LogConfigurationSaveError);
-                    }
-                }
-            });
-		}		
+      config.save(null, {
+          context: this,
+          error: function(model, response, options) {
+              if (response.status == 202) {
+                toastr.success(strings.LogConfigurationSaved);
+              } else {
+                  toastr.error(strings.LogConfigurationSaveError);
+              }
+          }
+      });
+		}
 
 	});
 

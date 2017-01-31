@@ -7,20 +7,17 @@ define([
 	'text!templates/settings/logEntry.html'
 ], function($, _, Backbone, strings, logEntryTemplate) {
 
-	var LogTableView = Backbone.View.extend({
+	return Backbone.View.extend({
 		tagName: 'table',
-		
+
 		attributes: {
 			width: '100%'
 		},
 
 		template: _.template(logEntryTemplate),
-		
-		initialize: function(logEntries) {
-			this.logEntries = logEntries;
-		},
 
 		render: function() {
+		  console.log('render');
 			this.$el.append('<thead><td>Level</td><td>Time</td><td>Thread</td><td>Message</td></thead>');
 			if (this.model.length > 0) {
 				for (var i = 0; i < this.model.length; i++) {
@@ -34,5 +31,4 @@ define([
 		}
 	});
 
-	return LogTableView;
 });
