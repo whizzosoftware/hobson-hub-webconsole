@@ -156,6 +156,7 @@ define({
   "NewLocation": "New Location",
   "NewPerson": "New Person",
   "NewTask": "New Task",
+  "NoAddableDevices": "There are no plugins installed that allow adding of devices.",
   "NoAdditionalItemsAppropriate": "No additional items are appropriate here.",
   "NoDataAvailable": "No data is available for the requested time period.",
   "NoDataStreamsCreated": "No data streams have been created.",

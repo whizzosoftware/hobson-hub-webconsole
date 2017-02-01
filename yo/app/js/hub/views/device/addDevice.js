@@ -44,17 +44,22 @@ define([
 			}));
 
 			HubService.getHubActionClasses(function(model, response, options) {
-				var select = this.$el.find('#addDeviceList');
-				var options = {};
-				for (var i=0; i < model.length; i++) {
-					var a = model.at(i);
-					options[a.get('name')] = a.get('@id');
-				}
-				select.empty();
-				select.append($("<option></option>").attr("value", "none").text("Select an option..."));
-				$.each(options, function(key, value) {
-					select.append($("<option></option>").attr("value", value).text(key));
-				});
+			  if (model.length > 0) {
+          var select = this.$el.find('#addDeviceList');
+          select.empty();
+          var options = {};
+          for (var i = 0; i < model.length; i++) {
+            var a = model.at(i);
+            options[a.get('name')] = a.get('@id');
+          }
+          select.append($("<option></option>").attr("value", "none").text("Select an option..."));
+          $.each(options, function (key, value) {
+            select.append($("<option></option>").attr("value", value).text(key));
+          });
+        } else {
+          this.$el.find('#prompt').html('<p>' + strings.NoAddableDevices + '</p>');
+          this.$el.find('#buttonAdd').remove();
+        }
 			}.bind(this), function(model, xhr, options) {
 				toastr.error(strings.ErrorOccurred);
 				console.log('An error occurred retrieving the action class list', model, xhr);
