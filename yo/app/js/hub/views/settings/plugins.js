@@ -75,7 +75,7 @@ define([
 		},
 
     onPluginStatusChange: function(event) {
-		  if (event.status.code === 'RUNNING') {
+		  if (event.status.code === 'INITIALIZING' || event.status.code === 'RUNNING') {
         for (var i in this.subviews) {
           var model = this.subviews[i].model;
           if (model.get('pluginId') == event.pluginId) {
