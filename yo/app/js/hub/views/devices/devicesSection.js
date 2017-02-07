@@ -36,7 +36,7 @@ define([
     },
 
     onDeviceUnavailability: function(event) {
-      var s = this.subviews[event.properties.id];
+      var s = this.subviews[event.id];
       if (s) {
         s.onDeviceAvailability(false);
       }
