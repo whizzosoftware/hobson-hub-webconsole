@@ -57,8 +57,6 @@ define([
       // make sure all 401 responses route to the login page
       AuthService.setAuthFailHandler(true, AuthService);
 
-      Backbone.history.start();
-
       // determine if any OIDC parameter are being passed in
       var l = Backbone.history.location.href;
       var accessToken = UrlService.extractAccessToken(l);
@@ -69,7 +67,11 @@ define([
         this.processAccessToken(this, accessToken, uri);
       } else if (error) {
         AuthService.redirectToLogin(error, UrlService.getQueryParam(l, 'error_description'));
+        return false;
       }
+
+      // start the router
+      Backbone.history.start();
 		},
 
     execute: function(callback, args, name) {
@@ -77,11 +79,11 @@ define([
         if (session.hasUser()) {
           callback.apply(this, args);
         } else {
-          AuthService.redirectToLogin();
+          var l = Backbone.history.location.href;
+          AuthService.redirectToLogin(UrlService.getQueryParam(l, 'error'), UrlService.getQueryParam(l, 'error_description'));
+          return false;
         }
       }
-
-      return false;
     },
 
 		showRoot: function() {

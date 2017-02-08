@@ -10,7 +10,6 @@ define([
   return {
 
     redirectToLogin: function(error, errorDescription) {
-      console.log('authService.redirectToLogin');
       Cookies.set('Token', null);
       this.setAuthFailHandler(false);
       $.ajax('/.well-known/openid-configuration', {
