@@ -16,7 +16,16 @@
 						 	<% if (plugin.actionClasses) {
 						 		for (var i=0; i < plugin.actionClasses.itemListElement.length; i++) {
 						 	%>
-							 	<li><a id="<%= plugin.actionClasses.itemListElement[i].item['@id'] %>" class="buttonAction"><i class="fa fa-wrench"></i>&nbsp;<%= plugin.actionClasses.itemListElement[i].item.name %></a></li>
+							 	<li>
+                  <a id="<%= plugin.actionClasses.itemListElement[i].item['@id'] %>" class="buttonAction">
+                    <i class="fa fa-wrench"></i>&nbsp;
+                    <% if (plugin.actionClasses.itemListElement[i].item['@id'].endsWith('/sendMessage')) { %>
+                       <%= strings.SendTestMessage %>
+                    <% } else { %>
+                       <%= plugin.actionClasses.itemListElement[i].item.name %>
+                    <% } %>
+                  </a>
+                </li>
 							 <%
 							    }
 							  }
