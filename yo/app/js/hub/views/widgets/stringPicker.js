@@ -27,7 +27,6 @@ define([
           required: this.required,
           value: this.value
         }));
-        console.log(this.value);
         var select = this.$el.find('#' + id);
         var val = this.value;
         $.each(this.model.enum, function (key, value) {
