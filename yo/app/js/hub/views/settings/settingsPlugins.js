@@ -102,13 +102,9 @@ define([
 		},
 
 		refresh: function() {
-			var plugins = new ItemList(null, {model: Plugin, url: this.model.url});
-			plugins.fetch({
-				context: this,
-				success: function(model, response, options) {
-					options.context.pluginsView.reRender(model.where({type: 'PLUGIN'}));
-				}
-			});
+		  HubService.getPlugins(this, this.model.url, function(model, response, options) {
+        options.context.pluginsView.reRender(model.where({type: 'PLUGIN'}));
+      });
 		},
 
 		checkForUpdates: function() {
