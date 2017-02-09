@@ -50,7 +50,7 @@ define([
           id: e['id'],
           configuration: e['configuration']
         });
-      } else if (e.id == 'deviceAvailable' || e.id == 'deviceUnavailable') {
+      } else if (e.id == 'deviceAvailable' || e.id == 'deviceUnavailable' || e.id == 'deviceStarted') {
         eventService.post(e.id, {
           id: e.properties['id']
         });

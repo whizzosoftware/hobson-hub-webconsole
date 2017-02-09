@@ -32,9 +32,11 @@ define([
       this.subscription = this.onDeviceAvailability.bind(this);
       this.subscription2 = this.onDeviceUnavailability.bind(this);
       this.subscription3 = this.onDeviceVariableUpdate.bind(this);
+      this.subscription4 = this.onDeviceStarted.bind(this);
       EventService.subscribe('deviceAvailable', this.subscription);
       EventService.subscribe('deviceUnavailable', this.subscription2);
       EventService.subscribe('devVarsUpdate', this.subscription3);
+      EventService.subscribe('deviceStarted', this.subscription4);
     },
 
     onDeviceAvailability: function(event) {
@@ -53,6 +55,10 @@ define([
       for (var i = 0; i < this.subviews.length; i++) {
         this.subviews[i].onDeviceVariableUpdate(event);
       }
+    },
+
+    onDeviceStarted: function(event) {
+      this.render();
     },
 
     remove: function () {
