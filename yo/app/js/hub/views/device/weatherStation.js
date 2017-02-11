@@ -19,7 +19,7 @@ define([
 		},
 
 		render: function(el) {
-			var windDir = this.variables.windDirDeg.value;
+			var windDir = (this.variables.windDirDeg) ? this.variables.windDirDeg.value : null;
 
 			if (windDir) {
 				windDir = Math.ceil(windDir/45.0) * 45.0;
