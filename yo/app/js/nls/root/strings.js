@@ -267,6 +267,8 @@ define({
   "WaitingForCameraImage": "Waiting for camera image...",
   "Warm": "Warm",
   "Warn": "Warn",
+  "waterTempF": "Water temperature",
+  "waterTempFUnits": "degrees fahrenheit",
   "Wednesday": "Wednesday",
   "windDirDeg": "Wind direction",
   "windDirDegUnits": "degrees",
